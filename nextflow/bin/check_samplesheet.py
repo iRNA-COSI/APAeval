@@ -73,15 +73,15 @@ def check_samplesheet(file_in, file_out):
             if fastq1:
                 if fastq1.find(" ") != -1:
                     print_error("fastq1 contains spaces!", 'Line', line)
-                if not fastq1.endswith(".fastq"):
-                    print_error("fastq1 does not have extension '.fastq'", 'Line', line)
+                if not fastq1.endswith(".fastq") and not fastq1.endswith(".fastq.gz") :
+                    print_error("fastq1 does not have extension '.fastq' or '.fastq.gz'", 'Line', line)
 
             ## Check fastq2 extension
             if fastq2:
                 if fastq2.find(" ") != -1:
                     print_error("fastq2 contains spaces!", 'Line', line)
-                if not fastq2.endswith(".fastq"):
-                    print_error("fastq2 does not have extension '.fastq'", 'Line', line)
+                if not fastq2.endswith(".fastq") and not fastq2.endswith(".fastq.gz"):
+                    print_error("fastq2 does not have extension '.fastq' or '.fastq.gz'", 'Line', line)
 
             ## Check bam extension
             if bam:
