@@ -66,12 +66,12 @@ rule execute:
             {params.out_dir} {params.out_dir} &> {log.summarize}
         """
 
-# stolen from https://snakemake.bitbucket.io/snakemake-tutorial.html
 rule gather_benchmark_Q1:
     """Obtain runtime and max memory usage
 
     Per sample, obtain the runtime and max memory from the benchmarked file
     and compute sum of individual runtimes and max of all max memories.
+    
     """
     input:
         T1=os.path.join(config["out_dir"], config["benchmarks"], "index.tsv"),
