@@ -12,7 +12,7 @@ conda env create -f envs/snakemake.yaml
 conda activate snakemake
 ```
 
-# Miso
+# Benchmark Q1 on Miso
 
 Adjust file paths for dataset run in `configs/config.miso.yaml`. 
 * Miso also requires an own configuration file and is specified in `configs/miso_settings.txt`.
@@ -24,4 +24,10 @@ Run the MISO pipeline with
 bash run_miso.sh
 ```
 
-The benchmark output file is `benchmark.Q1_miso.json`
+The benchmark output file is `benchmark.Q1_miso.json` and follows the benchmark specification. 
+It contains the sum of run times for all samples and the index generation and the maximum Proportional Set Size (PSS) from all rules.
+
+## Current challenges
+
+* CPU time seems to be not correctly recorded with snakemake's `benchmark` directive when using multiple threads. 
+* The pipeline is tailored to the pilot dataset, which is unstranded in single-end. It might be necessary to create new rules to incorporate this.

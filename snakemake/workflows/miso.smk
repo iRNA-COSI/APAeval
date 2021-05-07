@@ -8,16 +8,27 @@ import pandas as pd
 samples = pd.read_csv(os.path.abspath(config["samples"])).set_index("sample", drop=False)
 
 rule finish:
+    """Rule that specifies the final output.
+    """
     input:
         os.path.join(config["out_dir"],config["benchmarks"], "benchmark.Q1_miso.json")
 
+###########
+# Preprocessing: obtain suitable input formats
+
+# TODO: use correct gff
 rule adjust_gff:
+    """Adjust genome annotation.
+    """
     input:
         config["genome"]
     output:
         os.path.join(config["out_dir"], "genome", "gencode.v37.annotation.wochr.gff3")
     shell:
         "cat {input} | sed 's/^chr//g' > {output}"
+
+###########
+# Method-specific rules
 
 rule index:
     input:
@@ -35,6 +46,7 @@ rule index:
     shell:
         "index_gff --index {input} {params.dir} &> {log}"
 
+# TODO: use 'strandedness' to execute proper miso run
 rule execute:
     input:
         index=os.path.join(config["out_dir"], "indexed", "genes.gff"),
@@ -66,6 +78,9 @@ rule execute:
             {params.out_dir} {params.out_dir} &> {log.summarize}
         """
 
+################
+# Postprocessing & benchmark gathering
+
 rule gather_benchmark_Q1:
     """Obtain runtime and max memory usage
 
@@ -85,8 +100,8 @@ rule gather_benchmark_Q1:
         res = {'run_time_sec': 0, 'max_mem_mib': 0}
         for file in input:
             df = pd.read_table(file, sep="\t", header = 0)
-            res['run_time_sec'] += df.s.values.sum()
-            max_mem = df.max_pss.values.sum()
+            res['run_time_sec'] += df.s.values.mean()
+            max_mem = df.max_pss.max()
             if max_mem > res['max_mem_mib']:
                 res['max_mem_mib'] = max_mem 
         with open(output[0], 'w') as json_file:
