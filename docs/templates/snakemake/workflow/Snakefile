@@ -1,0 +1,93 @@
+"""Snakemake pipeline for [METHOD].
+For help see: https://snakemake.readthedocs.io/en/stable/index.html.
+"""
+
+import pandas as pd
+
+samples = pd.read_csv(os.path.abspath(
+    config["samples"])).set_index("sample", drop=False)
+
+
+#-------------------------------------------------------------------------------
+localrules: finish
+
+rule finish:
+    """Rule that specifies the final output.
+    """
+    input:
+        os.path.join(config["out_dir"], "[IDENTIFIER]_[METHOD].[OUTFORMAT]")
+
+
+#-------------------------------------------------------------------------------
+# Preprocessing: obtain suitable input formats
+
+rule preprocess_step_1:
+    """A rule that does some preprocessing.
+    This example copies input to output and writes stdout and stderr to log.
+    """
+    input:
+        INPUT_FILE
+    output:
+        OUTPUT_FILE
+    log:
+        os.path.join(config["local_log"], "preprocess_step_1.log")
+    shell:
+        "(cp {input} {output}) &> {log}"
+
+
+#-------------------------------------------------------------------------------
+# Method-specific rules
+
+rule execute:
+    input:
+        bam=lambda wildcards:
+                pd.Series(
+                    samples.loc[wildcards.sample, "bam"]
+                ).values
+    output:
+        out=os.path.join(config["out_dir"], "{sample}", "execute.out")
+    params:
+        param1 = 0,
+        param2 = "PARAM_STRING"
+    threads: 4
+    conda: 
+        os.path.join(config["envs"], "[METHOD].yaml")
+    log:
+        os.path.join(config["local_log"], "execute.{sample}.log")
+    shell:
+        "(EXECUTE_COMMAND \
+            -i {input.bam} \
+            -o {output.out} \
+            -p1 {params.param1} \
+            -p2 {params.param2}) \
+            &> {log}"
+
+
+#-------------------------------------------------------------------------------
+# Postprocessing: obtain suitable output formats (for benchmarks)
+
+rule postprocess_step_1:
+    """A rule that does some postprocessing.
+
+    Note: expand() with wildcard sample gathers all samples.
+
+    """
+    input:
+        expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
+            sample = samples.index)
+    output:
+        os.path.join(config["out_dir"], "[IDENTIFIER]_[METHOD].[OUTFORMAT]")
+    log:
+        os.path.join(config["local_log"], "postprocess_step_1.{sample}.log")
+    shell:
+        "(cat {input} {output}) &> {log}"
+
+
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred, check log at %s." % {log})
