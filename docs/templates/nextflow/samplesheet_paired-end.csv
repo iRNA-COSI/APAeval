@@ -1,0 +1,2 @@
+sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
+unique_sample_name,full_path_to_fastq1,full_path_to_fastq2,full_path_to_bam,full_path_to_bam.bai,full_path_to_gff3,full_path_to_fasta,full_path_to_mart_export.txt
