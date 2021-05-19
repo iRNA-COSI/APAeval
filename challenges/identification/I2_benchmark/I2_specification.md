@@ -18,6 +18,10 @@ TP - true positives - PAS identified by the tool and present in the orthogonal d
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
 FN - false negatives - PAS not identified by the tool but present in the orthogonal dataset
 
+The metrics should be computed for the following distance threshold between PAS identified by the tool in RNAseq dataset and PAS identified in orthogonal 3'end seq dataset:
+
+- 50 nt
+
 ## General info
 
 * **Challenge:** Identification
@@ -55,8 +59,8 @@ description of each attribute-value pair:
   
   | Attribute | Type | Unit | Description |
   | --- | --- | --- | --- |
-  | `sensitivity` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)) |
-  | `FDR` | `float` | N/A | False Discovery Rate of PAS identification compared with orthogonal dataset; FDR = (FP/(TP+FP)) |
+  | `sensitivity` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for distance threshold of 50 nt |
+  | `FDR` | `float` | N/A | False Discovery Rate of PAS identification compared with orthogonal dataset; FDR = (FP/(TP+FP)); calculated for distance threshold of 50 nt |
   
 ## Metrics
   
