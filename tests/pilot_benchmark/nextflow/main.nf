@@ -4,7 +4,7 @@ if (params.help) {
 	
 	    log.info"""
 	    ==============================================
-	    APAeval pilot benmarking pipeline
+	    APAeval pilot benchmarking pipeline
 	    ==============================================
 	    Usage:
 	    Run the pipeline with default parameters:
