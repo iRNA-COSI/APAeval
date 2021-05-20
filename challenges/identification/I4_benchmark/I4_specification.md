@@ -2,12 +2,12 @@
 
 ## Synopsis
 
-Benchmark to annotate the identified poly(A) sites to specific features (terminal exon, intron, 3'utr etc) and count the polyA sites assigned to those features.
+Benchmark to annotate the identified poly(A) sites to specific features (terminal exon, intron, 3'-UTR etc) and count the polyA sites assigned to those features.
 
 Input data:
 
 1. Poly(A) sites identified based on RNAseq data using the benchmarked tool
-2. GTF/GFF file with genome annotation
+2. GTF file with genome annotation
 
 Based on the input data the following metrics are computed:
 
@@ -63,10 +63,10 @@ description of each attribute-value pair:
   
   | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
   | --- | --- | --- | --- | --- | --- | --- |
-  | 1 | Annotated_to_3utr | % | Output 1 | Read file, parse JSON and extract attribute `annotation_3utr` | `vector` | N/A |
-  | 2 | Annotated_to_introns | % | Output 1 | Read file, parse JSON and extract attribute `annotation_intron` | `vector` | N/A |
-  | 3 | Annotated_to_terminal_exon | % | Output 1 | Read file, parse JSON and extract attribute `annotation_terminal_exon` | `vector` | N/A |
-  | 4 | Annotated_to_other | % | Output 1 | Read file, parse JSON and extract attribute `annotation_other` | `vector` | N/A |
+  | 1 | PAS annotated to 3'-UTR | % | Output 1 | Read file, parse JSON and extract attribute `annotation_3utr` | `vector` | N/A |
+  | 2 | PAS annotated to introns | % | Output 1 | Read file, parse JSON and extract attribute `annotation_intron` | `vector` | N/A |
+  | 3 | PAS annotated to terminal exon | % | Output 1 | Read file, parse JSON and extract attribute `annotation_terminal_exon` | `vector` | N/A |
+  | 4 | PAS annotated to other features | % | Output 1 | Read file, parse JSON and extract attribute `annotation_other` | `vector` | N/A |
   
 ### Additional info metrics
   
