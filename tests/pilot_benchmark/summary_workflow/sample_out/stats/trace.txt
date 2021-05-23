@@ -1,0 +1,4 @@
+task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
+1	79/4ec413	8632	validation (Validating input file format)	COMPLETED	0	2021-05-23 17:18:33.747	915ms	424ms	89.4%	3.1 MB	5.4 MB	9.4 MB	380.3 KB
+2	92/4d97ea	8662	compute_metrics (Computing benchmark metrics for submitted data)	COMPLETED	0	2021-05-23 17:18:34.680	989ms	491ms	87.8%	18.4 MB	264.6 MB	9.4 MB	378.2 KB
+3	34/ffe5fd	8688	benchmark_consolidation (Performing benchmark assessment and building plots)	COMPLETED	0	2021-05-23 17:18:35.679	2.2s	1.7s	88.8%	86.9 MB	553.5 MB	59.9 MB	713.5 KB

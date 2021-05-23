@@ -1,0 +1,26 @@
+[
+    {
+        "_id": "APAeval:compute_resources_runtime_pilot_A",
+        "challenge_id": "compute_resources",
+        "community_id": "APAeval",
+        "metrics": {
+            "metric_id": "runtime",
+            "stderr": 0,
+            "value": -2156.0
+        },
+        "participant_id": "pilot",
+        "type": "assessment"
+    },
+    {
+        "_id": "APAeval:compute_resources_memory_pilot_A",
+        "challenge_id": "compute_resources",
+        "community_id": "APAeval",
+        "metrics": {
+            "metric_id": "memory",
+            "stderr": 0,
+            "value": -6.2
+        },
+        "participant_id": "pilot",
+        "type": "assessment"
+    }
+]

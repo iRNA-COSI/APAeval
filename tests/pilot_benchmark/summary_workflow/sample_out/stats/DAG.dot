@@ -1,0 +1,74 @@
+digraph "DAG" {
+p0 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p8 [label="validation"];
+p0 -> p8 [label="ref_dir"];
+
+p1 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p14 [label="compute_metrics"];
+p1 -> p14 [label="gold_standards_dir"];
+
+p2 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p18 [label="benchmark_consolidation"];
+p2 -> p18 [label="benchmark_data"];
+
+p3 [shape=point,label="",fixedsize=true,width=0.1];
+p8 [label="validation"];
+p3 -> p8 [label="input_file"];
+
+p4 [shape=point,label="",fixedsize=true,width=0.1];
+p8 [label="validation"];
+p4 -> p8 [label="challenge_ids"];
+
+p5 [shape=point,label="",fixedsize=true,width=0.1];
+p8 [label="validation"];
+p5 -> p8 [label="tool_name"];
+
+p6 [shape=point,label="",fixedsize=true,width=0.1];
+p8 [label="validation"];
+p6 -> p8 [label="community_id"];
+
+p7 [shape=point,label="",fixedsize=true,width=0.1];
+p8 [label="validation"];
+p7 -> p8 [label="validation_out"];
+
+p8 [label="validation"];
+p14 [label="compute_metrics"];
+p8 -> p14 [label="EXIT_STAT"];
+
+p9 [shape=point,label="",fixedsize=true,width=0.1];
+p14 [label="compute_metrics"];
+p9 -> p14 [label="input_file"];
+
+p10 [shape=point,label="",fixedsize=true,width=0.1];
+p14 [label="compute_metrics"];
+p10 -> p14 [label="challenge_ids"];
+
+p11 [shape=point,label="",fixedsize=true,width=0.1];
+p14 [label="compute_metrics"];
+p11 -> p14 [label="tool_name"];
+
+p12 [shape=point,label="",fixedsize=true,width=0.1];
+p14 [label="compute_metrics"];
+p12 -> p14 [label="community_id"];
+
+p13 [shape=point,label="",fixedsize=true,width=0.1];
+p14 [label="compute_metrics"];
+p13 -> p14 [label="assessment_out"];
+
+p14 [label="compute_metrics"];
+p18 [label="benchmark_consolidation"];
+p14 -> p18 [label="PARTICIPANT_DATA"];
+
+p15 [shape=point,label="",fixedsize=true,width=0.1];
+p18 [label="benchmark_consolidation"];
+p15 -> p18 [label="aggregation_dir"];
+
+p16 [shape=point,label="",fixedsize=true,width=0.1];
+p18 [label="benchmark_consolidation"];
+p16 -> p18 [label="validation_out"];
+
+p17 [shape=point,label="",fixedsize=true,width=0.1];
+p18 [label="benchmark_consolidation"];
+p17 -> p18 [label="data_model_export_dir"];
+
+}

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 import os
 import json
 import jsonschema
@@ -43,7 +43,7 @@ def write_participant_dataset( ID, community, challenges, participant_name, vali
         "type": "participant",
         "datalink": {
             "attrs": ["archive"],
-            "validation_date": str(datetime.now(timezone.utc).replace(microsecond=0).isoformat()),
+            "validation_date": str(datetime.now().replace(microsecond=0).isoformat()),
             "status": status
         },
         "participant_id": participant_name,

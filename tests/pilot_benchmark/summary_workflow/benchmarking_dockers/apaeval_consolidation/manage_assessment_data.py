@@ -37,18 +37,18 @@ def generate_manifest(data_dir,output_dir, participant_data):
 
     info = []
 
-    for cancer, metrics_file in participant_data.items():
+    for challenge, metrics_file in participant_data.items():
 
-        cancer_dir = os.path.join(output_dir,cancer)
-        if not os.path.exists(cancer_dir):
-            os.makedirs(cancer_dir)
+        challenge_dir = os.path.join(output_dir,challenge)
+        if not os.path.exists(challenge_dir):
+            os.makedirs(challenge_dir)
         participants = []
         
-        cancer_oeb_data = os.path.join(data_dir, cancer+".json")
+        challenge_oeb_data = os.path.join(data_dir, challenge+".json")
 
-        if os.path.isfile(cancer_oeb_data):
+        if os.path.isfile(challenge_oeb_data):
             # Transferring the public participants data
-            with io.open(cancer_oeb_data, mode='r', encoding="utf-8") as f:
+            with io.open(challenge_oeb_data, mode='r', encoding="utf-8") as f:
                 aggregation_file = json.load(f)
                 # get id for metrics in x and y axis
                 metric_X = aggregation_file["datalink"]["inline_data"]["visualization"]["x_axis"]
@@ -66,7 +66,7 @@ def generate_manifest(data_dir,output_dir, participant_data):
 
                 # copy the assessment files to output directory
                 rel_new_location = participant_id + ".json"
-                new_location = os.path.join(cancer_dir, rel_new_location)
+                new_location = os.path.join(challenge_dir, rel_new_location)
                 with open(new_location, 'w') as f:
                     json.dump(metrics_file, f, sort_keys=True, indent=4, separators=(',', ': '))
 
@@ -78,20 +78,20 @@ def generate_manifest(data_dir,output_dir, participant_data):
                     participants.append(name["participant_id"])
 
                 #copy the updated aggregation file to output directory
-                summary_dir = os.path.join(cancer_dir,cancer + "_summary.json")
+                summary_dir = os.path.join(challenge_dir,challenge + "_summary.json")
                 with open(summary_dir, 'w') as f:
                     json.dump(aggregation_file, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 
         # Let's draw the assessment charts!
-        assessment_chart.print_chart(cancer_dir, summary_dir,cancer, "RAW")
-        assessment_chart.print_chart(cancer_dir, summary_dir,cancer, "SQR")
-        assessment_chart.print_chart(cancer_dir, summary_dir,cancer, "DIAG")
+        assessment_chart.print_chart(challenge_dir, summary_dir,challenge, "RAW")
+        assessment_chart.print_chart(challenge_dir, summary_dir,challenge, "SQR")
+        assessment_chart.print_chart(challenge_dir, summary_dir,challenge, "DIAG")
 
         #generate manifest
         obj = {
-            "id" : cancer,
+            "id" : challenge,
             "participants": participants
         }
 

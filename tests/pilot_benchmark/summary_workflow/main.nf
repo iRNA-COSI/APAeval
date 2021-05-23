@@ -4,9 +4,7 @@ if (params.help) {
 	
 	    log.info"""
 	    ==============================================
-	    TCGA CANCER DRIVER GENES BENCHMARKING PIPELINE 
-		Author: Javier Garrayo Ventas
-		Barcelona Suercomputing Center. Spain. 2019
+	    APAEVAL PILOT SUMMARY PIPELINE
 	    ==============================================
 	    Usage:
 	    Run the pipeline with default parameters:
@@ -36,11 +34,11 @@ if (params.help) {
 } else {
 
 	log.info """\
-		 ==============================================
-	     TCGA CANCER DRIVER GENES BENCHMARKING PIPELINE 
-	     ==============================================
+  ==============================================
+	 APAEVAL PILOT SUMMARY PIPELINE 
+	 ==============================================
          input file: ${params.input}
-		 benchmarking community = ${params.community_id}
+         benchmarking community = ${params.community_id}
          public reference directory : ${params.public_ref_dir}
          tool name : ${params.participant_id}
          metrics reference datasets: ${params.goldstandard_dir}
@@ -64,7 +62,7 @@ input_file = file(params.input)
 ref_dir = Channel.fromPath( params.public_ref_dir, type: 'dir' )
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
-cancer_types = params.challenges_ids
+challenge_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 
@@ -84,7 +82,7 @@ process validation {
 	input:
 	file input_file
 	file ref_dir 
-	val cancer_types
+	val challenge_ids
 	val tool_name
 	val community_id
 	val validation_out
@@ -93,7 +91,7 @@ process validation {
 	val task.exitStatus into EXIT_STAT
 	
 	"""
-	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $cancer_types -p $tool_name -o $validation_out
+	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $challenge_ids -p $tool_name -o $validation_out
 	"""
 
 }
@@ -105,7 +103,7 @@ process compute_metrics {
 	input:
 	val file_validated from EXIT_STAT
 	file input_file
-	val cancer_types
+	val challenge_ids
 	file gold_standards_dir
 	val tool_name
 	val community_id
@@ -118,7 +116,7 @@ process compute_metrics {
 	val assessment_out into PARTICIPANT_DATA
 
 	"""
-	python /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o $assessment_out
+	python /app/compute_metrics.py -i $input_file -c $challenge_ids -m $gold_standards_dir -p $tool_name -com $community_id -o $assessment_out
 	"""
 
 }
@@ -136,7 +134,7 @@ process benchmark_consolidation {
 
 	"""
 	python /app/manage_assessment_data.py -b $benchmark_data -p $participant_metrics -o $aggregation_dir
-	python /app/merge_data_model_files.py -p $validation_out -m $participant_metrics -a $aggregation_dir -o $data_model_export_dir
+        python /app/merge_data_model_files.py -p $validation_out -m $participant_metrics -a $aggregation_dir -o $data_model_export_dir
 	"""
 
 }
