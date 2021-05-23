@@ -1,0 +1,58 @@
+{
+    "_id": "OEBD00100000NO",
+    "challenge_ids": [
+        "ALL"
+    ],
+    "datalink": {
+        "inline_data": {
+            "challenge_participants": [
+                {
+                    "metric_x": 0.6521739130434783,
+                    "metric_y": 0.3651685393258427,
+                    "participant_id": "MutSig2CV"
+                },
+                {
+                    "metric_x": 0.3010033444816054,
+                    "metric_y": 0.5232558139534884,
+                    "participant_id": "compositeDriver"
+                },
+                {
+                    "metric_x": 0.6254180602006689,
+                    "metric_y": 0.4012875536480687,
+                    "participant_id": "2020plus"
+                },
+                {
+                    "metric_x": 0.4214046822742475,
+                    "metric_y": 0.23728813559322035,
+                    "participant_id": "OncodriveFM"
+                },
+                {
+                    "metric_x": 0.08361204013377926,
+                    "metric_y": 0.3048780487804878,
+                    "participant_id": "ActiveDriver"
+                },
+                {
+                    "metric_x": 0.14715719063545152,
+                    "metric_y": 0.6666666666666666,
+                    "participant_id": "e-Driver"
+                },
+                {
+                    "metric_x": 0.34782608695652173,
+                    "metric_y": 0.08666666666666667,
+                    "participant_id": "OncodriveCLUST"
+                },
+                {
+                    "metric_x": 0.5117056856187291,
+                    "metric_y": 0.5483870967741935,
+                    "participant_id": "MuSiC"
+                }
+            ],
+            "visualization": {
+                "type": "2D-plot",
+                "x_axis": "TPR",
+                "y_axis": "precision"
+            }
+        }
+    },
+    "type": "aggregation"
+}
