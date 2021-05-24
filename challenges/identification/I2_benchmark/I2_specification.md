@@ -18,9 +18,20 @@ TP - true positives - PAS identified by the tool and present in the orthogonal d
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
 FN - false negatives - PAS not identified by the tool but present in the orthogonal dataset
 
-The metrics should be computed for the following distance threshold between PAS identified by the tool in RNAseq dataset and PAS identified in orthogonal 3'end seq dataset:
+The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified from the orthogonal 3'end seq dataset, i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified from the orthogonal dataset for the prediction to be considered true.  
+The following distance thresholds should be used:
 
+- 0 nt
+- 10 nt
+- 20 nt
+- 30 nt
+- 40 nt
 - 50 nt
+- 60 nt
+- 70 nt
+- 80 nt
+- 90 nt
+- 100 nt
 
 ## General info
 
@@ -38,11 +49,27 @@ The metrics should be computed for the following distance threshold between PAS 
   
 #### Format 1
 
-This BED file contains PAS identified by the benchmarked tool from RNAseq data
+This BED file contains single-nucleotide position of poly(A) sites identified by the benchmarked method.  
+Fields:
+
+- **chrom** - the name of the chromosome
+- **chromStart** - the starting position of the feature in the chromosome
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
+- **name** - defines the name of the identified poly(A) site
+- **score** - not used, leave as "."
+- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
 #### Format 2
 
-This BED file contains PAS identified from the orthogonal 3'end-seq dataset
+This BED file contains single-nucleotide position of poly(A) sites identified from the orthogonal 3'end-seq dataset.  
+Fields:
+
+- **chrom** - the name of the chromosome
+- **chromStart** - the starting position of the feature in the chromosome
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
+- **name** - defines the name of the identified poly(A) site
+- **score** - not used, leave as "."
+- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
 ## Outputs
 
@@ -59,15 +86,15 @@ description of each attribute-value pair:
   
   | Attribute | Type | Unit | Description |
   | --- | --- | --- | --- |
-  | `sensitivity` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for distance threshold of 50 nt |
-  | `FDR` | `float` | N/A | False Discovery Rate of PAS identification compared with orthogonal dataset; FDR = (FP/(TP+FP)); calculated for distance threshold of 50 nt |
+  | `sensitivity` | `vector` | N/A | A vector of length=11 containing sensitivity values of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for distance between 0 nt and 100 nt with 10 nt intervals; Each value in the vector is of type `float` |
+  | `FDR` | `vector` | N/A | A vector of length=11 containing False Discovery Rate values of PAS identification compared with orthogonal dataset; FDR = (FP/(TP+FP)); calculated for distance between 0 nt and 100 nt with 10 nt intervals; Each value in the vector is of type `float` |
   
 ## Metrics
   
   | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
   | --- | --- | --- | --- | --- | --- | --- |
-  | 1 | Sensitivity | N/A | Output 1 | Read file, parse JSON and extract attribute `sensitivity` | `vector` | N/A |
-  | 2 | FDR | N/A | Output 1 | Read file, parse JSON and extract attribute `FDR` | `vector` | N/A |
+  | 1 | Sensitivity | N/A | Output 1 | Read file, parse JSON and extract attribute `sensitivity` that has type `vector` of `float`. The values should be plotted against a vector of distance cutoff values from 0 to 100 nt with 10 nt intervals. | `array` | N/A |
+  | 2 | FDR | N/A | Output 1 | Read file, parse JSON and extract attribute `FDR` that has type `vector` of `float`. The values should be plotted against a vector of distance cutoff values from 0 to 100 nt with 10 nt intervals. | `array` | N/A |
   
 ### Additional info metrics
   
