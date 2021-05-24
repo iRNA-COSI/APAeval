@@ -1,8 +1,7 @@
 #!/bin/bash
 snakemake \
-    --rerun-incomplete \
     --snakefile="workflow/Snakefile" \
     --configfile="config/config.[METHOD].yaml" \
-    --cores 4 \
-    --use-conda \
+    --cores 4 \ # adjust number as needed
+    --use-conda \ # or --use-singularity
     --printshellcmds
