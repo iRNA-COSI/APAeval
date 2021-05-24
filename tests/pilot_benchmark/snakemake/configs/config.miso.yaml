@@ -1,0 +1,9 @@
+# Configuration file for MISO
+samples: "configs/samples.csv"
+miso_settings: "configs/miso_settings.txt"
+envs: "../envs"
+read_len: 75
+genome: "../nf_core_qc/data/genome/gencode.v37.annotation.gff3"
+out_dir: "miso_out/pilot"
+benchmarks: "benchmark"
+log_dir: "logs"
