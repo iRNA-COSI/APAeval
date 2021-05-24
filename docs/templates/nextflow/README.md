@@ -40,12 +40,3 @@ Read this section, but do NOT include it your final README.
 {Notes about the METHOD. 
 e.g. Did you have to adjust the method's soure code?
 }
-
-## Verdict
-
-* How easy is it to install?
-* How extensivly documented is the method?
-* If a test is supplied, does it work?
-* How easy is it to run?
-* Any other experiences, remarks?
-
