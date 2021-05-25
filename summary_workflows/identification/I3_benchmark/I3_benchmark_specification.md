@@ -17,10 +17,19 @@ Based on the input data the following metrics are computed:
 TP - true positives - PAS identified by the tool and present within X nucleotides of PAS identified in the database  
 FP - false positives  - PAS identified by the tool and not present within X nucleotides of PAS identified in the database
 
-The metrics should be calculated for the following thresholds of distance between PAS identified by the tool and PAS present in databases:
+The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified in the database i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified in the database for the prediction to be considered true.  
+The following distance thresholds should be used:
 
-- 50 nt
+- 0 nt
+- 20 nt
+- 40 nt
+- 60 nt
+- 80 nt
 - 100 nt
+- 120 nt
+- 140 nt
+- 160 nt
+- 180 nt
 - 200 nt
 
 
@@ -68,9 +77,8 @@ description of each attribute-value pair:
   
   | Attribute | Type | Unit | Description |
   | --- | --- | --- | --- |
-  | `Precision_50nt` | `float` | N/A | Precision of PAS identification compared with PolyASite database; Precision = (TP/(TP+FP)); maximum distance between identified PAS and PAS in database: 50 nt |
-  | `Precision_100nt` | `float` | N/A | Precision of PAS identification compared with PolyASite database; Precision = (TP/(TP+FP)); maximum distance between identified PAS and PAS in database: 100 nt |
-  | `Precision_200nt` | `float` | N/A | Precision of PAS identification compared with PolyASite database; Precision = (TP/(TP+FP)); maximum distance between identified PAS and PAS in database: 200 nt |
+  | `Precision` | `vector` | N/A | A vector of length=11 containing precision values of PAS identification compared with PolyASite database; Precision = (TP/(TP+FP)); calculated for distance between 0 nt and 200 nt with 20 nt intervals; Each value in the vector is of type `float` |
+
 
 #### Format 2
   
@@ -79,21 +87,17 @@ description of each attribute-value pair:
   
   | Attribute | Type | Unit | Description |
   | --- | --- | --- | --- |
-  | `Precision_50nt` | `float` | N/A | Precision of PAS identification compared with PolyA_DB database; Precision = (TP/(TP+FP)); maximum distance between identified PAS and PAS in database: 50 nt |
-  | `Precision_100nt` | `float` | N/A | Precision of PAS identification compared with PolyA_DB database; Precision = (TP/(TP+FP)); maximum distance between identified PAS and PAS in database: 100 nt |
-  | `Precision_200nt` | `float` | N/A | Precision of PAS identification compared with PolyA_DB database; Precision = (TP/(TP+FP)); maximum distance between identified PAS and PAS in database: 200 nt |
+  | `Precision` | `vector` | N/A | A vector of length=11 containing precision values of PAS identification compared with PolyA_DB database; Precision = (TP/(TP+FP)); calculated for distance between 0 nt and 200 nt with 20 nt intervals; Each value in the vector is of type `float` |
+
+A vector of length=11 containing precision values of PAS identification compared with PolyA_DB database; Precision = (TP/(TP+FP)); calculated for distance between 0 nt and 200 nt with 20 nt intervals; Each value in the vector is of type `float`
   
 ## Metrics
   
   | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
   | --- | --- | --- | --- | --- | --- | --- |
-  | 1 | Precision_50nt_PolyASite | N/A | Output 1 | Read file, parse JSON and extract attribute `Precision_50nt` | `vector` | N/A |
-  | 2 | Precision_100nt_PolyASite | N/A | Output 1 | Read file, parse JSON and extract attribute `Precision_100nt` | `vector` | N/A |
-  | 3 | Precision_200nt_PolyASite | N/A | Output 1 | Read file, parse JSON and extract attribute `Precision_200nt` | `vector` | N/A |
-  | 4 | Precision_50nt_PolyAdb | N/A | Output 2 | Read file, parse JSON and extract attribute `Precision_50nt` | `vector` | N/A |
-  | 5 | Precision_100nt_PolyAdb | N/A | Output 2 | Read file, parse JSON and extract attribute `Precision_100nt` | `vector` | N/A |
-  | 6 | Precision_200nt_PolyAdb | N/A | Output 2 | Read file, parse JSON and extract attribute `Precision_200nt` | `vector` | N/A |
-  
+  | 1 | Precision of PAS identification compared with PolyASite database | N/A | Output 1 | Read file, parse JSON and extract attribute `Precision` that has type `vector` of `float`. The values should be plotted against a vector of distance cutoff values from 0 to 200 nt with 20 nt intervals. | `matrix` | N/A |
+  | 2 | Precision of PAS identification compared with PolyA_DB database | N/A | Output 2 | Read file, parse JSON and extract attribute `Precision` that has type `vector` of `float`. The values should be plotted against a vector of distance cutoff values from 0 to 200 nt with 20 nt intervals. | `matrix` | N/A |
+
 ### Additional info metrics
   
   N/A
