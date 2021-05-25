@@ -148,6 +148,6 @@ TBA
 [slack-general]: <https://apaeval.slack.com/archives/C01PHLQKNH0>
 [slack-random]: <https://apaeval.slack.com/archives/C01Q7FMRJ3A>
 [slack-tech-support]: <https://apaeval.slack.com/archives/C022RNSAUV7>
-[vc-agenda]: <https://docs.google.com/document/d/1Cl3xq7_uwApAYxUbzeVSBsRfGUmtRc0jSnZ3yrWM3ks/edit#>
+[agenda-vc]: <https://docs.google.com/document/d/1Cl3xq7_uwApAYxUbzeVSBsRfGUmtRc0jSnZ3yrWM3ks/edit#>
 [vc-direct-link]: <https://unibas.zoom.us/j/65694291427?pwd=QUMyMjQ2SSt2eS9iZW50YVZCOC8wQT09>
 [zoom]: <https://zoom.us/>

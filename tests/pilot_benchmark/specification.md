@@ -24,6 +24,7 @@ are computed and compared.
 | 1 | BAM | [Specification][spec-sam-bam] | [Link][in1] |
 | 2 | BAM.BAI | [Specification][spec-sam-bam] | [Link][in2] |
 | 3 | GTF | [Wikipedia][wiki-gtf] | [Link][in3] |
+| 4 | GFF | [Wikipedia][wiki-gff] | [Link][in4] |
 
 ### Additional info inputs
 
@@ -61,9 +62,11 @@ N/A
 [//]: # (References)
 
 [in1]: ./example_files/input1.bam
-[in2]: ./example_files/input2.bam.bai
+[in2]: ./example_files/input1.bam.bai
 [in3]: ./example_files/input3.gtf
+[in4]: ./example_files/input4.gff3
 [out1]: ./example_files/output1.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-sam-bam]: <https://samtools.github.io/hts-specs/SAMv1.pdf>
 [wiki-gtf]: <https://en.wikipedia.org/wiki/Gene_transfer_format>
+[wiki-gff]: <https://en.wikipedia.org/wiki/General_feature_format>
