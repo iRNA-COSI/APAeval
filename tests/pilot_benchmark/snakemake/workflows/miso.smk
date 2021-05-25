@@ -16,23 +16,12 @@ rule finish:
 ###########
 # Preprocessing: obtain suitable input formats
 
-# TODO: use correct gff
-rule adjust_gff:
-    """Adjust genome annotation.
-    """
-    input:
-        config["genome"]
-    output:
-        os.path.join(config["out_dir"], "genome", "gencode.v37.annotation.wochr.gff3")
-    shell:
-        "cat {input} | sed 's/^chr//g' > {output}"
-
 ###########
 # Method-specific rules
 
 rule index:
     input:
-        os.path.join(config["out_dir"], "genome", "gencode.v37.annotation.wochr.gff3")
+        config["genome"]
     output:
         os.path.join(config["out_dir"], "indexed", "genes.gff")
     params:
@@ -102,6 +91,8 @@ rule gather_benchmark_Q1:
             df = pd.read_table(file, sep="\t", header = 0)
             res['run_time_sec'] += df.s.values.mean()
             max_mem = df.max_pss.max()
+            if type(max_mem) is not int:
+                continue
             if max_mem > res['max_mem_mib']:
                 res['max_mem_mib'] = max_mem 
         with open(output[0], 'w') as json_file:

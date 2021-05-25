@@ -3,6 +3,6 @@ snakemake \
     --rerun-incomplete \
     --snakefile="workflows/miso.smk" \
     --configfile="configs/config.miso.yaml" \
-    --cores 10 \
-    --use-conda \
-    --printshellcmds --dryrun
+    --cores 4 \
+    --use-conda --conda-frontend conda \
+    --printshellcmds 
