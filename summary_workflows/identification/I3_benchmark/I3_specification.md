@@ -35,7 +35,7 @@ The metrics should be calculated for the following thresholds of distance betwee
   | --- | --- | --- | --- |
   | 1 | BED | [Specification][spec-bed] | [Link][in1] |
   | 2 | BED | [Specification][spec-bed-polyAsite] | [Link][in2] |
-  | 3 | custom TXT | [Specification][spec-custom-polyAdb] | [Link][in3] |
+  | 3 | custom TSV | [Specification][spec-custom-polyAdb] | [Link][in3] |
 
 ### Additional info inputs
   
@@ -49,7 +49,7 @@ This BED file contains PAS from PolyASite database
 
 #### Format 3
 
-This BED file contains PAS from PolyA_DB database
+This TSV file contains PAS from PolyA_DB database
 
 
 ## Outputs
@@ -100,14 +100,13 @@ description of each attribute-value pair:
 
 [//]: # (References)
   
-  [in1]: ./example_files/input1.bed
+[in1]: ./example_files/input1.bed
 [in2]: ./example_files/input2.bed
-[in3]: ./example_files/input3.bed
+[in3]: ./example_files/input3.tsv
 
 [out1]: ./example_files/output1.json
 [out2]: ./example_files/output2.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
-  [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
-  [spec-bed-polyAsite]: <https://polyasite.unibas.ch/atlas>
-  [spec-custom-polyAdb]: <https://exon.apps.wistar.org/polya_db/v3/download/3.2/readme.txt>
-  
+[spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
+[spec-bed-polyAsite]: <https://polyasite.unibas.ch/atlas>
+[spec-custom-polyAdb]: <https://exon.apps.wistar.org/polya_db/v3/download/3.2/readme.txt>
