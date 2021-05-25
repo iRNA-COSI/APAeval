@@ -1,0 +1,1 @@
+# Python script executed in a snakemake rule.

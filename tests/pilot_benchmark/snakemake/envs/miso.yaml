@@ -1,0 +1,16 @@
+name: miso
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - samtools
+  - bedtools
+  - python=2.7
+  - numpy>=1.5
+  - pysam>=0.6
+  - matplotlib
+  - scipy
+  - pip
+  - pip:
+    - misopy

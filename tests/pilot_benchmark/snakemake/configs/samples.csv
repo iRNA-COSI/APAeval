@@ -1,0 +1,7 @@
+group,replicate,fastq_1,fastq_2,strandedness,sample,bam
+siControl,1,data/fastqs/SRR11918577.fastq.gz,,unstranded,siControl_1,../nf_core_qc/results/star/siControl_R1.markdup.sorted.bam
+siControl,2,data/fastqs/SRR11918578.fastq.gz,,unstranded,siControl_2,../nf_core_qc/results/star/siControl_R2.markdup.sorted.bam
+siSrsf3,1,data/fastqs/SRR11918579.fastq.gz,,unstranded,siSrsf3_1,../nf_core_qc/results/star/siSrsf3_R1.markdup.sorted.bam
+siSrsf3,2,data/fastqs/SRR11918580.fastq.gz,,unstranded,siSrsf3_2,../nf_core_qc/results/star/siSrsf3_R2.markdup.sorted.bam
+siSrsf7,1,data/fastqs/SRR11918581.fastq.gz,,unstranded,siSrsf7_1,../nf_core_qc/results/star/siSrsf7_R1.markdup.sorted.bam
+siSrsf7,2,data/fastqs/SRR11918582.fastq.gz,,unstranded,siSrsf7_2,../nf_core_qc/results/star/siSrsf7_R2.markdup.sorted.bam

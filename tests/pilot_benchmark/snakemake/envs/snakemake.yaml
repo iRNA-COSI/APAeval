@@ -1,0 +1,12 @@
+name: snakemake
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - pandas
+  - numpy
+  - mamba
+  - pip
+  - pip:
+    - snakemake
