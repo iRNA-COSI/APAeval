@@ -42,7 +42,14 @@ Fields:
 
 #### Format 2
 
-This BED file contains positions of unique poly(A) sites as well as an additional column with TPM values for each identified site.
+This BED file contains positions of unique poly(A) sites with TPM values for each identified site in the **score** column.
+
+- **chrom** - the name of the chromosome
+- **chromStart** - the starting position of the feature in the chromosome
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
+- **name** - defines the name of the identified poly(A) site
+- **score** - TPM value for the identified site
+- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
 #### Format 3
 
