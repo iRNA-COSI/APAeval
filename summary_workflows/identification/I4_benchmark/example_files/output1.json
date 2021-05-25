@@ -1,1 +1,11 @@
-{"annotation_3utr": 0.25,"annotation_intron": 0.25,"annotation_terminal_exon": 0.25,"annotation_other": 0.25}
+{
+"annotation_3utr": 0.22, 
+"annotation_5utr": 0.15, 
+"annotation_intron": 0.18,
+"annotation_cds": 0.21,
+"annotation_terminal_exon": 0.15,
+"annotation_intergenic": 0.25,
+"annotation_ds_1kb": 0.05,
+"annotation_ds_5kb": 0.06,
+"annotation_ds_10kb": 0.07
+}
