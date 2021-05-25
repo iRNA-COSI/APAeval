@@ -253,7 +253,7 @@ effort.
 Here are some pointers and tutorials for the main software tools that we are
 going to use throughout the hackathon:
 
-- [Conda][conda]: [tutorial][tutorial-conda] 
+- [Conda][conda]: [tutorial][tutorial-conda]
 - [Docker][docker]: [tutorial][tutorial-docker]
 - [Git][git]: [tutorial][tutorial-git]
 - [GitHub][gh]: [general tutorial][tutorial-gh] / [GitHub flow
@@ -317,7 +317,7 @@ Code of Conduct is also [shipped with this repository][coc-local]. Please
 report any violations to the Code of Conduct to either or both of
 [Christina][coc-contact-christina] and [Alex][coc-contact-alex] via Slack.
 
-[apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/> 
+[apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
 [apa-eval-members]: <https://docs.google.com/document/d/1G7u-WQ6C-I_sXZ-15CIBw2iNgw6jkTNo7hnRTjci_b4/edit#heading=h.tarrapa8v8n6>
 [apa-eval-schema]: images/schema.png
