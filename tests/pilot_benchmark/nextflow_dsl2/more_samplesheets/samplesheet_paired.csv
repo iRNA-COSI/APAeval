@@ -1,0 +1,2 @@
+sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
+test,/home/wanyk/Downloads/apa/fastq/SRR3067957_1.fastq,/home/wanyk/Downloads/apa/fastq/SRR3067957_2.fastq,/home/wanyk/Downloads/apa/bam/Aligned.out.sorted.bam,/home/wanyk/Downloads/apa/bam/Aligned.out.sorted.bam.bai,/home/wanyk/Downloads/apa/gencode.vM26.primary_assembly.annotation.gff3,/home/wanyk/Downloads/apa/mm39.fa,/home/wanyk/Downloads/apa/qapa_3utrs.gencode_VM22.mm10.bed,/home/wanyk/Downloads/apa/mart_export.txt
