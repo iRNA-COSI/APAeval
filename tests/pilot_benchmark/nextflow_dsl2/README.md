@@ -7,5 +7,5 @@
  - Before running `QAPA`, you have to install `QAPA`, and the guide to install is [here](https://github.com/morrislab/qapa). Make sure that QAPA is on your $PATH
  - Then, you are good to run the pilot benchmark nextflow pipeline with `QAPA`
 ```
-nextflow main.nf --input samplesheet_example_files.csv --skip_miso
+nextflow main.nf --input samplesheet_example_files.csv
 ```
