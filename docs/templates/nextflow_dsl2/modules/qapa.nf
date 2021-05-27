@@ -8,6 +8,8 @@ process QAPA {
         tag "$sample"
         publishDir "${params.outdir}/qapa/$sample", mode: params.publish_dir_mode
 
+//      container "url_to_container"
+
         input:
         tuple path(utr_library), val(sample), path(fastq1), val(fastq2), path(mart_export)
 
