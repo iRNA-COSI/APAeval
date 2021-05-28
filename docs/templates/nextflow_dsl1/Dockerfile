@@ -5,7 +5,7 @@ LABEL authors="your name" \
 # Install the conda environment
 COPY environment.yml /
 RUN conda env create -qf /environment.yml && \
-    sed -i 's/^conda activate base$/conda activate [execution_workflow]/' ~/.bashrc && \
+    sed -i 's/^conda activate base$/conda activate testing/' ~/.bashrc && \
     conda clean -qafy
 
 # Add conda installation dir to PATH (instead of doing 'conda activate')
