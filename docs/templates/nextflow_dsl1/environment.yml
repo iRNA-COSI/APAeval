@@ -6,10 +6,12 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  # please remove any unnecessary dependencies
   - conda-forge::python=3.8.6
   - conda-forge::markdown=3.3.3
   - conda-forge::pymdown-extensions=8.0.1
   - conda-forge::r-base=4.0.3
+  
+  # additional dependencies (suggested format)
   - conda-forge::[software]=[version]
-
   - bioconda::[software]=[version]
