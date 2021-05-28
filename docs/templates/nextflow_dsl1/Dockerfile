@@ -9,9 +9,6 @@ RUN conda env create -qf /environment.yml && \
     sed -i 's/^conda activate base$/conda activate [execution_workflow]/' ~/.bashrc && \
     conda clean -qafy
 
-# Add conda installation dir to PATH (instead of doing 'conda activate')
-ENV PATH /opt/conda/envs/[execution_workflow]/bin:$PATH
-
 # Dump the details of the installed packages to a file for posterity
 RUN conda env export --name [execution_workflow] > [execution_workflow].yml
 
