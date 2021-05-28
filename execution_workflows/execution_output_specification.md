@@ -20,11 +20,11 @@ Inputs to the execution pipeline depend on the method/tool.
 ## Outputs
 
 
-| # | Format | Link | Example data |
+| OUTCODE | Format | Link | Example data |
   | --- | --- | --- | --- |
-  | 1 | BED | [Specification][spec-bed] | [Link][out1] |
-  | 2 | BED | [Specification][spec-bed] | [Link][out2] |
-  | 3 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
+  | 01 | BED | [Specification][spec-bed] | [Link][out1] |
+  | 02 | BED | [Specification][spec-bed] | [Link][out2] |
+  | 03 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
   
 ### Additional info inputs
   

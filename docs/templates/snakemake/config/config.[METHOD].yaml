@@ -2,7 +2,12 @@
 
 # Dataset samples
 samples: "config/[SAMPLES].csv"
-out_dir: "PATH/TO/[DATASET]/[IDENTIFIER]_[METHOD]"
+
+# For development purposes, you can freely choose out_dir.
+out_dir: "results"
+param_code : "PARAM_CODE"
+method: "METHOD"
+# Note that final outputs need to be copied to a global APAeval output directory in the form of "PATH/TO/s3-BUCKET/PARAM_CODE/METHOD/"
 
 # Parameters
 # define method specific parameters here

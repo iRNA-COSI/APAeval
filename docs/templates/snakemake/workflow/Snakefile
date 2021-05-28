@@ -15,7 +15,8 @@ rule finish:
     """Rule that specifies the final output.
     """
     input:
-        os.path.join(config["out_dir"], "[IDENTIFIER]_[METHOD].[OUTFORMAT]")
+        os.path.join(config["out_dir"], config["param_code"], config["method"],
+        "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
 
 
 #-------------------------------------------------------------------------------
@@ -104,7 +105,8 @@ rule postprocess_step_1:
         expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
             sample = samples.index)
     output:
-        os.path.join(config["out_dir"], "[IDENTIFIER]_[METHOD].[OUTFORMAT]")
+        os.path.join(config["out_dir"], config["param_code"], config["method"],
+        "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
     log:
         os.path.join(config["local_log"], "postprocess_step_1.{sample}.log")
     shell:

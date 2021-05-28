@@ -22,3 +22,26 @@ methods/
           |-- ...
 ```
 
+## Output 
+
+You are free to store output files how it best suits you (or the method). 
+However, final outputs need to be copied to a directory in this format:
+"PATH/TO/s3-BUCKET/PARAM_CODE/METHOD/"
+
+This directory must contain:
+- Output files in the format described in the [output specification][spec-doc]. File names must adhere to the following scheme: PARAM_CODE_METHOD_OUTCODE.ext.
+- Configuration files (includes parameter settings), e.g. `config.yaml` and `samples.csv`.
+- `logs/` directory with all log files created by the workflow exeuction.
+
+### Where to find the codes
+
+- PARAM_CODE: in [`summary_input_specification.md`][param-code]
+- METHOD: same as directory name in [`execution_workflows`][method]
+- OUTCODE: in [`execution_output_specification.md`][outcode]
+
+[//]: # (References)
+  
+[spec-doc]: /execution_workflows/execution_output_specification.md 
+[param-code]: /summary_workflows/summary_input_specification.md
+[method]: /execution_workflows/
+[outcode]: /execution_workflows/execution_output_specification.md
