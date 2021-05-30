@@ -1,10 +1,0 @@
-WARNING: Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.
-2021-05-30 10:44:37,552 - INFO - Populating features
-Populating features table and first-order relations: 0 featuresPopulating features table and first-order relations: 1000 featuresPopulating features table and first-order relations: 2000 features2021-05-30 10:44:39,241 - INFO - Populating features table and first-order relations: 2492 features
-2021-05-30 10:44:39,241 - INFO - Updating relations
-2021-05-30 10:44:39,271 - INFO - Creating relations(parent) index
-2021-05-30 10:44:39,273 - INFO - Creating relations(child) index
-2021-05-30 10:44:39,274 - INFO - Creating features(featuretype) index
-2021-05-30 10:44:39,275 - INFO - Creating features (seqid, start, end) index
-2021-05-30 10:44:39,276 - INFO - Creating features (seqid, start, end, strand) index
-2021-05-30 10:44:39,277 - INFO - Running ANALYZE features

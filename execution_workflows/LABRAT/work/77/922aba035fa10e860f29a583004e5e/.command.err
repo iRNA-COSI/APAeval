@@ -1,2 +1,0 @@
-WARNING: Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.
-/home/wanyk/APAeval/execution_workflows/LABRAT/work/77/922aba035fa10e860f29a583004e5e/.command.sh: line 2: conda: command not found
