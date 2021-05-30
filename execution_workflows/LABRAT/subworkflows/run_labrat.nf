@@ -3,7 +3,8 @@
  */
 
 include { LABRAT_MAKETFFASTA   } from '../modules/labrat_maketffasta' addParams( options: [:] )
-include { LABRAT_RUNSALMON     } from '../modules/labrat_runsalmon'   addParams( options: [:] )
+include { SALMON_INDEX     } from '../modules/salmon_index'   addParams( options: [:] )
+include { SALMON_QUANT     } from '../modules/salmon_quant'   addParams( options: [:] )
 
 workflow RUN_LABRAT {
     take:
@@ -21,29 +22,18 @@ workflow RUN_LABRAT {
      ch_tffasta = ''
      LABRAT_MAKETFFASTA ( ch_gff_fasta )
 
-     ch_sample
-        .collect { it -> it[0] }
-        .map { it.join(',') }
-        .set {ch_all_samples}
-
-     ch_sample
-        .collect { it -> it[1] }
-        .map { it.join(',') }
-        .set { ch_all_fastq1s }
-
-     ch_sample
-        .collect { it -> it[2] }
-        .map { it.unique() }
-        .map { it.join(',') }
-        .set { ch_all_fastq2s }
-
     /*
-     * Run LABRAT RUNSALMON
+     * Replace LABRAT RUNSALMON with SALMON
      */
-    LABRAT_RUNSALMON ( LABRAT_MAKETFFASTA.out.ch_tffasta,
-                       ch_all_samples,
-                       ch_all_fastq1s,
-                       ch_all_fastq2s )
+     SALMON_INDEX ( LABRAT_MAKETFFASTA.out.ch_tffasta )
+     ch_txfasta_idx = SALMON_INDEX.out.ch_txfasta_idx
+     ch_txfasta_idx
+       .combine ( ch_sample )
+       .map { it -> [ it[0], it[1], it[2], it[3], it[9] ] }
+       .set { ch_input_salmon_quant }
+     SALMON_QUANT ( ch_input_salmon_quant )
 
+     ch_salmon_quant_outputs = SALMON_QUANT.out.ch_salmon_quant_outputs
+     ch_salmon_quant_outputs.view()
 }
 
