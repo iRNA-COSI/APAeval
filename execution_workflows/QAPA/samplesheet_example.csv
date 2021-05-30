@@ -1,0 +1,2 @@
+sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
+test,/home/wanyk/Downloads/APAeval_local/test_data/siSrsf3_R1_100genes.fastq.gz,,/home/wanyk/Downloads/APAeval_local/test_data/siSrsf3_R1_100genes.bam,/home/wanyk/Downloads/APAeval_local/test_data/siSrsf3_R1_100genes.bam.bai,/home/wanyk/Downloads/APAeval_local/example_files/input4.gff3,/home/wanyk/Downloads/apa/mm39.fa,/home/wanyk/Downloads/apa/qapa_3utrs.gencode_VM22.mm10.bed,/home/wanyk/Downloads/apa/mart_export.txt
