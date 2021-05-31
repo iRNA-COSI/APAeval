@@ -113,7 +113,8 @@ In particular, we publish all code under the [MIT license][license-mit] and all
 data under the [CC0 license][license-cc0]. An exception are all _summary
 workflows_, which are published under the [GPLv3 license][license-gplv3], as
 the provided template is derived from an [OpenEBench][oeb] [example
-workflow][oeb-example-workflow] that is itself licensed under GPLv3.
+workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
+the MIT license is also [shipped with this repository][license].
 
 We also believe that attribution, provenance and transparency are crucial for
 an open and fair work environment in the sciences, especially in a community
@@ -342,6 +343,7 @@ report any violations to the Code of Conduct to either or both of
 [gh-join]: <https://github.com/join>
 [gh-projects]: <https://github.com/iRNA-COSI/APAeval/projects/>
 [git]: <https://git-scm.com/>
+[license]: LICENSE
 [license-mit]: <https://opensource.org/licenses/MIT>
 [license-cc0]: <https://creativecommons.org/publicdomain/zero/1.0/>
 [license-gplv3]: <https://www.gnu.org/licenses/gpl-3.0.en.html>
