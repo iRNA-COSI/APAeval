@@ -1,4 +1,4 @@
-name: apaeval_snakemake
+name: apaeval_execution_workflows
 channels:
   - conda-forge
   - bioconda
@@ -12,3 +12,4 @@ dependencies:
   - mamba=0.13.0
   - tibanna=0.18.3
   - pip=21.1.2
+
