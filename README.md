@@ -368,8 +368,8 @@ report any violations to the Code of Conduct to either or both of
 [slack-random]: <https://apaeval.slack.com/archives/C01Q7FMRJ3A>
 [slack-tech-support]: <https://apaeval.slack.com/archives/C022RNSAUV7>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
-[tutorial-conda]: <https://docs.docker.com/get-started/>
-[tutorial-docker]: <https://conda.io/projects/conda/en/latest/user-guide/getting-started.html>
+[tutorial-conda]: <https://conda.io/projects/conda/en/latest/user-guide/getting-started.html>
+[tutorial-docker]: <https://docs.docker.com/get-started/>
 [tutorial-git]: <https://git-scm.com/docs/gittutorial>
 [tutorial-gh]: <https://guides.github.com/activities/hello-world/>
 [tutorial-gh-flow]: <https://www.youtube.com/watch?v=GgjIvUrOpmg>
