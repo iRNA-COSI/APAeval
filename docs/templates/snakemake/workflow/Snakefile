@@ -12,7 +12,7 @@ samples = pd.read_csv(os.path.abspath(
 localrules: finish
 
 rule finish:
-    """Rule that specifies the final output.
+    """Rule that specifies the final output. Add all output files needed for the different challenges here. OUTCODE: 01 for identification challenge, 02 for quantification challenge, 03 for differential expression challenge. For more info refer to https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/README.md
     """
     input:
         os.path.join(config["out_dir"], config["param_code"], config["method"],

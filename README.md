@@ -56,7 +56,7 @@ _Execution workflows_ contain all steps that need to be run _per method_:
 
 _Execution workflows_ should be implemented in either [Nexflow][nf] or
 [Snakemake][snakemake], and individual steps should be isolated through the
-use of either [Conda][conda] virtual environments or
+use of either [Conda][conda] virtual environments (deprecated; to run on AWS we need containerized workflows) or
 [Docker][docker]/[Singularity][singularity] containers.
 
 ### Summary workflows
@@ -262,7 +262,7 @@ going to use throughout the hackathon:
 - [Singularity][singularity]: [tutorial][tutorial-singularity]
 - [Snakemake][snakemake]: [tutorial][tutorial-snakemake]
 
-Note that you don't need to know about all of these, e.g., one of Conda, Docker
+Note that you don't need to know about all of these, e.g., one of Conda (deprecated; to run on AWS we need containerized workflows), Docker
 and/or Singularity will typically be enough. [See
 below](#nextflow-or-snakemake), for a discussion of the supported workflow
 languages/management systems. Again, working with one will be enough for most

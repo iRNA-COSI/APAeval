@@ -1,9 +1,17 @@
 # Configuration file for MISO
+
+# Dataset samples
 samples: "configs/samples.csv"
+
+# For development purposes, you can freely choose out_dir.
+# Note that final outputs need to be copied to a global APAeval output directory in the form of "PATH/TO/s3-BUCKET/PARAMCODE/METHOD/"
+out_dir: "miso_out/"
+param_code : "AA" # find at https://github.com/iRNA-COSI/APAeval/blob/main/summary_workflows/parameter_codes.md
+method: "MISO" # same as the name of the directory
+benchmarks: "benchmark"
+
 miso_settings: "configs/miso_settings.txt"
 envs: "../envs"
 read_len: 75
 genome: "../../test_data/gencode_2genes_noChr.vM18.annotation.gff3"
-out_dir: "miso_out/test_data"
-benchmarks: "benchmark"
 log_dir: "logs"
