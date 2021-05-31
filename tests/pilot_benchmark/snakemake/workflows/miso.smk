@@ -9,9 +9,10 @@ samples = pd.read_csv(os.path.abspath(config["samples"])).set_index("sample", dr
 
 rule finish:
     """Rule that specifies the final output.
+        In this case a json file with compute resources used (OUTCODE 04)
     """
     input:
-        os.path.join(config["out_dir"],config["benchmarks"], "benchmark.Q1_miso.json")
+        os.path.join(config["out_dir"],config["benchmarks"], config["param_code"], "_".join(config["param_code"], config["method"], "04.json")
 
 ###########
 # Preprocessing: obtain suitable input formats
@@ -82,7 +83,7 @@ rule gather_benchmark_Q1:
         T2=expand(os.path.join(config["out_dir"], config["benchmarks"], "execute.{sample}.tsv"),
             sample = samples.index)
     output:
-        os.path.join(config["out_dir"], config["benchmarks"], "benchmark.Q1_miso.json")
+        os.path.join(config["out_dir"],config["benchmarks"], config["param_code"], "_".join(config["param_code"], config["method"], "04.json")
     run:
         import pandas as pd
         import json
