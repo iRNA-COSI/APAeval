@@ -6,6 +6,7 @@ include { LABRAT_MAKETFFASTA   } from '../modules/labrat_maketffasta' addParams(
 include { SALMON_INDEX     } from '../modules/salmon_index'   addParams( options: [:] )
 include { SALMON_QUANT     } from '../modules/salmon_quant'   addParams( options: [:] )
 include { LABRAT_CALCULATEPSI   } from '../modules/labrat_calculatepsi' addParams( options: [:] )
+include { MAKE_DIFFERENTIAL_TSV   } from '../modules/make_differential_tsv' addParams( options: [:] )
 
 workflow RUN_LABRAT {
     take:
@@ -46,5 +47,6 @@ workflow RUN_LABRAT {
                            ch_conditionA,
                            ch_conditionB,
                            ch_gff )
+     MAKE_DIFFERENTIAL_TSV ( LABRAT_CALCULATEPSI.out.ch_pval_results )
 }
 

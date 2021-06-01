@@ -17,7 +17,9 @@ process LABRAT_CALCULATEPSI {
         path gff
 
         output:
-        path "*", emit: ch_labrat_diff
+        path "*.psis" , emit: ch_psis
+        path "*.txt"
+        path "*.pval" , emit: ch_pval_results
 
         script:
         """
