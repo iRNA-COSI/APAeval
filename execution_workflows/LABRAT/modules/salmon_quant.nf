@@ -13,8 +13,8 @@ process SALMON_QUANT {
         tuple path(txfasta_idx), val(sample), path(fastq1), val(fastq2)
 
         output:
-        path "$sample", emit: ch_salmon_quant_outputs
-        val "labrat/salmon/", emit: ch_salmon_dir
+        tuple val(sample), path("$sample"), emit: ch_salmon_quant_outputs
+        tuple val(sample), val("labrat/salmon/"), emit: ch_salmon_dir
 
         script:
         if ("$fastq2" == ""){

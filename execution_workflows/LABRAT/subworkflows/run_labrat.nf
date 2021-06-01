@@ -5,6 +5,7 @@
 include { LABRAT_MAKETFFASTA   } from '../modules/labrat_maketffasta' addParams( options: [:] )
 include { SALMON_INDEX     } from '../modules/salmon_index'   addParams( options: [:] )
 include { SALMON_QUANT     } from '../modules/salmon_quant'   addParams( options: [:] )
+include { MAKE_QUANT_BED     } from '../modules/make_quant_bed'   addParams( options: [:] )
 include { LABRAT_CALCULATEPSI   } from '../modules/labrat_calculatepsi' addParams( options: [:] )
 include { MAKE_DIFFERENTIAL_TSV   } from '../modules/make_differential_tsv' addParams( options: [:] )
 
@@ -41,8 +42,19 @@ workflow RUN_LABRAT {
      ch_gff_fasta
         .map { it -> it[0] }
         .set { ch_gff }
-     LABRAT_CALCULATEPSI ( 
-                           SALMON_QUANT.out.ch_salmon_dir,
+
+     ch_gff
+        .combine( SALMON_QUANT.out.ch_salmon_quant_outputs )
+        .view()
+        .set { ch_make_quant_bed_in }
+     MAKE_QUANT_BED ( ch_make_quant_bed_in )
+
+     SALMON_QUANT.out.ch_salmon_dir
+        .map { it -> it[1] }
+        .unique()
+        .set { ch_salmon_dir }
+
+     LABRAT_CALCULATEPSI ( ch_salmon_dir,
                            ch_sampconds,
                            ch_conditionA,
                            ch_conditionB,
