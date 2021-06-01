@@ -1,0 +1,16 @@
+# Adjust METHOD_NAME and add/remove packages as needed.
+name: APAlyzer
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconductor-apalyzer
+  - python>=3.9
+  - numpy
+  - scipy
+  - r-optparse
+#  - [OTHER_PACKAGE]
+  - pip
+  - pip:
+#    - [PIP_PACKAGE]

@@ -1,0 +1,14 @@
+# Configuration file for snakemake pipeline
+
+# Dataset samples
+# samples: "config/[SAMPLES].csv"
+samples: "config/samples.csv"
+out_dir: "results"
+gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf.gz"
+# Parameters
+# define method specific parameters here
+
+# Settings
+envs: "envs"
+local_log: "logs/local_log"
+cluster_log: "logs/cluster_log"
