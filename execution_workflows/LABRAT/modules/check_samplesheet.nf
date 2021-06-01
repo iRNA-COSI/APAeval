@@ -12,7 +12,8 @@ process CHECK_SAMPLESHEET {
     path samplesheet
     
     output:
-    path "*reformat.csv"
+    path "*reformat.csv", emit: ch_samplesheet
+    path "*.txt", emit: ch_condition
     
     script:
     """
@@ -21,5 +22,5 @@ process CHECK_SAMPLESHEET {
 }
 
 def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.fastq1, sample.fastq2, sample.bam, sample.bai, sample.gff, sample.fasta, sample.bed, sample.mart_export ]
+    return [ sample.sample, sample.fastq1, sample.fastq2, sample.gff, sample.fasta, sample.condition ]
 }

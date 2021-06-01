@@ -6,14 +6,15 @@ def options    = initOptions(params.options)
 
 process SALMON_QUANT {
         tag "$sample"
-        publishDir "${params.outdir}/labrat/salmon/$sample", mode: params.publish_dir_mode
+        publishDir "${params.outdir}/labrat/salmon/", mode: params.publish_dir_mode
         container "quay.io/biocontainers/salmon:0.14.0--h86b0361_1"
 
         input:
-        tuple path(txfasta_idx), val(sample), path(fastq1), val(fastq2), path(mart_export)
+        tuple path(txfasta_idx), val(sample), path(fastq1), val(fastq2)
 
         output:
         path "$sample", emit: ch_salmon_quant_outputs
+        val "labrat/salmon/", emit: ch_salmon_dir
 
         script:
         if ("$fastq2" == ""){

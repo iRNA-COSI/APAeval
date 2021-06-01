@@ -42,8 +42,8 @@ def check_samplesheet(file_in, file_out):
     with open(file_in, "r") as fin:
 
         ## Check header
-        MIN_COLS = 8
-        HEADER = ['sample','fastq1','fastq2','bam', 'bai','gff','fasta','bed','mart_export']
+        MIN_COLS = 5
+        HEADER = ['sample','fastq1','fastq2','gff','fasta','condition']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, fastq1, fastq2, bam, bai, gff, fasta, bed, mart_export = lspl[:len(HEADER)]
+            sample, fastq1, fastq2, gff, fasta, condition = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -83,13 +83,6 @@ def check_samplesheet(file_in, file_out):
                 if not fastq2.endswith(".fastq") and not fastq2.endswith(".fastq.gz"):
                     print_error("fastq2 does not have extension '.fastq' or '.fastq.gz'", 'Line', line)
 
-            ## Check bam extension
-            if bam:
-                if bam.find(" ") != -1:
-                    print_error("bam contains spaces!", 'Line', line)
-                if not bam.endswith(".bam"):
-                    print_error("bam does not have extension 'bam'", 'Line', line)
-
             ## Check gff extension
             if gff:
                 if gff.find(" ") != -1:
@@ -105,26 +98,21 @@ def check_samplesheet(file_in, file_out):
                     if fasta[-6:] != '.fasta' and fasta[-3:] != '.fa' and fasta[-9:] != '.fasta.gz' and fasta[-6:] != '.fa.gz':
                         print_error("Genome entry does not have extension '.fasta', '.fa', '.fasta.gz' or '.fa.gz'!",'Line', line)
 
-            ## Check 3UTR_bed extension
-            if bed:
-                if bed.find(" ") != -1:
-                    print_error("bed contains spaces!", 'Line', line)
-                if not bed.endswith(".bed"):
-                    print_error("bed does not have extension '.bed'", 'Line', line)
-
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ sample, fastq1, fastq2, bam, bai, gff, fasta, bed, mart_export ]
+            sample_info = [ sample, fastq1, fastq2, gff, fasta, condition ]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
     if len(sample_info_list) > 0:
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
-        with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','fastq1','fastq2','bam', 'bai','gff','fasta','bed','mart_export']) + "\n")
+        with open(file_out, "w") as fout, open("sample_condition.txt","w") as condition_out:
+            fout.write(",".join(['sample','fastq1','fastq2','gff','fasta','condition']) + "\n")
+            condition_out.write('sample'+'\t'+'condition'+'\n')
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")
+                condition_out.write(sample_info[0]+'\t'+sample_info[5]+'\n')
 
 def main(args=None):
     args = parse_args(args)
