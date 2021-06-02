@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-This specification describes required output of tool/method execution pipelines to ensure that the benchmarking pipelines have access to input files in the same format from each tool.
+This specification describes required output of `execution_workflows` to ensure that the `summary_workflows` have access to files in the same format from each tool.
 
 Outputs depend on features available for the tool (i.e. not all tools perform *de novo* identification of PAS) and can be grouped into three categories:
 
@@ -20,15 +20,15 @@ Inputs to the execution pipeline depend on the method/tool.
 ## Outputs
 
 
-| # | Format | Link | Example data |
+| OUTCODE | Format | Link | Example data |
   | --- | --- | --- | --- |
-  | 1 | BED | [Specification][spec-bed] | [Link][out1] |
-  | 2 | BED | [Specification][spec-bed] | [Link][out2] |
-  | 3 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
+  | 01 | BED | [Specification][spec-bed] | [Link][out1] |
+  | 02 | BED | [Specification][spec-bed] | [Link][out2] |
+  | 03 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
   
 ### Additional info inputs
   
-#### Format 1
+#### Format 01
 
 This BED file contains single-nucleotide position of poly(A) sites identified by the tool.  
 Fields:
@@ -40,7 +40,7 @@ Fields:
 - **score** - not used, leave as "."
 - **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
-#### Format 2
+#### Format 02
 
 This BED file contains positions of unique poly(A) sites with TPM values for each identified site in the **score** column.
 
@@ -51,7 +51,7 @@ This BED file contains positions of unique poly(A) sites with TPM values for eac
 - **score** - TPM value for the identified site
 - **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
-#### Format 3
+#### Format 03
 
 This TSV file contains two columns:
 
@@ -61,6 +61,9 @@ This TSV file contains two columns:
 Column names should not be added to the file.
 
 
+## Naming conventions
+For naming conventions please refer to the [execution workflow README][ex_readme]
+
 [//]: # (References)
   
 [out1]: ./example_output_files/output1.bed
@@ -68,4 +71,5 @@ Column names should not be added to the file.
 [out3]: ./example_output_files/output3.tsv
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [wiki-tsv]: <https://en.wikipedia.org/wiki/Tab-separated_values>
+[ex_readme]: /execution_workflows/README.md
 
