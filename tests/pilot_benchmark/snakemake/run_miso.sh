@@ -1,8 +1,8 @@
 #!/bin/bash
 snakemake \
     --rerun-incomplete \
-    --snakefile="workflows/miso.smk" \
+    --snakefile="Snakefile" \
     --configfile="configs/config.miso.yaml" \
     --cores 4 \
     --use-conda --conda-frontend conda \
-    --printshellcmds 
+    --printshellcmds --dryrun
