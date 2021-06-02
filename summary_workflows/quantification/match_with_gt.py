@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('a', help='The BED file containing predictions. MUST be BED6 format.')
 parser.add_argument('b', help='The ground truth bed file. First 6 columns must be standard BED6, but can have additional columns appended.')
 parser.add_argument('window', help='Number of bases to append to each side of the predicted site.', type=int)
+#parser.add_argument('-o', help='output file directory') # not yet implemented!!
 args = parser.parse_args()
 
 
@@ -87,7 +88,7 @@ if np.sum(not_unq_mask) > 0: # otherwise there were no overlapping sites
     out.drop_duplicates([0, 1, 2, 5], inplace=True)
     out.sort_values(by=[0, 1, 2], inplace=True, ascending=[True, True, True])
     
-    f_PD_new = f_PD.strip('.bed') + '_merged_' + str(window) + '.bed'
+    f_PD_new = f_PD[:-4] + '_merged_' + str(window) + '.bed'
     out.to_csv(f_PD_new, sep='\t', header=None, index=False)
     
     print('Wrote intermediate file ' + f_PD_new + '.')
@@ -177,9 +178,9 @@ if np.sum(not_unq_mask) > 0: # otherwise there was no overlap
     # sort
     out.sort_values(by=[0, 1, 2, 7], inplace=True, ascending=[True, True, True, True])
 
-f_PD_matched = f_PD.strip('.bed') + '_matched_' + str(window) + '.bed'
+f_PD_matched = f_PD[:-4] + '_matched_' + str(window) + '.bed'
 out.to_csv(f_PD_matched, sep='\t', header=None, index=False)
-print('Wrote output to file ' + f_PD_matched + '.')
+print('Wrote output to file ' + f_PD_matched)
 print('Matched %i sites in total.'%(len(out)))
 print('Added weights to %i overlapping sites.'%(weights_counter))
 
