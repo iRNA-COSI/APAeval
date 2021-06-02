@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "EuancRNA",
+      "name": "Euan McDonnell",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46812323?v=4",
+      "profile": "https://github.com/EuancRNA",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "APAeval",
+  "projectOwner": "iRNA-COSI",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
