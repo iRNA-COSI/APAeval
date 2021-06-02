@@ -1,0 +1,127 @@
+---
+title: "Roar - PolyA Site"
+author: "Euan McDonnell"
+date: "31 May 2021"
+output: html_document
+---
+
+
+
+### Libraries
+
+```{r}
+
+library(roar) 
+library(rtracklayer)
+library(org.Mm.eg.db)
+
+# Input files
+args = commandArgs(trailingOnly=TRUE)
+
+# Input gtf
+gtf <- args[1]
+
+# Input bams
+bam1 <- list.files(paste0("*", argv[2], "*.bam"))
+bam2 <- list.files(paste0("*", argv[3], "*.bam"))
+bams <- c(bam1, bam2)
+
+# Output prefix
+out.prefix <- args[4]
+
+# Directory names
+roar_dir = "/home/bs14e3m/projects/other/APAeval/execution_workflows/Roar"
+bam_dir = "/home/bs14e3m/projects/other/APAeval/tests/test_data" 
+
+
+```
+
+
+
+### Create RoarData Object
+
+```{r}
+
+# Generate RDS
+rds <- RoarDatasetMultipleAPAFromFiles(bams[1:2], bams[3:4], gtf)
+rds
+
+```
+
+
+
+### Compute Roar and Associated Statistics/Metrics
+
+```{r}
+
+# UTR Counts 
+rds <- countPrePost(rds, FALSE)
+
+# Compute Roars
+rds <- computeRoars(rds)
+
+# Compute p-values, using Fisher's Exact test, considering pairing of samples and combining p-values
+# for those of the same level
+rds <- computePairedPvals(rds, c(1,2), c(1,2))
+
+```
+
+
+
+### Get Output
+
+```{r}
+
+# Get results df
+results.paired <- totalResults(rds)
+
+# Add columns for UTR ids & gene IDS 
+results.paired["3utrid"] <- gsub(".*_","",rownames(results.paired))
+results.paired["ENTREZID"] <- gsub("_.*","",rownames(results.paired))
+
+```
+
+
+
+### Convert Gene IDs
+
+```{r}
+
+# Get ENTREZID
+geneids <- gsub("_.*","",rownames(results.paired))
+
+# Map to ENSEMBL gene Id
+enz2ens <- select(org.Mm.eg.db, # The annotation library object (contains the info needed to convert ids)
+                   keys=geneids,
+                   columns=c("ENTREZID","ENSEMBL"),
+                   keytype="ENTREZID")
+
+# Get gtf as GRanges and format to PolyA site
+gtf.granges <- import(gtf)
+gtf.granges$apa <- gsub("_.*","",gtf.granges$apa)
+gtf.granges <- data.frame(gtf.granges,stringsAsFactors=FALSE)
+colnames(gtf.granges)[[10]] <- "3utrid"
+
+# Merge it all together
+outdf <- merge(enz2ens,results.paired,by="ENTREZID")
+outdf <- merge(gtf.granges,outdf,by="3utrid")
+
+```
+
+
+
+### Format output
+
+```{r}
+
+# Output df - format 1 (BED) & format 3
+outdf01 <- outdf[,c("seqnames","start","end","source","3utrid","strand")]; outdf01["source"] <- "."
+outdf03 <- outdf[,c("ENSEMBL","pval")]; outdf03[!duplicated(outdf03),]
+
+# save files
+setwd(roar_dir)
+write.table(outdf01,paste0(out.prefix,"_01.bed"),sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+write.table(outdf03,paste0(out.prefix,"_03.tsv"),sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+
+```
+

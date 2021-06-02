@@ -1,0 +1,13 @@
+# Configuration file for snakemake pipeline
+
+# Dataset samples
+samples: "config/samples.csv"
+out_dir: "AA/APA_Scan"
+
+# Parameters
+# define method specific parameters here
+
+# Settings
+envs: "envs"
+local_log: "logs/local_log"
+cluster_log: "logs/cluster_log"

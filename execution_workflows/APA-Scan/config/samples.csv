@@ -1,0 +1,3 @@
+sample,sample_type,data_type
+siSrsf3_R1_100genes.bam,srsf3,rnaseq
+siControl_R1_100genes.bam,control,rnaseq
