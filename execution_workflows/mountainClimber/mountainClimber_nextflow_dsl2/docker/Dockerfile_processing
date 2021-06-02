@@ -1,0 +1,36 @@
+# TODO: Complete once scripts have been added
+
+##### BASE IMAGE #####
+FROM python:3.9.5-buster as build
+
+##### METADATA #####
+LABEL base.image="python:3.9.5-buster"
+LABEL software="mountainClimber_APAeval_processing_scripts"
+LABEL software.version="0.1.0"
+LABEL software.description="APAeval processing scripts for mountainClimber"
+LABEL software.website="https://github.com/iRNA-COSI/APAeval"
+LABEL software.license="MIT"
+LABEL maintainer="alexander.kanitz@alumni.ethz.ch"
+LABEL maintainer.organisation="APAeval"
+LABEL maintainer.license="https://github.com/iRNA-COSI/APAeval/blob/main/LICENSE"
+
+##### VARIABLES #####
+ENV SOFTWARE_VERSION 0.1.0 
+#ENV PACKAGES build-essential git libz-dev
+
+#### SET WORKING DIRECTORY ####
+WORKDIR /app
+
+#### INSTALLATION ###
+RUN apt-get update
+#RUN apt-get install -y --no-install-recommends ${PACKAGES}
+RUN pip install -r ${PACKAGES_PIP}
+
+##### CLEAN IMAGE ####
+FROM python:2.7.14-slim-stretch
+COPY --from=build /app/mountainClimber/src/* /usr/bin/
+COPY --from=build /usr/local/lib/python2.7/site-packages/ /usr/local/lib/python2.7/site-packages/
+RUN mkdir /user && ln -s /usr/local/bin /user/bin
+
+##### COMMAND / ENTRY POINT ####
+##CMD ["bash", "-c", "cd /app/drs_filer; python app.py"]
