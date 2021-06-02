@@ -7,21 +7,20 @@ Benchmark to test correlation between RNAseq-based poly(A) site quantification a
 Input data:
 
 1. Poly(A) sites quantification based on RNAseq data using the benchmarked tool
-2. Poly(A) sites quantification based on orthogonal 3'end seq dataset
+2. Poly(A) sites quantification based on orthogonal 3'end-seq dataset
 
 Based on the input data the following metrics are computed:
  
-1. Correlation between RNAseq-based quantification and 3'end seq quantification.
+1. Correlation between RNAseq-based quantification and 3'end-seq quantification.
 
 To compute the metrics, the poly(A) sites identified from the RNAseq data using the benchmarked tool and from the orthogonal dataset should be first mapped to each other:
 
 - find multiple ground truth sites overlapping one predicted site
-  - weigths are added for the predicted site based on distance to the ground truth site
-  - expression can be calculated by weight_i*expression_i for all prediction sites having the same ground truth site assigned
+  - weights are added for the predicted site based on distance to the ground truth site
+  - expression can be calculated by `weight_i*expression_i` for all prediction sites having the same ground truth site assigned
 - find multiple predicted sites overlapping one ground truth site
   - weigths are added for the predicted sites based on distance to the ground truth site
-  - expression can be calculated by sum(weight_i*expression_i) to get a single value matching the one ground truth site OR just summed without considering weight
-
+  - expression can be calculated by `sum(weight_i*expression_i)` to get a single value matching the one ground truth site OR just summed without considering weight
 
 
 ## General info
@@ -78,7 +77,7 @@ description of each attribute-value pair:
  
  | Attribute | Type | Unit | Description |
  | --- | --- | --- | --- |
- | `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and 3'end seq quantification |
+ | `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and 3'end-seq quantification |
 
 ## Metrics
  
@@ -96,4 +95,4 @@ description of each attribute-value pair:
 [in2]: ./example_files/input2.bed
 [out1]: ./example_files/output1.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
- [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
+[spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
