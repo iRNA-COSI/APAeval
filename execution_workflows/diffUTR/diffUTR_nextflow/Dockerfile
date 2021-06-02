@@ -1,17 +1,27 @@
-# USAGE: Replace all "[execution_workflow]" instances with the name of your workflow.
-FROM nfcore/base:1.13.3
-LABEL authors="Chi-Lam Poon" \
-      description="Docker image containing all software requirements for the diffUTR pipeline"
+################## BASE IMAGE ######################
+FROM rocker/r-ubuntu:20.04
 
-# Install the conda environment
-COPY environment.yml /
-RUN conda env create -qf /environment.yml && \
-    sed -i 's/^conda activate base$/conda activate diffUTR_nextflow/' ~/.bashrc && \
-    conda clean -qafy
 
-# Dump the details of the installed packages to a file for posterity
-RUN conda env export --name diffUTR_nextflow > diffUTR_nextflow.yml
+ENV DEBIAN_FRONTEND noninteractive
 
-# Instruct R processes to use these empty files instead of clashing with a local version
-# please unmute the following line if you need R
-RUN touch .Rprofile .Renviron
+RUN apt-get update && apt-get -y install --no-install-recommends --no-install-suggests \
+        ca-certificates software-properties-common gnupg2 gnupg1 \
+      && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
+      && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/' \
+      && apt-get install r-base -y 
+
+# Install required libraries -- using prebuild binaries where available
+RUN apt-get update && apt-get install -y \
+aptitude \
+libcurl4-openssl-dev \
+libxml2-dev \
+git \
+r-cran-devtools \
+r-cran-git2r \
+r-cran-xml \
+r-cran-rcurl \
+sudo
+
+# Install plr -- for now (?) from GH; also install visualTest
+RUN installGithub.r ETHZ-INS/diffUTR \
+&& rm -rf /tmp/downloaded_packages/
