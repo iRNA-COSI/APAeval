@@ -1,0 +1,2 @@
+folder_to_BAM,gtf_or_gff,polyA_bed,comparison_table,method,strand,SE_PE,analysis
+~/playground/APA/APAeval/tests/test_data,~/playground/APA/APAeval/tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf,~/playground/APA/my_APA/data/atlas.clusters.2.0.GRCm38.96.bed.gz,~/playground/APA/my_APA/data/comp.txt,limma,unstranded,SE,UTR
