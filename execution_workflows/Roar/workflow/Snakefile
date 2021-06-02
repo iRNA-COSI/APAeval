@@ -1,0 +1,124 @@
+"""
+Snakemake pipeline for APA-Scan.
+For help see: https://snakemake.readthedocs.io/en/stable/index.html.
+"""
+
+
+# ------------------------------------------------------------------------------
+# Packages, Libraries and Sources
+
+import pandas as pd
+
+
+
+
+
+# ------------------------------------------------------------------------------
+# Config/Metadata
+
+# Read in config file
+configfile: "config/config.Roar.yaml"
+
+# Convert config to dataframe
+samples = pd.read_csv(os.path.abspath(config["samples"]),sep=",")
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# Parameters, filenames & sample data
+
+#### NOTES #####################################################################
+
+# MAY NEED TO ADJUST THE INDEXING DEPENDING ON THE LEVELS, BUT CAN PROBABLY MAKE
+# THIS CUSTOMISABLE FROM THE COMMAND LINE OR A CONFIG FILE ETC. THIS IS BECAUSE
+# THE LAYOUT OF THESE WILL DICTATE THE ORIENTATION OF LEVELS THAT ARE COMPARED
+# BY ROAR. IE FOR THE TEST DATA, THIS MAKES SO SRSF3 is CONDITION1 AND
+# THE CONTROL IS CONDITION 2
+
+################################################################################
+
+
+# Parameters
+THREADS = config["threads"]
+
+
+# Input file patterns
+CONDITION1 = samples["sample_type"].unique()[0]
+CONDITION2 = samples["sample_type"].unique()[1]
+
+
+# Output filename shorthands
+ROAR_OUTPUT = config["paramcode"] + "_" + config["method"]
+
+
+# This is the 3' UTR gtf file for the multiple APA site roar analysis (see
+# section 3.6 of vignette)
+ANNOTATION = config["gtf"]
+
+
+# RScript outputs
+RSCRIPT = os.path.join(config["scripts"], config["method"] + ".R")
+
+
+# Print to compare conditions and check correct way round
+print(">>>>> COMPARING: ")
+print("   >> " + CONDITION1)
+print("   >> " + CONDITION2)
+print("   >> ROAR OUTPUT PREFIX IS :- " + config["out_dir"] + "/" + ROAR_OUTPUT)
+
+
+
+
+
+# Final Target Rule ------------------------------------------------------------
+localrules: finish
+
+# Final output to .bed (format 01) and .tsv (format 03)
+
+rule finish:
+    """Rule that specifies the final output.
+    """
+    input:
+        os.path.join(config["out_dir"], ROAR_OUTPUT + "_01.bed"),
+        os.path.join(config["out_dir"], ROAR_OUTPUT + "_03.tsv")
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# Run Roar
+
+rule run_roar_rscript:
+    """This runs the Roar Rscript.
+    """
+    input:
+        rscript=RSCRIPT,
+        gtf=ANNOTATION
+    output:
+        os.path.join(config["out_dir"], ROAR_OUTPUT + "_01.bed"),
+        os.path.join(config["out_dir"], ROAR_OUTPUT + "_03.tsv")
+    threads: THREADS
+    conda: os.path.join(config["envs"], "Roar.yaml")
+    log:
+        os.path.join(config["local_log"], ROAR_OUTPUT + "execute.rscript.log")
+    shell:
+        "( Rscript {input.rscript}  " + \
+                 " {input.gtf} " + \
+                   CONDITION1 + " " + CONDITION2 + " " + \
+                   os.path.join(config["out_dir"], ROAR_OUTPUT) + " ) &> {log} "
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred, check log at %s." % {log})
