@@ -15,13 +15,19 @@ RUN apt-get update && apt-get install -y \
 aptitude \
 libcurl4-openssl-dev \
 libxml2-dev \
+libcairo2-dev \
+libssl-dev \
 git \
 r-cran-devtools \
 r-cran-git2r \
 r-cran-xml \
+r-cran-cairo \
 r-cran-rcurl \
 sudo
 
-# Install plr -- for now (?) from GH; also install visualTest
+# Install 
 RUN installGithub.r ETHZ-INS/diffUTR \
 && rm -rf /tmp/downloaded_packages/
+
+RUN Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'BiocManager::install(c("Cairo" ,"diffUTR"), ask=FALSE, update = FALSE)'

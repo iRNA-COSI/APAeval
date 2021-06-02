@@ -36,7 +36,7 @@ rse <- countFeatures(bamfiles, bins, strandSpecific=strand.info,
 
 colData(rse) <- DataFrame(comp.df)
 rse <- diff(rse, design = ~ condition)
-utr <- geneLevelStats(rse, returnSE=FALSE)
+utr <- geneLevelStats(rse, includeTypes="UTR", returnSE=FALSE)
 
 # store output file
 utr2 <- as.data.frame(utr)

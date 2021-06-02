@@ -12,7 +12,6 @@ if (params.help) {
 	    nextflow run main.nf -profile docker --input samplesheet.csv
 	    Mandatory arguments:
                 --input   input.csv, see the example file
-                --outdir  directory for placing outputs
 	    Flags:
                 --help			Display this message
 	    """.stripIndent()
