@@ -1,0 +1,13 @@
+# Configuration file for snakemake pipeline
+
+# Dataset samples
+samples: "config/[SAMPLES].csv"
+out_dir: "PATH/TO/[DATASET]/[IDENTIFIER]_DaPars2"
+
+# Parameters
+# define method specific parameters here
+
+# Settings
+envs: "workflow/envs"
+local_log: "logs/local_log"
+cluster_log: "logs/cluster_log"
