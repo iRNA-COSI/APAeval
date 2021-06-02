@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from __future__ import division, print_function
 import pandas
 import os, json
@@ -47,11 +49,11 @@ def  validate_input_data(input_participant,  public_ref_dir, community, challeng
                                            comment="#", header=0)
     except:
         sys.exit("ERROR: Submitted data file {} is not in a valid format!".format(input_participant))
-    #### grab the values from the first column (change this specific to your tab-separated input_file)
+    
     methods_ran = [method_and_sample.split()[0] for method_and_sample in list(participant_data.iloc[:, 0].values)]
 
     # get ids of the submited fields
-    data_fields = ['name','realtime','peak_vmem']  ####change this specific to your tab-separated input_file
+    data_fields = ['name','realtime','peak_vmem']
     submitted_fields = list(participant_data.columns.values)
 
     # get reference dataset to validate against
@@ -63,7 +65,7 @@ def  validate_input_data(input_participant,  public_ref_dir, community, challeng
                 public_ref_data = pandas.read_csv(public_ref, sep='\t',
                                                   comment="#", header=0)
                 methods_check = list(public_ref_data.iloc[:, 0].values)
-                #### change the following checks if necessary
+                #print([method for method in methods_ran])
                 ## validate the fields of the submitted data and if the predicted genes are in the mutations file
                 if data_fields == submitted_fields and [method in methods_check for method in methods_ran].count(False) == 0:
                     validated = True
