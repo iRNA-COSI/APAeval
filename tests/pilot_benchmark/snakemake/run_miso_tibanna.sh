@@ -5,4 +5,4 @@ snakemake \
     --default-remote-prefix="apaevaltestbucket/test" \
     --cores 4 \
     --use-singularity \
-    --printshellcmds --verbose
+    --printshellcmds 
