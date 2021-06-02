@@ -7,7 +7,7 @@ def options    = initOptions(params.options)
 process QAPA_INDEX {
 
         publishDir "${params.outdir}/qapa", mode: params.publish_dir_mode
-        container  "docker.io/yuukiiwa/qapa:1.3.1"
+        container  "docker.io/apaeval/qapa:1.3.1"
 
         input:
         tuple path(fasta), path(bed)

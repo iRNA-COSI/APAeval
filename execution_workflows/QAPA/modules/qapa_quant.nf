@@ -7,7 +7,7 @@ def options    = initOptions(params.options)
 process QAPA_QUANT {
         tag "$sample"
         publishDir "${params.outdir}/qapa/$sample", mode: params.publish_dir_mode
-        container  "docker.io/yuukiiwa/qapa:1.3.1"
+        container  "docker.io/apaeval/qapa:1.3.1"
 
         input:
         tuple val(sample), path(salmon_quantsf), path(mart_export)
