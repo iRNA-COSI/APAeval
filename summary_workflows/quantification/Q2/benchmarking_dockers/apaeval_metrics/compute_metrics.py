@@ -59,7 +59,7 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         # metric on the number of matched sites
         window = 15
         match_with_gt_run = Leo_MatchPAsites_GT.match_wtih_gt(input_participant,metrics_data,window)
-        merged_bed_df, matched_sites = match_with_gt_run[0], match_with_gt_run[1]
+        merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
 
         # metric on correlation coffecient
         correlation=Leo_MatchPAsites_GT.corr_with_gt(merged_bed_df)
@@ -69,14 +69,18 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         # get json assessment file for both metrics
         data_id_1 = community + ":" + challenge + "_runtime_" + participant + "_A"
         std_error= 0
-        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "matched_sites", matched_sites, std_error)
+        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "n_matched_sites", n_matched_sites, std_error)
 
-        data_id_2 = community + ":" + challenge + "_memory_" + participant + "_A"
+        data_id_2 = community + ":" + challenge + "_runtime_" + participant + "_A"
         std_error= 0
-        assessment_correlation = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "correlation", correlation, std_error)
+        assessment_unmatched_sites = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "n_unmatched_sites", n_unmatched_sites, std_error)
+
+        data_id_3 = community + ":" + challenge + "_memory_" + participant + "_A"
+        std_error= 0
+        assessment_correlation = JSON_templates.write_assessment_dataset(data_id_3, community, challenge, participant, "correlation", correlation, std_error)
 
         # push the two assessment datasets to the main dataset array
-        ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_correlation])
+        ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_unmatched_sites, assessment_correlation])
 
     # once all assessments have been added, print to json file
     with io.open(out_path,
@@ -99,6 +103,7 @@ if __name__ == '__main__':
 
     
     main(args)
+
 
 
 
