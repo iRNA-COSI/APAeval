@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1186/s13059-018-1414-4",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "QAPA: a new method for the systematic analysis of alternative polyadenylation from RNA-seq data",
+	"bibliographic_ids":["doi:10.1186/s13059-018-1414-4"],
+	"abstract": "Alternative polyadenylation (APA) affects most mammalian genes. The genome-wide investigation of APA has been hampered by an inability to reliably profile it using conventional RNA-seq. We describe ‘Quantification of APA’ (QAPA), a method that infers APA from conventional RNA-seq data. QAPA is faster and more sensitive than other methods. Application of QAPA reveals discrete, temporally coordinated APA programs during neurogenesis and that there is little overlap between genes regulated by alternative splicing and those by APA. Modeling of these data uncovers an APA sequence code. QAPA thus enables the discovery and characterization of programs of regulated APA using conventional RNA-seq."
+}
