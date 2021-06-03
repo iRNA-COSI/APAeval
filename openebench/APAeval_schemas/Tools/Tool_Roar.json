@@ -1,0 +1,24 @@
+{
+    "_id": "APAeval:Roar",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "activation": "#fillin",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "Roar, alternative polyadenylation detection from RNA-seq data.",
+    "is_automated": true,
+    "name": "Roar",
+    "references": [
+        "doi:"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/vodkatad/roar/",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Elena.Grassi"
+    ]
+}
