@@ -1,12 +1,12 @@
 {
-    "_id" : "Ruijia.Wang",
+    "_id" : "Jianhong.Ou",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Wang",
-    "givenName" : "Ruijia",
+    "surname" : "Ou",
+    "givenName" : "Jianhong",
     "email" : [
-        "rjwang.bioinfo@gmail.com"
+        "jianhong.ou@umassmed.edu"
     ],
-    "notes" : "Contact for APAlyzer.",
+    "notes" : "Contact for InPAS.",
     "community_id" : "OEBC007"
 }

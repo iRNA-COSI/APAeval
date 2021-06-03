@@ -1,12 +1,12 @@
 {
-    "_id" : "Ruijia.Wang",
+    "_id" : "Eric.J.Wagner",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Wang",
-    "givenName" : "Ruijia",
+    "surname" : "Wagner",
+    "givenName" : "Eric",
     "email" : [
-        "rjwang.bioinfo@gmail.com"
+        "dapars@googlegroups.com"
     ],
-    "notes" : "Contact for APAlyzer.",
+    "notes" : "Contact for DaPars.",
     "community_id" : "OEBC007"
 }
