@@ -67,6 +67,27 @@
         "review",
         "talk"
       ]
+    },
+    {
+      "login": "yuukiiwa",
+      "name": "Yuk Kei Wan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41866052?v=4",
+      "profile": "https://yuukiiwa.github.io/",
+      "contributions": [
+        "bug",
+        "blog",
+        "code",
+        "data",
+        "doc",
+        "example",
+        "eventOrganizing",
+        "ideas",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "test",
+        "tutorial"
+      ]
     }
   ],
   "contributorsPerLine": 7,
