@@ -1,7 +1,6 @@
 {
     "_id": "APAeval:Roar",
     "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
-    "activation": "#fillin",
     "community_ids": [
         "OEBC007"
     ],
@@ -9,7 +8,7 @@
     "is_automated": true,
     "name": "Roar",
     "references": [
-        "doi:"
+        "doi:10.1186/s12859-016-1254-8"
     ],
     "status": "unknown",
     "tool_access": [

@@ -1,7 +1,6 @@
 {
     "_id": "APAeval:TAPAS",
     "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
-    "activation": "#fillin",
     "community_ids": [
         "OEBC007"
     ],
