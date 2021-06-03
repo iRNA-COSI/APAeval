@@ -5,14 +5,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def bar_plot(df_path, cutoff, plot_out):
+def bar_plot(df_path, plot_out):
 	'''
 	Inputs:
 		- df_path: path to a directory of tsv files containing 
 			  	gene_id & usage changes (e.g. deltaPPAU in QAPA);
 			  	NOTE that these genes have been filtered by FDR/q-value.
 			  	File names are like 'AA_diffUTR_03.tsv'
-		- cutoff: the cutoff to determine if the change is big enough or not,
+		- [hardcoded] cutoff: the cutoff to determine if the change is big enough or not,
 				  e.g. in QAPA, deltaPPAU > 20 means lengthening
 		- output: path to store the image
 	'''
@@ -24,6 +24,14 @@ def bar_plot(df_path, cutoff, plot_out):
 	for file in files:
 		method = re.sub('_03.tsv$', '', file)
 		method = re.sub('^.*_', '', method)
+
+		# hardcode the cutoffs
+		if method == "QAPA":
+			cutoff = 20
+		elif method == "diffUTR":
+			cutoff = 0.5
+		# others to be added
+
 		df = pd.read_csv(os.path.join(df_path, file), sep='\t', header=None, names=['gene','usage'])
 		l = df[df.usage >= cutoff].shape[0]
 		s = df[df.usage <= -cutoff].shape[0]
@@ -47,10 +55,10 @@ def main(args):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Differential usage plot')
-	parser.add_argument('--cutoff', required=True, nargs=1)
+	#parser.add_argument('--cutoff', required=True, nargs=1)
 	parser.add_argument('--pathToTSV', required=True, nargs=1)
 	parser.add_argument('--out', required=True, nargs=1)
 	args = vars(parser.parse_args())
 	main(args)
 
-# usage: ./diff.usage.barplot.py --pathToTSV "../" --out "." --cutoff 0.5
+# usage: ./diff.usage.barplot.py --pathToTSV "../" --out "."
