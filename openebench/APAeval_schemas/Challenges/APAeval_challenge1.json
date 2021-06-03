@@ -20,13 +20,19 @@
             "metrics": [
                 {
                     "metrics_id": "APAeval:corr_coeff",
-                    "tool_id": "APAeval:Tool_QAPA.json"
-                },
-                {
-                    "metrics_id": "APAeval:corr_coeff",
-                    "tool_id": "APAeval:Tool_LABRATA.json"
+                    "tool_id": "APAeval:Tool_correlation"
                 }
             ]
-        }
+        },
+        {
+            "category": "aggregation",
+            "description": "Aggregation of correlation values.",
+            "metrics": [
+                {
+                    "metrics_id": "APAeval:aggregation",
+                    "tool_id": "APAeval:Tool_aggregate"
+                }       
+            ]
+        } 
     ]
 }

@@ -1,0 +1,20 @@
+{
+    "_id":"APAeval:Tool_correlation",  
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "activation": "2021-06-04T00:00:00Z",
+    "name": "TCGA benchmark consolidation",
+    "description": "Docker container gathers benchmarking data for a APAeval challenge.",
+    "is_automated": true,
+    "status": "unknown",
+    "tool_access": [
+        {
+            "tool_access_type": "other",
+            "link": "https://github.com/yuukiiwa/APAeval/tree/main/summary_workflows/quantification/Q2/benchmarking_dockers/apaeval_consolidation"
+        }
+    ],
+    "tool_contact_ids": [
+        "Alexander.Kanitz",
+        "Yuk.Kei.Wan"
+    ],
+    "community_ids": ["OEBC007"]
+}
