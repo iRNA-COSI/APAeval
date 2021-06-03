@@ -1,0 +1,12 @@
+{
+    "_id" : "Javier.Garrayo",
+    "surname" : "Garrayo",
+    "givenName" : "Javier",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "email" : [
+        "javier.garrayo@bsc.es"
+    ],
+    "notes" : "Contact for QfO datasets",
+    "community_id" : "OEBC002"
+}
