@@ -117,6 +117,8 @@ def corr_with_gt(out):
             # sum up all prediction sites that were assigned to this ground truth site
             # needs to be implemented or can be skipped for now since these are usually only a few
             pass
+        elif row['score_g'] == 0: # if there was no ground truth match, expression was set to 0 and the site is excluded
+            pass
         else:
             vec_true.append(row['score_g'])
             # weighted expression in case there are multiple ground truth sites for one predicted site
