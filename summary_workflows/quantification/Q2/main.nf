@@ -101,53 +101,52 @@ process validation {
 
 }
 
-//process compute_metrics {
+process compute_metrics {
 
-//	tag "Computing benchmark metrics for submitted data"
+	tag "Computing benchmark metrics for submitted data"
 	
-//	publishDir "${assessment_file.parent}", saveAs: { filename -> assessment_file.name }, mode: 'copy'
+	publishDir "${assessment_file.parent}", saveAs: { filename -> assessment_file.name }, mode: 'copy'
 
-//	input:
-//	val file_validated from EXIT_STAT
-//	file input_file
-//	val cancer_types
-//	path gold_standards_dir
-//	val tool_name
-//	val community_id
+	input:
+	val file_validated from EXIT_STAT
+	file input_file
+	val cancer_types
+	path gold_standards_dir
+	val tool_name
+	val community_id
 
-//	output:
-//	file 'assessment.json' into assessment_out
+	output:
+	file 'assessment.json' into assessment_out
 
-//	when:
-//	file_validated == 0
+	when:
+	file_validated == 0
 
-//	"""
-//	python /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
+	"""
+	python /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
+	"""
+}
+
+process benchmark_consolidation {
+
+	tag "Performing benchmark assessment and building plots"
+	publishDir "${aggregation_dir.parent}", pattern: "aggregation_dir", saveAs: { filename -> aggregation_dir.name }, mode: 'copy'
+	publishDir "${data_model_export_dir.parent}", pattern: "data_model_export.json", saveAs: { filename -> data_model_export_dir.name }, mode: 'copy'
+
+	input:
+	path benchmark_data
+	file assessment_out
+	file validation_out
+	
+	output:
+	path 'aggregation_dir', type: 'dir'
+	path 'data_model_export.json'
+
+	"""
+	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir
+	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -a aggregation_dir -o data_model_export.json
 	"""
 
-//}
-
-//process benchmark_consolidation {
-
-//	tag "Performing benchmark assessment and building plots"
-//	publishDir "${aggregation_dir.parent}", pattern: "aggregation_dir", saveAs: { filename -> aggregation_dir.name }, mode: 'copy'
-//	publishDir "${data_model_export_dir.parent}", pattern: "data_model_export.json", saveAs: { filename -> data_model_export_dir.name }, mode: 'copy'
-
-//	input:
-//	path benchmark_data
-//	file assessment_out
-//	file validation_out
-	
-//	output:
-//	path 'aggregation_dir', type: 'dir'
-//	path 'data_model_export.json'
-
-//	"""
-//	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir
-//	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -a aggregation_dir -o data_model_export.json
-//	"""
-
-//}
+}
 
 
 workflow.onComplete { 
