@@ -1,0 +1,18 @@
+{
+    "_id" : "Salvador.Capella-Gutierrez",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "helpdesk",
+    "surname" : "Capella-Gutierrez",
+    "givenName" : "Salvador",
+    "email" : [
+        "salvador.capella@bsc.es"
+    ],
+    "notes" : "Contact for OpenEBench integration.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0002-0309-604X"
+		}
+	]
+}

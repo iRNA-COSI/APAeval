@@ -1,0 +1,12 @@
+{
+    "_id" : "Xinshu.Xiao",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Xiao",
+    "givenName" : "Xinshu",
+    "email" : [
+        "gxxiao@ucla.edu"
+    ],
+    "notes" : "Contact for mountainClimber. Contact for TAPAS.",
+    "community_id" : "OEBC007"
+}

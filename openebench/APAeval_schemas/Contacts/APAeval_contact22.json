@@ -1,0 +1,12 @@
+{
+    "_id" : "Wei.Zhang",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Zhang",
+    "givenName" : "Wei",
+    "email" : [
+        "wzhang.cs@ucf.edu"
+    ],
+    "notes" : "Contact for APA-Scan.",
+    "community_id" : "OEBC007"
+}

@@ -1,0 +1,12 @@
+{
+    "_id" : "Lei.Li",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Li",
+    "givenName" : "Lei",
+    "email" : [
+        "lei.li.bioinfo@gmail.com"
+    ],
+    "notes" : "Contact for DaPars2.",
+    "community_id" : "OEBC007"
+}

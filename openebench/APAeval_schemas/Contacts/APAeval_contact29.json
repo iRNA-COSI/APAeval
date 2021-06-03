@@ -1,0 +1,12 @@
+{
+    "_id" : "Eric.C.Lai",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Lai",
+    "givenName" : "Eric",
+    "email" : [
+        "laie@mskcc.org"
+    ],
+    "notes" : "Contact for isoscm.",
+    "community_id" : "OEBC007"
+}

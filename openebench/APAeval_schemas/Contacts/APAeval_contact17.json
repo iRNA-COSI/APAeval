@@ -1,0 +1,12 @@
+{
+    "_id" : "Leonard.Schaerfen",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Schaerfen",
+    "givenName" : "Leonard",
+    "email" : [
+        "leonard.schaerfen@yale.edu"
+    ],
+    "notes" : "APAeval participant.",
+    "community_id" : "OEBC007"
+}

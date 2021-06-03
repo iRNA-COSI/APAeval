@@ -1,0 +1,12 @@
+{
+    "_id" : "Wei.Li",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Li",
+    "givenName" : "Wei",
+    "email" : [
+        "dapars@googlegroups.com"
+    ],
+    "notes" : "Contact for DaPars.",
+    "community_id" : "OEBC007"
+}

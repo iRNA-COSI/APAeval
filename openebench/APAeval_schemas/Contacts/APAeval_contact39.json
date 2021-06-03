@@ -1,0 +1,12 @@
+{
+    "_id" : "Yoseop.Yoon",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Yoon",
+    "givenName" : "Yoseop",
+    "email" : [
+        "yoseopy@uci.edu"
+    ],
+    "notes" : "APAeval participant.",
+    "community_id" : "OEBC007"
+}
