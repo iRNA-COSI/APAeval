@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:APA-Scan",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "APA-Scan detects the potential Alternative Polyadenylation (APA) events in the downstream 3'-UTR of a gene among two different biological conditions.",
+    "is_automated": true,
+    "name": "APA-Scan",
+    "references": [
+        "doi:10.1101/2020.02.16.951657"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/compbiolabucf/APA-Scan",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [ 
+        "Jeongsik.Yong",
+        "Wei.Zhang"]
+}

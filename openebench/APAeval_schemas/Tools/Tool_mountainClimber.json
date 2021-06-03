@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:mountainClimber",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "mountainClimber,identification of alternative transcription start and polyadenylation sites in RNA-Seq ",
+    "is_automated": true,
+    "name": "mountainClimber",
+    "references": [
+        "doi:10.1016/j.cels.2019.07.011"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/gxiaolab/mountainClimber",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Xinshu.Xiao"
+    ]
+}

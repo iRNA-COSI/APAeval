@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:diffUTR",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "diffUTR, for differential exon usage (DEU) analyses and differential 3' UTR usage analysis.",
+    "is_automated": true,
+    "name": "diffUTR",
+    "references": [
+        "doi:10.1186/s12859-021-04114-7"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/ETHZ-INS/diffUTR",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Pierre-Luc.Germain"
+    ]
+}

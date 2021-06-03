@@ -7,6 +7,8 @@ def options    = initOptions(params.options)
 process QAPA_PREPARE_UTRLIB {
         publishDir "${params.outdir}/qapa", mode: params.publish_dir_mode
 
+//      container "url_to_container"
+
         input:
         tuple path(fasta), path(bed)
 

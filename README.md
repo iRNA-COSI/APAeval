@@ -1,4 +1,7 @@
 # APAeval
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Welcome to the [APAeval][apa-eval] GitHub repository.
 
@@ -56,7 +59,7 @@ _Execution workflows_ contain all steps that need to be run _per method_:
 
 _Execution workflows_ should be implemented in either [Nexflow][nf] or
 [Snakemake][snakemake], and individual steps should be isolated through the
-use of either [Conda][conda] virtual environments or
+use of either [Conda][conda] virtual environments (deprecated; to run on AWS we need containerized workflows) or
 [Docker][docker]/[Singularity][singularity] containers.
 
 ### Summary workflows
@@ -113,7 +116,8 @@ In particular, we publish all code under the [MIT license][license-mit] and all
 data under the [CC0 license][license-cc0]. An exception are all _summary
 workflows_, which are published under the [GPLv3 license][license-gplv3], as
 the provided template is derived from an [OpenEBench][oeb] [example
-workflow][oeb-example-workflow] that is itself licensed under GPLv3.
+workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
+the MIT license is also [shipped with this repository][license].
 
 We also believe that attribution, provenance and transparency are crucial for
 an open and fair work environment in the sciences, especially in a community
@@ -262,7 +266,7 @@ going to use throughout the hackathon:
 - [Singularity][singularity]: [tutorial][tutorial-singularity]
 - [Snakemake][snakemake]: [tutorial][tutorial-snakemake]
 
-Note that you don't need to know about all of these, e.g., one of Conda, Docker
+Note that you don't need to know about all of these, e.g., one of Conda (deprecated; to run on AWS we need containerized workflows), Docker
 and/or Singularity will typically be enough. [See
 below](#nextflow-or-snakemake), for a discussion of the supported workflow
 languages/management systems. Again, working with one will be enough for most
@@ -342,6 +346,7 @@ report any violations to the Code of Conduct to either or both of
 [gh-join]: <https://github.com/join>
 [gh-projects]: <https://github.com/iRNA-COSI/APAeval/projects/>
 [git]: <https://git-scm.com/>
+[license]: LICENSE
 [license-mit]: <https://opensource.org/licenses/MIT>
 [license-cc0]: <https://creativecommons.org/publicdomain/zero/1.0/>
 [license-gplv3]: <https://www.gnu.org/licenses/gpl-3.0.en.html>
@@ -366,8 +371,8 @@ report any violations to the Code of Conduct to either or both of
 [slack-random]: <https://apaeval.slack.com/archives/C01Q7FMRJ3A>
 [slack-tech-support]: <https://apaeval.slack.com/archives/C022RNSAUV7>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
-[tutorial-conda]: <https://docs.docker.com/get-started/>
-[tutorial-docker]: <https://conda.io/projects/conda/en/latest/user-guide/getting-started.html>
+[tutorial-conda]: <https://conda.io/projects/conda/en/latest/user-guide/getting-started.html>
+[tutorial-docker]: <https://docs.docker.com/get-started/>
 [tutorial-git]: <https://git-scm.com/docs/gittutorial>
 [tutorial-gh]: <https://guides.github.com/activities/hello-world/>
 [tutorial-gh-flow]: <https://www.youtube.com/watch?v=GgjIvUrOpmg>
@@ -378,3 +383,23 @@ report any violations to the Code of Conduct to either or both of
 [vc-direct-link]: <https://unibas.zoom.us/j/65694291427?pwd=QUMyMjQ2SSt2eS9iZW50YVZCOC8wQT09>
 [wdl]: <https://github.com/openwdl/wdl>
 [zoom]: <https://zoom.us/>
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://chelseaherdman.com"><img src="https://avatars.githubusercontent.com/u/50838086?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chelsea Herdman</b></sub></a><br /><a href="#projectManagement-chelseaherdman" title="Project Management">📆</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

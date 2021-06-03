@@ -9,3 +9,7 @@
 ```
 nextflow main.nf --input samplesheet_example_files.csv --skip_miso
 ```
+
+### Docker containers
+ - check whether your tool is on [BioContainers Registry](https://biocontainers.pro/registry)
+ - if your tool is not on Biocontinaers please see the `environment.yml` in the `docs/templates/nextflow_dsl1` directory

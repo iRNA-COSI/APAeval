@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1186/s12859-021-04114-7",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "Streamlining differential exon and 3′ UTR usage with diffUTR",
+	"bibliographic_ids":["doi:10.1186/s12859-021-04114-7"],
+	"abstract": "Background Despite the importance of alternative poly-adenylation and 3′ UTR length for a variety of biological phenomena, there are limited means of detecting UTR changes from standard transcriptomic data. Results We present the diffUTR Bioconductor package which streamlines and improves upon differential exon usage (DEU) analyses, and leverages existing DEU tools and alternative poly-adenylation site databases to enable differential 3′ UTR usage analysis. We demonstrate the diffUTR features and show that it is more flexible and more accurate than state-of-the-art alternatives, both in simulations and in real data. Conclusions diffUTR enables differential 3′ UTR analysis and more generally facilitates DEU and the exploration of their results."
+}
