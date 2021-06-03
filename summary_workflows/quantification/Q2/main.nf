@@ -122,7 +122,7 @@ process compute_metrics {
 	file_validated == 0
 
 	"""
-	python /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
+	python3 /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
 	"""
 }
 

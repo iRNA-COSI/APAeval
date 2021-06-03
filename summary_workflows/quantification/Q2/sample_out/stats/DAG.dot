@@ -1,0 +1,58 @@
+digraph "DAG" {
+p0 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p7 [label="validation"];
+p0 -> p7 [label="ref_dir"];
+
+p1 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p12 [label="compute_metrics"];
+p1 -> p12 [label="gold_standards_dir"];
+
+p2 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p13 [label="benchmark_consolidation"];
+p2 -> p13 [label="benchmark_data"];
+
+p3 [shape=point,label="",fixedsize=true,width=0.1];
+p7 [label="validation"];
+p3 -> p7 [label="input_file"];
+
+p4 [shape=point,label="",fixedsize=true,width=0.1];
+p7 [label="validation"];
+p4 -> p7 [label="cancer_types"];
+
+p5 [shape=point,label="",fixedsize=true,width=0.1];
+p7 [label="validation"];
+p5 -> p7 [label="tool_name"];
+
+p6 [shape=point,label="",fixedsize=true,width=0.1];
+p7 [label="validation"];
+p6 -> p7 [label="community_id"];
+
+p7 [label="validation"];
+p12 [label="compute_metrics"];
+p7 -> p12 [label="EXIT_STAT"];
+
+p7 [label="validation"];
+p13 [label="benchmark_consolidation"];
+p7 -> p13 [label="validation_out"];
+
+p8 [shape=point,label="",fixedsize=true,width=0.1];
+p12 [label="compute_metrics"];
+p8 -> p12 [label="input_file"];
+
+p9 [shape=point,label="",fixedsize=true,width=0.1];
+p12 [label="compute_metrics"];
+p9 -> p12 [label="cancer_types"];
+
+p10 [shape=point,label="",fixedsize=true,width=0.1];
+p12 [label="compute_metrics"];
+p10 -> p12 [label="tool_name"];
+
+p11 [shape=point,label="",fixedsize=true,width=0.1];
+p12 [label="compute_metrics"];
+p11 -> p12 [label="community_id"];
+
+p12 [label="compute_metrics"];
+p13 [label="benchmark_consolidation"];
+p12 -> p13 [label="assessment_out"];
+
+}
