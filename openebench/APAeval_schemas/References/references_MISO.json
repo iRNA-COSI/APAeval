@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1038/nmeth.1528",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "Analysis and design of RNA sequencing experiments for identifying isoform regulation",
+	"bibliographic_ids":["doi:10.1038/nmeth.1528"],
+	"abstract": "Through alternative splicing, most human genes express multiple isoforms that often differ in function. To infer isoform regulation from high-throughput sequencing of cDNA fragments (RNA-seq), we developed the mixture-of-isoforms (MISO) model, a statistical model that estimates expression of alternatively spliced exons and isoforms and assesses confidence in these estimates. Incorporation of mRNA fragment length distribution in paired-end RNA-seq greatly improved estimation of alternative-splicing levels. MISO also detects differentially regulated exons or isoforms. Application of MISO implicated the RNA splicing factor hnRNP H1 in the regulation of alternative cleavage and polyadenylation, a role that was supported by UV cross-linking–immunoprecipitation sequencing (CLIP-seq) analysis in human cells. Our results provide a probabilistic framework for RNA-seq analysis, give functional insights into pre-mRNA processing and yield guidelines for the optimal design of RNA-seq experiments for studies of gene and isoform expression."
+}
