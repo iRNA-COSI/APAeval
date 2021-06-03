@@ -33,7 +33,12 @@ def bedtools_window(bed1, bed2, window, reverse=False):
 
     # memory file-handle to pass output to pandas without writing to disk
     out_handle = StringIO(out.stdout.decode())
-    out = pd.read_csv(out_handle, delimiter='\t', header=None, dtype={0: str})
+    
+    # incase there were no sites returned (no overlap / all overlap in case of reverse=True)
+    if not out.stdout.decode():
+        out = pd.DataFrame()
+    else:
+        out = pd.read_csv(out_handle, delimiter='\t', header=None, dtype={0: str})
         
     # label columns
     out.rename({0: 'chrom_p', 1: 'chromStart_p', 2: 'chromEnd_p', 3: 'name_p', 4: 'score_p', 5: 'strand_p', 6: 'chrom_g', 7: 'chromStart_g', 8: 'chromEnd_g', 9: 'name_g', 10: 'score_g', 11: 'strand_g'}, axis=1, inplace=True)
@@ -81,7 +86,8 @@ def match_wtih_gt(f_PD, f_GT, window):
     out_rev = bedtools_window(f_PD, f_GT, window, reverse=True)
 
     # for non-overlap sites, assign score 0 to ground truth and set other columns to values from prediction
-    out_rev['chrom_g'], out_rev['chromStart_g'], out_rev['chromEnd_g'], out_rev['name_g'], out_rev['score_g'], out_rev['strand_g'], out_rev['weight'] = [out_rev['chrom_p'], out_rev['chromStart_p'], out_rev['chromEnd_p'], out_rev['name_p'], [0.0]*len(out_rev), out_rev['strand_p'], [1.0]*len(out_rev)]
+    if not out_rev.empty:
+        out_rev['chrom_g'], out_rev['chromStart_g'], out_rev['chromEnd_g'], out_rev['name_g'], out_rev['score_g'], out_rev['strand_g'], out_rev['weight'] = [out_rev['chrom_p'], out_rev['chromStart_p'], out_rev['chromEnd_p'], out_rev['name_p'], [0.0]*len(out_rev), out_rev['strand_p'], [1.0]*len(out_rev)]
 
     # add non-matched sites and matched sites together
     out = pd.concat([out, out_rev])
@@ -90,7 +96,7 @@ def match_wtih_gt(f_PD, f_GT, window):
     out.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
     # number of matched sites:
-    n_matched_sites = len(len(out)-len(out_rev))
+    n_matched_sites = len(out)-len(out_rev)
     # number of sites not matched:
     n_unmatched_sites = len(out_rev)
     
@@ -120,4 +126,5 @@ def corr_with_gt(out):
     r = pearsonr(vec_true, vec_pred)[0]
 
     return(r)
+
 
