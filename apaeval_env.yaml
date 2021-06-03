@@ -1,14 +1,15 @@
-name: snakemake
+name: apaeval_execution_workflows
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
+  - nextflow=21.04.0
+  - snakemake=6.4.0
   - python=3.9.4
   - pandas=1.2.4
   - numpy=1.20.3
   - mamba=0.13.0
   - tibanna=0.18.3
   - pip=21.1.2
-  - pip:
-    - snakemake==6.4.0
+
