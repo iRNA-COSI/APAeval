@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:LABRAT",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "LABRAT, Lightweight Alignment Based Resolution of Alternative Three Prime Ends.",
+    "is_automated": true,
+    "name": "LABRAT",
+    "references": [
+        "doi:10.1101/2020.10.05.326702"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/TaliaferroLab/LABRAT",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "J.Matthew.Taliaferro"
+    ]
+}

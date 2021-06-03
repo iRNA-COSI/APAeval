@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:IsoSCM",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "",
+    "is_automated": true,
+    "name": "IsoSCM",
+    "references": [
+        "doi:10.1261/rna.046037.114."
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/shenkers/isoscm",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Eric.C.Lai"
+    ]
+}
