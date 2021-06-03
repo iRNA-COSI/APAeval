@@ -76,6 +76,32 @@ For the codes please refer to the following documents:
  `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification challenge (OUTCODE 01, we know that from [`execution_output_specification.md`][outcode]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
+## Tools
+List of tools used in APAeval. Please update columns as the execution workflows progress.
+
+| Method | Citation | Repository | Type | Status in APAeval | Present in OpenEBench | Installation | Can take your dog for a walk? |
+|-|-|-|-|-|-|-|-|
+| APA-Scan | [Fahmi et al. 2020](https://www.biorxiv.org/content/10.1101/2020.02.16.951657v2) | [APA-Scan](https://github.com/compbiolabucf/APA-Scan) | Identification, Quantification | In progress | Yes | github | Maybe |
+| APAlyzer | [Wang & Tian 2020](https://pubmed.ncbi.nlm.nih.gov/32321166/) | [APAlyzer](https://bioconductor.org/packages/release/bioc/html/APAlyzer.html) | Quantification, Differential Quantitation | On hold | Yes | Bioconductor | No, but it can take *you* for a ride |
+| diffUTR | [Gerber et al. 2021](https://doi.org/10.1186/s12859-021-04114-7) | [diffUTR](https://github.com/ETHZ-INS/diffUTR) | Differential Quantitation | To do | Yes | Bioconductor | Only if you ask nicely |
+| QAPA | [Ha et al. 2018](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1414-4) | [QAPA](https://github.com/morrislab/qapa) | Quantification, Differential Quantitation | In progress | Yes | github | Probably not |
+| APAtrap | [Ye et al. 2018](https://academic.oup.com/bioinformatics/article/34/11/1841/4816794) | [APAtrap](https://sourceforge.net/projects/apatrap/) | Identification (de novo), Quantification, Differential Quantitation | In progress | No | SourceForge | Nope |
+| Aptardi  | [Lusk et al. 2021](https://www.nature.com/articles/s41467-021-21894-x) | [Aptardi](https://github.com/luskry/aptardi) | Identification | To do | Yes | Bioconda | No, and neither could my dog walk *it* |
+| CSI-UTR | [Harrison et al. 2019](https://doi.org/10.3389/fgene.2019.00182) | [CSI-UTR](https://github.com/UofLBioinformatics/CSI-UTR) | Quantification, Differential Quantification | In progress | No | github | Maybe |
+| DaPars2 | [Feng et al. 2018](https://academic.oup.com/nar/article/46/D1/D1027/4372484?) | [DaPars2](https://github.com/3UTR/DaPars2) | Identification (de novo), Quantification, Differential Quantitation | In progress | No | github | No way |
+| GETUTR | [Kim et al. 2015](https://www.sciencedirect.com/science/article/abs/pii/S1046202315001577?via%3Dihub) | [GETUTR](http://big.hanyang.ac.kr/GETUTR/manual.htm) | Identification, Quantification | To do | Yes | lab website | Nope |
+| IsoSCM | [Shenker et al. 2015](https://rnajournal.cshlp.org/content/21/1/14) | [IsoSCM](https://github.com/shenkers/isoscm) | Identification (de novo), Differential Quantitation | To do | Yes | github | Heck yes |
+| LABRAT | [Goering et al. 2020](https://www.biorxiv.org/content/10.1101/2020.10.05.326702v1) | [LABRAT](https://github.com/TaliaferroLab/LABRAT) | Quantification, Differential Quantitation | In progress | Yes | Bioconda | Only if you ask nicely |
+| MISO | [Katz et al. 2010](https://www.nature.com/articles/nmeth.1528) | [MISO](http://hollywood.mit.edu/burgelab/miso/) | Quantification, Differential Quantitation | On hold | Yes | pypi or bioconda | No, and neither could my dog walk *it* |
+| mountainClimber | [Cass & Xiao 2019](https://www.sciencedirect.com/science/article/pii/S2405471219302686) | [mountainClimber](https://github.com/gxiaolab/mountainClimber) | Identification (de novo), Quantification, Differential Quantitation | To do | Yes | github | Maybe |
+| Roar | [Grassi et al. 2016](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1254-8) | [Roar](https://github.com/vodkatad/roar/) | Identification, Differential Quantitation | In progress | Yes | Bioconductor | Probably not |
+| TAPAS | [Arefeen et al. 2018](https://academic.oup.com/bioinformatics/article/34/15/2521/4904269) | [TAPAS](https://github.com/arefeen/TAPAS) | Identification (de novo), Quantification, Differential Quantitation | In progress | Yes | github | Nope |
+| DaPars | [Xia et al. 2014](https://www.nature.com/articles/ncomms6274) | [DaPars](https://github.com/ZhengXia/dapars) | Identification (de novo), Quantification, Differential Quantitation | On hold | No | github | Heck yes |
+| PAQR/KAPAC | [Gruber et al. 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1415-3) | [PAQR/KAPAC](https://github.com/zavolanlab/PAQR_KAPAC) | Quantification, Differential Quantitation | On hold | Yes | miniconda | No way |
+| InPAS | [Sheppard et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3789547/) | [InPAS](http://www.bioconductor.org/packages/release/bioc/vignettes/InPAS/inst/doc/InPAS.html) | Identification (de novo), Quantification, Differential Quantitation | To do | Yes | Bioconductor | Maybe |
+
+*Note: Can take your dog for a walk was assigned randomly for initial table*
+
 [//]: # (References)
  
 [conda]: <https://docs.conda.io/en/latest/>  
