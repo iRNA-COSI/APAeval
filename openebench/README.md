@@ -4,7 +4,7 @@ The following schema groups need to be provided in order to register benchamrks
 with [OpenEBench][oeb]:
 
 * **Tools** and **References** (to tools): can be filled out right away from
-  our [list of methods].
+  our [list of methods][methods].
 * **Challenges**/**Metrics**: pretty much correspond to what we call
   _benchmarks_. Each challenge _can_ have multiple metrics (say you want to
   create more than one plot per benchmark). It should become clear from the
@@ -12,7 +12,7 @@ with [OpenEBench][oeb]:
   benchmark specifications.
 * **Contacts**: lists the people who have developed the challenges/metrics,
   i.e., our metrics team, as well as the contacts of method developers. The
-  latter should be available in our methods list.
+  latter should be available in our [methods list][methods].
 
 Please create and fill out the schemas _as best as you can_ and put them in
 the appropriate subdirectory in directory [`APAeval_schemas`](APAeval_schemas).
