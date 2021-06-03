@@ -8,6 +8,8 @@ process MAKE_QUANT_BED {
     tag "$sample"
     publishDir "${params.outdir}/labrat/salmon/$sample", mode: params.publish_dir_mode
 
+    container "quay.io/biocontainers/python:3.8.3"
+
     input:
     tuple path(gff), val(sample), path(labrat_salmon_quant)
 
