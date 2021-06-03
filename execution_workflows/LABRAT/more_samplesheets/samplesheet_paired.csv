@@ -1,0 +1,3 @@
+sample,fastq1,fastq2,gff,fasta,condition
+test,/home/wanyk/Downloads/apa/fastq/SRR3067957_1.fastq,/home/wanyk/Downloads/apa/fastq/SRR3067957_2.fastq,/home/wanyk/Downloads/apa/test.gff3,/home/wanyk/Downloads/apa/mm39.fa,test
+ugh,/home/wanyk/Downloads/apa/fastq/SRR3067957_1.fastq,/home/wanyk/Downloads/apa/fastq/SRR3067957_2.fastq,/home/wanyk/Downloads/apa/test.gff3,/home/wanyk/Downloads/apa/mm39.fa,ugh
