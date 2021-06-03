@@ -313,6 +313,16 @@ analysis pipeline][nf-core-rna-seq] for pre-processing RNA-Seq data sets, we
 recommend novices without any other considerations (e.g., colleagues already
 working with Snakemake) to use Nextflow.
 
+#### General conda environment
+In order to execute scripts with either Nextflow or Snakemake in a reproducible
+manner, we need to ensure the versions of these software are specified. In order 
+to do that, we created a general conda environment, which contains specific 
+versions for Nextflow, Snakemake as well as some extra libraries. To use this 
+environment you first need to create it by using `conda env create -f apaeval_env.yaml`.
+You then need to activate this environment by using 
+`conda activate apaeval_execution_workflows`. You can now execute the workflows!
+
+
 ### Code of Conduct
 
 Please be kind to one another and mind the [Contributor Covenant's Code of
