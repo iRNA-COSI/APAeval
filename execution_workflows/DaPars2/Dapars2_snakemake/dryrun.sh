@@ -2,7 +2,7 @@
 snakemake \
     --rerun-incomplete \
     --snakefile="workflow/Snakefile" \
-    --configfile="config/config.[METHOD].yaml" \
+    --configfile="config/config.DaPars2.yaml" \
     --cores 4 \
     --use-conda \
     --printshellcmds \
