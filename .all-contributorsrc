@@ -46,6 +46,27 @@
         "ideas",
         "mentoring"
       ]
+    },
+    {
+      "login": "uniqueg",
+      "name": "Alex Kanitz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10855418?v=4",
+      "profile": "https://git.scicore.unibas.ch/kanitz",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "example",
+        "eventOrganizing",
+        "ideas",
+        "infra",
+        "maintenance",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "talk"
+      ]
     }
   ],
   "contributorsPerLine": 7,
