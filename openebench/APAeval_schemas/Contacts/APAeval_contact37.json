@@ -1,18 +1,18 @@
 {
-    "_id" : "Ben.Nicolet",
+    "_id" : "Yu.Zhou",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Nicolet",
-    "givenName" : "Ben",
+    "surname" : "Zhou",
+    "givenName" : "Yu",
     "email" : [
-        "b.nicolet@sanquin.nl"
+        "yu.zhou@whu.edu.cn"
     ],
     "notes" : "APAeval organizer.",
     "community_id" : "OEBC007",
     "links": [
 		{
 			"label": "ORCID",
-			"uri": "https://orcid.org/0000-0002-0065-7729"
+			"uri": "https://orcid.org/0000-0002-2102-9377"
 		}
 	]
 }

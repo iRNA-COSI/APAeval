@@ -1,12 +1,12 @@
 {
-    "_id" : "Melina.Klostermann",
+    "_id" : "Farica.Zhuang",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Klostermann",
-    "givenName" : "Melina",
+    "surname" : "Zhuang",
+    "givenName" : "Farica",
     "email" : [
-        "melinaklostermann@googlemail.com"
+        "farica.zhuang@biociphers.org"
     ],
-    "notes" : "CAPAeval participant.",
+    "notes" : "APAeval participant.",
     "community_id" : "OEBC007"
 }

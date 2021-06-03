@@ -1,12 +1,12 @@
 {
-    "_id" : "Melina.Klostermann",
+    "_id" : "Yoseop.Yoon",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Klostermann",
-    "givenName" : "Melina",
+    "surname" : "Yoon",
+    "givenName" : "Yoseop",
     "email" : [
-        "melinaklostermann@googlemail.com"
+        "yoseopy@uci.edu"
     ],
-    "notes" : "CAPAeval participant.",
+    "notes" : "APAeval participant.",
     "community_id" : "OEBC007"
 }

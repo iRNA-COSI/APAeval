@@ -1,12 +1,12 @@
 {
-    "_id" : "Melina.Klostermann",
+    "_id" : "Pin-Jou.Wu",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Klostermann",
-    "givenName" : "Melina",
+    "surname" : "Wu",
+    "givenName" : "Pin-Jou",
     "email" : [
-        "melinaklostermann@googlemail.com"
+        "pinjouwu.tw@gmail.com"
     ],
-    "notes" : "CAPAeval participant.",
+    "notes" : "APAeval participant.",
     "community_id" : "OEBC007"
 }
