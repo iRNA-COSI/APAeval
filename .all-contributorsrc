@@ -13,6 +13,24 @@
       "contributions": [
         "projectManagement"
       ]
+    },
+    {
+      "login": "ninsch3000",
+      "name": "ninsch3000",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36634279?v=4",
+      "profile": "https://github.com/ninsch3000",
+      "contributions": [
+        "code",
+        "data",
+        "doc",
+        "design",
+        "eventOrganizing",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "talk"
+      ]
     }
   ],
   "contributorsPerLine": 7,
