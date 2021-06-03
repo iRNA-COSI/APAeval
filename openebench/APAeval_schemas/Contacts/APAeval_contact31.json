@@ -1,0 +1,12 @@
+{
+    "_id" : "Yarden.Katz",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Katz",
+    "givenName" : "Yarden",
+    "email" : [
+        "yarden.katz@gmail.com"
+    ],
+    "notes" : "Contact for MISO.",
+    "community_id" : "OEBC007"
+}

@@ -1,0 +1,12 @@
+{
+    "_id" : "J.Matthew.Taliaferro",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Taliaferro",
+    "givenName" : "J. Matthew",
+    "email" : [
+        "taliaferrojm@gmail.com"
+    ],
+    "notes" : "Contact for LABRAT.",
+    "community_id" : "OEBC007"
+}

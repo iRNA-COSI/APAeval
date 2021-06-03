@@ -1,0 +1,12 @@
+{
+    "_id" : "Sam.Haynes",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Haynes",
+    "givenName" : "Sam",
+    "email" : [
+        "s1895111@ed.ac.uk"
+    ],
+    "notes" : "Contact for execution workflows.",
+    "community_id" : "OEBC007"
+}

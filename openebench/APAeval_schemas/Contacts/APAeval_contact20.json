@@ -1,0 +1,18 @@
+{
+    "_id" : "Mihaela.Zavolan",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Zavolan",
+    "givenName" : "Mihaela",
+    "email" : [
+        "mihaela.zavolan@unibas.ch"
+    ],
+    "notes" : "APAeval organizer. Contact for PAQR/KAPAC.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0002-8832-2041"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+    "_id" : "Naima.Ahmed.Fahmi",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Fahmi",
+    "givenName" : "Naima Ahmed",
+    "email" : [
+        "fnaima@knights.ucf.edu"
+    ],
+    "notes" : "Contact for APA-Scan.",
+    "community_id" : "OEBC007"
+}
