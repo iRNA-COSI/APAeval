@@ -48,9 +48,9 @@ def main(args):
 	df_path = args['pathToTSV'][0] # directory to tsv files
 	out_path = args['out'][0] # directory to output image
 	plot_out = out_path + '/diff.usages.pdf'
-	cutoff = float(args['cutoff'][0])
+	#cutoff = float(args['cutoff'][0])
 
-	bar_plot(df_path,cutoff,plot_out)
+	bar_plot(df_path,plot_out)
 
 
 if __name__ == '__main__':
