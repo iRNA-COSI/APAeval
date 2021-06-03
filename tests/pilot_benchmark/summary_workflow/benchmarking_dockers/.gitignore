@@ -1,0 +1,5 @@
+.idea/*
+**/sample*
+**/__pycache__
+**/.p*
+**/.env*
