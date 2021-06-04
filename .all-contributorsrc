@@ -143,6 +143,18 @@
         "question",
         "review"
       ]
+    },
+    {
+      "login": "mkatsanto",
+      "name": "Maria Katsantoni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31883096?v=4",
+      "profile": "https://github.com/mkatsanto",
+      "contributions": [
+        "code",
+        "ideas",
+        "mentoring",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7,
