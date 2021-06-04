@@ -1,6 +1,6 @@
 # APAeval
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Welcome to the [APAeval][apa-eval] GitHub repository.
@@ -437,6 +437,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/plger"><img src="https://avatars.githubusercontent.com/u/9786697?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pierre-Luc</b></sub></a><br /><a href="#data-plger" title="Data">🔣</a> <a href="https://github.com/iRNA-COSI/APAeval/commits?author=plger" title="Documentation">📖</a> <a href="#eventOrganizing-plger" title="Event Organizing">📋</a> <a href="#ideas-plger" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-plger" title="Project Management">📆</a></td>
     <td align="center"><a href="https://github.com/SamBryce-Smith"><img src="https://avatars.githubusercontent.com/u/49978382?v=4?s=100" width="100px;" alt=""/><br /><sub><b>SamBryce-Smith</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/commits?author=SamBryce-Smith" title="Code">💻</a> <a href="#ideas-SamBryce-Smith" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/pinjouwu9325"><img src="https://avatars.githubusercontent.com/u/41280353?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pin-Jou Wu</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/commits?author=pinjouwu9325" title="Code">💻</a> <a href="#ideas-pinjouwu9325" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/yoseopyoon"><img src="https://avatars.githubusercontent.com/u/84806078?v=4?s=100" width="100px;" alt=""/><br /><sub><b>yoseopyoon</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/commits?author=yoseopyoon" title="Code">💻</a> <a href="#ideas-yoseopyoon" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
