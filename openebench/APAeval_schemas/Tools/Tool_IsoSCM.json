@@ -8,7 +8,7 @@
     "is_automated": true,
     "name": "IsoSCM",
     "references": [
-        "doi:10.1261/rna.046037.114."
+        "doi:10.1261/rna.046037.114"
     ],
     "status": "unknown",
     "tool_access": [
