@@ -188,6 +188,37 @@
         "projectManagement",
         "question"
       ]
+    },
+    {
+      "login": "mrgazzara",
+      "name": "mrgazzara",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58347523?v=4",
+      "profile": "https://github.com/mrgazzara",
+      "contributions": [
+        "code",
+        "doc",
+        "data",
+        "eventOrganizing",
+        "ideas",
+        "infra",
+        "maintenance",
+        "projectManagement",
+        "mentoring",
+        "talk"
+      ]
+    },
+    {
+      "login": "FitzsimmonsCM",
+      "name": "Christina Fitzsimmons",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33811247?v=4",
+      "profile": "https://github.com/FitzsimmonsCM",
+      "contributions": [
+        "doc",
+        "eventOrganizing",
+        "ideas",
+        "projectManagement",
+        "talk"
+      ]
     }
   ],
   "contributorsPerLine": 7,
