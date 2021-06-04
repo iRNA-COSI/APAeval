@@ -1,0 +1,26 @@
+{
+    "_id": "APAeval:DaPars2",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "DaPars2, analysis of Alternative PolyAdenylation usage from multiple RNA-seq data",
+    "is_automated": true,
+    "name": "DaPars2",
+    "references": [
+        "doi:10.1093/nar/gkx892"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/3UTR/DaPars2",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Xin.Feng",
+        "Lei.Li",
+        "Eric.J.Wagner",
+        "Wei.Li"
+    ]
+}

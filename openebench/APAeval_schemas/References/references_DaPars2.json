@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1093/nar/gkx892",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "TC3A: The Cancer 3′ UTR Atlas",
+	"bibliographic_ids":["doi:10.1093/nar/gkx892"],
+	"abstract": "Widespread alternative polyadenylation (APA) occurs during enhanced cellular proliferation and transformation. Recently, we demonstrated that CFIm25-mediated 3′ UTR shortening through APA promotes glioblastoma tumor growth in vitro and in vivo, further underscoring its significance to tumorigenesis. Here, we report The Cancer 3′ UTR Atlas (TC3A), a comprehensive resource of APA usage for 10,537 tumors across 32 cancer types. These APA events represent potentially novel prognostic biomarkers and may uncover novel mechanisms for the regulation of cancer driver genes. TC3A is built on top of the now de facto standard cBioPortal. Therefore, the large community of existing cBioPortal users and clinical researchers will find TC3A familiar and immediately usable. TC3A is currently fully functional and freely available at http://tc3a.org."
+}

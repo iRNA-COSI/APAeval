@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:InPAS",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "InPAS, identification of novel Alternative PolyAdenylation Sites (PAS)",
+    "is_automated": true,
+    "name": "InPAS",
+    "references": [
+        "doi:10.18129/B9.bioc.InPAS"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/jianhong/InPAS",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Jianhong.Ou"
+    ]
+}

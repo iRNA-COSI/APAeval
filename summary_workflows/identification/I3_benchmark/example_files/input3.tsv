@@ -1,0 +1,10 @@
+PAS_ID	Chromosome	Position	Strand	Mean RPM	Intron/exon location	Ensemble ID	RefSeq Gene ID	Gene Symbol	Gene Name	FAMTOM ID	FANTOM Category	Extension	PAS type	PSE	PAS Signal	Conservation	intergenic_TE
+chr1:564599:+	chr1	564599	+	3.33339746426	Single exon	ENSG00000225972	na	MTND1P23	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 1 pseudogene 23	na	na	NO	Pseudogene	49.53%	NoPAS	No	NO
+chr1:564629:+	chr1	564629	+	1.2015737728799998	Single exon	ENSG00000225972	na	MTND1P23	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 1 pseudogene 23	na	na	NO	Pseudogene	3.74%	NoPAS	No	NO
+chr1:564664:+	chr1	564664	+	14.8564019857	Single exon	ENSG00000225972	na	MTND1P23	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 1 pseudogene 23	na	na	NO	Pseudogene	4.67%	NoPAS	No	NO
+chr1:564708:+	chr1	564708	+	1.87229320775	Single exon	ENSG00000225972	na	MTND1P23	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 1 pseudogene 23	na	na	NO	Pseudogene	4.67%	NoPAS	No	NO
+chr1:564952:+	chr1	564952	+	1.9917604133700002	Single exon	ENSG00000225972	na	MTND1P23	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 1 pseudogene 23	na	na	YES	Pseudogene	32.71%	NoPAS	No	NO
+chr1:565006:+	chr1	565006	+	1.65345908946	Single exon	ENSG00000225972	na	MTND1P23	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 1 pseudogene 23	na	na	YES	Pseudogene	1.87%	NoPAS	No	NO
+chr1:565287:+	chr1	565287	+	0.806888352063	Single exon	ENSG00000225630	na	MTND2P28	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 2 pseudogene 28	na	na	NO	Pseudogene	2.8%	OtherPAS	No	NO
+chr1:565381:+	chr1	565381	+	1.4228033702200003	Single exon	ENSG00000225630	na	MTND2P28	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 2 pseudogene 28	na	na	NO	Pseudogene	2.8%	NoPAS	No	NO
+chr1:565406:+	chr1	565406	+	0.7723802745980001	Single exon	ENSG00000225630	na	MTND2P28	mitochondrially encoded NADH:ubiquinone oxidoreductase core subunit 2 pseudogene 28	na	na	NO	Pseudogene	5.61%	NoPAS	No	NO
