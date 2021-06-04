@@ -76,6 +76,32 @@ For the codes please refer to the following documents:
  `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification challenge (OUTCODE 01, we know that from [`execution_output_specification.md`][outcode]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
+## Tools
+List of tools used in APAeval. Please update columns as the execution workflows progress.
+
+| Method | Citation | Type | Status in APAeval | OpenEBench link | Installation | Can take your :poodle: for a walk? |
+|-|-|-|-|-|-|-|
+| [APA-Scan](https://github.com/compbiolabucf/APA-Scan) | [Fahmi et al. 2020](https://www.biorxiv.org/content/10.1101/2020.02.16.951657v2) | Identification, Quantification | [Issue #26][issue-26] | https://dev-openebench.bsc.es/tool/apa-scan | github | Maybe |
+| [APAlyzer](https://bioconductor.org/packages/release/bioc/html/APAlyzer.html) | [Wang & Tian 2020](https://pubmed.ncbi.nlm.nih.gov/32321166/) | Quantification, Differential Quantitation | [Issue #19][issue-19] | https://dev-openebench.bsc.es/tool/apalyzer | Bioconductor | No, but it can take *you* for a ride |
+| [diffUTR](https://github.com/ETHZ-INS/diffUTR) | [Gerber et al. 2021](https://doi.org/10.1186/s12859-021-04114-7) | Differential Quantitation | [Issue #27][issue-27] | https://dev-openebench.bsc.es/tool/diffutr | Bioconductor | Only if you ask nicely |
+| [QAPA](https://github.com/morrislab/qapa) | [Ha et al. 2018](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1414-4) | Quantification, Differential Quantitation | [Issue #28][issue-28] | https://openebench.bsc.es/tool/qapa | github | Probably not |
+| [APAtrap](https://sourceforge.net/projects/apatrap/) | [Ye et al. 2018](https://academic.oup.com/bioinformatics/article/34/11/1841/4816794) | Identification (de novo), Quantification, Differential Quantitation | [Issue #29][issue-29] | NA | SourceForge | Nope |
+| [Aptardi](https://github.com/luskry/aptardi) | [Lusk et al. 2021](https://www.nature.com/articles/s41467-021-21894-x) | Identification | [Issue #30][issue-30] | https://openebench.bsc.es/tool/aptardi | Bioconda | No, and neither could my :poodle: walk *it* |
+| [CSI-UTR](https://github.com/UofLBioinformatics/CSI-UTR) | [Harrison et al. 2019](https://doi.org/10.3389/fgene.2019.00182) | Quantification, Differential Quantification | [Issue #31][issue-31] | NA | github | Maybe |
+| [DaPars2](https://github.com/3UTR/DaPars2) | [Feng et al. 2018](https://academic.oup.com/nar/article/46/D1/D1027/4372484?) | Identification (de novo), Quantification, Differential Quantitation | [Issue #32][issue-32] | NA | github | No way |
+| [GETUTR](http://big.hanyang.ac.kr/GETUTR/manual.htm) | [Kim et al. 2015](https://www.sciencedirect.com/science/article/abs/pii/S1046202315001577?via%3Dihub) | Identification, Quantification | [Issue #33][issue-33] | https://openebench.bsc.es/tool/getutr | lab website | Nope |
+| [IsoSCM](https://github.com/shenkers/isoscm) | [Shenker et al. 2015](https://rnajournal.cshlp.org/content/21/1/14) | Identification (de novo), Differential Quantitation | [Issue #34][issue-34] | https://dev-openebench.bsc.es/tool/isoscm | github | Heck yes |
+| [LABRAT](https://github.com/TaliaferroLab/LABRAT) | [Goering et al. 2020](https://www.biorxiv.org/content/10.1101/2020.10.05.326702v1) | Quantification, Differential Quantitation | [Issue #35][issue-35] | https://openebench.bsc.es/tool/labrat | Bioconda | Only if you ask nicely |
+| [MISO](http://hollywood.mit.edu/burgelab/miso/) | [Katz et al. 2010](https://www.nature.com/articles/nmeth.1528) | Quantification, Differential Quantitation | [Issue #36][issue-36] | https://openebench.bsc.es/tool/miso | pypi or bioconda | No, and neither could my :poodle: walk *it* |
+| [mountainClimber](https://github.com/gxiaolab/mountainClimber) | [Cass & Xiao 2019](https://www.sciencedirect.com/science/article/pii/S2405471219302686) | Identification (de novo), Quantification, Differential Quantitation | [Issue #37][issue-37] | https://openebench.bsc.es/tool/mountainclimber | github | Maybe |
+| [Roar](https://github.com/vodkatad/roar/) | [Grassi et al. 2016](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1254-8) | Identification, Differential Quantitation | [Issue #38][issue-38] | https://openebench.bsc.es/tool/roar | Bioconductor | Probably not |
+| [TAPAS](https://github.com/arefeen/TAPAS) | [Arefeen et al. 2018](https://academic.oup.com/bioinformatics/article/34/15/2521/4904269) | Identification (de novo), Quantification, Differential Quantitation | [Issue #39][issue-39] | https://openebench.bsc.es/tool/tapas | github | Nope |
+| [DaPars](https://github.com/ZhengXia/dapars) | [Xia et al. 2014](https://www.nature.com/articles/ncomms6274) | Identification (de novo), Quantification, Differential Quantitation | [Issue #40][issue-40] | NA | github | Heck yes |
+| [PAQR/KAPAC](https://github.com/zavolanlab/PAQR_KAPAC) | [Gruber et al. 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1415-3) | Quantification, Differential Quantitation | [Issue #41][issue-41] | https://openebench.bsc.es/tool/kapac | miniconda | No way |
+| [InPAS](http://www.bioconductor.org/packages/release/bioc/vignettes/InPAS/inst/doc/InPAS.html) | [Sheppard et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3789547/) | Identification (de novo), Quantification, Differential Quantitation |  | https://openebench.bsc.es/tool/inpas | Bioconductor | Yep |
+
+*Note: Can take your :poodle: for a walk was assigned randomly for initial table*
+
 [//]: # (References)
  
 [conda]: <https://docs.conda.io/en/latest/>  
@@ -90,3 +116,25 @@ For the codes please refer to the following documents:
 [snakemake-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/snakemake>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
 [test-data]: /tests/test_data
+[issue-26]: <https://github.com/iRNA-COSI/APAeval/issues/26>
+[issue-19]: <https://github.com/iRNA-COSI/APAeval/issues/19>
+[issue-27]: <https://github.com/iRNA-COSI/APAeval/issues/27>
+[issue-28]: <https://github.com/iRNA-COSI/APAeval/issues/28>
+[issue-29]: <https://github.com/iRNA-COSI/APAeval/issues/29>
+[issue-30]: <https://github.com/iRNA-COSI/APAeval/issues/30>
+[issue-31]: <https://github.com/iRNA-COSI/APAeval/issues/31>
+[issue-32]: <https://github.com/iRNA-COSI/APAeval/issues/32>
+[issue-33]: <https://github.com/iRNA-COSI/APAeval/issues/33>
+[issue-34]: <https://github.com/iRNA-COSI/APAeval/issues/34>
+[issue-35]: <https://github.com/iRNA-COSI/APAeval/issues/35>
+[issue-36]: <https://github.com/iRNA-COSI/APAeval/issues/36>
+[issue-37]: <https://github.com/iRNA-COSI/APAeval/issues/37>
+[issue-38]: <https://github.com/iRNA-COSI/APAeval/issues/38>
+[issue-39]: <https://github.com/iRNA-COSI/APAeval/issues/39>
+[issue-40]: <https://github.com/iRNA-COSI/APAeval/issues/40>
+[issue-41]: <https://github.com/iRNA-COSI/APAeval/issues/41>
+
+
+
+
+
