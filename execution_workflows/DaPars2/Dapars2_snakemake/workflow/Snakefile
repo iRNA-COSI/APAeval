@@ -63,7 +63,7 @@ rule getBed12_1:
     log:
         os.path.join(config["local_log"], "getBed12_1.log")
     shell:
-        """(./scripts/gff3ToGenePred {input.gff3} {output.out}) &> {log}"""      
+        """(../scripts/gff3ToGenePred {input.gff3} {output.out}) &> {log}"""      
 
 
 rule getBed12_2:
@@ -76,7 +76,7 @@ rule getBed12_2:
     log:
         os.path.join(config["local_log"], "getBed12_2.log")
     shell:
-        """(./scripts/genePredToBed {input.genePred} {output.out}) &> {log}"""
+        """(../scripts/genePredToBed {input.genePred} {output.out}) &> {log}"""
 
 
 rule extractGeneIdAndName:
@@ -89,7 +89,7 @@ rule extractGeneIdAndName:
     log:
         os.path.join(config["local_log"], "extractGeneIdAndName.log")
     shell:
-        """(python ./scripts/extractIdSymbol.py <{input.gtf} > {output.out}) &> {log}"""
+        """(python ../scripts/extractIdSymbol.py <{input.gtf} > {output.out}) &> {log}"""
 
 
 
@@ -147,6 +147,8 @@ rule generateBedgraph:
         bai=os.path.join(config["out_dir"], "{sample}.sorted.bam.bai")
     output:
         out=os.path.join(config["out_dir"], "{sample}.bedgraph")
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
     log:
         os.path.join(config["local_log"], "{sample}generateBedgraph.log")
     shell:
@@ -197,7 +199,7 @@ rule getRegionAnnotation:
     log:
         os.path.join(config["local_log"], "getRegionAnnotation.log")
     shell:
-        """(python2 ./scripts/DaPars_Extract_Anno.py \
+        """(python2 ../scripts/DaPars_Extract_Anno.py \
         -b {input.bed} \
         -s {input.symbol} \
         -o {output.out}) &> {log}"""
