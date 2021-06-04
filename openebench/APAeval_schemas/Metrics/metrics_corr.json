@@ -1,5 +1,5 @@
 {
-	"_id": "APAeval:corr_coeff",
+	"_id": "OEBM0070000000",
 	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Metrics",
 	"title": "Correlation coefficient.",
 	"description": "Correlation coefficient computed as Pearson product-moment correlation coefficient.",

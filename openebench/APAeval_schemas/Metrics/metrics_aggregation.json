@@ -1,5 +1,5 @@
 {
-	"_id": "APAeval:aggregation",
+	"_id": "OEBM0070000001",
 	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Metrics",
 	"title": "APAeval benchmark aggregation.",
 	"description": "Aggregation of APAeval benchmarking data from a single dataset.",

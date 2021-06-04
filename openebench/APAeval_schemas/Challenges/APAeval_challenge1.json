@@ -19,7 +19,7 @@
             "description": "Metrics used to benchmark the correlation between RNAseq-based poly(A) site quantification and poly(A)-sites quantification based on orthogonal 3'end seq data.",
             "metrics": [
                 {
-                    "metrics_id": "APAeval:corr_coeff",
+                    "metrics_id": "OEBM0070000000",
                     "tool_id": "OEBT0070000001"
                 }
             ]
@@ -29,10 +29,10 @@
             "description": "Aggregation of correlation values.",
             "metrics": [
                 {
-                    "metrics_id": "APAeval:aggregation",
+                    "metrics_id": "OEBM0070000001",
                     "tool_id": "OEBT0070000000"
-                }       
+                }
             ]
-        } 
+        }
     ]
 }
