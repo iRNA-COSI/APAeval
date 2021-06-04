@@ -1,11 +1,13 @@
 # Configuration file for snakemake pipeline
 
 # Dataset samples
-samples: "config/[SAMPLES].csv"
-out_dir: "PATH/TO/[DATASET]/[IDENTIFIER]_DaPars2"
-
+samples: "config/samples.csv"
+out_dir: "results/test_data/01_DaPars2"
+gtf: "../../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+gff3: "../../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gff3"
 # Parameters
 # define method specific parameters here
+converageThreshold: 10
 
 # Settings
 envs: "workflow/envs"

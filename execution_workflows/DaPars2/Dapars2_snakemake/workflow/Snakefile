@@ -3,6 +3,9 @@ For help see: https://snakemake.readthedocs.io/en/stable/index.html.
 """
 
 import pandas as pd
+import os
+
+configfile:"config/config.DaPars2.yaml"
 
 samples = pd.read_csv(os.path.abspath(
     config["samples"])).set_index("sample", drop=False)
@@ -15,7 +18,7 @@ rule finish:
     """Rule that specifies the final output.
     """
     input:
-        os.path.join(config["out_dir"], "[IDENTIFIER]_[METHOD].[OUTFORMAT]")
+        os.path.join(config["out_dir"], "01_DaPars2.BED")
 
 
 #-------------------------------------------------------------------------------
@@ -25,37 +28,38 @@ rule addChrToGtf:
     """This step adds 'chr' prefix to gtf file.
     """
     input:
-        "gencode_2genes_noChr.vM18.annotation.gtf"
+        gtf=config['gtf']
     output:
-        "gencode_2genes_Chr.vM18.annotation.gtf"
+        out=os.path.join(config["out_dir"], "annotation_Chr.gtf")
     log:
         os.path.join(config["local_log"], "addChrToGtf.log")
     shell:
-        "awk '{ if($1 !~ /^#/){print "chr"$0} else{print $0} }' {input} >{output}"
+        "awk '{ if($1 !~ /^#/){print "chr"$0} else{print $0} }' {input.gtf} >{output.out}"
 
 rule addChrToGff3:
     """This step adds 'chr' prefix to gtf file.
     """
     input:
-        "gencode_2genes_noChr.vM18.annotation.gff3"
+        gff3=config["gff3"]
     output:
-        "gencode_2genes_Chr.vM18.annotation.gff3"
+        out=os.path.join(config["out_dir"], "annotation_Chr.gff3")
     log:
         os.path.join(config["local_log"], "addChrToGff3.log")
     shell:
-        "awk '{ if($1 !~ /^#/){print "chr"$0} else{print $0} }' {input} >{output}"
+        "awk '{ if($1 !~ /^#/){print "chr"$0} else{print $0} }' {input.gff3} >{output.out}"
 
 rule addChrToBed:
     """This step adds 'chr' prefix to bed files of samples.
     """
     input:
-        "{sample}.MACESeq.mm10.bed"
+        bed=lambda wildcards: 
+            pd.Series(samples.loc[wildcards.sample, "bed"]).values 
     output:
-        "{sample}_Chr.MACESeq.mm10.bed"
+        out=os.path.join(config["out_dir"], "{sample}_Chr.bed") 
     log: 
         os.path.join(config["local_log"], "addChrToBed")
     shell:
-        "awk '{ if($1 !~ /^#/){print "chr"$0} else{print $0} }' {input} >{output}"
+        "awk '{ if($1 !~ /^#/){print "chr"$0} else{print $0} }' {input.bed} >{output.out}"
 
 rule addChrToBam_1:
     """This is the first step of adding 'chr' prefix to bam files of samples. This process adds 'chr' prefix to bam header.
@@ -64,125 +68,129 @@ rule addChrToBam_1:
         bam=lambda wildcards:
             pd.Series(samples.loc[wildcards.sample, "bam"]).values
     output:
-        "{sample}_Chr_Header.bam"
+        out=os.path.join(config["out_dir"], "{sample}_Chr_Header.bam")
     log:
         os.path.join(config["local_log"], "addChrToBam_1")
     shell:
-        "samtools view -H siControl_R1_2genes.bam | sed -e 's/SN:\([0-9XY]*\)/SN:chr\1/' -e 's/SN:MT/SN:chrM/' >{output}"
+        "samtools view -H {input.bam} | sed -e 's/SN:\([0-9XY]*\)/SN:chr\1/' -e 's/SN:MT/SN:chrM/' >{output.out}"
 
 rule addChrToBam_2:
     """This is the second step of adding 'chr' prefix to bam files of samples. This process adds 'chr' prefix to bam body.
     """
     input:
-        "{sample}.bam"
+        bam=lambda wildcards:
+            pd.Series(samples.loc[wildcards.sample, "bam"]).values
     output:
-        "{sample}_Chr_Body.bam"
+        out=os.path.join(config["out_dir"], "{sample}_Chr_Body.bam")
     log:
         os.path.join(config["local_log"], "addChrToBam_2")
     shell:
-        "samtools view {input} | awk 'BEGIN {OFS="\t"} { print $1,$2,"chr"$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15 }' >>{output}"
+        "samtools view {input.bam} | awk 'BEGIN {OFS="\t"} { print $1,$2,"chr"$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15 }' >>{output.out}"
 
 rule addChrToBam_3:
     """This is the final step of adding 'chr' prefix to bam file. This process concatenate the header and the body of the previous bam files.
     """
     input:
-        header="{sample}_Chr_Header.bam",
-        body="{sample}_Chr_Body.bam"
+        header=os.path.join(config["out_dir"], "{sample}_Chr_Header.bam"),
+        body=os.path.join(config["out_dir"], "{sample}_Chr_Body.bam")
     output:
-        "{sample}_Chr.bam"
+        out=os.path.join(config["out_dir"], "{sample}_Chr.bam")
     log:
         os.path.join(config["local_log"], "addChrToBam_3")
     shell:
-        "cat $(samtools view -H {input.header}) $(samtools view {input.body})"
+        # /bin/cat: Argument list too long ----need to fix
+        "cat $(samtools view -H {input.header}) $(samtools view {input.body}) >{output.out}"
 
 rule sortBam:
     """This step sorts bam files with 'chr'.
     """
     input:
-        "{sample}_Chr.bam"
+        bam=os.path.join(config["out_dir"], "{sample}_Chr.bam")
     output:
-        "{sample}_Chr_sorted.bam"
+        out=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam")
     log:
         os.path.join(config["local_log"], "sortBam")
     threads:
         4
     shell:
-        "samtools sort -@ {threads} -o {output} {input}"
+        "samtools sort -@ {threads} -o {output.out} {input.bam}"
 
 rule indexBam:
     """This step indexes sorted bam files.
     """
     input:
-        "{sample}_Chr_sorted.bam"
+        bam=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam")
     output:
-        "{sample}_Chr_sorted.bam.bai"
+        out=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam.bai")
     log:
         os.path.join(config["local_log"], "indexBam")
     threads:
         4
     shell:
-        "samtools index -b -@ {threads} {input}"
+        "samtools index -b -@ {threads} {input.bam}"
 
 rule generateBedgraph:
     """This step generates bedgraph files from sample bams.
     """
     input:
-        "{sample}_Chr_sorted.bam"
+        bam=os.path.join(config["out_dir"], "{smaple}_Chr_sorted.bam")
     output:
-        "{sample}_Chr.bedgraph"
+        out=os.path.join(config["out_dir"], "{sample}_Chr.bedgraph")
     log:
         os.path.join(config["local_log"], "generateBedgraph")
     shell:
-        "genomeCoverageBed -bg -ibam {input} >{output}"
+        "genomeCoverageBed -bg -ibam {input.bam} >{output.out}"
 
 rule generatePathReadcounts:
     """This step counts the aligned read of each sample and write  the abspaths and the numbers to a txt.
     """
     input:
-        "{sample}_Chr_sorted.bam" 
+        bam=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam")
     output:
-        "pathReadcounts.txt"
+        out=os.path.join(config["out_dir"], "pathReadcounts.tsv")
+    params:
+        filename=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam")
     log:
         os.path.join(config["local_log"],"generatePathReadcounts")
     shell:
-        "touch {output}
-        echo "$(cd "$(dirname {input})" && pwd -P)/$(basename {input})"$'\t'$(samtools view -c -F 260 {input}) >>{output}"
+        # Output: sample path and its sequencing depth with tab separated ----need to fix
+        "echo "$(cd "$(dirname {params.filename})" && pwd -P)/$(basename {params.filename})"$'\t'$(samtools view -c -F 260 {input.bam}) >>{output.out}"
 
 rule getBed12_1:
     """This step generates genePred from gff3. This is the first step for generate 12 column bed file.
     """
     input:
-        "gencode_2genes_Chr.vM18.annotation.gff3"
+        gff3=os.path.join(config["out_dir"], "annotation_Chr.gff3")
     output:
-        "gencode_2genes_Chr.vM18.genePred"
+        out=os.path.join(config["out_dir"], "annotation_Chr.genePred")
     log:
         os.path.join(config["local_log"], "getBed12_1.log")
     shell:
-        "./scripts/gff3ToGenePred {input} {output}"       
+        "./scripts/gff3ToGenePred {input.gff3} {output.out}"       
 
 rule getBed12_2:
     """This step generates 12 column bed file from genePed. This is the second step for generate 12 column bed file
     """
     input:
-        "gencode_2genes_Chr.vM18.genePred"
+        genePred=os.path.join(config["out_dir"], "annotation_Chr.genePred")
     output:
-        "gencode_2genes_Chr.vM18.bed"
+        out=os.path.join(config["out_dir"], "annotation_Chr.bed")
     log:
         os.path.join(config["local_log"], "getBed12_2.log")
     shell:
-        "./scripts/genePredToBed {input} {output}"
+        "./scripts/genePredToBed {input.genePred} {output.out}"
         
 rule extractGeneIdAndName:
     """This step extracts gene ID and gene symbol from gtf.
     """
     input:
-        "gencode_2genes_Chr.vM18.annotation.gtf"
+        gtf=os.path.join(config["out_dir"], "annotation_Chr.gtf")
     output:
-        "geneIdSymbol.txt"
+        out=os.path.join(config["out_dir"], "transcriptIdSymbol.txt")
     log:
         os.path.join(config["local_log"], "extractGeneIdAndName")
     shell:
-        "python ./scripts/extractIdSymbol.py <{input} >{output}"
+        "python ./scripts/extractIdSymbol.py <{input.gtf} >{output.out}"
 
 #-------------------------------------------------------------------------------
 # Method-specific rules
@@ -190,28 +198,28 @@ rule getRegionAnnotation:
     """This step generate 3UTR region annotation.
     """
     input:
-        urt="gencode_2genes_Chr.vM18.bed",
-        symbol="geneIdSymbol.txt"
+        bed=os.path.join(config["out_dir"], "annotation_Chr.bed"),
+        symbol=os.path.join(config["out_dir"], "transcriptIdSymbol.txt")
     output:
-        "extracted_3UTR.bed"
+        out=os.path.join(config["out_dir"], "extracted_3UTR.bed")
     log:
         os.path.join(["local_log"], "getRegionAnnotation")
     conda:
         "./envs/dapars2.yml"
     shell:
-        "python2 ./scripts/DaPars_Extract_Anno.py -b {input.utr} -s {input.symbol} -o {output}"
+        "python2 ./scripts/DaPars_Extract_Anno.py -b {input.bed} -s {input.symbol} -o {output.out}"
 
 rule makeDapars2Config:
     """This step makes configure file for DaPars2.
     """
     input:
-        utr="gencode_2genes_Chr.vM18.bed",
-        seqDepth="pathReadcounts.txt",
-        bedgraph=expand("{sample}_Chr.bedgraph", sample=sample)
+        bed=os.path.join(config["out_dir"], "annotation_Chr.bed"),
+        seqDepth=os.path.join(config["out_dir"], "pathReadcounts.tsv"),
+        bedgraph=os.path.join(config["out_dir"], "{sample}_Chr.bedgraph")
     output:
-        "Dapars2_configure_file"
+        out=os.join.path(config["out_dir"], "Dapars2_configure_file")
     params:
-        covThreshold="10"
+        ct=config["coverageThreshold"]
     threads:
         4
     log:
@@ -224,12 +232,12 @@ rule makeDapars2Config:
         sample_list=sample_list.strip(",")
         with open({output}[0], "w") as f:
             print("# The following file is the result of generate_region_annotation", file=f)
-            print("Annotated_3UTR="+str(input.utr), file=f)
+            print("Annotated_3UTR="+str(input.bed), file=f)
             print("A comma-separated list of bedgraph files of all samples", file=f)
             print("Aligned_wig_files="+sample_list, file=f)
             print("Output_directory=DaPars2_results", file=f)
             print("Output_result_file=DaPars2_results", file=f)
-            print("Coverage_threshold="+{params.covThreshold}, file=f)
+            print("Coverage_threshold="+{params.ct}, file=f)
             print("Num_Threads = "+{threads}, file=f)
             print("sequencing_depth_file="+{input.seqDepth})
 
@@ -237,9 +245,11 @@ rule mainDapars2:
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
     """
     input:
-        "Dapars2_configure_file"
+        out=os.join.path(config["out_dir"], "Dapars2_configure_file")
     output:
-        os,path.join(config["out_dir"], "{sample}", "DaPars2_result_chr1")
+        # This step will generate "DaPars2_results+chr[1-22XY]" and each dir contains "DaPars2_results_temp.chr[1-22XY].txt"
+        # Not sure to assign path under {sample} ----need to fix
+        os,path.join(config["out_dir"],  "DaPars2_result_chr[1-22XY]", "DaPars2_resulte_temp.chr[1-22XY].txt")
     log:
         os.path.join(["local_log"], "execute.mainDapars2.log")
     conda:
@@ -250,20 +260,20 @@ rule mainDapars2:
 #-------------------------------------------------------------------------------
 # Postprocessing: obtain suitable output formats (for benchmarks)
 
-rule postprocess_step_1:
-    """A rule that does some postprocessing.
-
+rule catAllResults:
+    """
+    This step combines all the output txt in each chromosome directory. 
     Note: expand() with wildcard sample gathers all samples.
 
     """
     input:
-        expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
-            sample = samples.index)
+        expand(os.path.join(config["out_dir"], "{sample}", "DaPars2_result_chr[1-22XY]", "DaPars2_result_temp.chr[1-22XY].txt"), sample = samples.index)
     output:
-        os.path.join(config["out_dir"], "[IDENTIFIER]_[METHOD].[OUTFORMAT]")
+        os.path.join(config["out_dir"], "01_DaPars2.BED")
     log:
-        os.path.join(config["local_log"], "postprocess_step_1.{sample}.log")
+        os.path.join(config["local_log"], "catAllResults.log")
     shell:
+        # WIP
         "(cat {input} {output}) &> {log}"
 
 
