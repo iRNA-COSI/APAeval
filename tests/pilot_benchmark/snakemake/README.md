@@ -86,6 +86,7 @@ export TIBANNA_DEFAULT_STEP_FUNCTION_NAME=tibanna_unicorn_<name>
 
 ## Run
 
+Copy `test_data` into this directory. This is necessary, because all source files need to be in the same working directory as the `Snakefile`.
 Replace bucketname and subdir in `run_miso_tibanna.sh` and run the workflow with
 
 ``` bash
