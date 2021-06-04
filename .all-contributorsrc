@@ -243,6 +243,17 @@
         "ideas",
         "question"
       ]
+    },
+    {
+      "login": "dseyres",
+      "name": "dseyres",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85220637?v=4",
+      "profile": "https://github.com/dseyres",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
