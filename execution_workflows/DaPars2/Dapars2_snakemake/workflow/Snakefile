@@ -18,7 +18,7 @@ rule finish:
     """Rule that specifies the final output.
     """
     input:
-        OUT1 = os.path.join(config["out_dir"], "Dapars2_configure_file")
+        OUT1 = os.path.join(config["out_dir"],  "DaPars2_result_chr")
         # os.path.join(config["out_dir"], "01_DaPars2.BED")
         # out=expand(
         #     os.path.join(config["out_dir"], "{sample}.sorted.bam"),
@@ -159,7 +159,6 @@ rule generatePathReadcounts:
     """This step counts the aligned read of each sample and write the abspaths and the numbers to a txt. The output will be assigned to DaPars2_config_file.txt and used for sequencing depth normalization. 
     """
     input:
-<<<<<<< HEAD
         bam=os.path.join(config["out_dir"], "{sample}.sorted.bam"),
         bai=os.path.join(config["out_dir"], "{sample}.sorted.bam.bai")
     output:
@@ -216,7 +215,7 @@ rule makeDapars2Config:
             os.path.join(config["out_dir"], "{sample}.bedgraph"),
             sample=samples.index.values)
     output:
-        out=os.join.path(config["out_dir"], "Dapars2_configure_file.txt")
+        out=os.path.join(config["out_dir"], "Dapars2_configure_file.txt")
 
     params:
         ct=config["coverageThreshold"]
@@ -248,7 +247,7 @@ rule mainDapars2:
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
     """
     input:
-        out=os.join.path(config["out_dir"], "Dapars2_configure_file.txt")
+        out=os.path.join(config["out_dir"], "Dapars2_configure_file.txt")
     output:
         # This step will generate "DaPars2_results+chr[1-22XY]" and each dir contains "DaPars2_results_temp.chr[1-22XY].txt"
         # Not sure to assign path under {sample} ----need to fix
