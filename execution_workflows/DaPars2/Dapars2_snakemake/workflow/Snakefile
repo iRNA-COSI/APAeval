@@ -130,7 +130,7 @@ rule indexBam:
         "samtools index -b -@ {threads} {input.bam}"
 
 rule generateBedgraph:
-    """This step generates bedgraph files from sample bams.
+    """This step generates bedgraph files from sample bams. The bedgraph files will then processed by DaPars2.
     """
     input:
         bam=os.path.join(config["out_dir"], "{smaple}_Chr_sorted.bam")
@@ -142,19 +142,27 @@ rule generateBedgraph:
         "genomeCoverageBed -bg -ibam {input.bam} >{output.out}"
 
 rule generatePathReadcounts:
-    """This step counts the aligned read of each sample and write  the abspaths and the numbers to a txt.
+    """This step counts the aligned read of each sample and write the abspaths and the numbers to a txt. The output will be assigned to DaPars2_config_file.txt and used for sequencing depth normalization. 
     """
     input:
-        bam=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam")
+        bams=expand(os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam"), sample=samples.index.tolist())
     output:
         out=os.path.join(config["out_dir"], "pathReadcounts.tsv")
-    params:
-        filename=os.path.join(config["out_dir"], "{sample}_Chr_sorted.bam")
     log:
         os.path.join(config["local_log"],"generatePathReadcounts")
-    shell:
-        # Output: sample path and its sequencing depth with tab separated ----need to fix
-        "echo "$(cd "$(dirname {params.filename})" && pwd -P)/$(basename {params.filename})"$'\t'$(samtools view -c -F 260 {input.bam}) >>{output.out}"
+    run:
+        import os
+        import pysam
+        import pandas as pd
+        sample_relPaths=[]
+        sample_reads=[]
+        for i in {input.bams}:
+            for j in i:
+                sample_relPaths.append(j)
+                sample_reads.append(pysam.view("-c", "-F", "260", j).strip('\n'))
+
+        df=pd.DataFrame("relPath": sample_relPaths, "reads": sample_reads)
+        df.to_csv({output}, sep='\t', header=False, index=False)
 
 rule getBed12_1:
     """This step generates genePred from gff3. This is the first step for generate 12 column bed file.
@@ -217,7 +225,7 @@ rule makeDapars2Config:
         seqDepth=os.path.join(config["out_dir"], "pathReadcounts.tsv"),
         bedgraph=os.path.join(config["out_dir"], "{sample}_Chr.bedgraph")
     output:
-        out=os.join.path(config["out_dir"], "Dapars2_configure_file")
+        out=os.join.path(config["out_dir"], "Dapars2_configure_file.txt")
     params:
         ct=config["coverageThreshold"]
     threads:
@@ -245,7 +253,7 @@ rule mainDapars2:
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
     """
     input:
-        out=os.join.path(config["out_dir"], "Dapars2_configure_file")
+        out=os.join.path(config["out_dir"], "Dapars2_configure_file.txt")
     output:
         # This step will generate "DaPars2_results+chr[1-22XY]" and each dir contains "DaPars2_results_temp.chr[1-22XY].txt"
         # Not sure to assign path under {sample} ----need to fix
