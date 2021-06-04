@@ -99,6 +99,15 @@
         "ideas",
         "projectManagement"
       ]
+    },
+    {
+      "login": "pjewell-biociphers",
+      "name": "pjewell-biociphers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63738218?v=4",
+      "profile": "https://github.com/pjewell-biociphers",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
