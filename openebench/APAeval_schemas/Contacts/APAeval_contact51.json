@@ -1,12 +1,12 @@
 {
-    "_id" : "Edoardo.M.Airoldi",
+    "_id" : "Benjamin.J.Blencowe",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Airoldi",
-    "givenName" : "Edoardo",
+    "surname" : "Blencowe",
+    "givenName" : "Benjamin",
     "email" : [
-        "airoldi@fas.harvard.edu"
+        "b.blencowe@utoronto.ca"
     ],
-    "notes" : "Contact for MISO.",
+    "notes" : "Contact for QAPA.",
     "community_id" : "OEBC007"
 }

@@ -1,11 +1,11 @@
 {
-    "_id" : "Edoardo.M.Airoldi",
+    "_id" : "Christopher.B.Burge",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Airoldi",
-    "givenName" : "Edoardo",
+    "surname" : "Burge",
+    "givenName" : "Christopher",
     "email" : [
-        "airoldi@fas.harvard.edu"
+        "cburge@mit.edu"
     ],
     "notes" : "Contact for MISO.",
     "community_id" : "OEBC007"

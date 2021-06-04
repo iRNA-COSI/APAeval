@@ -1,12 +1,12 @@
 {
-    "_id" : "Edoardo.M.Airoldi",
+    "_id" : "Xiaohui.Wu",
     "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
     "contact_type" : "person",
-    "surname" : "Airoldi",
-    "givenName" : "Edoardo",
+    "surname" : "Wu",
+    "givenName" : "Xiaohui",
     "email" : [
-        "airoldi@fas.harvard.edu"
+        "xhuister@xmu.edu.cn"
     ],
-    "notes" : "Contact for MISO.",
+    "notes" : "Contact for APAtrap.",
     "community_id" : "OEBC007"
 }

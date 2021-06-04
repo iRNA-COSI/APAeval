@@ -1,0 +1,29 @@
+{
+    "_id": "APAeval:2021-06-04_metricsEvent_AA_QAPA_Q2",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/TestAction",
+    "action_type": "MetricsEvent",
+    "challenge_id": "APAeval:2021-06-04_Q2",
+    "dates": {
+        "creation": "2021-06-04T00:00:00Z",
+        "reception": "2021-06-04T00:00:00Z"
+    },
+    "tool_id": "APAeval:Tool_correlation",
+    "involved_datasets": [
+        {
+            "dataset_id": "APAeval:2021-06-04_AA_QAPA_Q2_01",
+            "role": "incoming"
+        },
+        {
+            "dataset_id": "APAeval:2021-06-04_<ground_truth>",
+            "role": "incoming"
+        },
+        {
+            "dataset_id": "APAeval:2021-06-04_AA_QAPA_Q2_01_corr",
+            "role": "outgoing"
+        }
+    ],
+    "test_contact_ids": [
+        "Alexander.Kanitz",
+        "Mervin.M.Fansler"
+    ]
+}
