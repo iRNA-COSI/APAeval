@@ -219,6 +219,17 @@
         "projectManagement",
         "talk"
       ]
+    },
+    {
+      "login": "lschaerfen",
+      "name": "Leo Schärfen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76001100?v=4",
+      "profile": "https://github.com/lschaerfen",
+      "contributions": [
+        "code",
+        "ideas",
+        "talk"
+      ]
     }
   ],
   "contributorsPerLine": 7,
