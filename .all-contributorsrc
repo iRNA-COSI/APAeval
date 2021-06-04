@@ -231,6 +231,17 @@
         "ideas",
         "talk"
       ]
+    },
+    {
+      "login": "chilampoon",
+      "name": "poonchilam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43943114?v=4",
+      "profile": "https://chilampoon.github.io",
+      "contributions": [
+        "code",
+        "ideas",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7,
