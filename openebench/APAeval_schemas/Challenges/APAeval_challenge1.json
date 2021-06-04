@@ -3,7 +3,7 @@
     "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Challenge",
     "name": "Correlation benchmark for RNA-seq poly(A) site quantification.",
     "acronym": "Q2",
-    "benchmarking_event_id": "APAeval:2021-06-04",
+    "benchmarking_event_id": "OEBE0070000000",
     "is_automated": true,
     "dates": {
         "creation": "2021-06-04T00:00:00Z",
