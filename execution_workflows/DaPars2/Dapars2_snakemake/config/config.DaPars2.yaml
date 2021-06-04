@@ -9,8 +9,7 @@ gff3: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gff3"
 # define method specific parameters here
 coverageThreshold: 10
 
-
 # Settings
-envs: "workflow/envs"
+envs: "envs"
 local_log: "logs/local_log"
 cluster_log: "logs/cluster_log"

@@ -7,23 +7,25 @@ import os
 
 configfile:"config/config.DaPars2.yaml"
 
-samples = pd.read_csv(os.path.abspath(
-    config["samples"])).set_index("sample", drop=False)
+samples = pd.read_csv(config["samples"]).set_index("sample", drop=False)
 
 
 #-------------------------------------------------------------------------------
 localrules: finish
 
+
+
+
 rule finish:
     """Rule that specifies the final output.
     """
     input:
-        OUT1 = os.path.join(config["out_dir"],  "DaPars2_result_chr")
+        samples = expand(
+            os.path.join(config["out_dir"], "apa_{sample}"),
+            sample=samples.index.values)
+        # OUT1 = os.path.join(config["out_dir"],  "DaPars2_result_chr")
         # os.path.join(config["out_dir"], "01_DaPars2.BED")
-        # out=expand(
-        #     os.path.join(config["out_dir"], "{sample}.sorted.bam"),
-        #     sample=samples.index.values)
-
+ 
 
 #-------------------------------------------------------------------------------
 # Preprocessing: obtain suitable input formats
@@ -60,10 +62,12 @@ rule getBed12_1:
         gff3=os.path.join(config["out_dir"], "annotation_Chr.gff3")
     output:
         out=os.path.join(config["out_dir"], "annotation_Chr.genePred")
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
     log:
         os.path.join(config["local_log"], "getBed12_1.log")
     shell:
-        """(../scripts/gff3ToGenePred {input.gff3} {output.out}) &> {log}"""      
+        """(gff3ToGenePred {input.gff3} {output.out}) &> {log}"""      
 
 
 rule getBed12_2:
@@ -73,10 +77,12 @@ rule getBed12_2:
         genePred=os.path.join(config["out_dir"], "annotation_Chr.genePred")
     output:
         out=os.path.join(config["out_dir"], "annotation.bed")
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
     log:
         os.path.join(config["local_log"], "getBed12_2.log")
     shell:
-        """(../scripts/genePredToBed {input.genePred} {output.out}) &> {log}"""
+        """(genePredToBed {input.genePred} {output.out}) &> {log}"""
 
 
 rule extractGeneIdAndName:
@@ -89,7 +95,7 @@ rule extractGeneIdAndName:
     log:
         os.path.join(config["local_log"], "extractGeneIdAndName.log")
     shell:
-        """(python ../scripts/extractIdSymbol.py <{input.gtf} > {output.out}) &> {log}"""
+        """(python workflow/scripts/extractIdSymbol.py <{input.gtf} > {output.out}) &> {log}"""
 
 
 
@@ -101,6 +107,8 @@ rule addChrToBam:
             pd.Series(samples.loc[wildcards.sample, "bam"]).values
     output:
         out=os.path.join(config["out_dir"], "{sample}.bam")
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
     log:
         os.path.join(config["local_log"], "{sample}addChrToBam.log")
     shell:
@@ -116,6 +124,8 @@ rule sortBam:
         bam=os.path.join(config["out_dir"], "{sample}.bam")
     output:
         out=os.path.join(config["out_dir"], "{sample}.sorted.bam")
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
     log:
         os.path.join(config["local_log"], "{sample}sortBam.log")
     threads:
@@ -131,6 +141,8 @@ rule indexBam:
         bam=os.path.join(config["out_dir"], "{sample}.sorted.bam")
     output:
         out=os.path.join(config["out_dir"], "{sample}.sorted.bam.bai")
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
     log:
         os.path.join(config["local_log"], "{sample}indexBam.log")
     threads:
@@ -154,7 +166,8 @@ rule generateBedgraph:
     shell:
         """(genomeCoverageBed -bg -ibam {input.bam} >{output.out}) &> {log}"""
 
-
+    # conda:
+    #     os.path.join(config["envs"], "DaPars2.yaml")
 rule generatePathReadcounts:
     """This step counts the aligned read of each sample and write the abspaths and the numbers to a txt. The output will be assigned to DaPars2_config_file.txt and used for sequencing depth normalization. 
     """
@@ -168,21 +181,21 @@ rule generatePathReadcounts:
     log:
         os.path.join(config["local_log"],"{sample}generatePathReadcounts.log")
     shell:
-        """(echo "${params.basename}"$'\t'$(samtools view -c -F 260 {input.bam}) >{output.out}) &> {log}"""
+        """(echo "{params.basename}"'\t'$(samtools view -c -F 260 {input.bam}) >{output.out}) &> {log}"""
 
-rule generatePathReadcounts_aggregate:
-    """This step aggregates the output of generatePathReadcounts.
-    """
-    input:
-        bams = expand(
-            os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv"),
-            sample=samples.index.values)
-    output:
-        out=os.path.join(config["out_dir"], "pathReadcounts.tsv")
-    log:
-        os.path.join(config["local_log"],"generatePathReadcounts_aggregate.log")
-    shell:
-        """(cat {input.bams} > {output.out}) &> {log}"""
+# rule generatePathReadcounts_aggregate:
+#     """This step aggregates the output of generatePathReadcounts.
+#     """
+#     input:
+#         bams = expand(
+#             os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv"),
+#             sample=samples.index.values)
+#     output:
+#         out=os.path.join(config["out_dir"], "pathReadcounts.tsv")
+#     log:
+#         os.path.join(config["local_log"],"generatePathReadcounts_aggregate.log")
+#     shell:
+#         """(cat {input.bams} > {output.out}) &> {log}"""
 
 #-------------------------------------------------------------------------------
 # Method-specific rules
@@ -199,66 +212,96 @@ rule getRegionAnnotation:
     log:
         os.path.join(config["local_log"], "getRegionAnnotation.log")
     shell:
-        """(python2 ../scripts/DaPars_Extract_Anno.py \
+        """(python2 workflow/scripts/DaPars_Extract_Anno.py \
         -b {input.bed} \
         -s {input.symbol} \
         -o {output.out}) &> {log}"""
 
-
+    #    conda:
+    #     os.path.join(config["envs"], "DaPars2.yaml")
+ 
 rule makeDapars2Config:
     """This step makes configure file for DaPars2.
     """
     input:
         bed = os.path.join(config["out_dir"], "annotation.bed"),
-        seqDepth = os.path.join(config["out_dir"], "pathReadcounts.tsv"),
-        bedgraph = expand(
-            os.path.join(config["out_dir"], "{sample}.bedgraph"),
-            sample=samples.index.values)
+        seqDepth = os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv"),
+        bedgraph = os.path.join(config["out_dir"], "{sample}.bedgraph")
     output:
-        out=os.path.join(config["out_dir"], "Dapars2_configure_file.txt")
+        out=os.path.join(config["out_dir"], "{sample}_Dapars2_configure_file.txt")
 
     params:
-        ct=config["coverageThreshold"]
-    threads:
-        4
+        ct=config["coverageThreshold"],
+        bedgraph = os.path.abspath(os.path.join(config["out_dir"], "{sample}.bedgraph")),
+        seqDepth = os.path.abspath(os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv")),
+        bed = os.path.abspath(os.path.join(config["out_dir"], "annotation.bed")),
+        out = os.path.abspath(os.path.join(config["out_dir"], "{sample}")),
+        outfile = "result"
+    threads: 4
     log:
-        os.path.join(config["local_log"], "makeDapars2Config")
+        os.path.join(config["local_log"], "{sample}_makeDapars2Config")
     run:
-        sample_list=[]
         ct=params.ct
         thr=threads
-        seqd = input.seqDepth
-        with open({output.out}, "w") as f:
+        seqd = params.seqDepth
+        with open(output.out, "w") as f:
             f.write("# The following file is the result of generate_region_annotation\n")
-            f.write(f"Annotated_3UTR={str(input.bed)}\n")
-            f.write(f"A comma-separated list of bedgraph files of all samples\n")
-            for i in input.bedgraph:
-                sample_list.append(os.path.basename(i))
-            sample_list=','.join(sample_list)
-            sample_list=sample_list.strip(",")
-            f.write(f"Aligned_wig_files={sample_list}\n")
-            f.write("Output_directory=DaPars2_results\n")
-            f.write("Output_result_file=DaPars2_results\n")
+            f.write(f"Annotated_3UTR={str(params.bed)}\n")
+            f.write(f"#A comma-separated list of bedgraph files of all samples\n")   
+            f.write(f"Aligned_Wig_files={params.bedgraph}\n")
+            f.write(f"Output_directory={params.out}\n")
+            f.write(f"Output_result_file={params.outfile}\n")
             f.write(f"Coverage_threshold={ct}\n")
             f.write(f"Num_Threads = {thr}\n")
             f.write(f"sequencing_depth_file={seqd}\n")
+# sample_list=[]
+# for i in input.bedgraph:
+#                 sample_list.append(os.path.basename(i))
+#             sample_list=','.join(sample_list)
+#             sample_list=sample_list.strip(",")
 
-rule mainDapars2:
+checkpoint mainDapars2:
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
     """
     input:
-        out=os.path.join(config["out_dir"], "Dapars2_configure_file.txt")
+        config=os.path.join(config["out_dir"], "{sample}_Dapars2_configure_file.txt")
     output:
-        # This step will generate "DaPars2_results+chr[1-22XY]" and each dir contains "DaPars2_results_temp.chr[1-22XY].txt"
-        # Not sure to assign path under {sample} ----need to fix
-        # os.path.join(config["out_dir"],  "DaPars2_result_chr[1-22XY]", "DaPars2_resulte_temp.chr[1-22XY].txt")
-        os.path.join(config["out_dir"],  "DaPars2_result_chr")
-    log:
-        os.path.join(config["local_log"], "execute.mainDapars2.log")
+        outdir = directory(os.path.join(config["out_dir"], "{sample}"))
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    log:
+        os.path.join(config["local_log"], "{sample}execute.mainDapars2.log")
     shell:
-        """(python2 DaPars2_Multi_Sample_Multi_Chr.py Dapars2_configure_file) &> {log}"""
+        """(mkdir {output.out}; \
+        python2 workflow/scripts/DaPars2_Multi_Sample_Multi_Chr.py {input.config}) &> {log}"""
+
+def gather_chromosomes(wildcards):
+    checkpoint_output = checkpoints.mainDapars2.get(
+        **wildcards).output.outdir
+    ivals = glob_wildcards(os.path.join(
+        checkpoint_output, "result_{chromosome}")).chromosome
+    pathout = os.path.join(
+        config["output_dir"],
+        wildcards.sample)
+    return expand(
+        os.path.join(
+            pathout,
+            "result_{chromosome}",
+            "result_result_temp.{chromosome}.txt"),
+        chromosome=ivals)
+    
+rule concat_chromosomes :
+    """This step runs DaPars2 on multiple samples and multiple chromosomes.
+    """
+    input:
+        chrs = gather_chromosomes
+    output:
+        out = os.path.join(config["out_dir"], "apa_{sample}")
+    log:
+        os.path.join(config["local_log"], "{sample}rule concat_chromosomes.log")
+    shell:
+        """(cat {input.chrs} > {output.out}) &> {log}"""
+
 
 # #-------------------------------------------------------------------------------
 # # Postprocessing: obtain suitable output formats (for benchmarks)
