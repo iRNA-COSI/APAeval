@@ -155,6 +155,20 @@
         "mentoring",
         "question"
       ]
+    },
+    {
+      "login": "daneckaw",
+      "name": "daneckaw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30384499?v=4",
+      "profile": "https://github.com/daneckaw",
+      "contributions": [
+        "code",
+        "data",
+        "eventOrganizing",
+        "ideas",
+        "projectManagement",
+        "tutorial"
+      ]
     }
   ],
   "contributorsPerLine": 7,
