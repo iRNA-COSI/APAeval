@@ -12,7 +12,7 @@ rule finish:
         In this case a json file with compute resources used (OUTCODE 04)
     """
     input:
-        os.path.join(config["out_dir"],config["benchmarks"], config["param_code"], "_".join(config["param_code"], config["method"], "04.json")
+        os.path.join(config["out_dir"],config["benchmarks"], config["param_code"], "_".join([config["param_code"], config["method"], "04.json"]))
 
 ###########
 # Preprocessing: obtain suitable input formats
@@ -29,6 +29,8 @@ rule index:
         dir=os.path.join(config["out_dir"], "indexed")
     conda: 
         os.path.join(config["envs"], "miso.yaml")
+    singularity: 
+        "docker://quay.io/biocontainers/misopy:0.5.4--py27heb79e2c_4"
     benchmark:
         os.path.join(config["out_dir"], config["benchmarks"], "index.tsv")
     log:
@@ -54,6 +56,8 @@ rule execute:
     threads: 4
     conda: 
         os.path.join(config["envs"], "miso.yaml")
+    singularity: 
+        "docker://quay.io/biocontainers/misopy:0.5.4--py27heb79e2c_4"
     benchmark:
         os.path.join(config["out_dir"], config["benchmarks"], "execute.{sample}.tsv")
     log:
@@ -83,7 +87,7 @@ rule gather_benchmark_Q1:
         T2=expand(os.path.join(config["out_dir"], config["benchmarks"], "execute.{sample}.tsv"),
             sample = samples.index)
     output:
-        os.path.join(config["out_dir"],config["benchmarks"], config["param_code"], "_".join(config["param_code"], config["method"], "04.json")
+        os.path.join(config["out_dir"],config["benchmarks"], config["param_code"], "_".join([config["param_code"], config["method"], "04.json"]))
     run:
         import pandas as pd
         import json
@@ -92,7 +96,7 @@ rule gather_benchmark_Q1:
             df = pd.read_table(file, sep="\t", header = 0)
             res['run_time_sec'] += df.s.values.mean()
             max_mem = df.max_pss.max()
-            if type(max_mem) is not int:
+            if type(max_mem) is str:
                 continue
             if max_mem > res['max_mem_mib']:
                 res['max_mem_mib'] = max_mem 
