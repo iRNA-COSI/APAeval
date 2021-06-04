@@ -20,7 +20,7 @@
             "metrics": [
                 {
                     "metrics_id": "APAeval:corr_coeff",
-                    "tool_id": "APAeval:Tool_correlation"
+                    "tool_id": "OEBT0070000001"
                 }
             ]
         },
@@ -30,7 +30,7 @@
             "metrics": [
                 {
                     "metrics_id": "APAeval:aggregation",
-                    "tool_id": "APAeval:Tool_aggregate"
+                    "tool_id": "OEBT0070000000"
                 }       
             ]
         } 
