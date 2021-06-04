@@ -7,6 +7,7 @@ def options    = initOptions(params.options)
 process MAKE_QUANT_BED {
         tag "$sample"
         publishDir "${params.outdir}/qapa/$sample", mode: params.publish_dir_mode
+        container "quay.io/biocontainers/python:3.8.3"
 
         input:
         tuple val(sample), path(qapa_results)

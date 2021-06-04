@@ -1,0 +1,12 @@
+{
+    "_id" : "Eric.J.Wagner",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Wagner",
+    "givenName" : "Eric",
+    "email" : [
+        "dapars@googlegroups.com"
+    ],
+    "notes" : "Contact for DaPars.",
+    "community_id" : "OEBC007"
+}

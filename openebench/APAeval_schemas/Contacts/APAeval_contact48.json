@@ -1,0 +1,12 @@
+{
+    "_id" : "Jianhong.Ou",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Ou",
+    "givenName" : "Jianhong",
+    "email" : [
+        "jianhong.ou@umassmed.edu"
+    ],
+    "notes" : "Contact for InPAS.",
+    "community_id" : "OEBC007"
+}

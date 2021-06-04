@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from __future__ import division
 import io
 import os
@@ -44,7 +46,7 @@ def compute_metrics(input_participant,  gold_standards_dir, challenge_types, par
     # get participant dataset
     participant_data = pandas.read_csv(input_participant, sep='\t',
                                        comment="#", header=0, index_col=0)
-    #### get input_file values for benchmarking (change the following if necessary)
+    
     compute_usage_dict = participant_data.transpose().to_dict()
     tool = list(compute_usage_dict.keys())[0]
     compute_usage_dict = compute_usage_dict[tool]
@@ -53,13 +55,12 @@ def compute_metrics(input_participant,  gold_standards_dir, challenge_types, par
     ALL_ASSESSMENTS = []
 
     for challenge in challenge_types:
-        #### get metrics/gold standard dataset (change the following if necessary)
+        # get metrics dataset
         metrics_data = pandas.read_csv(os.path.join(gold_standards_dir, challenge + ".txt"),
                                        comment="#", header=0, sep='\t',index_col=0)
         gold_standard_dict = metrics_data.transpose().to_dict()
         gold_standard_dict = gold_standard_dict[list(gold_standard_dict.keys())[0]]
-        #### calculate the benchmark metrics (need quite a bit of thoughts here)
-        ## Here are two examples used in the pilot summary workflow
+
         # metric on runtime (how much does the runtime of a tool deviate from the average runtime of all tools)
         runtime_usage   = convertRunTimeToSec(compute_usage_dict['realtime'])
         average_runtime = convertRunTimeToSec(gold_standard_dict['realtime'])
@@ -70,7 +71,8 @@ def compute_metrics(input_participant,  gold_standards_dir, challenge_types, par
         average_memory = float(gold_standard_dict['peak_vmem'].split()[0])
         diff_memory    = memory_usage - average_memory
 
-        #### change the 3rd and 4th fields based on the metrics calculated above
+        #assessment_data = {'toolname': participant, 'x': TPR, 'y': acc, 'e': 0, 'challenge_type': challenge} #not used anywhere
+
         # get json assessment file for both metrics
         data_id_1 = community + ":" + challenge + "_runtime_" + participant + "_A"
         std_error= 0
@@ -87,7 +89,7 @@ def compute_metrics(input_participant,  gold_standards_dir, challenge_types, par
     with io.open(out_path,
                  mode='w', encoding="utf-8") as f:
         jdata = json.dumps(ALL_ASSESSMENTS, sort_keys=True, indent=4, separators=(',', ': '))
-        f.write(unicode(jdata,"utf-8"))
+        f.write(jdata)
 
 
 if __name__ == '__main__':

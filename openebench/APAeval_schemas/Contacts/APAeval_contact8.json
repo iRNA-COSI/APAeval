@@ -1,0 +1,18 @@
+{
+    "_id" : "Mervin.M.Fansler",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Fansler",
+    "givenName" : "Mervin",
+    "email" : [
+        "mef3005@med.cornell.edu"
+    ],
+    "notes" : "APAeval organizer.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0002-4108-4218"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+    "_id" : "Jeongsik.Yong",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Yong",
+    "givenName" : "Jeongsik",
+    "email" : [
+        "jyong@umn.edu"
+    ],
+    "notes" : "Contact for APA-Scan.",
+    "community_id" : "OEBC007"
+}

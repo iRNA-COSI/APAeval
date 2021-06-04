@@ -1,0 +1,12 @@
+{
+    "_id" : "Yuk.Kei.Wan",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Wan",
+    "givenName" : "Yuk Kei",
+    "email" : [
+        "wanyk@gis.a-star.edu.sg"
+    ],
+    "notes" : "APAeval organizer.",
+    "community_id" : "OEBC007"
+}

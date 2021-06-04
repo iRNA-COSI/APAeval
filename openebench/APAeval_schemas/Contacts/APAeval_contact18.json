@@ -1,0 +1,12 @@
+{
+    "_id" : "Melina.Klostermann",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Klostermann",
+    "givenName" : "Melina",
+    "email" : [
+        "melinaklostermann@googlemail.com"
+    ],
+    "notes" : "CAPAeval participant.",
+    "community_id" : "OEBC007"
+}

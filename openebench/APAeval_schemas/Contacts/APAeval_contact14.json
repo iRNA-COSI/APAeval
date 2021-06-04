@@ -1,0 +1,18 @@
+{
+    "_id" : "Maria.Katsantoni",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Katsantoni",
+    "givenName" : "Maria",
+    "email" : [
+        "maria.katsantoni@unibas.ch"
+    ],
+    "notes" : "APAeval participant.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0003-1961-0223"
+		}
+	]
+}

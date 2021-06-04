@@ -1,0 +1,12 @@
+{
+    "_id" : "Bin.Tian",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Tian",
+    "givenName" : "Bin",
+    "email" : [
+        "btian@wistar.org"
+    ],
+    "notes" : "Contact for APAlyzer.",
+    "community_id" : "OEBC007"
+}

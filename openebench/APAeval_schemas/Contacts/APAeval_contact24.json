@@ -1,0 +1,12 @@
+{
+    "_id" : "Quaid.Morris",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Morris",
+    "givenName" : "Quaid",
+    "email" : [
+        "quaid.morris@utoronto.ca"
+    ],
+    "notes" : "Contact for QAPA.",
+    "community_id" : "OEBC007"
+}

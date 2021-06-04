@@ -1,0 +1,12 @@
+{
+    "_id" : "Elena.Grassi",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Grassi",
+    "givenName" : "Elena",
+    "email" : [
+        "elena.grassi@unito.it"
+    ],
+    "notes" : "Contact for Roar.",
+    "community_id" : "OEBC007"
+}

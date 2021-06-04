@@ -1,0 +1,12 @@
+{
+    "_id" : "Jin-Wu.Nam",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Nam",
+    "givenName" : "Jin-Wu",
+    "email" : [
+        "jwnam@hanyang.ac.kr"
+    ],
+    "notes" : "Contact for GETUTR.",
+    "community_id" : "OEBC007"
+}

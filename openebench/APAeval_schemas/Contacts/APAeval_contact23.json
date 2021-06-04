@@ -1,0 +1,12 @@
+{
+    "_id" : "Ruijia.Wang",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Wang",
+    "givenName" : "Ruijia",
+    "email" : [
+        "rjwang.bioinfo@gmail.com"
+    ],
+    "notes" : "Contact for APAlyzer.",
+    "community_id" : "OEBC007"
+}
