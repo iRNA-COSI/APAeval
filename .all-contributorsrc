@@ -88,6 +88,106 @@
         "test",
         "tutorial"
       ]
+    },
+    {
+      "login": "BenNicolet",
+      "name": "Ben",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59935248?v=4",
+      "profile": "https://github.com/BenNicolet",
+      "contributions": [
+        "data",
+        "ideas",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "pjewell-biociphers",
+      "name": "pjewell-biociphers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63738218?v=4",
+      "profile": "https://github.com/pjewell-biociphers",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "mzavolan",
+      "name": "mzavolan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44894507?v=4",
+      "profile": "https://github.com/mzavolan",
+      "contributions": [
+        "data",
+        "doc",
+        "eventOrganizing",
+        "financial",
+        "ideas",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "talk"
+      ]
+    },
+    {
+      "login": "mfansler",
+      "name": "Mervin Fansler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1182216?v=4",
+      "profile": "https://github.com/mfansler",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "eventOrganizing",
+        "ideas",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review"
+      ]
+    },
+    {
+      "login": "mkatsanto",
+      "name": "Maria Katsantoni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31883096?v=4",
+      "profile": "https://github.com/mkatsanto",
+      "contributions": [
+        "code",
+        "ideas",
+        "mentoring",
+        "question"
+      ]
+    },
+    {
+      "login": "daneckaw",
+      "name": "daneckaw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30384499?v=4",
+      "profile": "https://github.com/daneckaw",
+      "contributions": [
+        "code",
+        "data",
+        "eventOrganizing",
+        "ideas",
+        "projectManagement",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "dominikburri",
+      "name": "Dominik Burri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7873536?v=4",
+      "profile": "https://github.com/dominikburri",
+      "contributions": [
+        "bug",
+        "code",
+        "data",
+        "doc",
+        "example",
+        "eventOrganizing",
+        "ideas",
+        "infra",
+        "mentoring",
+        "projectManagement",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7,
