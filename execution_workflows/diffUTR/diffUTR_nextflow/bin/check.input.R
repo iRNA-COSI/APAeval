@@ -1,14 +1,5 @@
 #!/usr/bin/env Rscript
 
-# install packages
-list.pkg <- c("BiocManager", "rlang")
-new.pkg <- list.pkg[!(list.pkg %in% installed.packages()[ ,"Package"])]
-if (length(new.pkg)) {
-  install.packages(new.pkg, repos = "https://cloud.r-project.org/")
-}
-#BiocManager::install(c("diffUTR", "SummarizedExperiment", "rtracklayer"))
-
-
 # check the input.csv file
 library(rlang)
 library(rtracklayer)
