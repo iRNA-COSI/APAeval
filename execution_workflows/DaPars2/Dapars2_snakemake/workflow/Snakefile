@@ -25,7 +25,7 @@ rule finish:
             sample=samples.index.values)
         # OUT1 = os.path.join(config["out_dir"],  "DaPars2_result_chr")
         # os.path.join(config["out_dir"], "01_DaPars2.BED")
- 
+
 
 #-------------------------------------------------------------------------------
 # Preprocessing: obtain suitable input formats
@@ -67,7 +67,7 @@ rule getBed12_1:
     log:
         os.path.join(config["local_log"], "getBed12_1.log")
     shell:
-        """(gff3ToGenePred {input.gff3} {output.out}) &> {log}"""      
+        """(gff3ToGenePred {input.gff3} {output.out}) &> {log}"""
 
 
 rule getBed12_2:
@@ -169,7 +169,7 @@ rule generateBedgraph:
     # conda:
     #     os.path.join(config["envs"], "DaPars2.yaml")
 rule generatePathReadcounts:
-    """This step counts the aligned read of each sample and write the abspaths and the numbers to a txt. The output will be assigned to DaPars2_config_file.txt and used for sequencing depth normalization. 
+    """This step counts the aligned read of each sample and write the abspaths and the numbers to a txt. The output will be assigned to DaPars2_config_file.txt and used for sequencing depth normalization.
     """
     input:
         bam=os.path.join(config["out_dir"], "{sample}.sorted.bam"),
@@ -219,7 +219,7 @@ rule getRegionAnnotation:
 
     #    conda:
     #     os.path.join(config["envs"], "DaPars2.yaml")
- 
+
 rule makeDapars2Config:
     """This step makes configure file for DaPars2.
     """
@@ -247,7 +247,7 @@ rule makeDapars2Config:
         with open(output.out, "w") as f:
             f.write("# The following file is the result of generate_region_annotation\n")
             f.write(f"Annotated_3UTR={str(params.bed)}\n")
-            f.write(f"#A comma-separated list of bedgraph files of all samples\n")   
+            f.write(f"#A comma-separated list of bedgraph files of all samples\n")
             f.write(f"Aligned_Wig_files={params.bedgraph}\n")
             f.write(f"Output_directory={params.out}\n")
             f.write(f"Output_result_file={params.outfile}\n")
@@ -289,7 +289,7 @@ def gather_chromosomes(wildcards):
             "result_{chromosome}",
             "result_result_temp.{chromosome}.txt"),
         chromosome=ivals)
-    
+
 rule concat_chromosomes :
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
     """
@@ -298,7 +298,7 @@ rule concat_chromosomes :
     output:
         out = os.path.join(config["out_dir"], "apa_{sample}")
     log:
-        os.path.join(config["local_log"], "{sample}rule concat_chromosomes.log")
+        os.path.join(config["local_log"], "{sample}concat_chromosomes.log")
     shell:
         """(cat {input.chrs} > {output.out}) &> {log}"""
 
@@ -308,7 +308,7 @@ rule concat_chromosomes :
 
 # rule catAllResults:
 #     """
-#     This step combines all the output txt in each chromosome directory. 
+#     This step combines all the output txt in each chromosome directory.
 #     Note: expand() with wildcard sample gathers all samples.
 
 #     """
