@@ -200,15 +200,12 @@ rule generatePathReadcounts:
     shell:
         """(echo "{params.basename}"'\t'$(samtools view -c -F 260 {input.bam}) >{output.out}) &> {log}"""
 
-
-#-------------------------------------------------------------------------------
-
  
 rule makeDapars2Config:
     """This step makes configure file for DaPars2.
     """
     input:
-        bed = os.path.join(config["out_dir"], "annotation.bed"),
+        bed = os.path.join(config["out_dir"], "extracted_3UTR.bed"),
         seqDepth = os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv"),
         bedgraph = os.path.join(config["out_dir"], "{sample}.bedgraph")
     output:
@@ -217,7 +214,7 @@ rule makeDapars2Config:
         ct=config["coverageThreshold"],
         bedgraph = os.path.abspath(os.path.join(config["out_dir"], "{sample}.bedgraph")),
         seqDepth = os.path.abspath(os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv")),
-        bed = os.path.abspath(os.path.join(config["out_dir"], "annotation.bed")),
+        bed = os.path.abspath(os.path.join(config["out_dir"],  "extracted_3UTR.bed")),
         out = os.path.join(config["out_dir"], "intermediate_{sample}", "apa"),
         outfile = "apa"
     threads: 16
@@ -265,6 +262,7 @@ def getchromosomes(filename):
     chr_names = list(chrs)
     return chr_names
 chromosomes = getchromosomes(config['gtf'])
+
 
 rule concat_chromosomes:
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
