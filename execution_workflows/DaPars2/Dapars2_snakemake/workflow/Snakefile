@@ -236,20 +236,6 @@ rule makeDapars2Config:
             f.write(f"sequencing_depth_file={seqd}\n")
 
 
-rule mainDapars2:
-    """This step runs DaPars2 on multiple samples and multiple chromosomes.
-    """
-    input:
-        config = os.path.join(config["out_dir"], "{sample}_Dapars2_configure_file.txt")
-    output:
-        outdir = directory(os.path.join(config["out_dir"], "intermediate_{sample}"))
-    conda:
-        os.path.join(config["envs"], "DaPars2.yaml")
-    log:
-        os.path.join(config["local_log"], "{sample}_execute.mainDapars2.log")
-    shell:
-        """(python2 workflow/scripts/DaPars2_Multi_Sample_Multi_Chr.py {input.config};) &> {log}"""
-
 
 def getchromosomes(filename):
     chrs = set()
@@ -261,32 +247,59 @@ def getchromosomes(filename):
                 chrs.add('chr' + line.split('\t')[0])
     chr_names = list(chrs)
     return chr_names
+
 chromosomes = getchromosomes(config['gtf'])
+
+
+rule mainDapars2:
+    """This step runs DaPars2 on multiple samples and multiple chromosomes.
+    """
+    input:
+        config = os.path.join(config["out_dir"], "{sample}_Dapars2_configure_file.txt")
+
+    output:
+        os.path.join(config["out_dir"], "intermediate_{sample}", "apa_{chr}", "apa_result_temp.{chr}.txt")
+
+    params:
+        chromosome = "{chr}"
+
+    wildcard_constraints:
+        chr = "|".join(chromosomes)
+
+    conda:
+        os.path.join(config["envs"], "DaPars2.yaml")
+
+    log:
+        os.path.join(config["local_log"], "{sample}_{chr}_execute.mainDapars2.log")
+    shell:
+        """
+        python2 workflow/scripts/Dapars2_Multi_Sample.py \
+        {input.config} \
+        {params.chromosome} \
+        &> {log}
+        """
 
 
 rule concat_chromosomes:
     """This step runs DaPars2 on multiple samples and multiple chromosomes.
     """
     input:
-        chrs = os.path.join(
-            config["out_dir"],
-            "intermediate_{sample}")
+        names = lambda wildcards: expand(os.path.join(
+                            config["out_dir"],
+                            "intermediate_{sample}",
+                            "apa_{chr}",
+                            "apa_result_temp.{chr}.txt"),
+                        sample=wildcards.sample,
+                        chr=chromosomes)
     output:
         out = os.path.join(config["out_dir"], "merge_{sample}")
     params:
-        names = lambda wildcards: expand(
-                os.path.join(
-                    config["out_dir"],
-                    "intermediate_{sample}",
-                    "apa_{chr}",
-                    "apa_result_temp.{chr}.txt"),
-                sample=wildcards.sample,
-                chr=chromosomes)
+
     log:
         os.path.join(config["local_log"], "{sample}_concat_chromosomes.log")
     shell:
         """(python workflow/scripts/results_to_bed.py \
-        -i '{params.names}' \
+        -i '{input.names}' \
         -c bed \
         -o {output.out}) &> {log}"""
 
