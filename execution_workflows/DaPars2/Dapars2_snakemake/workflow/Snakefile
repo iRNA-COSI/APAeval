@@ -63,6 +63,8 @@ rule getBed12_1:
         out=os.path.join(config["out_dir"], "annotation_Chr.genePred")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "getBed12_1.log")
     shell:
@@ -78,6 +80,8 @@ rule getBed12_2:
         out=os.path.join(config["out_dir"], "annotation.bed")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "getBed12_2.log")
     shell:
@@ -107,10 +111,12 @@ rule getRegionAnnotation:
         out = os.path.join(config["out_dir"], "extracted_3UTR.bed")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "getRegionAnnotation.log")
     shell:
-        """(python2 workflow/scripts/DaPars_Extract_Anno.py \
+        """(python /DaPars2/src/DaPars_Extract_Anno.py \
         -b {input.bed} \
         -s {input.symbol} \
         -o {output.out}) &> {log}"""
@@ -126,6 +132,8 @@ rule addChrToBam:
         out=os.path.join(config["out_dir"], "{sample}.bam")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "{sample}_addChrToBam.log")
     shell:
@@ -143,6 +151,8 @@ rule sortBam:
         prefix = os.path.join(config["out_dir"], "{sample}_temp")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "{sample}_sortBam.log")
     threads: 4
@@ -163,6 +173,8 @@ rule indexBam:
         out=os.path.join(config["out_dir"], "{sample}.sorted.bam.bai")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "{sample}_indexBam.log")
     shell:
@@ -179,6 +191,8 @@ rule generateBedgraph:
         out=os.path.join(config["out_dir"], "{sample}.bedgraph")
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"], "{sample}_generateBedgraph.log")
     shell:
@@ -195,6 +209,8 @@ rule generatePathReadcounts:
         out=os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv")
     params:
         basename= os.path.basename(os.path.join(config["out_dir"], "{sample}.sorted.bam"))
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
     log:
         os.path.join(config["local_log"],"{sample}_generatePathReadcounts.log")
     shell:
@@ -269,11 +285,14 @@ rule mainDapars2:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
 
+    container:
+        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+
     log:
         os.path.join(config["local_log"], "{sample}_{chr}_execute.mainDapars2.log")
     shell:
         """
-        python2 workflow/scripts/Dapars2_Multi_Sample.py \
+        python /DaPars2/src/Dapars2_Multi_Sample.py \
         {input.config} \
         {params.chromosome} \
         &> {log}
@@ -293,7 +312,6 @@ rule concat_chromosomes:
                         chr=chromosomes)
     output:
         out = os.path.join(config["out_dir"], "merge_{sample}")
-    params:
 
     log:
         os.path.join(config["local_log"], "{sample}_concat_chromosomes.log")
