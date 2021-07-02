@@ -1,15 +1,21 @@
 # Configuration file for snakemake pipeline
 
-# Dataset samples
+# Path to run-specific sample table of | sample | bam
 samples: "config/samples.csv"
+
+# Path to main output directory for run
 out_dir: "results/"
+
+# Path to GTF annotation file. Note chromosome names SHOULD NOT have a 'chr' prefix
 gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+# Path to GFF3 annotation file. Note chromosome names SHOULD NOT have a 'chr' prefix
 gff3: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gff3"
+
 # Parameters
 # define method specific parameters here
 coverageThreshold: 10
 
-# Settings
+# Pipeline parameters. No need to change these for specific runs
 envs: "envs"
 local_log: "logs/local_log"
 cluster_log: "logs/cluster_log"

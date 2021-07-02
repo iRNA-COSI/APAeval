@@ -6,12 +6,20 @@
 ![rulegraph](rulegraph.DaPars2.png)
 
 ## Input & pre-processing
-> * Note: the chromosome name conatin no 'chr' prefix in the files below, this workflow will add chr to each file.
->   * Bam files
->   * Bed files (sample)
->   * Gtf annotation
->   * Gff3 annotation
->   * Bed file of the genome
+
+The pipeline requires a 2-column, headered comma-separated sample table with the following information:
+
+- `sample` - unique name of the sample
+- `bam` - path to BAM file of aligned reads for sample
+
+An example sample table can be found at `config/samples.csv` which was used for local testing.
+
+The config file `config/config.DaPars2.yaml` also needs to be updated with run-specific information. Parameters are described further in comments
+
+> * Note: The following files **should not contain the 'chr' prefix in the chromosome names** as this workflow will add 'chr' to each file:
+>   * BAM files
+>   * GTF annotation
+>   * GFF3 annotation
 
 {Describe input files and how they will be processed in order for the method to work. Describe how sample tables have to look like, and any other input that is needed (e.g. genome).}
 
