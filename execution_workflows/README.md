@@ -19,7 +19,8 @@ use of either [Conda][conda] virtual environments (deprecated; to run on AWS we 
 [Docker][docker]/[Singularity][singularity] containers.
 
 ## Templates
-To implement an execution workflow for a method, copy either the [snakemake template][snakemake-template] or the [nextflow template][nextflow-template] into the method's directory and adapt the workflow directory names as described in the template's `README`. Don't forget to adapt the `README` itself as well.  
+To implement an execution workflow for a method, copy either the [snakemake template][snakemake-template] 
+or the [nextflow template dsl1][nextflow-template-dsl1]/[nextflow template dsl2][nextflow-template-dsl1] into the method's directory and adapt the workflow directory names as described in the template's `README`. Don't forget to adapt the `README` itself as well.  
 
 
 Example:    
@@ -107,7 +108,8 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [conda]: <https://docs.conda.io/en/latest/>  
 [docker]: <https://www.docker.com/>
 [nf]: <https://www.nextflow.io/>
-[nextflow-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/nextflow>
+[nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
+[nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
 [spec-doc]: /execution_workflows/execution_output_specification.md 
 [param-code]: /summary_workflows/parameter_codes.md
 [method]: /execution_workflows/
