@@ -20,7 +20,7 @@ use of either [Conda][conda] virtual environments (deprecated; to run on AWS we 
 
 ## Templates
 To implement an execution workflow for a method, copy either the [snakemake template][snakemake-template] 
-or the [nextflow template dsl1][nextflow-template-dsl1]/[nextflow template dsl2][nextflow-template-dsl1] into 
+or the [nextflow template dsl1][nextflow-template-dsl1]/[nextflow template dsl2][nextflow-template-dsl2] into 
 the method's directory and adapt the workflow directory names as described in the template's `README`. 
 Don't forget to adapt the `README` itself as well.  
 
