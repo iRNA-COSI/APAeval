@@ -5,23 +5,24 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 /*
-    Convert the input .bam file to .bedgraph for APAtrap
+    Ensure that the final bedgraph file has leading "chr"
+    in all sequence regions
 */
 process PREPROCESSING {
 
     publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
-    container "faricazjj/apatrap"
+    container "quay.io/biocontainers/python:3.8.3"
 
     input:
-    tuple path(bam_file), path(bai_file)
+    path bedgraph_file
 
     output:
-    path "$input_bedgraph", emit: ch_3utr_input
+    path "$final_input_bedgraph", emit: ch_3utr_input
 
     script:
-    input_bedgraph = "3utr_input.bedgraph"
+    final_input_bedgraph = "3utr_input_final.bedgraph"
     """
-    bamCoverage -b $bam_file -o $input_bedgraph
+    check_bedgraph.py $bedgraph_file $final_input_bedgraph
     """
 
 }
