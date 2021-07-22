@@ -9,8 +9,8 @@ def options    = initOptions(params.options)
 */
 process POSTPROCESSING {
     tag "$sample"
-    publishDir "${params.outdir}/qapa/$sample", mode: params.publish_dir_mode
-    container "quay.io/biocontainers/python:3.8.3"
+    publishDir "${params.outdir}/apatrap/$sample", mode: params.publish_dir_mode
+    container "docker.io/faricazjj/apatrap:latest"
 
     input:
     tuple val(sample), path(de_apa_output_file)

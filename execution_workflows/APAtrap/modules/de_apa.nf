@@ -10,7 +10,7 @@ def options    = initOptions(params.options)
 */
 process DE_APA {
         publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
-        container "faricazjj/apatrap"
+        container "docker.io/faricazjj/apatrap:latest"
 
         input:
         path de_apa_input
