@@ -41,17 +41,17 @@ def reformat_bed(file_in):
             # same as starting position
             chromEnd = chromStart
             output = [chrom, chromStart, chromEnd, name, score, strand]
-            identification_out.write("\t".join(output))
+            identification_out.write("\t".join(output) + "\n")
 
             # write quantification file
             score = str(row['Group_1_1_Total_Exp'])
             output = [chrom, chromStart, chromEnd, name, score, strand]
-            quantification_out.write("\t".join(output))
+            quantification_out.write("\t".join(output) + "\n")
 
         # write differential file
         significance = str(row['p.value'])
         output = [name, significance]
-        differential_out.write("\t".join(output))
+        differential_out.write("\t".join(output) + "\n")
 
     identification_out.close()
     quantification_out.close()
