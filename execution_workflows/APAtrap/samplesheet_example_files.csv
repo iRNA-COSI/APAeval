@@ -1,2 +1,2 @@
 sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
-test,test_data/siSrsf3_R1_100genes.fastq.gz,,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siSrsf3_R1_2genes.bam,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siSrsf3_R1_2genes.bam.bai,/Users/i536345/PycharmProjects/APAeval/tests/pilot_benchmark/example_files/input4.gff3,path_to/mm39.fa,/Users/i536345/PycharmProjects/APAeval/tests/test_data/vm18.mouse.genemodel.bed,/Users/i536345/Downloads/apa/mart_export.txt
+test,path_to/siSrsf3_R1_100genes.fastq.gz,,path_to/siSrsf3_R1_2genes.bam,path_to/siSrsf3_R1_2genes.bam.bai,path_to/input4.gff3,path_to/mm39.fa,path_to/vm18.mouse.genemodel.bed,path_to/mart_export.txt

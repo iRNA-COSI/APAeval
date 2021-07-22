@@ -15,7 +15,7 @@ to create the nextflow pipeline flow of this module.
 
 ### Steps to run this:
  - Replace "path_to" in samplesheet_example_files.csv with the path to the reference input files
- - Check the path to this directory with `pwd` and replace the `[pwd]` in samplesheet_example_files.csv with the path from the `pwd` command
+ - Check the path to the input files with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the path from the `pwd` command
  - Pull the required docker image by doing `docker pull docker.io/faricazjj/apatrap:latest`
  - Then, you are good to run the pilot benchmark nextflow pipeline with `APAtrap`
 ```
