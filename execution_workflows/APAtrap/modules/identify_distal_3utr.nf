@@ -10,7 +10,7 @@ def options    = initOptions(params.options)
 */
 process IDENTIFY_DISTAL_3UTR {
         publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
-        container "docker.io/faricazjj/apatrap:latest"
+        container "docker.io/apaeval/apatrap:latest"
 
         input:
         tuple path(genome_file), path(reads_bedgraph_file)

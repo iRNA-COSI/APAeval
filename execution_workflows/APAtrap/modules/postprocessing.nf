@@ -10,7 +10,7 @@ def options    = initOptions(params.options)
 process POSTPROCESSING {
     tag "$sample"
     publishDir "${params.outdir}/apatrap/$sample", mode: params.publish_dir_mode
-    container "docker.io/faricazjj/apatrap:latest"
+    container "docker.io/apaeval/apatrap:latest"
 
     input:
     tuple val(sample), path(de_apa_output_file)

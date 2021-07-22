@@ -10,7 +10,7 @@ def options    = initOptions(params.options)
 */
 process PREDICT_APA {
         publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
-        container "docker.io/faricazjj/apatrap:latest"
+        container "docker.io/apaeval/apatrap:latest"
 
         input:
         tuple path(reads_bedgraph_file), path(predict_apa_input)

@@ -10,7 +10,7 @@ def options    = initOptions(params.options)
 process CONVERT_TO_BEDGRAPH {
 
     publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
-    container "docker.io/faricazjj/apatrap:latest"
+    container "docker.io/apaeval/apatrap:latest"
 
     input:
     tuple path(bam_file), path(bai_file)

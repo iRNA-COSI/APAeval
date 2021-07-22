@@ -31,7 +31,7 @@ def reformat_bed(file_in):
         name = row['Gene'].split("|")[0]
         chrom = row['Gene'].split("|")[2]
         score = "."
-        strand = row['Gene'].split("|")[0][3]
+        strand = row['Gene'].split("|")[3]
         apas = row['Predicted_APA'].split(",")
 
         # write identification file
