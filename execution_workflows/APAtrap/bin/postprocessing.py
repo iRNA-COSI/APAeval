@@ -30,7 +30,6 @@ def reformat_bed(file_in):
         # keep just the gene name
         name = row['Gene'].split("|")[0]
         chrom = row['Gene'].split("|")[2]
-        score = "."
         strand = row['Gene'].split("|")[3]
         apas = row['Predicted_APA'].split(",")
 
@@ -40,6 +39,7 @@ def reformat_bed(file_in):
             # as identified PAS are single-nucleotide, the ending position is the
             # same as starting position
             chromEnd = chromStart
+            score = "."
             output = [chrom, chromStart, chromEnd, name, score, strand]
             identification_out.write("\t".join(output) + "\n")
 
