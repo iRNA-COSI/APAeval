@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssembleCommand>
+    <bam>/Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/de/19a7f0bfbaaeab76e5159c97b289c7/test_data/siSrsf3_R1_2genes.Aligned.sortedByCoord.out.bam</bam>
+    <base>siSrsf3_R1_2genes</base>
+    <coverage>true</coverage>
+    <dir>/Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/de/19a7f0bfbaaeab76e5159c97b289c7/isoscm</dir>
+    <internal>false</internal>
+    <jnct_alpha>0.05</jnct_alpha>
+    <merge_radius>100</merge_radius>
+    <min_fold>0.5</min_fold>
+    <min_terminal>300</min_terminal>
+    <nb_r>10</nb_r>
+    <segment_p>0.95</segment_p>
+    <segment_r>10</segment_r>
+    <strandedness>unstranded</strandedness>
+    <threshold>1</threshold>
+    <w>20</w>
+</AssembleCommand>

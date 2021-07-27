@@ -1,0 +1,6 @@
+chr16	sol	3p_exon	78156099	78157089	0.0	+	.	type "3p_exon"
+chr6	sol	3p_exon	119900944	119903648	0.0	-	.	type "3p_exon"
+chr6	sol	3p_exon	119902584	119903648	0.0	-	.	type "3p_exon"
+chr16	sol	5p_exon	78098599	78098762	0.0	+	.	type "5p_exon"
+chr16	sol	5p_exon	78161690	78161740	0.0	-	.	type "5p_exon"
+chr6	sol	5p_exon	120013835	120015625	0.0	-	.	type "5p_exon"

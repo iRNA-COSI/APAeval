@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<EnumerateCommand>
+    <assemblyXml>/Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/de/19a7f0bfbaaeab76e5159c97b289c7/isoscm/siSrsf3_R1_2genes.assembly_parameters.xml</assemblyXml>
+    <max_paths>20</max_paths>
+</EnumerateCommand>

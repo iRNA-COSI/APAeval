@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CompareCommand>
+    <assemblyXml1>/Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/de/19a7f0bfbaaeab76e5159c97b289c7/isoscm/siControl_R1_2genes.assembly_parameters.xml</assemblyXml1>
+    <assemblyXml2>/Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/de/19a7f0bfbaaeab76e5159c97b289c7/isoscm/siSrsf3_R1_2genes.assembly_parameters.xml</assemblyXml2>
+    <base>siControl_R1_2genes.vs.siSrsf3_R1_2genes</base>
+    <dir>/Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/de/19a7f0bfbaaeab76e5159c97b289c7/compare</dir>
+</CompareCommand>
