@@ -38,7 +38,7 @@ samtools index new/new_siControl_R1_2genes.Aligned.sortedByCoord.out.bam
 samtools index new/new_siSrsf3_R1_2genes.Aligned.sortedByCoord.out.bam
 ```
 
-These new test data are in the ['test_data'](test_data/) directory.
+These new test data are in the [`test_data`](test_data/) directory.
 
 
 ## Input & pre-processing
@@ -70,4 +70,7 @@ IsoSCM consists of the following three steps:
 
 - Install `openjdk-8-jdk`, don't use newer version Java than this
 - For duplicates, one should merge all datasets for one condition then run the pipeline, see this [issue](https://github.com/shenkers/isoscm/issues/8)
-- Should put all BAM files under the same folder...
+- Should put all BAM files under the same folder
+- It's a **DISASTER** to modularize a non-modularized software...... outputs should be in the same working dir so only one process for ISOSCM here:
+
+<img src="test_res/pipeline_info/pipeline_dag.svg" />
