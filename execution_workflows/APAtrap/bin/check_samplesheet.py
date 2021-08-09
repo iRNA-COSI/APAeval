@@ -73,11 +73,11 @@ def check_samplesheet(file_in, file_out):
             if bam1 or bam2:
                 if bam1.find(" ") != -1:
                     print_error("bam1 contains spaces!", 'Line', line)
-                if bam2.find(" ") != -1:
+                if bam2 != "" and bam2.find(" ") != -1:
                     print_error("bam2 contains spaces!", 'Line', line)
                 if not bam1.endswith(".bam"):
                     print_error("bam1 does not have extension 'bam'", 'Line', line)
-                if not bam2.endswith(".bam"):
+                if bam2 != "" and not bam2.endswith(".bam"):
                     print_error("bam2 does not have extension 'bam'", 'Line', line)
 
             ## Check bed extension
