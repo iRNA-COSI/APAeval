@@ -3,6 +3,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
+def modules = params.modules.clone()
+def identify_distal_3utr_options    = modules['identify_distal_3utr']
 
 /*
     Run the first step of APAtrap: identifyDistal3UTR to refine
@@ -20,7 +22,17 @@ process IDENTIFY_DISTAL_3UTR {
 
         script:
         utr_output = "predictapa_input.bed"
+        window_size = identify_distal_3utr_options.w
+        extension_size = identify_distal_3utr_options.e
+        min_coverage = identify_distal_3utr_options.c
+        min_percentage = identify_distal_3utr_options.p
         """
-        identifyDistal3UTR -i $reads_bedgraph_file -m $genome_file -o $utr_output
+        identifyDistal3UTR -i $reads_bedgraph_file \
+                           -m $genome_file \
+                           -o $utr_output \
+                           -w $window_size \
+                           -e $extension_size \
+                           -c $min_coverage \
+                           -p $min_percentage
         """
 }

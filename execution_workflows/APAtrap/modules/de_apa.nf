@@ -3,6 +3,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
+def modules = params.modules.clone()
+def de_apa_options    = modules['de_apa']
 
 /*
     Run the third step of APAtrap: deAPA to detect genes having significant changes
@@ -19,11 +21,16 @@ process DE_APA {
         path "$de_apa_output", emit: ch_de_apa_output
 
         script:
-        de_apa_output = "de_apa_output.txt"
+        de_apa_output = de_apa_options.output_file
+        group1 = de_apa_options.group1
+        group2 = de_apa_options.group2
+        least_qualified_num_in_group1 = de_apa_options.least_qualified_num_in_group1
+        least_qualified_num_in_group2 = de_apa_options.least_qualified_num_in_group2
+        coverage_cutoff = de_apa_options.coverage_cutoff
         """
         #!/usr/bin/Rscript
 
         library(deAPA)
-        deAPA('$de_apa_input', '$de_apa_output', 1, 1, 1, 1, 20)
+        deAPA('$de_apa_input', '$de_apa_output', $group1, $group2, $least_qualified_num_in_group1, $least_qualified_num_in_group2, $coverage_cutoff)
         """
 }

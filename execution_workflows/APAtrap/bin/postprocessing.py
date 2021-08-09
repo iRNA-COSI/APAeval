@@ -5,24 +5,27 @@ import argparse
 import pandas as pd
 
 def parse_args(args=None):
-    Description = "Reformat APAtrap identifyDistal3UTR bed file"
-    Epilog = "Example usage: python postprocessing.py <FILE_IN>"
+    Description = "Reformat APAtrap identifyDistal3UTR bed file into the output files of identification, quantification, and differential challenges"
+    Epilog = "Example usage: python postprocessing.py <FILE_IN> <IDENTIFICATION_OUT> <QUANTIFICATION_OUT> <DIFFERENTIAL_OUT>"
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
     parser.add_argument("FILE_IN", help="Input deAPA output txt file.")
+    parser.add_argument("IDENTIFICATION_OUT", help="Name of output file for identification challenge")
+    parser.add_argument("QUANTIFICATION_OUT", help="Name of output file for quantification challenge")
+    parser.add_argument("DIFFERENTIAL_OUT", help="Name of output file for differential challenge")
     return parser.parse_args(args)
 
 
-def reformat_bed(file_in):
+def reformat_bed(file_in, identification_out, quantification_out, differential_out):
     """
     This function reformats the txt deAPA output file to files for
     identification, quantification, and differential challenges
     :param file_in: txt file to be reformatted
     :return: N/A
     """
-    identification_out = open("apatrap_identification_output.bed", "wt")
-    quantification_out = open("apatrap_quantification_output.bed", "wt")
-    differential_out = open("apatrap_differential_output.tsv", "wt")
+    identification_out = open(identification_out, "wt")
+    quantification_out = open(quantification_out, "wt")
+    differential_out = open(differential_out, "wt")
 
     df = pd.read_csv(file_in, sep='\t')
     for index, row in df.iterrows():
@@ -60,7 +63,7 @@ def reformat_bed(file_in):
 
 def main(args=None):
     args = parse_args(args)
-    reformat_bed(args.FILE_IN)
+    reformat_bed(args.FILE_IN, args.IDENTIFICATION_OUT, args.QUANTIFICATION_OUT, args.DIFFERENTIAL_OUT)
 
 
 if __name__ == '__main__':

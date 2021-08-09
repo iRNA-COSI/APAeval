@@ -3,6 +3,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
+def modules = params.modules.clone()
+def file_names = modules['postprocessing']
 
 /*
     Create files for identification, quantification, and differential challenges
@@ -19,8 +21,11 @@ process POSTPROCESSING {
     path "*"
 
     script:
+    identification_out = file_names.identification_out
+    quantification_out = file_names.quantification_out
+    differential_out = file_names.differential_out
     """
-    postprocessing.py $de_apa_output_file
+    postprocessing.py $de_apa_output_file $identification_out $quantification_out $differential_out
     """
 
 }
