@@ -16,7 +16,7 @@ workflow RUN_APATRAP {
     main:
     // get the bam and bai files
     ch_sample
-        .map { it -> [ it[3], it[4] ] }
+        .map { it -> [ it[1], it[2], it[3], it[4] ] }
         .unique()
         .set { ch_preprocess }
 
@@ -32,7 +32,7 @@ workflow RUN_APATRAP {
 
     // combine the genome file with the input file for identifyDistal3UTR
     ch_sample
-        .map{ it -> it[7] }
+        .map{ it -> it[5] }
         .combine(PREPROCESSING.out.ch_3utr_input)
         .set { ch_3utr_input }
     /*

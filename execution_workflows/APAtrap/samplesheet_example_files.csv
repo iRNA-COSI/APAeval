@@ -1,2 +1,2 @@
-sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
-test,path_to/siSrsf3_R1_100genes.fastq.gz,,path_to/siSrsf3_R1_2genes.bam,path_to/siSrsf3_R1_2genes.bam.bai,path_to/input4.gff3,path_to/mm39.fa,path_to/vm18.mouse.genemodel.bed,path_to/mart_export.txt
+sample,bam1,bai1,bam2,bai2,bed
+test,path_to/siControl_R1_2genes.bam,path_to/siControl_R1_2genes.bam.bai,path_to/siSrsf3_R1_2genes.bam,path_to/siSrsf3_R1_2genes.bam.bai,path_to/vm18.mouse.genemodel.bed

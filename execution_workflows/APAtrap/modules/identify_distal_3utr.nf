@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 def modules = params.modules.clone()
-def identify_distal_3utr_options    = modules['identify_distal_3utr']
+def inputs    = modules['identify_distal_3utr']
 
 /*
     Run the first step of APAtrap: identifyDistal3UTR to refine
@@ -15,19 +15,19 @@ process IDENTIFY_DISTAL_3UTR {
         container "docker.io/apaeval/apatrap:latest"
 
         input:
-        tuple path(genome_file), path(reads_bedgraph_file)
+        tuple path(genome_file), path(reads_bedgraph_file1), path(reads_bedgraph_file2)
 
         output:
         path "$utr_output", emit: ch_predictapa_input
 
         script:
         utr_output = "predictapa_input.bed"
-        window_size = identify_distal_3utr_options.w
-        extension_size = identify_distal_3utr_options.e
-        min_coverage = identify_distal_3utr_options.c
-        min_percentage = identify_distal_3utr_options.p
+        window_size = inputs.w
+        extension_size = inputs.e
+        min_coverage = inputs.c
+        min_percentage = inputs.p
         """
-        identifyDistal3UTR -i $reads_bedgraph_file \
+        identifyDistal3UTR -i $reads_bedgraph_file1 $reads_bedgraph_file2 \
                            -m $genome_file \
                            -o $utr_output \
                            -w $window_size \

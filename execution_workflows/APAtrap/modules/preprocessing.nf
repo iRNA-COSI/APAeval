@@ -14,15 +14,17 @@ process PREPROCESSING {
     container "quay.io/biocontainers/python:3.8.3"
 
     input:
-    path bedgraph_file
+    tuple path(bedgraph_file1), path(bedgraph_file2)
 
     output:
-    path "$final_input_bedgraph", emit: ch_3utr_input
+    path "*.bedgraph", emit: ch_3utr_input
 
     script:
-    final_input_bedgraph = "3utr_input_final.bedgraph"
+    final_input_bedgraph1 = "3utr_input_final1.bedgraph"
+    final_input_bedgraph2 = "3utr_input_final2.bedgraph"
     """
-    check_bedgraph.py $bedgraph_file $final_input_bedgraph
+    check_bedgraph.py $bedgraph_file1 $final_input_bedgraph1
+    check_bedgraph.py $bedgraph_file2 $final_input_bedgraph2
     """
 
 }

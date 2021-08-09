@@ -1,6 +1,4 @@
-# APAeval nextflow pilot run
- 
- # APAtrap
+# APAtrap
 The APAtrap R package does the following: 
 1. Refines annotated 3'UTR and identifies novel 3' UTRs and 3' UTR extensions
 2. Aims to identify all potential APA (alternative polyadenylation) sites
@@ -15,8 +13,10 @@ to create the nextflow pipeline flow of this module
 
 ### Steps to run this:
  - Replace "path_to" in samplesheet_example_files.csv with the path to the reference input files
- - Check the path to the input files with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the path from the `pwd` command
- - Pull the required docker image by doing `docker pull docker.io/faricazjj/apatrap:latest`
+ - Check the path to the input files with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
+   path from the `pwd` command
+ - Go to `conf/modules.config` to configure the parameters required to run APAtrap workflow. Descriptions of the parameters
+   are located in the file
  - Then, you are good to run the pilot benchmark nextflow pipeline with `APAtrap`
 ```
 nextflow main.nf --input samplesheet_example_files.csv
@@ -29,8 +29,10 @@ This workflow uses docker container. To run, make sure that docker is installed 
 Required files to be specified in the input `samplesheet_example_files.csv`:
 
 - sample: name of the run, will be used as the folder name of final output files 
-- bam: BAM input file 
-- bai: BAI index file for the bam input
+- bam1: BAM input file for sample 1
+- bai1: BAI index file for sample1's bam input
+- bam2: BAM input file for sample 2
+- bai2: BAI index file for sample2's bam input
 - bed: gene model file in bed format. Can be obtained from [UCSC table browser](http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=1133780495_lZCAEdlwBd7HbE03thrN4Tsi6lSF&clade=mammal&org=Mouse&db=mm10&hgta_group=genes&hgta_track=wgEncodeGencodeVM18&hgta_table=0&hgta_regionType=genome&position=chr12%3A56%2C694%2C976-56%2C714%2C605&hgta_outputType=bed&hgta_outFileName=)
 
 ## Params

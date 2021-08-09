@@ -13,15 +13,17 @@ process CONVERT_TO_BEDGRAPH {
     container "docker.io/apaeval/apatrap:latest"
 
     input:
-    tuple path(bam_file), path(bai_file)
+    tuple path(bam_file1), path(bai_file1), path(bam_file2), path(bai_file2)
 
     output:
-    path "$bedgraph_file", emit: ch_bedgraph
+    path "*.bedgraph", emit: ch_bedgraph
 
     script:
-    bedgraph_file = "3utr_input.bedgraph"
+    bedgraph_file1 = "3utr_input1.bedgraph"
+    bedgraph_file2 = "3utr_input2.bedgraph"
     """
-    bedtools genomecov -ibam $bam_file -bg > $bedgraph_file
+    bedtools genomecov -ibam $bam_file1 -bg > $bedgraph_file1
+    bedtools genomecov -ibam $bam_file2 -bg > $bedgraph_file2
     """
 
 }

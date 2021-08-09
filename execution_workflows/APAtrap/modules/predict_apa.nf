@@ -15,7 +15,7 @@ process PREDICT_APA {
         container "docker.io/apaeval/apatrap:latest"
 
         input:
-        tuple path(reads_bedgraph_file), path(predict_apa_input)
+        tuple path(reads_bedgraph_file1), path(reads_bedgraph_file2), path(predict_apa_input)
 
         output:
         path "$predict_apa_output", emit: ch_de_apa_input
@@ -29,7 +29,7 @@ process PREDICT_APA {
         min_dist = inputs.a
         window_size = inputs.w
         """
-        predictAPA -i $reads_bedgraph_file \
+        predictAPA -i $reads_bedgraph_file1 $reads_bedgraph_file2 \
                    -g $num_of_grps \
                    -n $num_of_replicates \
                    -u $predict_apa_input \
