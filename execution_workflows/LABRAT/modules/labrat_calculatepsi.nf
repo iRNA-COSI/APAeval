@@ -14,7 +14,7 @@ process LABRAT_CALCULATEPSI {
         val conditionA
         val conditionB
         path gff
-m
+
         output:
         path "*.psis" , emit: ch_psis
         path "*.txt"
