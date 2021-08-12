@@ -9,22 +9,20 @@ def options    = initOptions(params.options)
     in all sequence regions
 */
 process PREPROCESSING {
-
-    publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
+    tag "$sample"
+    publishDir "${params.outdir}/apatrap/sample_bedgraph_files", mode: params.publish_dir_mode
     container "quay.io/biocontainers/python:3.8.3"
 
     input:
-    tuple path(bedgraph_file1), path(bedgraph_file2)
+    tuple val(sample), path(bedgraph_file)
 
     output:
-    path "*.bedgraph", emit: ch_3utr_input
+    val "apatrap/sample_bedgraph_files", emit: ch_sample_bedgraph_files_dir
+    tuple val(sample), path(sample_bedgraph), emit: ch_3utr_input
 
     script:
-    final_input_bedgraph1 = "3utr_input_final1.bedgraph"
-    final_input_bedgraph2 = "3utr_input_final2.bedgraph"
+    sample_bedgraph = "3utr_input_" + sample + ".bedgraph"
     """
-    check_bedgraph.py $bedgraph_file1 $final_input_bedgraph1
-    check_bedgraph.py $bedgraph_file2 $final_input_bedgraph2
+    check_bedgraph.py $bedgraph_file $sample_bedgraph
     """
-
 }

@@ -34,7 +34,7 @@ def print_error(error, context='Line', context_str=''):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    sample,bam1,bai1,bam2,bai2,bed
+    sample,bam,bai,bed
     """
 
     input_extensions = []
@@ -43,7 +43,7 @@ def check_samplesheet(file_in, file_out):
 
         ## Check header
         MIN_COLS = 4
-        HEADER = ['sample','bam1','bai1','bam2', 'bai2', 'bed']
+        HEADER = ['sample','bam','bai', 'bed']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bam1, bai1, bam2, bai2, bed = lspl[:len(HEADER)]
+            sample, bam, bai, bed = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -70,15 +70,11 @@ def check_samplesheet(file_in, file_out):
                 print_error("Sample entry has not been specified!", 'Line', line)
 
             ## Check bam extension
-            if bam1 or bam2:
-                if bam1.find(" ") != -1:
-                    print_error("bam1 contains spaces!", 'Line', line)
-                if bam2 != "" and bam2.find(" ") != -1:
-                    print_error("bam2 contains spaces!", 'Line', line)
-                if not bam1.endswith(".bam"):
-                    print_error("bam1 does not have extension 'bam'", 'Line', line)
-                if bam2 != "" and not bam2.endswith(".bam"):
-                    print_error("bam2 does not have extension 'bam'", 'Line', line)
+            if bam:
+                if bam.find(" ") != -1:
+                    print_error("bam contains spaces!", 'Line', line)
+                if not bam.endswith(".bam"):
+                    print_error("bam does not have extension 'bam'", 'Line', line)
 
             ## Check bed extension
             if bed:
@@ -88,7 +84,7 @@ def check_samplesheet(file_in, file_out):
                     print_error("bed does not have extension '.bed'", 'Line', line)
 
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ sample, bam1, bai1, bam2, bai2, bed]
+            sample_info = [ sample, bam, bai, bed]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -96,7 +92,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','bam1','bai1','bam2', 'bai2','bed']) + "\n")
+            fout.write(",".join(['sample','bam','bai', 'bed']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")

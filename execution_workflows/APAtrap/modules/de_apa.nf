@@ -11,17 +11,18 @@ def inputs    = modules['de_apa']
     in APA site usage between conditions.
 */
 process DE_APA {
+        tag "$sample"
         publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
         container "docker.io/apaeval/apatrap:latest"
 
         input:
-        path de_apa_input
+        tuple val(sample), path(de_apa_input)
 
         output:
-        path "$de_apa_output", emit: ch_de_apa_output
+        tuple val(sample), path(de_apa_output), emit: ch_de_apa_output
 
         script:
-        de_apa_output = inputs.output_file
+        de_apa_output = "depa_output.txt"
         group1 = inputs.group1
         group2 = inputs.group2
         least_qualified_num_in_group1 = inputs.least_qualified_num_in_group1
