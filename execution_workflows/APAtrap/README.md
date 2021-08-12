@@ -1,5 +1,5 @@
 # APAtrap
-The APAtrap R package does the following: 
+The APAtrap R package does the following three steps: 
 1. Refines annotated 3'UTR and identifies novel 3' UTRs and 3' UTR extensions
 2. Aims to identify all potential APA (alternative polyadenylation) sites
 3. Detects genes with differential APA site usage between conditions by leveraging 
@@ -12,13 +12,18 @@ and [user manual](https://sourceforge.net/p/apatrap/wiki/User%20Manual/) was use
 to create the nextflow pipeline flow of this module
 
 ### Steps to run this:
+ - We can either run the workflow to obtain identification and quantification outputs, or differential output. There
+   is currently no way to run the workflow once to get outputs for all three challenges
+ - samplesheet_example_files.csv contains paths to all the input files provided for each workflow run
  - Replace "path_to" in samplesheet_example_files.csv with the path to the reference input files
  - Check the path to the input files with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
    path from the `pwd` command
- - If we are running the differential step of APAtrap, make sure to have at least two rows in the samplesheet with unique
-   sample names, and only the output file for differential challenge will be produced
- - If we are not running the differential step of APAtrap, each row in the samplesheet will be ran to produce
-   output files for identification and quantification challenges
+ - Each row in the samplesheet contains files for one sample to be processed
+ - Any number of rows can be provided in the samplesheet
+ - If we are running the differential step of APAtrap, make sure to have at least two rows in the samplesheet and all
+   the rows are processed at the same time
+ - If we are not running the differential step of APAtrap, each row in the samplesheet will be processed individually 
+   for identification and quantification challenges
  - Go to `conf/modules.config` to configure the parameters required to run APAtrap workflow. Descriptions of the parameters
    are located in the file. Head to `Params` for more info
  - Then, you are good to run the pilot benchmark nextflow pipeline with `APAtrap`
