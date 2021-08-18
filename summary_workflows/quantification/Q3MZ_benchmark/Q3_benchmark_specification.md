@@ -2,16 +2,16 @@
 
 ## Synopsis
 
-Benchmark to test the agreement of RNAseq-based poly(A) site quantification with the ground truth, which is the relative abundance of transcripts that were used to simulate RNAseq data.
+Benchmark to test the agreement of RNAseq-based poly(A) site quantification with the ground truth, which is the relative abundance of transcripts that were used to **simulate** RNAseq data.
 
 Input data:
 
 1. Poly(A) sites quantification based on simulated RNAseq data using the benchmarked tool
-2. Poly(A) sites quantification based on abundances of transcripts used to generate the simulated data
+2. Poly(A) sites quantification based on abundances of transcripts used to simulate the RNAseq data
 
 Based on the input data the following metrics are computed:
  
-1. Correlation between RNAseq-based quantification and ground truth.
+1. Correlation between RNAseq-based quantification and ground truth, that is the abundance of transcripts assumed when simulating the RNAseq data.
 
 To compute the metrics, the poly(A) sites identified from the RNAseq data using the benchmarked tool and from the orthogonal dataset should be first mapped to each other:
 
@@ -26,7 +26,7 @@ To compute the metrics, the poly(A) sites identified from the RNAseq data using 
 ## General info
 
 * **Challenge:** Quantification
-* **Identifier:** Q2
+* **Identifier:** Q3
 
 ## Inputs
 
@@ -50,7 +50,7 @@ This BED file contains genomic positions of unique cleavage/polyadenylation site
 
 #### Format 2
 
-This BED file contains genomic positions of unique unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from transcript abundances.
+This BED file contains genomic positions of unique unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from abundances of transcripts assumed when generating the RNAseq-data.
 Fields (the same as format 1):
 
 - **chrom** - the name of the chromosome
@@ -85,7 +85,7 @@ description of each attribute-value pair:
  
  | Attribute | Type | Unit | Description |
  | --- | --- | --- | --- |
- | `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and 3'end-seq quantification |
+ | `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and abundances of transcripts used to simulate the RNAseq-data |
 
 ## Metrics
  
