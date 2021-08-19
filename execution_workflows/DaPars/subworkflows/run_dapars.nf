@@ -10,7 +10,7 @@ workflow RUN_DAPARS {
     
     main:
     ch_sample
-       .map { it -> [ it[7], it[8] ] }
+       .map { it -> [ it[4], it[5] ] }
        .unique()
        .set { ch_extract_3utr_input }
 
@@ -19,9 +19,20 @@ workflow RUN_DAPARS {
      */
      DAPARS_EXTRACT_3UTR ( ch_extract_3utr_input )
 
+    ch_sample
+        .map { it -> [ it[2], it[3] ] }
+        .unique()
+        .set { ch_convert_to_bedgraph_input }
+    /*
+     * Convert sample bam files to bedgraph
+     */
+     CONVERT_TO_BEDGRAPH ( ch_convert_to_bedgraph_input )
+
+    CHECK_INPUTS()
+
     /*
      * Create config file to be used as input for step 2 of DaPars
      */
-    CREATE_CONFIG_FILE ()
+    //CREATE_CONFIG_FILE ()
 }
 
