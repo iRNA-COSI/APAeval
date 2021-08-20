@@ -42,11 +42,11 @@ process PREDICT_APA {
             sample_files=""
             for folder in "$pwd"/*
             do
-                num_of_grps=\$((\$num_of_grps + 1))
-                for file in "\$folder"/*
+                let num_of_grps++
+                for file in \$folder/*
                 do
                     sample_files+="\$file "
-                    curr_num_of_replicates=\$((\$curr_num_of_replicates + 1))
+                    let curr_num_of_replicates++
                 done
                 num_of_replicates+="\$curr_num_of_replicates "
                 curr_num_of_replicates=0

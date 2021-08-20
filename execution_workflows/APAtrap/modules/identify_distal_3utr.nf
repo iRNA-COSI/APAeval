@@ -37,10 +37,12 @@ process IDENTIFY_DISTAL_3UTR {
             """
             #!/bin/bash
             sample_files=""
-            for file in "$pwd"/*
+            for folder in "$pwd"/*
             do
-                echo \$file
-                sample_files+="\$file "
+                for file in \$folder/*
+                do
+                    sample_files+="\$file "
+                done
             done
             identifyDistal3UTR -i \$sample_files \
                 -m $genome_file \
