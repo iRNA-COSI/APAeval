@@ -15,13 +15,13 @@ to create the nextflow pipeline flow of this module
  - We can either run the workflow to obtain identification and quantification outputs, or differential output. There
    is currently no way to run the workflow once to get outputs for all three challenges
  - samplesheet_example_files.csv contains paths to all the input files provided for each workflow run
- - Check the path to the input files with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
+ - Check the path to APAtrap with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
    path from the `pwd` command
  - Each row in the samplesheet contains files for one sample to be processed
- - Any number of rows can be provided in the samplesheet
- - If we are running the differential step of APAtrap, make sure to have at least two rows in the samplesheet and all
+ - Any number of rows (i.e. any number of replicates per condition) can be provided in the samplesheet in any order
+ - If we are running the differential step of APAtrap, make sure to have at least two distinct conditions in the samplesheet and all
    the rows are processed at the same time
- - If we are not running the differential step of APAtrap, each row in the samplesheet will be processed individually 
+ - If we are not running the differential step of APAtrap, each condition in the samplesheet will be processed individually 
    for identification and quantification challenges
  - Go to `conf/modules.config` to configure the parameters required to run APAtrap workflow. Descriptions of the parameters
    are located in the file. Head to `Params` for more info
@@ -45,14 +45,17 @@ This workflow uses docker container. To run, make sure that docker is installed 
 Required files are to be specified in the input `samplesheet_example_files.csv`. Each row in the samplesheet has four
 columns:
 
-- sample: name of the sample
+- condition: name of the condition (e.g Control)
+- sample: name of the sample for logs (e.g control_replicate1)
 - bam: BAM input file for the sample 
 - bai: BAI index file for sample's bam input
-- bed: gene model file in bed format. Can be obtained from [UCSC table browser](http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=1133780495_lZCAEdlwBd7HbE03thrN4Tsi6lSF&clade=mammal&org=Mouse&db=mm10&hgta_group=genes&hgta_track=wgEncodeGencodeVM18&hgta_table=0&hgta_regionType=genome&position=chr12%3A56%2C694%2C976-56%2C714%2C605&hgta_outputType=bed&hgta_outFileName=)
 
 Each row in the samplesheet has the files needed for each sample file.
 When run_differential is set to false, at least one row is required to be provided.
-When run_differential is set to true, at least two rows (i.e. two conditions) are required to be provided. 
+When run_differential is set to true, at least two rows (i.e. two distinct conditions) are required to be provided. 
+
+It is important to name samples of the same condition with the exact condition name under the condition
+column in the samplesheet since samples are grouped per condition to be processed.
 
 ## Output & post-processing
 Each APAtrap run results in files of the outputs of the challenges located under APAtrap/results/apatrap/challenges_outputs folder.
@@ -61,11 +64,9 @@ The differential output file will stay as the name specified in modules.config f
 
 
 ## Notes
-The "chr" in the chromosome column in the input bam file needs to be there. Otherwise, identifyDistal3UTR will
-product an empty output file. The check for leading 'chr' in the chromosome column is done under 
-PREPROCESSING step. If no leading chr is detected, it'll be added.
+- When running differential, as clarified with APAtrap author, Dr. Congting Ye, predictAPA step requires that
 
 
 ## Author contact
-If you have any question or comment about APAtrap, please contact with Dr. Conting Ye (yec@xmu.edu.cn).
+If you have any question or comment about APAtrap, please contact with Dr. Congting Ye (yec@xmu.edu.cn).
 
