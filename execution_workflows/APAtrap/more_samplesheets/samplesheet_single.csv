@@ -1,3 +1,0 @@
-sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
-siControl_R1,path_to/SRR11918577.fastq.gz,,path_to/siControl_R1.markdup.sorted.bam,path_to/siControl_R1.markdup.sorted.bam.bai,path_to/gencode.v37.annotation.gff3,path_to/mm39.fa,path_to/qapa_3utrs.gencode_VM22.mm10.bed,path_to/mart_export.txt
-siSrsf3_R1,path_to/RR11918579.fastq.gz,,path_to/siSrsf3_R1.markdup.sorted.bam,path_to/siSrsf3_R1.markdup.sorted.bam.bai,path_to/gencode.v37.annotation.gff3,path_to/mm39.fa,path_to/qapa_3utrs.gencode_VM22.mm10.bed,path_to/mart_export.txt
