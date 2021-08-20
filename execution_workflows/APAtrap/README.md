@@ -15,7 +15,6 @@ to create the nextflow pipeline flow of this module
  - We can either run the workflow to obtain identification and quantification outputs, or differential output. There
    is currently no way to run the workflow once to get outputs for all three challenges
  - samplesheet_example_files.csv contains paths to all the input files provided for each workflow run
- - Replace "path_to" in samplesheet_example_files.csv with the path to the reference input files
  - Check the path to the input files with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
    path from the `pwd` command
  - Each row in the samplesheet contains files for one sample to be processed
@@ -65,4 +64,8 @@ The differential output file will stay as the name specified in modules.config f
 The "chr" in the chromosome column in the input bam file needs to be there. Otherwise, identifyDistal3UTR will
 product an empty output file. The check for leading 'chr' in the chromosome column is done under 
 PREPROCESSING step. If no leading chr is detected, it'll be added.
+
+
+## Author contact
+If you have any question or comment about APAtrap, please contact with Dr. Conting Ye (yec@xmu.edu.cn).
 

@@ -4,25 +4,26 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
+
 /*
     Ensure that the final bedgraph file has leading "chr"
     in all sequence regions
 */
 process PREPROCESSING {
-    tag "$sample"
-    publishDir "${params.outdir}/apatrap/sample_bedgraph_files", mode: params.publish_dir_mode
-    container "quay.io/biocontainers/python:3.8.3"
+    publishDir "${params.outdir}/apatrap/genome_file", mode: params.publish_dir_mode
+    container "docker.io/apaeval/apatrap:latest"
 
     input:
-    tuple val(sample), path(bedgraph_file)
+    file genome_file
 
     output:
-    val "apatrap/sample_bedgraph_files", emit: ch_sample_bedgraph_files_dir
-    tuple val(sample), path(sample_bedgraph), emit: ch_3utr_input
+    path(converted_genome_file), emit: ch_genome_file
 
     script:
-    sample_bedgraph = "3utr_input_" + sample + ".bedgraph"
+    converted_genome_file = "genemodel.bed"
+
     """
-    check_bedgraph.py $bedgraph_file $sample_bedgraph
+    gtfToGenePred $genome_file test.genePhred
+    genePredToBed test.genePhred $converted_genome_file
     """
 }

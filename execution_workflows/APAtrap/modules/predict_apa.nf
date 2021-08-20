@@ -25,28 +25,35 @@ process PREDICT_APA {
         tuple val(sample), path(predict_apa_output), emit: ch_de_apa_input
 
         script:
-        num_of_grps = inputs.g
-        num_of_replicates = inputs.n
-
         min_deg_coverage = inputs.d
         min_avg_coverage = inputs.c
         min_dist = inputs.a
         window_size = inputs.w
         pwd = "$PWD/${params.outdir}/$sample_bedgraph_files_dir"
         // if run differential, all sample files have to be ran together
+        // grouped by condition in the same order of -n parameter
         if (run_differential) {
             predict_apa_output = "deapa_input.txt"
             """
             #!/bin/bash
+            num_of_grps=0
+            num_of_replicates=""
+            curr_num_of_replicates=0
             sample_files=""
-            for file in "$pwd"/*
+            for folder in "$pwd"/*
             do
-                echo \$file
-                sample_files+="\$file "
+                num_of_grps=\$((\$num_of_grps + 1))
+                for file in "\$folder"/*
+                do
+                    sample_files+="\$file "
+                    curr_num_of_replicates=\$((\$curr_num_of_replicates + 1))
+                done
+                num_of_replicates+="\$curr_num_of_replicates "
+                curr_num_of_replicates=0
             done
             predictAPA -i \$sample_files \
-                   -g $num_of_grps \
-                   -n $num_of_replicates \
+                   -g \$num_of_grps \
+                   -n \$num_of_replicates \
                    -u $predict_apa_input \
                    -o $predict_apa_output\
                    -d $min_deg_coverage \
@@ -57,6 +64,8 @@ process PREDICT_APA {
         }
         // otherwise if not running differential, run sample files individually
         else {
+            num_of_grps = 1
+            num_of_replicates = 1
             predict_apa_output = "deapa_input_" + sample + ".txt"
             """
             predictAPA -i $reads_bedgraph_file \

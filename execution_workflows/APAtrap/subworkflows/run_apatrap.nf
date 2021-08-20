@@ -4,6 +4,8 @@
 
 def workflow_option = params.workflow.clone()
 def run_differential = workflow_option['run_differential']
+def modules = params.modules.clone()
+def preprocessing    = modules['preprocessing']
 
 include { CONVERT_TO_BEDGRAPH   } from '../modules/convert_to_bedgraph' addParams( options: [:] )
 include { PREPROCESSING         } from '../modules/preprocessing' addParams( options: [:] )
@@ -20,7 +22,7 @@ workflow RUN_APATRAP {
     main:
     // get the bam and bai files
     ch_sample
-        .map { it -> [ it[0], it[1], it[2] ] }
+        .map { it -> [ it[0], it[1], it[2], it[3] ] }
         .unique()
         .set { ch_convert_to_bedgraph_input }
 
@@ -30,31 +32,30 @@ workflow RUN_APATRAP {
     */
     CONVERT_TO_BEDGRAPH( ch_convert_to_bedgraph_input )
 
-    CONVERT_TO_BEDGRAPH.out.ch_bedgraph
-        .set { ch_preprocessing_input }
+    CONVERT_TO_BEDGRAPH.out.ch_sample_bedgraph_files_dir
+        .set{ ch_sample_bedgraph_files_dir }
+
+    CONVERT_TO_BEDGRAPH.out.ch_3utr_input
+        .set{ ch_3utr_input }
 
     /*
-        Ensure that file has leading chr
+        Convert gtf genome file to bed12
     */
+    Channel
+        .fromPath("$PWD/${preprocessing.genome_file}")
+        .set{ ch_preprocessing_input }
+
     PREPROCESSING( ch_preprocessing_input )
 
-    // combine the genome file with the input file for identifyDistal3UTR
-    ch_sample
-        .map{ it -> it[3] }
-        .combine(PREPROCESSING.out.ch_3utr_input)
-        .unique()
-        .set { ch_3utr_input }
-
-    PREPROCESSING.out.ch_sample_bedgraph_files_dir
-        .set{ ch_sample_bedgraph_files_dir }
+    // rename the genome file channel for identifyDistal3UTR
+    PREPROCESSING.out.ch_genome_file
+        .combine(ch_3utr_input)
+        .set{ ch_3utr_input }
 
     // If we are running differential, only the first inputs in the channels are required.
     // The input files used are in ch_sample_bedgraph_files_dir
     if ( run_differential ) {
-        ch_3utr_input
-            .first()
-            .set{ ch_3utr_input }
-        PREPROCESSING.out.ch_sample_bedgraph_files_dir
+        ch_sample_bedgraph_files_dir
             .first()
             .set{ ch_sample_bedgraph_files_dir }
     }

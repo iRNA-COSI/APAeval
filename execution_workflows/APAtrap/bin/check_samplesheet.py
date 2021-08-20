@@ -34,7 +34,7 @@ def print_error(error, context='Line', context_str=''):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    sample,bam,bai,bed
+    condition,sample,bam,bai
     """
 
     input_extensions = []
@@ -43,7 +43,7 @@ def check_samplesheet(file_in, file_out):
 
         ## Check header
         MIN_COLS = 4
-        HEADER = ['sample','bam','bai', 'bed']
+        HEADER = ['condition','sample','bam','bai']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bam, bai, bed = lspl[:len(HEADER)]
+            condition,sample, bam, bai = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -76,15 +76,9 @@ def check_samplesheet(file_in, file_out):
                 if not bam.endswith(".bam"):
                     print_error("bam does not have extension 'bam'", 'Line', line)
 
-            ## Check bed extension
-            if bed:
-                if bed.find(" ") != -1:
-                    print_error("bed contains spaces!", 'Line', line)
-                if not bed.endswith(".bed"):
-                    print_error("bed does not have extension '.bed'", 'Line', line)
 
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ sample, bam, bai, bed]
+            sample_info = [ condition, sample, bam, bai]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -92,7 +86,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','bam','bai', 'bed']) + "\n")
+            fout.write(",".join(['condition','sample','bam','bai']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")

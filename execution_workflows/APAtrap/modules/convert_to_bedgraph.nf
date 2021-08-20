@@ -9,14 +9,15 @@ def options    = initOptions(params.options)
 */
 process CONVERT_TO_BEDGRAPH {
     tag "$sample"
-    publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/apatrap/sample_bedgraph_files/${condition}", mode: params.publish_dir_mode
     container "docker.io/apaeval/apatrap:latest"
 
     input:
-    tuple val(sample), path(bam_file), path(bai_file)
+    tuple val(condition), val(sample), path(bam_file), path(bai_file)
 
     output:
-    tuple val(sample), path(bedgraph_file), emit: ch_bedgraph
+    val "apatrap/sample_bedgraph_files", emit: ch_sample_bedgraph_files_dir
+    tuple val(sample), path(bedgraph_file), emit: ch_3utr_input
 
     script:
     bedgraph_file = "preprocess_input_" + sample + ".bedgraph"
