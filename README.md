@@ -166,7 +166,7 @@ to shuffle the times a bit, so that most people should be able to attend at
 least some of the calls, irrespective of your location.
 
 This calendar contains all video call events, including the necessary login
-info, and we would like to kindly ask you to subscribed to it:
+info, and we would like to kindly ask you to subscribe to it:
 
 - Calendar ID: `59bboug9agv30v32r6bvaofdo4@group.calendar.google.com`
 - [Public address][calendar-url]
@@ -174,8 +174,8 @@ info, and we would like to kindly ask you to subscribed to it:
 > Please do not download the ICS file and then import it, as any updates to the
 > calendar will not be synced. Instead, copy the calendar ID or public address
 > and paste it in the appropriate field of your calendar application. Refer to
-> your calendar application's help pages if you do not know how to subscribeh
-> to a calendar.
+> your calendar application's help pages if you do not know how to subscribe to
+> a calendar.
 
 With the exception of presenting APAeval during the RNA Meeting, all video
 calls will take place in the following [**Zoom**][zoom] room:
