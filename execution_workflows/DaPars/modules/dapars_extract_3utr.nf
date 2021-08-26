@@ -18,8 +18,9 @@ process DAPARS_EXTRACT_3UTR {
         path "$extracted_3utr_bed", emit: ch_extracted_3utr_output
 
         script:
-        extracted_3utr_bed  = dapars_extract_3utr_options.extracted_3utr_bed
+        extracted_3utr_bed  = "final_extracted_3utr.bed"
         """
-        DaPars_Extract_Anno.py -b $gene_model_bed -s $gene_symbol_txt -o $extracted_3utr_bed
+        DaPars_Extract_Anno.py -b $gene_model_bed -s $gene_symbol_txt -o "extracted_3utr.bed"
+        check_bedgraph.py "extracted_3utr.bed" $extracted_3utr_bed
         """
 }

@@ -4,7 +4,10 @@ FROM ubuntu:20.04
 LABEL authors="Farica Zhuang" \
       description="Docker image containing all software requirements for the DaPars execution_workflow pipeline"
 
-RUN apt-get update && apt-get install -y curl unzip python python-pip bedtools wget
+# set this to not get asked for geographic area when downloading R
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get install -y curl unzip python python-dev python3 python3-pip r-base bedtools wget
 
 # Install DaPars
 RUN curl -LJO gitreleases.dev/gh/ZhengXia/dapars/latest/dapars_0.9.1.zip
@@ -20,5 +23,9 @@ RUN mv gtfToGenePred /usr/local/bin
 RUN mv genePredToBed /usr/local/bin
 
 # Install python packages
-RUN pip install pandas
-RUN pip install configparser
+RUN wget wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+RUN pip3 install pandas
+RUN python2.7 get-pip.py
+RUN pip2.7 install numpy
+RUN pip2.7 install scipy
+RUN pip2.7 install rpy2==2.8.6

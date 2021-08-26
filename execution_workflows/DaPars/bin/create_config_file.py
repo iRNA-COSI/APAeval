@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import argparse
@@ -27,17 +27,19 @@ def parse_args(args=None):
 
 
 def get_sample_files(bedgraphs_dir):
-	group1 = ""
-	group2 = ""
+	group1 = []
+	group2 = []
 	group = 1
 	for folder in os.listdir(bedgraphs_dir):
 		if group == 1:
-			for file in folder:
-				group1 += " " + file
+			for file in os.listdir(os.path.join(bedgraphs_dir,folder)):
+				group1.append(os.path.join(bedgraphs_dir, folder, file))
 			group += 1
 		else:
-			for file in folder:
-				group2 += " " + file
+			for file in os.listdir(os.path.join(bedgraphs_dir,folder)):
+				group2.append(os.path.join(bedgraphs_dir, folder, file))
+	group1 = ','.join(group1)
+	group2 = ','.join(group2)
 	return group1, group2
 
 
@@ -45,21 +47,25 @@ def create_config_file(args):
 	"""
 	This function creates the config file for step 2 of DaPars
 	"""
-	config = configparser.ConfigParser()
-	config['Annotated_3UTR'] = args.ANNOTATED_3UTR
 	group1, group2 = get_sample_files(args.BEDGRAPHS_DIR)
-	config['Group1_tophat_aligned_Wig'] = group1
-	config['Group2_tophat_aligned_Wig'] = group2
-	config['Output_directory'] = args.OUTPUT_DIR
-	config['Output_result_file'] = "dapars_output"
-	config['Num_least_in_group1'] = args.NUM_LEAST_IN_GROUP1
-	config['Num_least_in_group2'] = args.NUM_LEAST_IN_GROUP2
-	config['Coverage_cutoff'] = args.COVERAGE_CUTOFF
-	config['FDR_cutoff'] = args.FDR_CUTOFF
-	config['PDUI_cutoff'] = args.PDUI_CUTOFF
-	config['Fold_change_cutoff'] = args.FOLD_CHANGE_CUTOFF
-	with open(args.CONFIG_OUTPUT) as configfile:
-		config.write(configfile)
+	config = {
+		'Annotated_3UTR': args.ANNOTATED_3UTR,
+		'Group1_Tophat_aligned_Wig': group1,
+		'Group2_Tophat_aligned_Wig': group2,
+		'Output_result_file': 'dapars_output',
+		'Output_directory': args.OUTPUT_DIR,
+		'Num_least_in_group1': args.NUM_LEAST_IN_GROUP1,
+		'Num_least_in_group2': args.NUM_LEAST_IN_GROUP2,
+		'Coverage_cutoff': args.COVERAGE_CUTOFF,
+		'FDR_cutoff': args.FDR_CUTOFF,
+		'PDUI_cutoff': args.PDUI_CUTOFF,
+		'Fold_change_cutoff': args.FOLD_CHANGE_CUTOFF
+	}
+
+	with open(args.CONFIG_OUTPUT, 'w') as f:
+		for key, value in config.items():
+			f.write('%s=%s\n' % (key, value))
+
 
 def main(args=None):
 	args = parse_args(args)

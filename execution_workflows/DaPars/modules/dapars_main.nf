@@ -14,11 +14,11 @@ process DAPARS_MAIN {
         path(config_file)
 
         output:
-        path "*", emit: ch_dapars_output
+        path config_file, emit: ch_dapars_output
 
         script:
         """
-        DaPars_main.py $config_file
+        python /dapars/src/DaPars_main.py $config_file
         """
  }
 

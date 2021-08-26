@@ -7,20 +7,21 @@ def modules = params.modules.clone()
 def options = modules['create_config_file']
 
 process CREATE_CONFIG_FILE {
-        tag "$sample"
         publishDir "${params.outdir}/dapars", mode: params.publish_dir_mode
         container "docker.io/apaeval/dapars:latest"
 
         input:
+        tuple val(sample), path(bedgraph_file)
         path annotated_3utr
 
         output:
-        path "*", emit: ch_dapars_input
+        path config_output, emit: ch_dapars_input
 
         script:
-        bedgraphs_dir = "$PWD/${params.outdir}/dapars/sample_bedgraph_files_dir"
+        annotated_3utr = "$PWD/${params.outdir}/dapars/final_extracted_3utr.bed"
+        bedgraphs_dir = "$PWD/${params.outdir}/dapars/sample_bedgraph_files"
         output_dir = "$PWD/${params.outdir}/dapars/"
-        config_output = "$PWD/${params.outdir}/dapars/config"
+        config_output = "config"
         num_least_in_group1 = options.num_least_in_group1
         num_least_in_group2 = options.num_least_in_group2
         coverage_cutoff = options.coverage_cutoff
@@ -38,7 +39,7 @@ process CREATE_CONFIG_FILE {
         $coverage_cutoff \
         $fdr_cutoff \
         $pdui_cutoff \
-        $fold_change_cutoff
+        $fold_change_cutoff \
         $config_output
         """
  }

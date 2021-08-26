@@ -15,9 +15,13 @@ process CONVERT_TO_BEDGRAPH {
     input:
     tuple val(sample), val(condition), path(bam_file), path(bai_file)
 
+    output:
+    tuple val(sample), path(bedgraph_file), emit: ch_convert_to_bedgraph_out
+
     script:
     bedgraph_file = sample + ".bedgraph"
     """
-    bedtools genomecov -ibam $bam_file -bg > $bedgraph_file
+    bedtools genomecov -ibam $bam_file -bg > "sample.bedgraph"
+    check_bedgraph.py "sample.bedgraph" $bedgraph_file
     """
 }

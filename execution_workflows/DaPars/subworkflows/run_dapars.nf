@@ -9,6 +9,8 @@ include { PREPROCESSING         } from '../modules/preprocessing' addParams( opt
 include { DAPARS_EXTRACT_3UTR   } from '../modules/dapars_extract_3utr' addParams( options: [:] )
 include { CONVERT_TO_BEDGRAPH   } from '../modules/convert_to_bedgraph' addParams( options: [:] )
 include { CREATE_CONFIG_FILE    } from '../modules/create_config_file' addParams( options: [:] )
+include { DAPARS_MAIN           } from '../modules/dapars_main' addParams( options: [:] )
+include { POSTPROCESSING        } from '../modules/postprocessing' addParams( options: [:] )
 
 workflow RUN_DAPARS {
     take:
@@ -46,6 +48,14 @@ workflow RUN_DAPARS {
     /*
      * Create config file to be used as input for step 2 of DaPars
      */
-    CREATE_CONFIG_FILE (DAPARS_EXTRACT_3UTR.out.ch_extracted_3utr_output)
+    CREATE_CONFIG_FILE (
+        CONVERT_TO_BEDGRAPH.out.ch_convert_to_bedgraph_out.first(),
+        DAPARS_EXTRACT_3UTR.out.ch_extracted_3utr_output
+    )
+
+    DAPARS_MAIN ( CREATE_CONFIG_FILE.out.ch_dapars_input )
+
+    POSTPROCESSING ( DAPARS_MAIN.out.ch_dapars_output )
+
 }
 
