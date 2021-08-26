@@ -2,17 +2,32 @@
  * Run DaPars
  */
 
+def modules = params.modules.clone()
+def files    = modules['files']
+
+include { PREPROCESSING         } from '../modules/preprocessing' addParams( options: [:] )
 include { DAPARS_EXTRACT_3UTR   } from '../modules/dapars_extract_3utr' addParams( options: [:] )
+include { CONVERT_TO_BEDGRAPH   } from '../modules/convert_to_bedgraph' addParams( options: [:] )
+include { CREATE_CONFIG_FILE    } from '../modules/create_config_file' addParams( options: [:] )
 
 workflow RUN_DAPARS {
     take:
     ch_sample
     
     main:
-    ch_sample
-       .map { it -> [ it[4], it[5] ] }
-       .unique()
-       .set { ch_extract_3utr_input }
+    /*
+        Convert gtf genome file to bed12
+    */
+    Channel
+        .fromPath("$PWD/${files.genome_file}")
+        .set{ ch_preprocessing_input }
+
+    PREPROCESSING( ch_preprocessing_input )
+
+    Channel
+        .fromPath("$PWD/${files.gene_symbol_file}")
+        .combine(PREPROCESSING.out.ch_genome_file)
+        .set { ch_extract_3utr_input }
 
     /*
      * Run step 1 of DaPars: Generate region annotation, extract 3utr
@@ -20,19 +35,17 @@ workflow RUN_DAPARS {
      DAPARS_EXTRACT_3UTR ( ch_extract_3utr_input )
 
     ch_sample
-        .map { it -> [ it[2], it[3] ] }
-        .unique()
+        .map { it -> [ it[0], it[1], it[2], it[3] ] }
         .set { ch_convert_to_bedgraph_input }
-    /*
-     * Convert sample bam files to bedgraph
-     */
-     CONVERT_TO_BEDGRAPH ( ch_convert_to_bedgraph_input )
 
-    CHECK_INPUTS()
+    /*
+    * Convert sample bam files to bedgraph
+    */
+    CONVERT_TO_BEDGRAPH ( ch_convert_to_bedgraph_input )
 
     /*
      * Create config file to be used as input for step 2 of DaPars
      */
-    //CREATE_CONFIG_FILE ()
+    CREATE_CONFIG_FILE (DAPARS_EXTRACT_3UTR.out.ch_extracted_3utr_output)
 }
 

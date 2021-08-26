@@ -12,7 +12,7 @@ process DAPARS_EXTRACT_3UTR {
         container "docker.io/apaeval/dapars:latest"
 
         input:
-        tuple path(gene_model_bed), path(gene_symbol_txt)
+        tuple path(gene_symbol_txt), path(gene_model_bed)
 
         output:
         path "$extracted_3utr_bed", emit: ch_extracted_3utr_output

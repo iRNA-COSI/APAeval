@@ -1,3 +1,3 @@
-sample,condition,bam,bai,bed,txt
-control_r1,control,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siControl_R1_100genes.bam,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siControl_R1_100genes.bam.bai,/Users/i536345/PycharmProjects/APAeval/tests/test_data/vm18.mouse.genemodel.bed,/Users/i536345/PycharmProjects/APAeval/tests/test_data/vm18_mouse_gene_symbol.txt
-srsf3_r1,srsf3,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siSrsf3_R1_100genes.bam,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siSrsf3_R1_100genes.bam.bai,/Users/i536345/PycharmProjects/APAeval/tests/test_data/vm18.mouse.genemodel.bed,/Users/i536345/PycharmProjects/APAeval/tests/test_data/vm18_mouse_gene_symbol.txt
+sample,condition,bam,bai
+control_r1,control,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siControl_R1_2genes.bam,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siControl_R1_2genes.bam.bai
+srsf3_r1,srsf3,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siSrsf3_R1_2genes.bam,/Users/i536345/PycharmProjects/APAeval/tests/test_data/siSrsf3_R1_2genes.bam.bai

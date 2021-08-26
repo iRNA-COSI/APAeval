@@ -21,5 +21,5 @@ process CHECK_SAMPLESHEET {
 }
 
 def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.bam, sample.bai, sample.bed, sample.txt ]
+    return [ sample.sample, sample.condition, sample.bam, sample.bai ]
 }
