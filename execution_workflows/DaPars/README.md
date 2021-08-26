@@ -1,8 +1,8 @@
 # DaPars
 DaPars is a python-based model that directly infers the dynamic alternative polyadenylation (APA)
 usage by comparing standard RNA-seq. Given the annotated gene model, DaPars can infer the de novo proximal APA sites 
-as well as the long and short 3’UTR expression levels. Finally, it infers the dynamic APA usages between two 
-conditions will be identified.can infer the dynamic APA usages between two conditions. 
+as well as the long and short 3’UTR expression levels. Finally, it identifies the dynamic APA usages between two 
+conditions. 
 
 The [paper](https://www.nature.com/articles/ncomms6274) is titled Dynamic analyses of alternative polyadenylation from 
 RNA-seq reveal a 3′-UTR landscape across seven tumour types <br>

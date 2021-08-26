@@ -5,7 +5,7 @@ import argparse
 import pandas as pd
 
 def parse_args(args=None):
-    Description = "Reformat APAtrap deAPA output txt file into the output files of differential challenge"
+    Description = "Reformat DePars output file into the output files of differential challenge"
     Epilog = "Example usage: python convert_to_tsv.py <FILE_IN> <IDENTIFICATION_OUT> <DIFFERENTIAL_OUT>"
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)

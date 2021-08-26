@@ -41,8 +41,8 @@ workflow RUN_DAPARS {
         .set { ch_convert_to_bedgraph_input }
 
     /*
-    * Convert sample bam files to bedgraph
-    */
+     * Convert sample bam files to bedgraph
+     */
     CONVERT_TO_BEDGRAPH ( ch_convert_to_bedgraph_input )
 
     /*
@@ -53,9 +53,14 @@ workflow RUN_DAPARS {
         DAPARS_EXTRACT_3UTR.out.ch_extracted_3utr_output
     )
 
+    /*
+     * Run step 2 of DaPars: identify the dynamic APA usages between two conditions.
+     */
     DAPARS_MAIN ( CREATE_CONFIG_FILE.out.ch_dapars_input )
 
+    /*
+     * Convert DaPars output file to differential challenge output file
+     */
     POSTPROCESSING ( DAPARS_MAIN.out.ch_dapars_output )
-
 }
 
