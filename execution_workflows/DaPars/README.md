@@ -12,9 +12,10 @@ to create the nextflow pipeline flow of this module
 
 ### Steps to run this:
  - DaPars requires exactly two distinct conditions to be provided for the differential step
- - samplesheet_example_files.csv contains paths to all the input files provided for each workflow run
- - Check the path to DaPars with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
-   path from the `pwd` command
+ - samplesheet_example_files.csv contains paths to all the input test files provided for each workflow run
+ - To run DaPars with test data provided for APAeval, check the path to DaPars with `pwd` and replace the `path_to` in samplesheet_example_files.csv with the 
+   path from the `pwd` command. Otherwise, replace the bam/bai paths in the samplesheet with the absolute paths
+   to the files you would like to use
  - Each row in the samplesheet contains files for one sample to be processed
  - Any number of rows (i.e. any number of replicates per condition) can be provided in the samplesheet in any order
  - The first step of DaPars requires a gene symbol file. Download gene symbol file from 
