@@ -25,6 +25,8 @@ to create the nextflow pipeline flow of this module
    for identification and quantification challenges
  - Go to `conf/modules.config` to configure the parameters required to run APAtrap workflow. Descriptions of the parameters
    are located in the file. Head to `Params` for more info
+ - Delete the existing `results` folder to remove results from the previous run, if any. This is to avoid polluting the next
+   run wtih the results from the previous run. This would likely result in an error as well.
  - Then, you are good to run the pilot benchmark nextflow pipeline with `APAtrap`
 
 ```
@@ -64,7 +66,13 @@ The differential output file will stay as the name specified in modules.config f
 
 
 ## Notes
-- When running differential, as clarified with APAtrap author, Dr. Congting Ye, predictAPA step requires that
+- When running differential, as clarified with APAtrap author, Dr. Congting Ye, predictAPA step requires that the input files are placed
+  by group and in the some order of values specified by parameter -n. So for example, if we have two replicates for each condition, we'll then do
+  `predictAPA -i condition1_replicate1.bedgraph condition1_replicate2.bedgraph condition2_replicate1.bedgraph condition2_replicate2.bedgraph -g 2 -n 2 2 -u  hg19.utr.bed -o output.txt`. This means that we have to loop through the sample files by condition, where each condition has a folder in the results folder.
+  As such, the results folder needs to be clean of files and folders from the previous run as to not pollute the predictAPA step of the next run. This is
+  the reason we require the results folder to be deleted before running the workflow.
+
+This means that the order of files in the samplesheet has no restrictions but I'll probably have to update the workflow such that it groups sample files by condition and then concatenates them next to each other
 
 
 ## Author contact
