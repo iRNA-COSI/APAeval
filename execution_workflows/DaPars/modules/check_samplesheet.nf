@@ -7,7 +7,8 @@ def options    = initOptions(params.options)
 process CHECK_SAMPLESHEET {
     tag "$samplesheet"
     publishDir "${params.outdir}/pipeline_info", mode: params.publish_dir_mode
-
+    container "docker.io/apaeval/dapars:latest"
+    
     input:
     path samplesheet
     
