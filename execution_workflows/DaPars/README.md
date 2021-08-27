@@ -59,4 +59,4 @@ challenge
 
 
 ## Author contact
-If you have any question or comment about DaPars, please contact Zheng Xia (zxia@bcm.edu) or Wei Li (wl1@bcm.edu).
+If you have any question or comment about DaPars, please post on DaPars Google Groups (https://groups.google.com/u/1/g/DaPars) or the author, Dr. Zheng Xia (xiaz@ohsu.edu).
