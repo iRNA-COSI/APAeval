@@ -1,5 +1,0 @@
-chr16	sol	exon	78137646	78137646	0.0	+	.	after_mle "0.08695652173913043";confidence "1.000e+00";before_mle "23.87772925764193";log_odds "1.262e+01";type "changepoint"
-chr16	sol	exon	78156976	78156976	0.0	-	.	after_mle "7.833333333333333";confidence "1.000e+00";before_mle "0.8776978417266187";log_odds "1.067e+01";type "changepoint"
-chr6	sol	exon	119900940	119900940	0.0	-	.	after_mle "50.40441176470588";confidence "1.000e+00";before_mle "0.13333333333333336";log_odds "1.771e+01";type "changepoint"
-chr16	sol	exon	78098605	78098605	0.0	+	.	after_mle "28.77777777777777";confidence "1.000e+00";before_mle "0.0";log_odds "1.308e+01";type "changepoint"
-chr6	sol	exon	120015625	120015625	0.0	-	.	after_mle "0.17647058823529416";confidence "1.000e+00";before_mle "26.733333333333338";log_odds "1.028e+01";type "changepoint"

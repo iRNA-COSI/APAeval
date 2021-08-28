@@ -1,4 +1,0 @@
-chr1	sol	locus	159172391	159172470	0.0	+	.	id "000000000"
-chr6	sol	locus	119900594	119903648	0.0	-	.	id "000000001"
-chr6	sol	changepoint	119900924	119900924	0.0	-	.	cov_upstream "49.902439024390254,28.902439024390226";after_mle "";cov_downstream "0.23529411764705885,0.9411764705882352";confidence "1.000e+00";before_mle "";log_odds "1.156e+01";id "000000001";s1 "siControl_R1_2genes";s2 "siSrsf3_R1_2genes"
-chr6	sol	changepoint	119902564	119902564	0.0	-	.	cov_upstream "52.35185185185187,58.111111111111114";after_mle "";cov_downstream "49.902439024390254,28.902439024390226";confidence "2.838e-01";before_mle "";log_odds "-9.255e-01";id "000000001";s1 "siControl_R1_2genes";s2 "siSrsf3_R1_2genes"

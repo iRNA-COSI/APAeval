@@ -13,8 +13,8 @@ checkPathParamList = [ params.input ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters (missing protocol or profile will exit the run.)
-if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-
+if (params.samplesheet) { ch_samplesheet = file(params.samplesheet) } else { exit 1, 'samplesheet not specified!' }
+if (params.bamdir) { ch_bam = Channel.fromPath(params.bamdir) } else { exit 1, 'bamdir not specified!' }
 
 // Function to check if running offline
 def isOffline() {
@@ -44,9 +44,9 @@ include { RUN_ISOSCM  } from '../subworkflows/run_isoscm'  addParams( options: [
 
 workflow EXECUTE_ISOSCM{
 
-         INPUT_CHECK ( ch_input )
+         INPUT_CHECK ( ch_samplesheet )
 
-         RUN_ISOSCM ( INPUT_CHECK.out.ch_samplesheet, INPUT_CHECK.out.ch_bamdir )
+         RUN_ISOSCM ( INPUT_CHECK.out.ch_samplesheet, ch_bam )
     }
 
 ////////////////////////////////////////////////////

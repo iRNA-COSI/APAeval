@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 #########################################################
 ### Generate results for identification & quantification

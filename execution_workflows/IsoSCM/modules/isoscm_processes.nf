@@ -16,22 +16,26 @@ def options    = initOptions(params.options)
 process ISOSCM_ALL {
         publishDir "${params.outdir}", mode: params.publish_dir_mode
         
+        container "docker.io/apaeval/isoscm:1.0"
+        
         input:
         path samplesheet
-        path bamdir
+        path bam
 
         output:
-        path "*"
+        path "*.bed"
+        path "*_03.txt"
         
         
         shell:
         '''
         sampleA=$(awk -F',' 'NR==2{print $1}' !{samplesheet})
         sampleB=$(awk -F',' 'NR==3{print $1}' !{samplesheet})
-        bamA=!{bamdir}/$sampleA*.bam
-        bamB=!{bamdir}/$sampleB*.bam
-        strandA=$(awk -F',' 'NR==2{print $3}' !{samplesheet})
-        strandB=$(awk -F',' 'NR==3{print $3}' !{samplesheet})
+        dirname=$(echo !{params.bamdir} | rev | cut -d'/' -f1 | rev)
+        bamA=$dirname/${sampleA}*.bam
+        bamB=$dirname/${sampleB}*.bam
+        strandA=$(awk -F',' 'NR==2{print $2}' !{samplesheet})
+        strandB=$(awk -F',' 'NR==3{print $2}' !{samplesheet})
         
         # Assemble
         ## must specify the output dir as 'isoscm' because there's a bug in the enumerate step..

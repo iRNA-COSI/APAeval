@@ -42,8 +42,8 @@ def check_samplesheet(file_in, file_out):
     with open(file_in, "r") as fin:
 
         ## Check header
-        MIN_COLS = 5
-        HEADER = ['sample','bamdir','strandinfo','gtf','condition']
+        MIN_COLS = 3
+        HEADER = ['sample','strandinfo','condition']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,34 +62,21 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bamdir, strandinfo, gtf, condition = lspl[:len(HEADER)]
+            sample, strandinfo, condition = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
             else:
                 print_error("Sample entry has not been specified!", 'Line', line)
 
-            ## Check gtf extension
-            if gtf:
-                if gtf.find(" ") != -1:
-                    print_error("gtf contains spaces!", 'Line', line)
-                if not gtf.endswith(".gtf"):
-                    print_error("gtf does not have extension '.gtf'", 'Line', line)
-
-            ## Check bamdir entries
-            if bamdir:
-                if bamdir.find(' ') != -1:
-                    print_error("bamdir entry contains spaces!",'Line', line)
-                if bamdir.endswith(".bam"):
-                    print_error("DO NOT specify the exact BAM file but the directory", 'Line', line)
             
             ## Check strandinfo
             if strandinfo:
                 if strandinfo != "reverse_forward" and strandinfo != "unstranded":
                     print_error("Must assign strandinfo to either 'reverse_forward' or 'unstranded'")
             
-            ## Create sample mapping dictionary = {group: {replicate : [ sample, bamdir, strandinfo, gtf, condition ]}}
-            sample_info = [ sample, bamdir, strandinfo, gtf, condition ]
+            ## Create sample mapping dictionary = {group: {replicate : [ sample, strandinfo, condition ]}}
+            sample_info = [ sample, strandinfo, condition ]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -97,7 +84,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','bamdir','strandinfo','gtf','condition']) + "\n")
+            fout.write(",".join(['sample','strandinfo','condition']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")

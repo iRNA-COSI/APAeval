@@ -10,7 +10,7 @@ include { ISOSCM_ALL } from '../modules/isoscm_processes' addParams( options: [:
 workflow RUN_ISOSCM {
     take:
     ch_samplesheet
-    ch_bamdir
+    ch_bam
     
     main:
     
@@ -18,6 +18,6 @@ workflow RUN_ISOSCM {
      * Assemble, Enumerate, Compare
      */
      
-     ISOSCM_ALL ( ch_samplesheet, ch_bamdir )
+     ISOSCM_ALL ( ch_samplesheet, ch_bam )
 }
 

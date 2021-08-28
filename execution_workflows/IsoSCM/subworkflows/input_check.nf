@@ -12,6 +12,8 @@ process CHECK_SAMPLESHEET {
     tag "$samplesheet"
     publishDir "${params.outdir}/sample_info", mode: params.publish_dir_mode
     
+    container "docker.io/apaeval/isoscm:1.0"
+    
     input:
     path samplesheet
     
@@ -25,7 +27,7 @@ process CHECK_SAMPLESHEET {
 
 
 def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.bamdir, sample.strandinfo, sample.gtf, sample.condition ]
+    return [ sample.sample, sample.strandinfo, sample.condition ]
 }
 
 
@@ -38,14 +40,7 @@ workflow INPUT_CHECK {
     
     // Process per CSV record
     ch_samplesheet = CHECK_SAMPLESHEET.out.ch_samplesheet
-    ch_samplesheet
-        .splitCsv ( header:true, sep:',' )
-        .map { it -> it.bamdir }
-        .unique()
-        .set { ch_bamdir }
-    ch_bamdir.view()
     
     emit:
     ch_samplesheet
-    ch_bamdir
 }

@@ -18,11 +18,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Nextflow workflow report for run id [kickass_shirley]">
+  <meta name="description" content="Nextflow workflow report for run id [ridiculous_newton]">
   <meta name="author" content="Paolo Di Tommaso, Phil Ewels">
   <link rel="icon" type="image/png" href="https://www.nextflow.io/img/favicon.png" />
 
-  <title>[kickass_shirley] Nextflow Workflow Report</title>
+  <title>[ridiculous_newton] Nextflow Workflow Report</title>
 
   <style type="text/css">
   /*!
@@ -137,7 +137,7 @@ table.DTCR_clonedTable.dataTable{position:absolute !important;background-color:r
         <li class="nav-item"><a class="nav-link" href="#tasks">Tasks</a></li>
       </ul>
       <span class="navbar-text">
-        [kickass_shirley]
+        [ridiculous_newton]
       </span>
     </div>
   </nav>
@@ -146,27 +146,53 @@ table.DTCR_clonedTable.dataTable{position:absolute !important;background-color:r
     <div class="container">
 
       <h1 class="display-3">Nextflow workflow report</h1>
-      <h2 class="text-muted mb-4"><samp>[kickass_shirley]</samp> </h2>
+      <h2 class="text-muted mb-4"><samp>[ridiculous_newton]</samp> </h2>
 
       
-          <div class="alert alert-success mb-4">
-              Workflow execution completed successfully!
+          <div class="alert alert-danger mb-4">
+              <h4>Workflow execution completed unsuccessfully!</h4>
+              <p>The exit status of the task that caused the workflow execution to fail was: <code>125</code>.</p>
+              <p>The full error message was:</p>
+              <pre>Error executing process > 'EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)'
+
+Caused by:
+  Process `EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)` terminated with an error exit status (125)
+
+Command executed:
+
+  check_samplesheet.py samplesheet.csv samplesheet_reformat.csv
+
+Command exit status:
+  125
+
+Command output:
+  (empty)
+
+Command error:
+  Unable to find image 'apaeval/isoscm:latest' locally
+  docker: Error response from daemon: manifest for apaeval/isoscm:latest not found: manifest unknown: manifest unknown.
+  See 'docker run --help'.
+
+Work dir:
+  /Users/chilampoon/playground/APAeval/execution_workflows/IsoSCM/work/6f/99319c767847628a9497006f95f7f1
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`</pre>
           </div>
       
 
       <dl>
         <dt>Run times</dt>
         <dd>
-          <span id="workflow_start">28-Aug-2021 15:39:46</span> - <span id="workflow_complete">28-Aug-2021 15:40:49</span>
-          (<span id="completed_fromnow"></span>duration: <strong>1m 3s</strong>)
+          <span id="workflow_start">28-Aug-2021 15:30:39</span> - <span id="workflow_complete">28-Aug-2021 15:30:46</span>
+          (<span id="completed_fromnow"></span>duration: <strong>6.8s</strong>)
         </dd>
 
         <dl>
           <div class="progress" style="height: 1.6rem; margin: 1.2rem auto; border-radius: 0.20rem;">
-            <div style="width: 100.0%" class="progress-bar bg-success" data-toggle="tooltip" data-placement="top" title="2 tasks succeeded"><span class="text-truncate">&nbsp; 2 succeeded &nbsp;</span></div>
+            <div style="width: 0.0%" class="progress-bar bg-success" data-toggle="tooltip" data-placement="top" title="0 tasks succeeded"><span class="text-truncate">&nbsp; 0 succeeded &nbsp;</span></div>
             <div style="width: 0.0%" class="progress-bar bg-secondary" data-toggle="tooltip" data-placement="top" title="0 tasks were cached"><span class="text-truncate">&nbsp; 0 cached &nbsp;</span></div>
             <div style="width: 0.0%" class="progress-bar bg-warning" data-toggle="tooltip" data-placement="top" title="0 tasks reported and error and were ignored"><span class="text-truncate">&nbsp; 0 ignored &nbsp;</span></div>
-            <div style="width: 0.0%" class="progress-bar bg-danger" data-toggle="tooltip" data-placement="top" title="0 tasks failed"><span class="text-truncate">&nbsp; 0 failed &nbsp;</span></div>
+            <div style="width: 100.0%" class="progress-bar bg-danger" data-toggle="tooltip" data-placement="top" title="1 tasks failed"><span class="text-truncate">&nbsp; 1 failed &nbsp;</span></div>
           </div>
         </dl>
 
@@ -198,7 +224,7 @@ table.DTCR_clonedTable.dataTable{position:absolute !important;background-color:r
         
 
         <dt class="col-sm-3">Workflow session</dt>
-        <dd class="col-sm-9"><code>c1614052-69e0-4ac4-95c9-228c656a65e8</code></dd>
+        <dd class="col-sm-9"><code>1092ef93-16ab-45f2-a74e-56f18ef4935f</code></dd>
 
         
 
@@ -1029,7 +1055,7 @@ $(function() {
 
   // Nextflow report data
   window.data = { "trace":[
-{"task_id":"1","hash":"b1\/80b743","native_id":"57558","process":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET","module":"-","container":"docker.io\/apaeval\/isoscm:1.0","tag":"samplesheet.csv","name":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","status":"COMPLETED","exit":"0","submit":"1630179588366","start":"1630179588467","complete":"1630179591971","duration":"3605","realtime":"208","%cpu":"57.8","%mem":"0.2","rss":"3465216","vmem":"7147520","peak_rss":"3465216","peak_vmem":"7176192","rchar":"704292","wchar":"292","syscr":"314","syscw":"13","read_bytes":"122880","write_bytes":"0","attempt":"1","workdir":"\/Users\/chilampoon\/playground\/APAeval\/execution_workflows\/IsoSCM\/work\/b1\/80b74339913f8d7b6e6957881a6e97","script":"\n    check_samplesheet.py samplesheet.csv samplesheet_reformat.csv\n    ","scratch":"-","queue":"-","cpus":"1","memory":"7516192768","disk":"-","time":"14400000","env":"PATH=\/Users\/chilampoon\/playground\/APAeval\/execution_workflows\/IsoSCM\/bin:$PATH\n","error_action":"-","vol_ctxt":"7","inv_ctxt":"1"},{"task_id":"2","hash":"4f\/10bc5c","native_id":"57622","process":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL","module":"-","container":"docker.io\/apaeval\/isoscm:1.0","tag":"-","name":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","status":"COMPLETED","exit":"0","submit":"1630179592129","start":"1630179592183","complete":"1630179649498","duration":"57369","realtime":"54800","%cpu":"98.2","%mem":"6.3","rss":"129986560","vmem":"4149825536","peak_rss":"130502656","peak_vmem":"4207628288","rchar":"135444401","wchar":"300753","syscr":"69616","syscw":"200","read_bytes":"118784","write_bytes":"0","attempt":"1","workdir":"\/Users\/chilampoon\/playground\/APAeval\/execution_workflows\/IsoSCM\/work\/4f\/10bc5cfbde45166740d5e7eb3375a3","script":"\n        sampleA=$(awk -F\',\' \'NR==2{print $1}\' samplesheet_reformat.csv)\n        sampleB=$(awk -F\',\' \'NR==3{print $1}\' samplesheet_reformat.csv)\n        dirname=$(echo ..\/..\/tests\/test_data\/STAR_intronMotif\/bam | rev | cut -d\'\/\' -f1 | rev)\n        bamA=$dirname\/${sampleA}*.bam\n        bamB=$dirname\/${sampleB}*.bam\n        strandA=$(awk -F\',\' \'NR==2{print $2}\' samplesheet_reformat.csv)\n        strandB=$(awk -F\',\' \'NR==3{print $2}\' samplesheet_reformat.csv)\n        \n        # Assemble\n        ## must specify the output dir as \'isoscm\' because there\'s a bug in the enumerate step..\n        java -Xmx2048m -jar \/IsoSCM-2.0.12.jar assemble -bam $bamA -base $sampleA -s $strandA -dir isoscm\n        java -Xmx2048m -jar \/IsoSCM-2.0.12.jar assemble -bam $bamB -base $sampleB -s $strandB -dir isoscm\n        \n        for s in $sampleA $sampleB; do\n            ## generate bed files here:\n            get_bed_files.sh $s .\/isoscm\n        \n            # Enumerate\n            java -Xmx2048m -jar \/IsoSCM-2.0.12.jar enumerate -max_isoforms 20 -x isoscm\/${s}.assembly_parameters.xml\n        done\n        \n        # Compare\n        java -Xmx2048m -jar \/IsoSCM-2.0.12.jar compare -base ${sampleA}.vs.${sampleB} -x1 isoscm\/${sampleA}.assembly_parameters.xml -x2 isoscm\/${sampleB}.assembly_parameters.xml\n        \n        cp compare\/*.txt .\/IsoSCM_03.txt\n        rm tmp.gtf isoscm*.log\n        ","scratch":"-","queue":"-","cpus":"1","memory":"7516192768","disk":"-","time":"14400000","env":"PATH=\/Users\/chilampoon\/playground\/APAeval\/execution_workflows\/IsoSCM\/bin:$PATH\n","error_action":"-","vol_ctxt":"35","inv_ctxt":"45"}], "summary":[{"cpuUsage":{"mean":57.8,"min":57.8,"q1":57.8,"q2":57.8,"q3":57.8,"max":57.8,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"process":"CHECK_SAMPLESHEET","mem":{"mean":3465216,"min":3465216,"q1":3465216,"q2":3465216,"q3":3465216,"max":3465216,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"memUsage":{"mean":0.05,"min":0.05,"q1":0.05,"q2":0.05,"q3":0.05,"max":0.05,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"timeUsage":null,"vmem":{"mean":7176192,"min":7176192,"q1":7176192,"q2":7176192,"q3":7176192,"max":7176192,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"reads":{"mean":704292,"min":704292,"q1":704292,"q2":704292,"q3":704292,"max":704292,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"cpu":{"mean":57.8,"min":57.8,"q1":57.8,"q2":57.8,"q3":57.8,"max":57.8,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"time":{"mean":208,"min":208,"q1":208,"q2":208,"q3":208,"max":208,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"writes":{"mean":292,"min":292,"q1":292,"q2":292,"q3":292,"max":292,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"}},{"cpuUsage":{"mean":98.2,"min":98.2,"q1":98.2,"q2":98.2,"q3":98.2,"max":98.2,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"process":"ISOSCM_ALL","mem":{"mean":130502656,"min":130502656,"q1":130502656,"q2":130502656,"q3":130502656,"max":130502656,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"memUsage":{"mean":1.74,"min":1.74,"q1":1.74,"q2":1.74,"q3":1.74,"max":1.74,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"timeUsage":{"mean":0.38,"min":0.38,"q1":0.38,"q2":0.38,"q3":0.38,"max":0.38,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"vmem":{"mean":4207628288,"min":4207628288,"q1":4207628288,"q2":4207628288,"q3":4207628288,"max":4207628288,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"reads":{"mean":135444401,"min":135444401,"q1":135444401,"q2":135444401,"q3":135444401,"max":135444401,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"cpu":{"mean":98.2,"min":98.2,"q1":98.2,"q2":98.2,"q3":98.2,"max":98.2,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"time":{"mean":54800,"min":54800,"q1":54800,"q2":54800,"q3":54800,"max":54800,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"},"writes":{"mean":300753,"min":300753,"q1":300753,"q2":300753,"q3":300753,"max":300753,"minLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","maxLabel":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q1Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q2Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)","q3Label":"EXECUTE_ISOSCM:RUN_ISOSCM:ISOSCM_ALL (1)"}}] };
+{"task_id":"1","hash":"6f\/99319c","native_id":"57357","process":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET","module":"-","container":"docker.io\/apaeval\/isoscm:latest","tag":"samplesheet.csv","name":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","status":"FAILED","exit":"125","submit":"1630179041208","start":"1630179041301","complete":"1630179046283","duration":"5075","realtime":"4982","%cpu":"-","%mem":"-","rss":"-","vmem":"-","peak_rss":"-","peak_vmem":"-","rchar":"-","wchar":"-","syscr":"-","syscw":"-","read_bytes":"-","write_bytes":"-","attempt":"1","workdir":"\/Users\/chilampoon\/playground\/APAeval\/execution_workflows\/IsoSCM\/work\/6f\/99319c767847628a9497006f95f7f1","script":"\n    check_samplesheet.py samplesheet.csv samplesheet_reformat.csv\n    ","scratch":"-","queue":"-","cpus":"1","memory":"7516192768","disk":"-","time":"14400000","env":"PATH=\/Users\/chilampoon\/playground\/APAeval\/execution_workflows\/IsoSCM\/bin:$PATH\n","error_action":"FINISH","vol_ctxt":"-","inv_ctxt":"-"}], "summary":[{"cpuUsage":null,"process":"CHECK_SAMPLESHEET","mem":null,"memUsage":null,"timeUsage":{"mean":0.03,"min":0.03,"q1":0.03,"q2":0.03,"q3":0.03,"max":0.03,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"vmem":null,"reads":null,"cpu":null,"time":{"mean":4982,"min":4982,"q1":4982,"q2":4982,"q3":4982,"max":4982,"minLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","maxLabel":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q1Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q2Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)","q3Label":"EXECUTE_ISOSCM:INPUT_CHECK:CHECK_SAMPLESHEET (samplesheet.csv)"},"writes":null}] };
 
   </script>
 
