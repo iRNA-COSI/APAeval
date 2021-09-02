@@ -64,7 +64,7 @@ rule getBed12_1:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "getBed12_1.log")
     shell:
@@ -81,7 +81,7 @@ rule getBed12_2:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "getBed12_2.log")
     shell:
@@ -112,7 +112,7 @@ rule getRegionAnnotation:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "getRegionAnnotation.log")
     shell:
@@ -133,7 +133,7 @@ rule addChrToBam:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "{sample}_addChrToBam.log")
     shell:
@@ -152,7 +152,7 @@ rule sortBam:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "{sample}_sortBam.log")
     threads: 4
@@ -174,7 +174,7 @@ rule indexBam:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "{sample}_indexBam.log")
     shell:
@@ -192,7 +192,7 @@ rule generateBedgraph:
     conda:
         os.path.join(config["envs"], "DaPars2.yaml")
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"], "{sample}_generateBedgraph.log")
     shell:
@@ -210,7 +210,7 @@ rule generatePathReadcounts:
     params:
         basename= os.path.basename(os.path.join(config["out_dir"], "{sample}.sorted.bam"))
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
     log:
         os.path.join(config["local_log"],"{sample}_generatePathReadcounts.log")
     shell:
@@ -286,7 +286,7 @@ rule mainDapars2:
         os.path.join(config["envs"], "DaPars2.yaml")
 
     container:
-        "docker://sambrycesmith/apaeval_dapars2:23d89d1_and_preprocessing"
+        "docker://apaeval/dapars2:1.0"
 
     log:
         os.path.join(config["local_log"], "{sample}_{chr}_execute.mainDapars2.log")
