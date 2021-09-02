@@ -54,6 +54,27 @@ rule addChrToGff3:
         """(awk '{{if($1 !~ /^#/){{print "chr"$0}}else{{print $0}}}}' {input.gff3} > {output.out}) &> {log}"""
 
 
+rule getBed12:
+    """
+    Generate a BED12 annotation file required by DaPars2 from provided GTF transcript annotation
+    """
+    input:
+        config["gtf"]
+
+    output:
+        os.path.join(config["out_dir"], "annotation.bed12")
+
+    container:
+        "docker://apaeval/gtftobed:1.0"
+
+    log:
+        os.path.join(config["local_log"], "getBed12.log")
+
+    shell:
+        """
+        python3 /app/gtfTobed.py --gtf {input}
+        """
+
 rule getBed12_1:
     """This step generates genePred from gff3. This is the first step for generate 12 column bed file.
     """
