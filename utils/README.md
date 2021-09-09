@@ -20,7 +20,7 @@ Contents:
 
 **Usage (shell command to run the tool)**:
 ```
-python3 /app/gtfTobed.py --gtf <path to GTF file>
+/gtfTobed.py --gtf <path to GTF file> --out_bed <name of the output BED file>
 ```
 
 
