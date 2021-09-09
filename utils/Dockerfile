@@ -1,10 +1,9 @@
 # Use an official Python runtime as a parent image
 FROM ubuntu:latest
 
-ENV TZ=Asia/Singapore
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set the working directory to /app
-WORKDIR /app
+WORKDIR /
 
 # Copy the requirements.txt into the container at /app
 #COPY [ "gtfTobed.py", "/app/" ]
@@ -17,6 +16,4 @@ RUN wget https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/genePredToBed
 RUN chmod +x gtfToGenePred genePredToBed
 
 # Copy the current directory contents into the container at /app
-COPY . /app
-
-ENTRYPOINT ["python","gtfTobed.py"]
+COPY . /
