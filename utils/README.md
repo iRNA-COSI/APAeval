@@ -12,11 +12,11 @@ Contents:
 
 **Description:** Convert a [GTF](https://genome.ucsc.edu/FAQ/FAQformat.html#format4) annotation file to [BED12](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) (also known as a 'gene model' file) format.
 
-**subdirectory name**: **{update this}**
+**Subdirectory name**: `gtf_to_bed12`
 
 **Dockerhub link:** https://hub.docker.com/r/apaeval/gtftobed
 
-**Dockerhub url (for pipeline)**: `docker.io/apaeval/gtftobed:1.0`
+**Dockerhub url (to use with Nextflow/Snakemake)**: `docker.io/apaeval/gtftobed:1.0`
 
 **Usage (shell command to run the tool)**:
 ```
@@ -37,13 +37,15 @@ Have code for a pre-processing / file wrangling task that you think may be gener
 
 (remove the escape slash when you copy and paste to interpret the hashes as titles)
 
-Description: short 1/2 sentence description of the task the utility achieves
+**Description**: <short 1/2 sentence description of the task the utility completes>
 
-Dockerhub link: `https://hub.docker.com/r/apaeval/<tool_name>`
+**Dockerhub link**: `https://hub.docker.com/r/apaeval/<tool_name>`
 
-Docker.io url (to use in pipeline): <docker.io/apaeval/<tool_name>:<tag>
+**Subdirectory name**: `<subdirectory name under utils/ storing Dockerfile and necessary scripts>`
 
-Usage (shell command to run the tool):
+**Docker.io url (to use with Nextflow/Snakemake)**: <docker.io/apaeval/<tool_name:tag>
+
+**Usage (shell command to run the tool)**:
 
 ```
 python utility.py -i <input> -o <output>
