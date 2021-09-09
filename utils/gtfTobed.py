@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
 import os
-import sys
+# import sys
 import argparse
 import subprocess
-import glob
+# import glob
 
 def main():
     parser = argparse.ArgumentParser(description='GTF to BED')
     parser.add_argument('--gtf', dest='gtf', type=str,
                         help='Input gtf file.', required=True)
     parser.add_argument('--out_bed', dest='out_bed', type=str,
-                        help='Input gtf file.', required=True)
+                        help='Output BED12 file.', required=True)
     args = parser.parse_args()
     gtf=args.gtf
     bed=args.out_bed
