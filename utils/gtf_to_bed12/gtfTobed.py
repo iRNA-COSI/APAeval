@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-# import sys
 import argparse
 import subprocess
-# import glob
 
 def main():
     parser = argparse.ArgumentParser(description='GTF to BED')
@@ -16,7 +14,6 @@ def main():
     gtf=args.gtf
     bed=args.out_bed
     genePred=".".join(gtf.split(".")[:-1])+".genePred"
-    #bed=".".join(gtf.split(".")[:-1])+".bed"
     cmd1 = ['/gtfToGenePred',  gtf, genePred]
     print(' '.join(cmd1))
     subprocess.run(' '.join(cmd1), shell=True, check=True)
