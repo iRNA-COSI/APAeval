@@ -12,5 +12,5 @@ RUN wget https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred
 RUN wget https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/genePredToBed
 RUN chmod +x gtfToGenePred genePredToBed
 
-# Copy the current directory contents into the container at /app
+# Copy the current directory contents into the container at /
 COPY . /
