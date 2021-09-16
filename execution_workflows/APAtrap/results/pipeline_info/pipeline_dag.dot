@@ -1,0 +1,78 @@
+digraph "pipeline_dag" {
+p0 [shape=point,label="",fixedsize=true,width=0.1];
+p1 [label="EXECUTE_APATRAP:INPUT_CHECK:CHECK_SAMPLESHEET"];
+p0 -> p1 [label="samplesheet"];
+
+p1 [label="EXECUTE_APATRAP:INPUT_CHECK:CHECK_SAMPLESHEET"];
+p2 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="splitCsv"];
+p1 -> p2;
+
+p2 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="splitCsv"];
+p3 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="map"];
+p2 -> p3;
+
+p3 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="map"];
+p4 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="map"];
+p3 -> p4 [label="ch_sample"];
+
+p4 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="map"];
+p5 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="unique"];
+p4 -> p5;
+
+p5 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="unique"];
+p6 [label="EXECUTE_APATRAP:RUN_APATRAP:CONVERT_TO_BEDGRAPH"];
+p5 -> p6 [label="ch_convert_to_bedgraph_input"];
+
+p6 [label="EXECUTE_APATRAP:RUN_APATRAP:CONVERT_TO_BEDGRAPH"];
+p10 [label="EXECUTE_APATRAP:RUN_APATRAP:IDENTIFY_DISTAL_3UTR"];
+p6 -> p10 [label="ch_sample_bedgraph_files_dir"];
+
+p6 [label="EXECUTE_APATRAP:RUN_APATRAP:CONVERT_TO_BEDGRAPH"];
+p9 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p6 -> p9 [label="ch_3utr_input"];
+
+p7 [shape=point,label="",fixedsize=true,width=0.1,xlabel="Channel.fromPath"];
+p8 [label="EXECUTE_APATRAP:RUN_APATRAP:PREPROCESSING"];
+p7 -> p8 [label="ch_preprocessing_input"];
+
+p8 [label="EXECUTE_APATRAP:RUN_APATRAP:PREPROCESSING"];
+p9 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p8 -> p9 [label="converted_genome_file"];
+
+p9 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p10 [label="EXECUTE_APATRAP:RUN_APATRAP:IDENTIFY_DISTAL_3UTR"];
+p9 -> p10 [label="ch_3utr_input"];
+
+p10 [label="EXECUTE_APATRAP:RUN_APATRAP:IDENTIFY_DISTAL_3UTR"];
+p12 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p10 -> p12;
+
+p9 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p11 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="map"];
+p9 -> p11 [label="ch_3utr_input"];
+
+p11 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="map"];
+p12 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p11 -> p12;
+
+p12 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="combine"];
+p13 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="unique"];
+p12 -> p13;
+
+p13 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="unique"];
+p14 [label="EXECUTE_APATRAP:RUN_APATRAP:PREDICT_APA"];
+p13 -> p14 [label="ch_predict_apa_input"];
+
+p6 [label="EXECUTE_APATRAP:RUN_APATRAP:CONVERT_TO_BEDGRAPH"];
+p14 [label="EXECUTE_APATRAP:RUN_APATRAP:PREDICT_APA"];
+p6 -> p14 [label="ch_sample_bedgraph_files_dir"];
+
+p14 [label="EXECUTE_APATRAP:RUN_APATRAP:PREDICT_APA"];
+p15 [label="EXECUTE_APATRAP:RUN_APATRAP:CONVERT_TO_BED"];
+p14 -> p15;
+
+p15 [label="EXECUTE_APATRAP:RUN_APATRAP:CONVERT_TO_BED"];
+p16 [shape=point];
+p15 -> p16;
+
+}
