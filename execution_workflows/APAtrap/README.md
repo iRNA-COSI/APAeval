@@ -11,12 +11,6 @@ The [application download](https://sourceforge.net/projects/apatrap/files/) is f
 and [user manual](https://sourceforge.net/p/apatrap/wiki/User%20Manual/) was used as a referrence
 to create the nextflow pipeline flow of this module
 
-### Prerequisites to run APAtrap workflow:
- Make sure the following have been installed:
- - Docker
- - Java
- - Nextflow
-
 ### Steps to run this:
  - We can either run the workflow to obtain identification and quantification outputs, or differential output. There
    is currently no way to run the workflow once to get outputs for all three challenges

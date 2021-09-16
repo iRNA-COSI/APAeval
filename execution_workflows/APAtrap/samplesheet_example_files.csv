@@ -1,4 +1,3 @@
 condition,sample,bam,bai
-Control,control_r1,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/APAtrap/../../tests/test_data/siControl_R1_2genes.bam,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/APAtrap/../../tests/test_data/siControl_R1_2genes.bam.bai
-Control,control_r2,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/APAtrap/../../tests/test_data/siControl_R1_2genes.bam,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/APAtrap/../../tests/test_data/siControl_R1_2genes.bam.bai
-Srsf3,srsf3_r1,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/APAtrap/../../tests/test_data/siSrsf3_R1_2genes.bam,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/APAtrap/../../tests/test_data/siSrsf3_R1_2genes.bam.bai
+Control,control_r1,[path_to]/../../siControl_R1_2genes.bam,[path_to]/../../siControl_R1_2genes.bam.bai
+Srsf3,srsf3_r1,[path_to]/../../siSrsf3_R1_2genes.bam,[path_to]/../../siSrsf3_R1_2genes.bam.bai
