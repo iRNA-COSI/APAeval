@@ -1,2 +1,2 @@
 sample,bam,gtf,fasta
-sample,/home/wanyk/Downloads/APAeval_local/Aptardi/inputs/test.bam,/home/wanyk/Downloads/APAeval_local/Aptardi/inputs/gencode.vM26.primary_assembly.annotation.gtf,/home/wanyk/Downloads/APAeval_local/Aptardi/inputs/mm39.fa
+sample,[path_to]/test.bam,[path_to]/gencode.vM26.primary_assembly.annotation.gtf,[path_to]/mm39.fa
