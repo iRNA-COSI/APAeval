@@ -4,7 +4,11 @@ import sys
 
 input_gtf_path=sys.argv[1]
 input_gtf=open(input_gtf_path,"r")
-output_bed=open(input_gtf_path.split(".")[0]+"_identification.bed","w")
+output_bed_path=sys.argv[2]
+if output_bed_path == 'not_specified':
+ output_bed=open(input_gtf_path.split(".")[0]+"_identification.bed","w")
+else:
+ output_bed=open(output_bed_path,"w")
 
 for ln in input_gtf:
  if not ln.startswith("#"):

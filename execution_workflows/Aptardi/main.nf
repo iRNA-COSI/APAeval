@@ -21,6 +21,7 @@ if (params.help) {
 
 // define parameters (add more parameters if necessary)
 if (params.input) { ch_input = file(params.input, checkIfExists: true) } else { exit 1, "Samplesheet file not specified!" }
+ch_output_bed = params.output_bed
 if (params.aptardi_model) { ch_aptardi_model = file(params.aptardi_model, checkIfExists: true) } // if not specify, the default one will be used
 if (params.aptardi_scale) { ch_aptardi_scale = file(params.aptardi_scale, checkIfExists: true) } // if not specify, the default one will be used
 
@@ -44,7 +45,7 @@ process CHECK_SAMPLESHEET {
 }
 
 def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.bam, sample.bai, sample.gtf, sample.fasta ]
+    return [ sample.sample, sample.bam, sample.gtf, sample.fasta ]
 }
 
 // create input channel for aptardi
@@ -60,7 +61,7 @@ process APTARDI {
     publishDir "${params.outdir}/aptardi", mode: params.publish_dir_mode
 
     input:
-    tuple val(sample), path(bam), path(bai), path(gtf), path(fasta) from ch_input
+    tuple val(sample), path(bam), path(gtf), path(fasta) from ch_input
     path aptardi_model from ch_aptardi_model
     path aptardi_scale from ch_aptardi_scale
 
@@ -82,6 +83,7 @@ process MAKE_IDENTIFICATION_BED {
     publishDir "${params.outdir}/aptardi/$sample", mode: params.publish_dir_mode //each sample has it specific output directory for the process
 
     input:
+    val output_bed from ch_output_bed
     tuple val(sample), path(output_gtf) from ch_aptardi_output 
 
     output:
@@ -89,7 +91,7 @@ process MAKE_IDENTIFICATION_BED {
 
     script:
     """
-    make_identification_bed.py $output_gtf
+    make_identification_bed.py $output_gtf $output_bed
     """
 }
 
