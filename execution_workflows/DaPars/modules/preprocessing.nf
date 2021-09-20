@@ -16,13 +16,14 @@ process PREPROCESSING {
     file genome_file
 
     output:
-    path(converted_genome_file), emit: ch_genome_file
+    tuple path(gene_symbol_file), path(converted_genome_file), emit: ch_genome_file
 
     script:
     converted_genome_file = "genemodel.bed"
-
+    gene_symbol_file = "gene_symbol_file.txt"
     """
     gtfToGenePred $genome_file test.genePhred
     genePredToBed test.genePhred $converted_genome_file
+    create_gene_symbol_file.py $genome_file $gene_symbol_file
     """
 }
