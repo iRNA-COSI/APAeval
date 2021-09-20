@@ -51,7 +51,7 @@ chromosomes = getchromosomes(config['gtf'])
 
 rule mainDapars2:
     """
-    Run DaPars2 on per chromosome for each sample
+    Run DaPars2 per chromosome for each sample
     """
     input:
         config = os.path.join(config["out_dir"], "{sample}_Dapars2_configure_file.txt")
