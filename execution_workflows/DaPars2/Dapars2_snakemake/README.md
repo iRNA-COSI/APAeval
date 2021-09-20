@@ -1,5 +1,5 @@
 
-# DaPars2 {Method name as specified in Algorithm table.}
+# DaPars2
 
 ## Rulegraph
 
@@ -10,34 +10,50 @@
 The pipeline requires a 2-column, headered comma-separated sample table with the following information:
 
 - `sample` - unique name of the sample
-- `bam` - path to BAM file of aligned reads for sample
+- `bam` - path to BAM file of aligned reads for sample. It is expected (but not required) that an index file is present in the same location (suffixed with `.bai`)
 
 An example sample table can be found at `config/samples.csv` which was used for local testing.
 
 The config file `config/config.DaPars2.yaml` also needs to be updated with run-specific information. Parameters are described further in comments
 
-> * Note: The following files **should not contain the 'chr' prefix in the chromosome names** as this workflow will add 'chr' to each file:
->   * BAM files
->   * GTF annotation
->   * GFF3 annotation
 
-{Describe input files and how they will be processed in order for the method to work. Describe how sample tables have to look like, and any other input that is needed (e.g. genome).}
 
-## Params
->   * Coverage Threshold
-{Describe parameters needed by your METHOD.}
+## Running instructions
+
+Activate the `apaeval_execution_workflows` conda environment. If you haven't installed this yet, the 'environment' file is available at the base of the main repo (`apaeval_env.yaml` or `../../../apaeval_env.yaml` relative to this README)
+
+```
+conda activate apaeval_execution_workflows
+```
+
+Before running, you can perform a 'dry run' to check which steps will be run and where output files will be generated given the provided parameters and input files:
+
+```
+bash dryrun.sh
+```
+
+To run the workflow locally, you can use the following wrapper script:
+
+```
+bash run_local.sh
+```
+
+**Note:** if you have specified **absolute paths** in your sample sheet (e.g. `config/samples.csv`) or the config file (`config/config.DaPars2.yaml`), you will need to modify Singularity bind arguments so the input files will be available to the container.
+
+e.g. The path to the input GTF file is `/share/annotation/annotation.gtf`, and my current working directory is `/home/sam/DaPars2_snakemake/`. Modify the `--singularity-args` line in `run_local.sh` like below to ensure the file is available to the container:
+
+```
+--sigularity-args="--bind /share/" \
+```
+
 
 ## Output & post-processing
-> * Output directory chr1-22, chrX, chrY for each sample. Each directory contains DaPars2 results.
-> * 01_DaPars2.bed
+> *  DaPars2 output tables are generated per chromosome for each sample. Under the main results directory, these are available at `intermediate_<sample_name>/apa_<chr_name>/apa_result_temp.<chr_name>.txt`
+> * BED file of identified proximal and distal poly(A) sites per sample, generated under the main results directory at `<sample_name><out_bed_suffix>` (out_bed_suffix is defined in `config/config.DaPars2.yaml`)
 
-{Describe output files and postprocessing steps if necessary.}
+
 
 ## Notes
 > * This workflow uses `Dapars2_Multi_Sample.py` where one can assign chromosome name as a command line argument, whereas `DaPars2_Multi_Sample_Multi_Chr.py` is hardcoded for standard human chromosomes with the 'chr' prefix. Both scripts otherwise produce identical output with test data.
-> * In [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html), the input files are in wiggle format; however, the testing data that it provides is in bedgraph format.*
+> * In [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html), the input files are in wiggle format; however, the testing data that it provides is in bedgraph format. This workflow generates bedgraph files and runs successfully without error on test data
 > * The [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html) states a dependency on R but no scripts appears to use R. The Docker image does not install R and Dapars2 runs successfully without error on test data.
-
-{Notes about the METHOD.
-e.g. Did you have to adjust the method's soure code?
-}
