@@ -18,9 +18,6 @@ to create the nextflow pipeline flow of this module
    to the files you would like to use
  - Each row in the samplesheet contains files for one sample to be processed
  - Any number of rows (i.e. any number of replicates per condition) can be provided in the samplesheet in any order
- - The first step of DaPars requires a gene symbol file. Download gene symbol file from 
- [UCSC table browser](https://genome.ucsc.edu/cgi-bin/hgTables). Follow the guide from this [thread](https://www.biostars.org/p/92939/)
- that shows how to download a gene symbol file form UCSC table browser
  - Make sure to specify parameters used for DaPars run in conf/modules.config file
  - Then, you are good to run the pilot benchmark nextflow pipeline with `DaPars`
 
