@@ -6,16 +6,23 @@ samples: "config/samples.csv"
 # Path to main output directory for run
 out_dir: "results/"
 
-# Path to GTF annotation file. Note chromosome names SHOULD NOT have a 'chr' prefix
-gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
-# Path to GFF3 annotation file. Note chromosome names SHOULD NOT have a 'chr' prefix
-gff3: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gff3"
+# Path to GTF annotation file
+gtf: /home/sam/GitHubRepos/APAeval/tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf 
+#"../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+
+
+# Suffix for name of for per-sample identification output BED file
+# This will be output to <out_dir/<sample_name><out_bed_suffix>
+out_bed_suffix: .identified_polya.bed
 
 # Parameters
-# define method specific parameters here
+# Minumum coverage for event to be considered for further analysis
 coverageThreshold: 10
 
 # Pipeline parameters. No need to change these for specific runs
-envs: "envs"
-local_log: "logs/local_log"
-cluster_log: "logs/cluster_log"
+
+# Name of subdirectory
+logs_subdir: logs/
+
+# local_log: "logs/local_log"
+# cluster_log: "logs/cluster_log"
