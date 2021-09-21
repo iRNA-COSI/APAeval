@@ -7,8 +7,7 @@ samples: "config/samples.csv"
 out_dir: "results/"
 
 # Path to GTF annotation file
-gtf: /home/sam/GitHubRepos/APAeval/tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf 
-#"../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 
 
 # Suffix for name of for per-sample identification output BED file
