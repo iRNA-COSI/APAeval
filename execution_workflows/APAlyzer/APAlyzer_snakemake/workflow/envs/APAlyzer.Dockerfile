@@ -22,6 +22,6 @@ RUN apt-get update -y \
   && apt-get install -y --allow-downgrades build-essential curl zlib1g-dev software-properties-common gcc libcurl4 libcurl4-openssl-dev libxml2-dev libssl-dev apt-transport-https
 
 RUN Rscript -e 'install.packages(c("optparse", "devtools", "RCurl", "BiocManager"), repos = "http://cran.us.r-project.org")'
-RUN Rscript -e 'BiocManager::install(c("APAlyzer"), ask=FALSE, update = FALSE);'
+RUN Rscript -e 'BiocManager::install(c("RJWANGbioinfo/APAlyzer"), ask=FALSE, update = FALSE);'
 RUN Rscript -e 'BiocManager::install(c("diffloop"), ask=FALSE, update = FALSE);'
 

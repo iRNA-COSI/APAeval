@@ -10,6 +10,7 @@ dependencies:
   - numpy
   - scipy
   - r-optparse
+  - gffread
 #  - [OTHER_PACKAGE]
   - pip
   - pip:
