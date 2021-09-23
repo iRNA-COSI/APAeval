@@ -53,8 +53,6 @@ nextflow main.nf --input samplesheet_example_files_identification.csv
 ```
 when 'mode' is set to 'identification'
 
-
-
 ### Docker containers
 This workflow uses docker container. To run, make sure that docker is installed and running
 
@@ -77,10 +75,9 @@ Each DaPars run results in differential challenge file located under DaPars/resu
 Identification challenege file is located under DaPars/results/dapars/dapars_identification_output.tsv.
 
 ## Notes
-It is not possible to obtain identification data since only proximal APA sites shared by
-both groups are shown in the final output file. Since only a subset of APA sites both conditions
-are shown, it doesn't qualify for identification challenge and it only qualifies for differential
-challenge
+- It is not possible to obtain quantification challenge output data since the TPM value in the output file
+  is provided per transcript instead of per site. Hence, this tool is not compatible for quantification
+  challenge. 
 - Make sure that the input bam files have leading 'chr' in the chromosome column. Otherwise, once 
   converted to input bedgraph file for DaPars, the workflow will exit with an error
 ![](../../../../Screen Shot 2021-09-21 at 1.08.09 PM.png)
