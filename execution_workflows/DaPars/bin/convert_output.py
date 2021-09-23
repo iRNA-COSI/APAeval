@@ -25,14 +25,20 @@ def convert_to_differential(file_in):
     differential_out = open("dapars_differential_output.tsv", "wt")
 
     df = pd.read_csv(file_in, sep='\t')
+    rows = dict()
     for index, row in df.iterrows():
         # write differential file
         # keep just the gene name
         name = row['Gene'].split("|")[0]
         significance = str(row['p.value'])
-        output = [name, significance]
+        if name not in rows:
+            row[name] = [significance]
+        else:
+            row[name].append(significance)
+    # only get the smallest p-value for the corresponding gene
+    for gene in rows:
+        output = [gene, min(rows[gene])]
         differential_out.write("\t".join(output) + "\n")
-
     differential_out.close()
 
 
