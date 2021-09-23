@@ -12,7 +12,7 @@ process POSTPROCESSING {
     container "docker.io/apaeval/dapars:latest"
 
     input:
-    path config_file
+    tuple path(config_file), val(mode)
 
     output:
     path "*"
@@ -20,6 +20,6 @@ process POSTPROCESSING {
     script:
     file = "$PWD/${params.outdir}/dapars/dapars_output_All_Prediction_Results.txt"
     """
-    postprocessing.py $file
+    convert_output.py $file $mode
     """
 }

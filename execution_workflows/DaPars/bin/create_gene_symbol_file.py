@@ -25,9 +25,13 @@ def create_gene_symbol_file(file_in, file_out):
     df = pd.read_csv(file_in, sep='\t', comment="#", header=None)
     for index, row in df.iterrows():
         # read gtf file
-        # keep just the gene name and gene symbol
-        gene_id = row[8].split(';')[0].split('"')[1]
-        gene_name = row[8].split(';')[2].split('"')[1]
+        # keep just the gene id and gene name
+        gene_info_list = row[8].split(';')
+        for gene_info in gene_info_list:
+            if "gene_id" in gene_info.split('"')[0]:
+                gene_id = gene_info.split('"')[1]
+            if "gene_name" in gene_info.split('"')[0]:
+                gene_name = gene_info.split('"')[1]
         output = [gene_id, gene_name]
         file_out.write("\t".join(output) + "\n")
     file_out.close()

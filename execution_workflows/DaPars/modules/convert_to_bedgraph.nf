@@ -6,6 +6,7 @@ def options    = initOptions(params.options)
 
 /*
     Convert the input .bam file to .bedgraph for DaPars step 2
+    Check that the bedgraph file is valid (i.e. has leading 'chr' in the chromosome column)
 */
 process CONVERT_TO_BEDGRAPH {
     tag "$sample"
@@ -21,7 +22,7 @@ process CONVERT_TO_BEDGRAPH {
     script:
     bedgraph_file = sample + ".bedgraph"
     """
-    bedtools genomecov -ibam $bam_file -bg > "sample.bedgraph"
-    check_bedgraph.py "sample.bedgraph" $bedgraph_file
+    bedtools genomecov -ibam $bam_file -bg > $bedgraph_file
+    check_bedgraph_new.py $bedgraph_file
     """
 }

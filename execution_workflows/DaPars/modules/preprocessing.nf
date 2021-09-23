@@ -7,6 +7,7 @@ def options    = initOptions(params.options)
 
 /*
     Convert provided gtf genome file to bed
+    Create gene symbol file from the gtf genome file
 */
 process PREPROCESSING {
     publishDir "${params.outdir}/dapars/genome_file", mode: params.publish_dir_mode

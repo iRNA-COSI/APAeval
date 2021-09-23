@@ -4,6 +4,7 @@
 
 def modules = params.modules.clone()
 def files    = modules['files']
+def mode = modules['mode']
 
 include { PREPROCESSING         } from '../modules/preprocessing' addParams( options: [:] )
 include { DAPARS_EXTRACT_3UTR   } from '../modules/dapars_extract_3utr' addParams( options: [:] )
@@ -23,12 +24,9 @@ workflow RUN_DAPARS {
     Channel
         .fromPath("$PWD/${files.genome_file}")
         .set{ ch_preprocessing_input }
-
     PREPROCESSING( ch_preprocessing_input )
 
-    Channel
-        .fromPath("$PWD/${files.gene_symbol_file}")
-        .combine(PREPROCESSING.out.ch_genome_file)
+    PREPROCESSING.out.ch_genome_file
         .set { ch_extract_3utr_input }
 
     /*
@@ -61,6 +59,6 @@ workflow RUN_DAPARS {
     /*
      * Convert DaPars output file to differential challenge output file
      */
-    POSTPROCESSING ( DAPARS_MAIN.out.ch_dapars_output )
+    POSTPROCESSING ( DAPARS_MAIN.out.ch_dapars_output, mode )
 }
 
