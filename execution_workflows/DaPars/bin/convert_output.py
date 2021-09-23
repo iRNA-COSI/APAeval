@@ -30,11 +30,11 @@ def convert_to_differential(file_in):
         # write differential file
         # keep just the gene name
         name = row['Gene'].split("|")[0]
-        significance = str(row['p.value'])
+        significance = str(row['adjusted.P_val'])
         if name not in rows:
-            row[name] = [significance]
+            rows[name] = [significance]
         else:
-            row[name].append(significance)
+            rows[name].append(significance)
     # only get the smallest p-value for the corresponding gene
     for gene in rows:
         output = [gene, min(rows[gene])]
