@@ -59,6 +59,9 @@ workflow RUN_DAPARS {
     /*
      * Convert DaPars output file to differential challenge output file
      */
-    POSTPROCESSING ( DAPARS_MAIN.out.ch_dapars_output, mode )
+     DAPARS_MAIN.out.ch_dapars_output
+        .combine(Channel.from(mode))
+        .set { ch_postprocessing_input }
+    POSTPROCESSING ( ch_postprocessing_input )
 }
 

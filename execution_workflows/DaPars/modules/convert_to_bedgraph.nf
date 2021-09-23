@@ -23,6 +23,6 @@ process CONVERT_TO_BEDGRAPH {
     bedgraph_file = sample + ".bedgraph"
     """
     bedtools genomecov -ibam $bam_file -bg > $bedgraph_file
-    check_bedgraph_new.py $bedgraph_file
+    check_bedgraph.py $bedgraph_file
     """
 }
