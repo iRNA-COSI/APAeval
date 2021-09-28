@@ -6,8 +6,9 @@ _Execution workflows_ contain all steps that need to be run _per method_:
 
 1. **Pre-processing:** Convert the input files the APAeval team has prepared
   into the input files a given method consumes, if applicable. This does not include e.g. adapter trimming or mapping of reads, as those steps are already performed in our general pre-processing pipeline. Pre-processing here means you have to convert the provided `.bam`, `.fastq.gz`, `.gtf` or `.gff` files to a format that your method can use.
+  >IMPORTANT: Do not download any other annotation files because the docs of your method say so. Instead, create all files the method needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
 2. **Method execution:** Execute the method in any way necessary to compute the
-  output files for _all_ challenges (may require more than one run of the tool
+  output files for the benchmarking events the method qualifies for (may require more than one run of the method
   if, e.g., run in different execution modes).
 3. **Post-processing:** Convert the output files of the method into the [formats][spec-doc]
   consumed by the _summary workflows_ as specified by the APAeval team, if
@@ -45,7 +46,7 @@ execution_workflows/
 For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz`, `.gtf` and/or `.gff` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
 
 ### Parameters
-Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the method you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
+Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template-dsl2] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the method you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
 
 Moreover, both workflow languages require additional information in `config` files. This is the place to specify *run- or method-specific* parameters
 
@@ -65,7 +66,7 @@ This directory *must* contain:
 - `logs/` directory with all log files created by the workflow exeuction.
 
 ### Formats
-File formats for the 3 challenges are described in the [output specification][spec-doc] which also contains the `OUTCODE` needed for correct naming.
+File formats for the 3 benchmarking events are described in the [output specification][spec-doc] which also contains the `OUTCODE` needed for correct naming.
 ### Filenames
 > As mentioned [above](#parameters) it is best to parameterize filenames, such that for each run the names and codes can be set by changing only the sample sheet and config file!
 
@@ -76,7 +77,7 @@ For the codes please refer to the following documents:
 - OUTCODE: in [`execution_output_specification.md`][outcode]
 
 **Example:**   
- `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification challenge (OUTCODE 01, we know that from [`execution_output_specification.md`][outcode]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
+ `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][outcode]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
 ## Tools
