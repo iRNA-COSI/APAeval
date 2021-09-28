@@ -35,7 +35,7 @@ the DaPars folder.
    each identification workflow run for the condition: Control. The only difference between the two lines
    is the 'condition' column, which has to be distinct. The workflow will then treat the two rows as two different
    conditions, a requirement for DaPars to run successfully.
- - To run DaPars with test data provided for APAeval, check the path to DaPars with `pwd` and replace the `path_to` 
+ - To run DaPars with test data provided for APAeval, check the path to APAeval/execution_workflows/DaPars with `pwd` and replace the `path_to` 
    in samplesheet_example_files.csv or samplesheet_example_files_identification.csv with the 
    path from the `pwd` command. 
  - Note that for the 'identification' mode, exactly two rows have to be provided in the samplesheet. For
