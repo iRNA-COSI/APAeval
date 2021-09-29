@@ -33,4 +33,7 @@ rule generatePathReadcounts:
         os.path.join(LOG_DIR,"{sample}_generatePathReadcounts.log")
 
     shell:
-        """(echo "{params.basename}"'\t'$(samtools view -c -F 260 {input.bam}) >{output.out}) &> {log}"""
+        """
+        counts=$(samtools view -c -F 260 {input.bam})
+        (echo "{params.basename}"'\t'${{counts}} > {output.out}) &> {log}
+        """
