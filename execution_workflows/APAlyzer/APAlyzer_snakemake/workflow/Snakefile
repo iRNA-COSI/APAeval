@@ -16,45 +16,19 @@ print(list(set(samples.bam.values)))
 rule finish:
     """Rule that specifies the final output."""
     input:
-        final = expand(
+        diff_usage = expand(
             os.path.join(
                 config["out_dir"],
-                "{sample}_{experiment}_quant_APAlyzer.csv"),
-            sample=samples.index.values,
-            experiment=list(set(samples.experiment.values)))
+                "{experiment}_differential_usage_APAlyzer.csv"),
+            experiment=list(set(samples.experiment.values))
 
-
-# diff_usage = expand(
-#             os.path.join(
-#                 config["out_dir"],
-#                 "{experiment}_differential_usage_APAlyzer.csv"),
-#             experiment=list(set(samples.experiment.values))
 #-------------------------------------------------------------------------------
-# Preprocessing: obtain suitable input formats
-rule gff_to_gtf:
-    """A rule that creates the APA sites from a gtf file.
-    """
-    input:
-        gff = config['gff']
-    output:
-        gtf = os.path.join(config["out_dir"], f'{config["genome_name"]}.gtf.gz')
-    params:
-        gtf = os.path.join(config["out_dir"], f'{config["genome_name"]}.gtf')
-    log:
-        os.path.join(config["local_log"], "gff_to_gtf.log")
-    conda: 
-        os.path.join(config["envs"], "APAlyzer.yaml")
-    shell:
-        """(gffread {input.gff} -T -o {params.gtf}; \
-        gzip {params.gtf}; ) &> {log}"""
-
-
 # Preprocessing: obtain suitable input formats
 rule genome_preprocessing:
     """A rule that creates the APA sites from a gtf file.
     """
     input:
-        gtf = os.path.join(config["out_dir"], f'{config["genome_name"]}.gtf.gz')
+        gtf = config["gtf"]
     output:
         out_genome = os.path.join(config["out_dir"], 'reference_genome.RData')
     params:
@@ -71,7 +45,6 @@ rule genome_preprocessing:
             --out_reference {output.out_genome};) &> {log}"""
 
     
-
 #-------------------------------------------------------------------------------
 # Quantification
 rule quantification:
@@ -97,46 +70,43 @@ rule quantification:
             --reference_genome {input.genome} \
             --read_orientation {params.read_orientation} \
             --out_quantification {output.out_quantification}) &> {log}"""
+ 
+
+#-------------------------------------------------------------------------------
+# Differential APA usage
+rule differential_usage:
+    """A rule that does the differential usage estimate of the 3' UTRs.
+    """
+    input:
+        quants = lambda wildcards: expand(
+            os.path.join(
+                config["out_dir"],
+                "{sample}_{experiment}_quant_APAlyzer.csv"),
+            sample=samples.index.values,
+            experiment=wildcards.experiment)
+    output:
+        diff_usage = os.path.join(
+            config["out_dir"],
+            "{experiment}_differential_usage_APAlyzer.csv")
+    params:
+        sample_name = "{sample}"
+    log:
+        os.path.join(config["local_log"], "{experiment}_differential_usage_APAlyzer.log")
+    conda:
+        os.path.join(config["envs"], "APAlyzer.yaml")
+    shell:
+       """(Rscript  APAlyzer_differential_usage.R \
+            --sample_name {params.sample_name} \
+            --sample_path {input.bam} \
+            --reference_genome {input.genome} \
+            --out_quantification {output.out_quantification}) &> {log}"""
 
 
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
 
-
-#  
-# #-------------------------------------------------------------------------------
-# # Differential APA usage
-# rule differential_usage:
-#     """A rule that does the differential usage estimate of the 3' UTRs.
-#     """
-#     input:
-#         quants = lambda wildcards: expand(
-#             os.path.join(
-#                 config["out_dir"],
-#                 "{sample}_{experiment}_quant_APAlyzer.csv"),
-#             sample=samples.index.values,
-#             experiment=wildcards.experiment)
-#     output:
-#         diff_usage = os.path.join(
-#             config["out_dir"],
-#             "{experiment}_differential_usage_APAlyzer.csv")
-#     params:
-#         sample_name = "{sample}"
-#     log:
-#         os.path.join(config["local_log"], "{experiment}_differential_usage_APAlyzer.log")
-#     conda:
-#         os.path.join(config["envs"], "APAlyzer.yaml")
-#     shell:
-#        """(Rscript  APAlyzer_differential_usage.R \
-#             --sample_name {params.sample_name} \
-#             --sample_path {input.bam} \
-#             --reference_genome {input.genome} \
-#             --out_quantification {output.out_quantification}) &> {log}"""
-
-
-# #-------------------------------------------------------------------------------
-# # How did it go?
-# #-------------------------------------------------------------------------------
-# onsuccess:
-#     print("Workflow finished, no error")
-
-# onerror:
-#     print("An error occurred, check log at %s." % {log})
+onerror:
+    print("An error occurred, check log at %s." % {log})

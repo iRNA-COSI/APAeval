@@ -4,7 +4,8 @@
 # samples: "config/[SAMPLES].csv"
 samples: "config/samples.csv"
 out_dir: "results"
-gff: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gff3"
+gtf: "Mus_musculus.GRCm38.99.gtf.gz"
+# gff: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gff3"
 genome_name: "gencode_2genes_noChr.vM18.annotation"
 # Parameters
 # define method specific parameters here
