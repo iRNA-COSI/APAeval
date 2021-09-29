@@ -6,5 +6,4 @@ snakemake \
     --use-singularity \
     --singularity-args="--bind ${PWD}/../../../tests/test_data" \
     --printshellcmds
-# adjust number as needed
-# or --use-singularity
+# adjust number of cores as needed
