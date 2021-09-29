@@ -6,8 +6,8 @@ Benchmark to test sensitivity and False Discovery Rate (FDR) of RNAseq-based ide
 
 Input data:
 
-1. List of genes with differentially used poly(A) sites identified from RNA-Seq data using the benchmarked tool
-2. List of genes with differentially used poly(A) sites identified from orthogonal 3'end seq dataset
+1. List of genes with information on differentially used poly(A) sites identified from RNA-Seq data using the benchmarked tool
+2. List of genes with information on differentially used poly(A) sites identified from orthogonal 3'end seq dataset
 
 Based on the input data the following metrics are computed:
 
@@ -36,10 +36,20 @@ FN - false negatives - genes not identified by the tool but present in the ortho
 #### Format 1
 
 This CSV file contains a list of genes with differentially used poly(A) sites identified from RNA-Seq data by the benchmarked method.  
+Columns:
+
+- gene name
+- is_de: information whether **any** PAS in the gene was differentially expressed; possible values: "0" if no differential expression detected, "1" if differentially expressed
+- is_lengthened: information whether shortening/lengthening events were detected for the gene; possible values: "0" if no shortening/lengthening events detected, "1" if shortening/lengthening events detected
 
 #### Format 2
 
 This CSV file contains a list of genes with differentially used poly(A) sites identified from the orthogonal 3'end-seq dataset.  
+Columns:
+
+- gene name
+- is_de: information whether **any** PAS in the gene was differentially expressed; possible values: "0" if no differential expression detected, "1" if differentially expressed
+- is_lengthened: information whether shortening/lengthening events were detected for the gene; possible values: "0" if no shortening/lengthening events detected, "1" if shortening/lengthening events detected
 
 
 ## Outputs
@@ -57,8 +67,8 @@ description of each attribute-value pair:
   
   | Attribute | Type | Unit | Description |
   | --- | --- | --- | --- |
-  | `sensitivity` | `float` | N/A | Sensitivity value of gene identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)) |
-  | `FDR` | `float` | N/A | False Discovery Rate value of gene identification compared with orthogonal dataset; FDR = (FP/(TP+FP)) |
+  | `sensitivity` | `float` | N/A | Sensitivity of detection of differentially expressed PAS compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)) |
+  | `FDR` | `float` | N/A | False Discovery Rate of detection of differentially expressed PAS compared with orthogonal dataset; FDR = (FP/(TP+FP)) |
   
 ## Metrics
   
@@ -77,5 +87,6 @@ description of each attribute-value pair:
 [in2]: ./example_files/input2.csv
 [out1]: ./example_files/output1.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
+[spec-csv]: <https://en.wikipedia.org/wiki/Comma-separated_values>
 
   
