@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:Aptardi ",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "Aptardi, alternative polyadenylation trascriptome analysis from RNA and DNA sequencing information.",
+    "is_automated": true,
+    "name": "Aptardi",
+    "references": [
+        "doi:10.1038/s41467-021-21894-x"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/luskry/aptardi",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Ryan.Lusk"
+    ]
+}

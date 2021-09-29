@@ -1,0 +1,12 @@
+{
+    "_id" : "Ryan.Lusk",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Lusk",
+    "givenName" : "Ryan",
+    "email" : [
+        "ryan.lusk@cuanschutz.edu"
+    ],
+    "notes" : "Contact for Aptardi.",
+    "community_id" : "OEBC007"
+}

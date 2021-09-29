@@ -1,0 +1,18 @@
+{
+    "_id" : "Pierre-Luc.Germain",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Germain",
+    "givenName" : "Pierre-Luc",
+    "email" : [
+        "pierre-luc.germain@hest.ethz.ch"
+    ],
+    "notes" : "APAeval organizer. Contact for diffUTR.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0001-7527-2025"
+		}
+	]
+}

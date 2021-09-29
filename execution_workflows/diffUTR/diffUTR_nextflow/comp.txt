@@ -1,0 +1,8 @@
+sample	condition
+cer1	cerebellum
+cer2	cerebellum
+cer3	cerebellum
+mus1	muscle
+mus2	muscle
+mus3	muscle
+

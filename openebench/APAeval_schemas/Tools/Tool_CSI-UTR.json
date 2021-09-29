@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:CSI-UTR",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "CSI-UTR, a pipeline for detecting differential expression of 3-prime UTRs.",
+    "is_automated": true,
+    "name": "CSI-UTR",
+    "references": [
+        "doi:10.3389/fgene.2019.00182"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/UofLBioinformatics/CSI-UTR",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Eric.C.Rouchka"
+    ]
+}

@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1016/j.cels.2019.07.011",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "mountainClimber Identifies Alternative Transcription Start and Polyadenylation Sites in RNA-Seq",
+	"bibliographic_ids":["doi:10.1016/j.cels.2019.07.011"],
+	"abstract": "Alternative transcription start (ATS) and alternative polyadenylation (APA) create alternative RNA isoforms and modulate many aspects of RNA expression and protein production. However, ATS and APA remain difficult to detect in RNA sequencing (RNA-seq). Here, we developed mountainClimber, a de novo cumulative-sum-based approach to identify ATS and APA as change points. Unlike many existing methods, mountainClimber runs on a single sample and identifies multiple ATS or APA sites anywhere in the transcript. We analyzed 2,342 GTEx samples (36 tissues, 215 individuals) and found that tissue type is the predominant driver of transcript end variations. 75% and 65% of genes exhibited differential APA and ATS across tissues, respectively. In particular, testis displayed longer 5′ untranslated regions (UTRs) and shorter 3′ UTRs, often in genes related to testis-specific biology. Overall, we report the largest study of transcript ends across human tissues to our knowledge. mountainClimber is available at github.com/gxiaolab/mountainClimber."
+}

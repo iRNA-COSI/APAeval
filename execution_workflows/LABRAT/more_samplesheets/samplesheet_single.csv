@@ -1,0 +1,5 @@
+sample,fastq1,fastq2,gff,fasta,condition
+siControl_R1,/home/wanyk/Downloads/apa/data/fastqs/SRR11918577.fastq.gz,,/home/wanyk/Downloads/apa/data/genome/test.gff3,/home/wanyk/Downloads/apa/mm39.fa,siControl
+siControl_R2,/home/wanyk/Downloads/apa/data/fastqs/SRR11918578.fastq.gz,,/home/wanyk/Downloads/apa/data/genome/test.gff3,/home/wanyk/Downloads/apa/mm39.fa,siControl
+siSrsf3_R1,/home/wanyk/Downloads/apa/data/fastqs/SRR11918579.fastq.gz,,/home/wanyk/Downloads/apa/data/genome/test.gff3,/home/wanyk/Downloads/apa/mm39.fa,siSrsf3
+siSrsf3_R2,/home/wanyk/Downloads/apa/data/fastqs/SRR11918580.fastq.gz,,/home/wanyk/Downloads/apa/data/genome/test.gff3,/home/wanyk/Downloads/apa/mm39.fa,siSrsf3

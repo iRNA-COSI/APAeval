@@ -1,0 +1,12 @@
+{
+    "_id" : "Edoardo.M.Airoldi",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Airoldi",
+    "givenName" : "Edoardo",
+    "email" : [
+        "airoldi@fas.harvard.edu"
+    ],
+    "notes" : "Contact for MISO.",
+    "community_id" : "OEBC007"
+}

@@ -1,0 +1,12 @@
+{
+    "_id" : "Tao.Jiang",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Jiang",
+    "givenName" : "Tao",
+    "email" : [
+        "gxxiao@ucla.edu"
+    ],
+    "notes" : "Contact for TAPAS.",
+    "community_id" : "OEBC007"
+}

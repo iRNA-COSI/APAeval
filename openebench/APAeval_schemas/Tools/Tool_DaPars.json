@@ -1,0 +1,23 @@
+{
+    "_id": "APAeval:DaPars",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "DaPars, alternative polyadenylation (APA) usage inference from RNA-seq",
+    "is_automated": true,
+    "name": "DaPars",
+    "references": [
+        "doi:10.1038/ncomms6274"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/ZhengXia/dapars",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Eric.J.Wagner", "Wei.Li"
+    ]
+}

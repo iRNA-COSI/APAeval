@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import io
 import json
 import os
@@ -28,7 +30,7 @@ def main(args):
     data_model_file = join_json_files(aggregation_dir, data_model_file, "*_summary.json")
 
     # write the merged data model file to json output
-    with open(out_path, 'w') as f:
+    with open(out_path, mode='w', encoding="utf-8") as f:
         json.dump(data_model_file, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 def join_json_files(data_directory, data_model_file, file_extension):
@@ -72,3 +74,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(args)
+

@@ -1,0 +1,18 @@
+{
+    "_id" : "Christina.M.Fitzsimmons",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Fitzsimmons",
+    "givenName" : "Christina",
+    "email" : [
+        "christina.fitzsimmons@nih.gov"
+    ],
+    "notes" : "APAeval organizer.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0002-6743-2671"
+		}
+	]
+}

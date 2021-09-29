@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1093/bioinformatics/btl286",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "Roundup: a multi-genome repository of orthologs and evolutionary distances",
+	"bibliographic_ids":["pmid:16777906", "doi:10.1093/bioinformatics/btl286"],
+	"abstract": "SUMMARY: We have created a tool for ortholog and phylogenetic profile retrieval called Roundup. Roundup is backed by a massive repository of orthologs and associated evolutionary distances that was built using the reciprocal smallest distance algorithm, an approach that has been shown to improve upon alternative approaches of ortholog detection, such as reciprocal blast. Presently, the Roundup repository contains all possible pair-wise comparisons for over 250 genomes, including 32 Eukaryotes, more than doubling the coverage of any similar resource. The orthologs are accessible through an intuitive web interface that allows searches by genome or gene identifier, presenting results as phylogenetic profiles together with gene and molecular function annotations. Results may be downloaded as phylogenetic matrices for subsequent analysis, including the construction of whole-genome phylogenies based on gene-content data. AVAILABILITY: http://rodeo.med.harvard.edu/tools/roundup."
+}

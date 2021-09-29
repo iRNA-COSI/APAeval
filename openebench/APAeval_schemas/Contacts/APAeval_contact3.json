@@ -1,0 +1,18 @@
+{
+    "_id" : "Dominik.Burri",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Burri",
+    "givenName" : "Dominik",
+    "email" : [
+        "dominik.burri@unibas.ch"
+    ],
+    "notes" : "APAeval organizer.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0002-8131-9309"
+		}
+	]
+}

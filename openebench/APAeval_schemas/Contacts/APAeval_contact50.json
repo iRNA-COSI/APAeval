@@ -1,0 +1,12 @@
+{
+    "_id" : "Xiaohui.Wu",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Wu",
+    "givenName" : "Xiaohui",
+    "email" : [
+        "xhuister@xmu.edu.cn"
+    ],
+    "notes" : "Contact for APAtrap.",
+    "community_id" : "OEBC007"
+}

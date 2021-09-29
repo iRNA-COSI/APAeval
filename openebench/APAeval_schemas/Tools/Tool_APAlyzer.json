@@ -1,0 +1,24 @@
+{
+    "_id": "APAeval:APAlyzer",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "APAlyzer, a toolkit for APA analysis using RNA-seq data",
+    "is_automated": true,
+    "name": "APAlyzer",
+    "references": [
+        "doi:10.1093/bioinformatics/btaa266"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/RJWANGbioinfo/APAlyzer",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Ruijia.Wang",
+        "Bin.Tian"
+    ]
+}

@@ -4,7 +4,9 @@ if (params.help) {
 	
 	    log.info"""
 	    ==============================================
-	    APAEVAL PILOT SUMMARY PIPELINE
+	    TCGA CANCER DRIVER GENES BENCHMARKING PIPELINE 
+		Author: Javier Garrayo Ventas
+		Barcelona Suercomputing Center. Spain. 2019
 	    ==============================================
 	    Usage:
 	    Run the pipeline with default parameters:
@@ -34,11 +36,11 @@ if (params.help) {
 } else {
 
 	log.info """\
-  ==============================================
-	 APAEVAL PILOT SUMMARY PIPELINE 
-	 ==============================================
+		 ==============================================
+	     TCGA CANCER DRIVER GENES BENCHMARKING PIPELINE 
+	     ==============================================
          input file: ${params.input}
-         benchmarking community = ${params.community_id}
+		 benchmarking community = ${params.community_id}
          public reference directory : ${params.public_ref_dir}
          tool name : ${params.participant_id}
          metrics reference datasets: ${params.goldstandard_dir}
@@ -62,36 +64,39 @@ input_file = file(params.input)
 ref_dir = Channel.fromPath( params.public_ref_dir, type: 'dir' )
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
-challenge_ids = params.challenges_ids
+cancer_types = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 
 // output 
-validation_out = file(params.validation_result)
-assessment_out = file(params.assessment_results)
-aggregation_dir = file(params.outdir)
+validation_file = file(params.validation_result)
+assessment_file = file(params.assessment_results)
+aggregation_dir = file(params.outdir, type: 'dir')
+// It is really a file in this implementation
 data_model_export_dir = file(params.data_model_export_dir)
-other_dir = file(params.otherdir)
+other_dir = file(params.otherdir, type: 'dir')
 
 
 process validation {
 
 	// validExitStatus 0,1
 	tag "Validating input file format"
+	
+	publishDir "${validation_file.parent}", saveAs: { filename -> validation_file.name }, mode: 'copy'
 
 	input:
 	file input_file
-	file ref_dir 
-	val challenge_ids
+	path ref_dir
+	val cancer_types
 	val tool_name
 	val community_id
-	val validation_out
 
 	output:
 	val task.exitStatus into EXIT_STAT
+	file 'validation.json' into validation_out
 	
 	"""
-	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $challenge_ids -p $tool_name -o $validation_out
+	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $cancer_types -p $tool_name -o validation.json
 	"""
 
 }
@@ -99,24 +104,25 @@ process validation {
 process compute_metrics {
 
 	tag "Computing benchmark metrics for submitted data"
+	
+	publishDir "${assessment_file.parent}", saveAs: { filename -> assessment_file.name }, mode: 'copy'
 
 	input:
 	val file_validated from EXIT_STAT
 	file input_file
-	val challenge_ids
-	file gold_standards_dir
+	val cancer_types
+	path gold_standards_dir
 	val tool_name
 	val community_id
-	val assessment_out
+
+	output:
+	file 'assessment.json' into assessment_out
 
 	when:
 	file_validated == 0
 
-	output:
-	val assessment_out into PARTICIPANT_DATA
-
 	"""
-	python /app/compute_metrics.py -i $input_file -c $challenge_ids -m $gold_standards_dir -p $tool_name -com $community_id -o $assessment_out
+	python /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
 	"""
 
 }
@@ -124,17 +130,21 @@ process compute_metrics {
 process benchmark_consolidation {
 
 	tag "Performing benchmark assessment and building plots"
+	publishDir "${aggregation_dir.parent}", pattern: "aggregation_dir", saveAs: { filename -> aggregation_dir.name }, mode: 'copy'
+	publishDir "${data_model_export_dir.parent}", pattern: "data_model_export.json", saveAs: { filename -> data_model_export_dir.name }, mode: 'copy'
 
 	input:
-	file benchmark_data
-	val participant_metrics from PARTICIPANT_DATA
-	val aggregation_dir
-	val validation_out
-	val data_model_export_dir
+	path benchmark_data
+	file assessment_out
+	file validation_out
+	
+	output:
+	path 'aggregation_dir', type: 'dir'
+	path 'data_model_export.json'
 
 	"""
-	python /app/manage_assessment_data.py -b $benchmark_data -p $participant_metrics -o $aggregation_dir
-        python /app/merge_data_model_files.py -p $validation_out -m $participant_metrics -a $aggregation_dir -o $data_model_export_dir
+	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir
+	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -a aggregation_dir -o data_model_export.json
 	"""
 
 }

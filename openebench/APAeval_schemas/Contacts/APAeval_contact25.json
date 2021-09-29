@@ -1,0 +1,12 @@
+{
+    "_id" : "Congting.Ye",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Ye",
+    "givenName" : "Congting",
+    "email" : [
+        "yec@xmu.edu.cn"
+    ],
+    "notes" : "Contact for APAtrap.",
+    "community_id" : "OEBC007"
+}
