@@ -28,8 +28,6 @@ rule finish:
         final = expand(
             os.path.join(config["out_dir"], "{sample}" + config["out_bed_suffix"]),
             sample=samples.index.values)
-        # OUT1 = os.path.join(config["out_dir"],  "DaPars2_result_chr")
-        # os.path.join(config["out_dir"], "01_DaPars2.BED")
 
 
 
