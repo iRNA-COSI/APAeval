@@ -18,6 +18,9 @@ rule identification_bed:
     log:
         os.path.join(LOG_DIR, "{sample}_identification_bed.log")
 
+    container:
+        "docker://amancevice/pandas:1.3.3"
+
     shell:
         """(python workflow/scripts/results_to_bed.py \
         -i '{input.names}' \
