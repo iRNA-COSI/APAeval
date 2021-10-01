@@ -13,7 +13,7 @@ differential usage across RNA-seq samples.
 
 ## What is APAeval?
 
-APAeval consists of three **benchmarking events**, each consisting of a set of **challenges** for tools (=**participants**) that:
+APAeval consists of three **benchmarking events**, each consisting of a set of **challenges** for bioinformatics methods (=**participants**) that:
 
 1. **Identify** polyadenylation sites
 2. **Quantify** polyadenylation sites
@@ -34,17 +34,28 @@ do are:
   use the invitation to sign up and post a short intro message in the
   [`#general`][slack-general] channel
 
+## Overview
+![schema][apa-eval-overview]
+1. APAeval consists of three benchmarking events to evaluate the performance of different tasks that the tools of interest (=participants) might be able to perform: PAS identification, quantification, and assessment of their differential usage. A tool can participate in one, two or all three events, depending on its functions.
+2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants.
+3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
+4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written for each tool in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
+5. To ensure compatibility with the OEB benchmarking events, specifications for file formats (output of execution workflows = input for summary workflows) are provided by APAeval. 
+6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. A challenge is computed within a summary workflow, which is run on the OEB infrastructure, for each participant. The summary workflow will compute all metrics relevant for the challenge. 
+7. In order to compare the performance of participants, OEB will collect the respective output files from all eligible participant summary workflows and will visualize all results per challenge, such that performance of participants can be compared for each metric.
+
+
+
 ## What is there to do?
 
-The bulk of the work falls into roughly two tasks, writing method _execution
-workflows_ and benchmark _summary workflows_ as highlighted in the figure
-below:
+The bulk of the work falls into roughly two tasks, writing participants' _execution
+workflows_ and benchmarking events' _summary workflows_.
 
-![schema][apa-eval-schema]
+
 
 ### Execution workflows
 
-_Execution workflows_ contain all steps that need to be run _per participant_:
+[_Execution workflows_][apaeval-ewf-readme] contain all steps that need to be run _per participant_:
 
 1. **Pre-processing:** Convert the input files the APAeval team has prepared
   into the input files a given method consumes, if applicable.
@@ -83,7 +94,7 @@ are supported by OpenEBench.
 ### Miscellaneous
 
 Apart from writing _execution_ and _summary workflows_, there are various other
-smaller jobs that participants can work on, including, e.g.:
+smaller jobs that you could work on, including, e.g.:
 
 - Pre-processing RNA-Seq input data via the [nf-core][nf-core] [RNA-Seq
   analysis pipeline][nf-core-rna-seq]
@@ -332,7 +343,8 @@ report any violations to the Code of Conduct to either or both of
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
 [apa-eval-members]: <https://docs.google.com/document/d/1G7u-WQ6C-I_sXZ-15CIBw2iNgw6jkTNo7hnRTjci_b4/edit#heading=h.tarrapa8v8n6>
-[apa-eval-schema]: images/schema.png
+[apa-eval-overview]: images/overview.png
+[apaeval-ewf-readme]: ./execution_workflows/README.md
 [aws]: <http://aws.amazon.com/>
 [bsc]: <https://www.bsc.es/>
 [calendar-url]: <https://calendar.google.com/calendar/ical/59bboug9agv30v32r6bvaofdo4%40group.calendar.google.com/public/basic.ics>

@@ -2,17 +2,23 @@
 This is where the execution workflows for APAeval live. 
 
 ## Overview
-_Execution workflows_ contain all steps that need to be run _per method_:
+_Execution workflows_ contain all steps that need to be run _per method_ (in OEB terms: per _participant_). Depending on the method, an execution workflow will have to perform **pre-processing** steps to convert the APAeval sanctioned input files into a format that the method can consume. This does not include e.g. adapter trimming or mapping of reads, as those steps are already performed in our general pre-processing pipeline. After pre-processing, the actual **execution of the method** has to be implemented, and subsequently **post-processing** steps might be required to convert the output of the method into the format defined by the APAeval specifications.
 
-1. **Pre-processing:** Convert the input files the APAeval team has prepared
-  into the input files a given method consumes, if applicable. This does not include e.g. adapter trimming or mapping of reads, as those steps are already performed in our general pre-processing pipeline. Pre-processing here means you have to convert the provided `.bam`, `.fastq.gz`, `.gtf` or `.gff` files to a format that your method can use.
-  >IMPORTANT: Do not download any other annotation files because the docs of your method say so. Instead, create all files the method needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
-2. **Method execution:** Execute the method in any way necessary to compute the
-  output files for the benchmarking events the method qualifies for (may require more than one run of the method
-  if, e.g., run in different execution modes).
-3. **Post-processing:** Convert the output files of the method into the [formats][spec-doc]
-  consumed by the _summary workflows_ as specified by the APAeval team, if
-  applicable.
+![EWFs][apaeval-ewfs]
+
+## More details
+1. **Sanctioned input files**: Each of the processed input data APAeval is using for their challenges is provided as .bam file (For ease of use, as some participants require .fastq input, we also provide a .fastq file reconstructed from the processed .bam files). If participants need other file formats, these HAVE TO be created as part of the pre-processing within execution workflows (see 2.). Similarly, for each dataset we provide a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS. All other annotation formats that might be needed HAVE TO be created from those. Non-sanctioned annotation- or similar auxiliary files MUST NOT be downloaded as part of the execution workflows, in order to ensure comparability of all participants’ performance.  
+
+> As several execution workflows might have to do the same pre-processing tasks, we created a [utils][utils] directory, where scripts (which have their corresponding docker images uploaded to the APAeval dockerhub) are stored. Please check the [utils][utils] directory before writing your own conversion scripts, and/or add your pre-processing scripts to the utils directory if you think others might be able to re-use them.
+
+
+
+2. **Method execution:** For each tool to be benchmarked (“participant”) one execution workflow has to be written. The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). Those specifications might require that more than one output file is created by the workflow. If a tool has distinct run modes, the calls to those should be parameterized, so that the workflow can easily be run again with a different mode. In general, all tool parameters should be configurable in the workflow config files. Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow.
+
+> IMPORTANT: Do not download any other annotation files because the docs of your method say so. Instead, create all files the method needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
+
+3. **Post-processing:** To ensure compatibility with the OEB benchmarking events, [specifications for file formats][spec-doc] (output of execution workflows = input for summary workflows) are provided by APAeval. There is one specification per metric (=statistical parameter to assess performance of a tool), but calculation of several metrics can require a common input file format (thus, the file has to be created only once by the execution workflow). The three required execution workflow outputs are a) a bed file containing coordinates of identified PAS and their respective expression in tpm, b) a tsv file containing information on differential expression (if applicable), c) a json file containing information about compute resource and time requirements (see specifications for detailed description of the file formats). These files have to be created within the execution workflows as post-processing steps.
+
 
 _Execution workflows_ should be implemented in either [Nexflow][nf] or
 [Snakemake][snakemake], and individual steps should be isolated through the
@@ -43,7 +49,7 @@ execution_workflows/
 
 ## Input
 ### Test data
-For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz`, `.gtf` and/or `.gff` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
+For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz` and/or`.gtf` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
 
 ### Parameters
 Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template-dsl2] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the method you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
@@ -52,6 +58,7 @@ Moreover, both workflow languages require additional information in `config` fil
 
 **Important notes:**   
 * Describe in your README extensively where parameters (sample info, method specific parameters) have to be specified for a new run of the pipeline.
+* Describe in the README if your method has different run modes, or parameter settings that might alter the method's performance considerably. In such a case you should suggest that the method's different modes should be treated in APAeval as two entirely distinct participants.
 * Parameterize your code as much as possible, so that the user will only have to change the sample sheet and config file, and *not the code*. E.g. output file paths should be built from information the user has filled into the sample sheet or config file.
 * For information on how files need to be named see [below](#output)!
 
@@ -107,13 +114,14 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 *Note: Can take your :poodle: for a walk was assigned randomly for initial table*
 
 [//]: # (References)
- 
+
+[apaeval-ewfs]: ../images/EWFs.png 
 [conda]: <https://docs.conda.io/en/latest/>  
 [docker]: <https://www.docker.com/>
 [nf]: <https://www.nextflow.io/>
 [nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
 [nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
-[spec-doc]: /execution_workflows/execution_output_specification.md 
+[spec-doc]: execution_output_specification.md 
 [param-code]: /summary_workflows/parameter_codes.md
 [method]: /execution_workflows/
 [outcode]: /execution_workflows/execution_output_specification.md
@@ -138,7 +146,7 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [issue-39]: <https://github.com/iRNA-COSI/APAeval/issues/39>
 [issue-40]: <https://github.com/iRNA-COSI/APAeval/issues/40>
 [issue-41]: <https://github.com/iRNA-COSI/APAeval/issues/41>
-
+[utils]: ../utils
 
 
 
