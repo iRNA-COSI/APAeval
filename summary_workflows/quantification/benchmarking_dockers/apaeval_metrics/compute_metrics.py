@@ -54,7 +54,7 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         # get metrics dataset
 #        metrics_data = pandas.read_csv(os.path.join(gold_standards_dir, challenge + ".txt"),
 #                                       comment="#", header=0, sep='\t',index_col=0)
-        metrics_data=os.path.join(gold_standards_dir, "siControl_R2.MACEseq.mm10.bed") ##PLEASE CHANGE THIS LATER
+        metrics_data=os.path.join(gold_standards_dir, challenge + ".bed") ##NO LONGER HARD-CODED
 
         # metric on the number of matched sites
         window = 15
@@ -67,15 +67,15 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         #assessment_data = {'toolname': participant, 'x': TPR, 'y': acc, 'e': 0, 'challenge_type': challenge} #not used anywhere
 
         # get json assessment file for both metrics
-        data_id_1 = community + ":" + challenge + "_runtime_" + participant + "_A"
+        data_id_1 = "APAeval" + ":" + challenge + "_matched_" + participant
         std_error= 0
         assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "n_matched_sites", n_matched_sites, std_error)
 
-        data_id_2 = community + ":" + challenge + "_runtime_" + participant + "_A"
+        data_id_2 = "APAeval" + ":" + challenge + "_unmatched_" + participant
         std_error= 0
         assessment_unmatched_sites = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "n_unmatched_sites", n_unmatched_sites, std_error)
 
-        data_id_3 = community + ":" + challenge + "_memory_" + participant + "_A"
+        data_id_3 = "APAeval" + ":" + challenge + "_correlation_" + participant
         std_error= 0
         assessment_correlation = JSON_templates.write_assessment_dataset(data_id_3, community, challenge, participant, "correlation", correlation, std_error)
 

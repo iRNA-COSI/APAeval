@@ -3,23 +3,26 @@
 if (params.help) {
 	
 	    log.info"""
-	    ==============================================
-	    TCGA CANCER DRIVER GENES BENCHMARKING PIPELINE 
-		Author: Javier Garrayo Ventas
-		Barcelona Suercomputing Center. Spain. 2019
-	    ==============================================
+	    =====================================================
+	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
+		Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3)
+		*1 iRNA COSI
+		*2 Genomic Institute of Singapore, A*STAR, Singapore
+		*3 Barcelona Supercomputing Center, Barcelone, Spain
+		2021
+	    =====================================================
 	    Usage:
 	    Run the pipeline with default parameters:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
- 	    nextflow run main.nf -profile docker --input {driver.genes.file} --public_ref_dir {validation.reference.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --cancer_types {analyzed.cancer.types} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
+ 	    nextflow run main.nf -profile docker --input {driver.genes.file} --public_ref_dir {validation.reference.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
 	    Mandatory arguments:
                 --input		List of cancer genes prediction
 				--community_id			Name or OEB permanent ID for the benchmarking community
                 --public_ref_dir 		Directory with list of cancer genes used to validate the predictions
                 --participant_id  		Name of the tool used for prediction
                 --goldstandard_dir 		Dir that contains metrics reference datasets for all cancer types
-                --challenges_ids  		List of types of cancer selected by the user, separated by spaces
+                --challenges_ids  		List of challenge ids selected by the user, separated by spaces
                 --assess_dir			Dir where the data for the benchmark are stored
 	    Other options:
                 --validation_result		The output directory where the results from validation step will be saved
@@ -36,22 +39,24 @@ if (params.help) {
 } else {
 
 	log.info """\
-		 ==============================================
-	     TCGA CANCER DRIVER GENES BENCHMARKING PIPELINE 
+
 	     ==============================================
-         input file: ${params.input}
-		 benchmarking community = ${params.community_id}
-         public reference directory : ${params.public_ref_dir}
-         tool name : ${params.participant_id}
-         metrics reference datasets: ${params.goldstandard_dir}
-		 selected cancer types: ${params.challenges_ids}
-		 benchmark data: ${params.assess_dir}
-		 validation results directory: ${params.validation_result}
-		 assessment results directory: ${params.assessment_results}
-		 consolidated benchmark results directory: ${params.outdir}
-		 Statistics results about nextflow run: ${params.statsdir}
-		 Benchmarking data model file location: ${params.data_model_export_dir}
-		 Directory with community-specific results: ${params.otherdir}
+	     APAeval QUANTIFICATION BENCHMARKING PIPELINE
+	     ==============================================
+	         Input file: ${params.input}
+	         Benchmarking community = ${params.community_id}
+	         Public reference directory : ${params.public_ref_dir}
+	         Tool name : ${params.participant_id}
+	         Metrics reference datasets: ${params.goldstandard_dir}
+	         Challenge ids: ${params.challenges_ids}
+	         Published benchmark data: ${params.assess_dir}
+	         Validation results directory: ${params.validation_result}
+	         Assessment results directory: ${params.assessment_results}
+	         Consolidated benchmark results directory: ${params.outdir}
+	         Statistics results about nextflow run: ${params.statsdir}
+	         Benchmarking data model file location: ${params.data_model_export_dir}
+	         Directory with community-specific results: ${params.otherdir}
+
          """
 	.stripIndent()
 
@@ -64,7 +69,7 @@ input_file = file(params.input)
 ref_dir = Channel.fromPath( params.public_ref_dir, type: 'dir' )
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
-cancer_types = params.challenges_ids
+challenges_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 
@@ -87,7 +92,7 @@ process validation {
 	input:
 	file input_file
 	path ref_dir
-	val cancer_types
+	val challenges_ids
 	val tool_name
 	val community_id
 
@@ -96,7 +101,7 @@ process validation {
 	file 'validation.json' into validation_out
 	
 	"""
-	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $cancer_types -p $tool_name -o validation.json
+	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $challenges_ids -p $tool_name -o validation.json
 	"""
 
 }
@@ -110,7 +115,7 @@ process compute_metrics {
 	input:
 	val file_validated from EXIT_STAT
 	file input_file
-	val cancer_types
+	val challenges_ids
 	path gold_standards_dir
 	val tool_name
 	val community_id
@@ -122,7 +127,7 @@ process compute_metrics {
 	file_validated == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $cancer_types -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
+	python3 /app/compute_metrics.py -i $input_file -c $challenges_ids -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
 	"""
 }
 
@@ -136,6 +141,7 @@ process benchmark_consolidation {
 	path benchmark_data
 	file assessment_out
 	file validation_out
+	val challenges_ids
 	
 	output:
 	path 'aggregation_dir', type: 'dir'
@@ -143,7 +149,7 @@ process benchmark_consolidation {
 
 	"""
 	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir
-	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -a aggregation_dir -o data_model_export.json
+	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -c $challenges_ids -a aggregation_dir -o data_model_export.json
 	"""
 
 }

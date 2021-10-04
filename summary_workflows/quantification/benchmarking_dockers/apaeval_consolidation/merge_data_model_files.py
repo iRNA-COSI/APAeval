@@ -12,6 +12,7 @@ def main(args):
     metrics_dir = args.metrics_data
     participant_dir = args.participant_data
     aggregation_dir = args.aggregation_data
+    challenge = args.challenge_id
     out_path = args.output
 
     # Assuring the output path does exist
@@ -27,7 +28,7 @@ def main(args):
 
     data_model_file = join_json_files(participant_dir, data_model_file, "*.json")
     data_model_file = join_json_files(metrics_dir, data_model_file, "*.json")
-    data_model_file = join_json_files(aggregation_dir, data_model_file, "*_summary.json")
+    data_model_file = join_json_files(aggregation_dir, data_model_file, "*" + challenge + ".json")
 
     # write the merged data model file to json output
     with open(out_path, mode='w', encoding="utf-8") as f:
@@ -69,6 +70,7 @@ if __name__ == '__main__':
     parser.add_argument("-m", "--metrics_data", help="path where the data for the assessment metrics are stored", required=True)
     parser.add_argument("-a", "--aggregation_data", help="dir where the data for benchmark summary/aggregation are stored",
                         required=True)
+    parser.add_argument("-c", "--challenge_id", help="Id of the challenge", required=True)
     parser.add_argument("-o", "--output", help="output path where the minimal dataset JSON file will be written", required=True)
 
     args = parser.parse_args()

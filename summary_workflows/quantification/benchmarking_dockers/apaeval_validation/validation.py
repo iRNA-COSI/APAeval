@@ -2,6 +2,7 @@
 
 from __future__ import division, print_function
 import pandas
+import numpy as np
 import os, json
 import sys
 from argparse import ArgumentParser
@@ -50,11 +51,19 @@ def  validate_input_data(input_participant,  public_ref_dir, community, challeng
     except:
         sys.exit("ERROR: Submitted data file {} is not in a valid format!".format(input_participant))
     
-    methods_ran = [method_and_sample.split()[0] for method_and_sample in list(participant_data.iloc[:, 3].values)]
-    print(methods_ran)
-    # get ids of the submited fields   ##bed does not have header
-#    data_fields = ['chrom', 'chromStart', 'chromEnd', 'name', 'score', 'strand']
-#    submitted_fields = list(participant_data.columns.values)
+    ## check number of columns
+    n_col_check = len(participant_data.columns) == 6
+    ## check start and end coordinates
+    coord_check = participant_data.dtypes[1] == np.int64 and participant_data.dtypes[2] == np.int64
+    ## check strands
+    strands = list(set(participant_data.iloc[:, 5].values))
+    strand_check = len(strands) == 2 and strands.count('-')+strands.count('+') == 2
+    ## check ref seq format
+    accepted_chr = [str(i) for i in range(1,24)]
+    accepted_chr.append('X')
+    accepted_chr.append('Y')
+    ref_chr   = list(set(participant_data.iloc[:, 0].values))
+    chr_check = [chr in accepted_chr for chr in ref_chr].count(False) == 0
     
     # get reference dataset to validate against
     validated = False
@@ -67,7 +76,7 @@ def  validate_input_data(input_participant,  public_ref_dir, community, challeng
                 methods_check = list(public_ref_data.iloc[:, 0].values)
                 #print([method for method in methods_ran])
                 ## validate the fields of the submitted data and if the predicted genes are in the mutations file
-                if [method in methods_check for method in methods_ran].count(False) == 0:
+                if n_col_check and coord_check and strand_check and chr_check:
                     validated = True
                 else:
                     print("WARNING: Submitted data does not validate against "+public_ref,file=sys.stderr)
@@ -77,7 +86,7 @@ def  validate_input_data(input_participant,  public_ref_dir, community, challeng
                 import traceback
                 traceback.print_exc()
 
-    data_id = community + ":" + participant_name + "_P"
+    data_id = "APAeval" + ":" + participant_name
     output_json = JSON_templates.write_participant_dataset(data_id, community, challenges, participant_name, validated)
 
     # print file
