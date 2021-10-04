@@ -1,41 +1,35 @@
-## Matching PA sites to ground truth
+# OpenEBench assessment workflow in Nextflow
 
-The script `match_with_gt.py` uses bedtools window to assign ground truth PAS to the predictions. Each prediction is extended by `n` base pairs in both directions, depending on the parameter chosen for `window_size`.
+Example pipeline with Nextflow used to assess results, comparing the metrics being computed with this workflow with APAeval pilot benchmark results.
 
-The script `corr_with_gt.py` calculates the correlation coefficient between prediction and matched ground truth quantification values. The input must be a BED file containing the columns below. Usage: `python3 corr_with_gt.py -o <output.json> <prediction_matched.bed>`
+#### DON'T FREAK OUT IF YOU'RE UNFAMILIAR WITH `NEXTFLOW`! MOST CHANGES YOU'LL MAKE ARE IN `PYTHON`! 😉
+There are three steps in the summary workflow:
+ - Validation
+    - `input_file`: tab-separated output file from execution workflow
+    - Change the `benchmarking_dockers/apaeval_validation/validation.py` for the specific input_file
+    - Each input_file may have different fields from different execution workflows
+    - `public_ref/[validation_ref].txt` stores the values required to be in the input_files for validating the input_file 
+    - The `[output].json` file is not used in the subsequent steps
+ - Metrics Computation
+    - `input_file`: tab-separated output file from execution workflow
+    - Change the `benchmarking_dockers/apaeval_metrics/compute_metrics.py` for the specific input_file and the specific metric calculation
+    - the gold standard from `metrics_ref_dataset/[challenge].txt` and input_file values are used for computing the metrics
+    - The `output.json` file is used in the following step
+ - Results Consolidation
+    - Inputs the `output.json` file from the metrics computation step and the `data/` directory, which stores files with benchmark values
+    - The current python scripts are as they are in https://github.com/inab/TCGA_benchmarking_dockers, and only supports 2D plots with x and y axes
 
-Processing steps:
-- run bedtools window for predictions and ground truth file
-- run bedtools window for predictions and ground truth file with -v option to retrieve PAS without a match
-- find multiple ground truth sites overlapping one predicted site (currently these cases are excluded)
-        - predicted sites are split and the expression weighted based on the overlap with the ground truth sites
-- write output file with the following columns:
-        1. chrom prediction
-        2. chromStart prediction
-        3. chromEnd prediction
-        4. name prediction
-        5. score prediction (expression value)
-        6. strand prediction
-        7. chrom ground truth
-        8. chromStart ground truth
-        9. chromEnd ground truth
-        10. name ground truth
-        11. score ground truth (additional columns go after this one, such as ground truth gene_ID)
-        12. strand ground truth
-        13. weight of prediction expression
-
-### Usage:
-
-```bash
-python3 match_with_gt.py -o output.bed prediction.bed ground_truth.bed window_size
-
-# example:
-python3 match_with_gt.py adultCortex.PAPERCLIP.mm10.bed siControl_R1.MACEseq.mm10.bed 15
+#### After making the necessary changes for your specific challenge, you will have to build the docker image locally
+Go to the specific docker directory for each step in `benchmarking_dockers/`:
+ - `apaeval_validation/`, `apaeval_metrics/`, and `apaeval_consolidation/`
+and type the following
 ```
-
-### Output:
-- contains all rows of the prediction file, with cases where a predicted site matches multiple ground truth sites removed
-- when no overlapping ground truth is found, the ground truth columns are transferred from the prediction and the expression is set to 0
-
-### To do:
-- handle cases where multiple ground truth sites are found overlapping one predicted site
+docker build . -t apaeval_[challenge]_[validation/metrics/consolidation]:1.0
+```
+If you want to update the docker container, please remove your original image first:
+```
+docker image ls #look for the IMAGE_ID of your docker image
+docker rmi [IMAGE_ID]
+```
+Then, you can rebuild the docker image locally (see above).
+ - Note: please don't push it up to docker hub because that may use quite a bit `AWS` rates
