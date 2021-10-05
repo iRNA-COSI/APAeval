@@ -22,7 +22,7 @@ workflow RUN_DAPARS {
         Convert gtf genome file to bed12
     */
     Channel
-        .fromPath("$PWD/${files.genome_file}")
+        .fromPath("${files.genome_file}")
         .set{ ch_preprocessing_input }
     PREPROCESSING( ch_preprocessing_input )
 
