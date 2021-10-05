@@ -22,9 +22,9 @@ parameter called 'mode' to determine whether to obtain identification or differe
 When 'mode' parameter is set to 'differential', the workflow to obtain differential challenge
 output will be run. When 'mode' parameter is set to 'identification', the workflow to obtain identification
 challenge will be run. When mode is set to anything other than 'differential' or 'identification'. the workflow
-will throw an error. This file also has a parameter called 'genome_file' which holds the relative path from DaPars 
-to the gtf genome file to be used. The relative path is the path that leads to the gtf genome file starting from
-the DaPars folder.
+will throw an error. This file also has a parameter called 'genome_file' which holds the absolute path 
+to the gtf genome file to be used. The absolute path can be obtained by running 'pwd' in the folder that the 
+gtf genome file is in.
 
 ### Steps to run this:
  - When 'mode' parameter is set to 'differential', DaPars requires exactly two distinct conditions to be provided. An 

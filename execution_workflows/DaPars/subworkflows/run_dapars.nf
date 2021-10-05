@@ -6,12 +6,13 @@ def modules = params.modules.clone()
 def files    = modules['files']
 def mode = modules['mode']
 
-include { PREPROCESSING         } from '../modules/preprocessing' addParams( options: [:] )
-include { DAPARS_EXTRACT_3UTR   } from '../modules/dapars_extract_3utr' addParams( options: [:] )
-include { CONVERT_TO_BEDGRAPH   } from '../modules/convert_to_bedgraph' addParams( options: [:] )
-include { CREATE_CONFIG_FILE    } from '../modules/create_config_file' addParams( options: [:] )
-include { DAPARS_MAIN           } from '../modules/dapars_main' addParams( options: [:] )
-include { POSTPROCESSING        } from '../modules/postprocessing' addParams( options: [:] )
+include { PREPROCESSING           } from '../modules/preprocessing' addParams( options: [:] )
+include { CREATE_GENE_SYMBOL_FILE } from '../modules/create_gene_symbol_file' addParams( options: [:] )
+include { DAPARS_EXTRACT_3UTR     } from '../modules/dapars_extract_3utr' addParams( options: [:] )
+include { CONVERT_TO_BEDGRAPH     } from '../modules/convert_to_bedgraph' addParams( options: [:] )
+include { CREATE_CONFIG_FILE      } from '../modules/create_config_file' addParams( options: [:] )
+include { DAPARS_MAIN             } from '../modules/dapars_main' addParams( options: [:] )
+include { POSTPROCESSING          } from '../modules/postprocessing' addParams( options: [:] )
 
 workflow RUN_DAPARS {
     take:
@@ -23,15 +24,21 @@ workflow RUN_DAPARS {
     */
     Channel
         .fromPath("${files.genome_file}")
-        .set{ ch_preprocessing_input }
-    PREPROCESSING( ch_preprocessing_input )
+        .set{ ch_gtf_genome_file }
+    PREPROCESSING ( ch_gtf_genome_file )
 
-    PREPROCESSING.out.ch_genome_file
-        .set { ch_extract_3utr_input }
+    /*
+        Create gene symbol file from gtf genome file
+    */
+    CREATE_GENE_SYMBOL_FILE ( ch_gtf_genome_file )
 
     /*
      * Run step 1 of DaPars: Generate region annotation, extract 3utr
      */
+     CREATE_GENE_SYMBOL_FILE.out.ch_gene_symbol_file
+        .combine( PREPROCESSING.out.ch_genome_file )
+        .set { ch_extract_3utr_input }
+
      DAPARS_EXTRACT_3UTR ( ch_extract_3utr_input )
 
     ch_sample
