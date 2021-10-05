@@ -21,10 +21,8 @@ process PREPROCESSING {
 
     script:
     converted_genome_file = "genemodel.bed"
-    gene_symbol_file = "gene_symbol_file.txt"
     """
     gtfToGenePred $genome_file test.genePhred
     genePredToBed test.genePhred $converted_genome_file
-    create_gene_symbol_file.py $genome_file $gene_symbol_file
     """
 }
