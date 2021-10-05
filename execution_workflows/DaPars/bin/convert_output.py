@@ -28,8 +28,10 @@ def convert_to_differential(file_in):
     rows = dict()
     for index, row in df.iterrows():
         # write differential file
-        # keep just the gene name
+        # keep just the gene name obtained from the gene column
+        # e.g. ENSMUST00000161802.1|NA|chr6|-
         name = row['Gene'].split("|")[0]
+        # p val obtained from adjusted.P_val column
         significance = str(row['adjusted.P_val'])
         if name not in rows:
             rows[name] = [significance]
@@ -53,17 +55,20 @@ def convert_to_identification(file_in):
     identification_outputs = set()
     df = pd.read_csv(file_in, sep='\t')
     for index, row in df.iterrows():
-        # keep just the gene name
+        # keep just the gene name and orientation from Gene column
+        # e.g ENSMUST00000161802.1|NA|chr6|-
         chromosome = row['Gene'].split('|')[2]
-        proximal_apa = str(row['Predicted_Proximal_APA'])
         orientation = row['Gene'].split('|')[3]
+        proximal_apa = str(row['Predicted_Proximal_APA'])
+        # Get distal apa site from the Loci column
+        # e.g. chr6:119937615-119938018
         # if orientation is +, distal apa site is the right end of the loci
         if orientation == '+':
             distal_apa = str(row['Loci'].split(':')[1].split('-')[1])
         # else, distal apa site is the left end of the loci
         else:
             distal_apa = str(row['Loci'].split(':')[1].split('-')[0])
-        # the name is the gene id
+        # generate the name for the current identified apa site
         loci = row['Loci'].split(':')[1]
         name = '|'.join([row['Gene'].split('|')[0], chromosome, loci, orientation])
 
