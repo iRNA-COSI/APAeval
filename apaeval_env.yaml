@@ -12,4 +12,4 @@ dependencies:
   - mamba=0.13.0
   - tibanna=0.18.3
   - pip=21.1.2
-
+  - conda-forge::singularity=3.7.1
