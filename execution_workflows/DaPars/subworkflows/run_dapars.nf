@@ -3,8 +3,7 @@
  */
 
 def modules = params.modules.clone()
-def files    = modules['files']
-def mode = modules['mode']
+def files   = modules['files']
 
 include { PREPROCESSING           } from '../modules/preprocessing' addParams( options: [:] )
 include { CREATE_GENE_SYMBOL_FILE } from '../modules/create_gene_symbol_file' addParams( options: [:] )
@@ -67,7 +66,6 @@ workflow RUN_DAPARS {
      * Convert DaPars output file to differential challenge output file
      */
      DAPARS_MAIN.out.ch_dapars_output
-        .combine(Channel.from(mode))
         .set { ch_postprocessing_input }
     POSTPROCESSING ( ch_postprocessing_input )
 }

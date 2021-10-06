@@ -7,22 +7,24 @@ import pandas as pd
 
 def parse_args(args=None):
     Description = "Reformat DePars output file into the output files of differential challenge"
-    Epilog = "Example usage: python convert_output.py <FILE_IN> <MODE>"
+    Epilog = "Example usage: python convert_output.py <FILE_IN> <FILE_OUT> <MODE>"
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
-    parser.add_argument("FILE_IN", help="Input deAPA output txt file.")
+    parser.add_argument("FILE_IN", help="DaPars output file to be converted.")
+    parser.add_argument("FILE_OUT", help="Name of DaPars output for the identification/differential challenge.")
     parser.add_argument("MODE", help="Can either be 'differential' or 'identification")
     return parser.parse_args(args)
 
 
-def convert_to_differential(file_in):
+def convert_to_differential(file_in, file_out):
     """
     This function reformats the txt deAPA output file to file for
     differential challenges
     :param file_in: txt file to be reformatted
+    :param file_out: differential challenge output file
     :return: N/A
     """
-    differential_out = open("dapars_differential_output.tsv", "wt")
+    differential_out = open(file_out, "wt")
 
     df = pd.read_csv(file_in, sep='\t')
     rows = dict()
@@ -44,14 +46,15 @@ def convert_to_differential(file_in):
     differential_out.close()
 
 
-def convert_to_identification(file_in):
+def convert_to_identification(file_in, file_out):
     """
     This function reformats the txt deAPA output file to files for
     identification challenge
     :param file_in: txt file to be reformatted
+    :param file_out: identification challenge output file
     :return: N/A
     """
-    identification_out = open("dapars_identification_output.bed", "wt")
+    identification_out = open(file_out, "wt")
     identification_outputs = set()
     df = pd.read_csv(file_in, sep='\t')
     for index, row in df.iterrows():
@@ -81,15 +84,24 @@ def convert_to_identification(file_in):
 
     identification_out.close()
 
+
 def main(args=None):
     args = parse_args(args)
+    # check that mode is valid
     if args.MODE == 'identification':
-        convert_to_identification(args.FILE_IN)
+        if not args.FILE_OUT.endswith(".bed"):
+            msg = "The identification output file name should end with '.bed'"
+            sys.exit(msg)
+        convert_to_identification(args.FILE_IN, args.FILE_OUT)
     elif args.MODE == 'differential':
-        convert_to_differential(args.FILE_IN)
+        if not args.FILE_OUT.endswith(".tsv"):
+            msg = "The differential output file name should end with '.tsv'"
+            sys.exit(msg)
+        convert_to_differential(args.FILE_IN, args.FILE_OUT)
     else:
         msg = "The mode set as " + args.MODE +" is not valid. Mode can either be set to 'differential' or 'identification' only"
         sys.exit(msg)
+
 
 if __name__ == '__main__':
     sys.exit(main())
