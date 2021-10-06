@@ -30,9 +30,10 @@ def convert_to_differential(file_in, file_out):
     rows = dict()
     for index, row in df.iterrows():
         # write differential file
-        # keep just the gene name obtained from the gene column
-        # e.g. ENSMUST00000161802.1|NA|chr6|-
-        name = row['Gene'].split("|")[0]
+        # keep just the gene id obtained from the gene column
+        # this column has transcript id, gene id, chromosome, orientation
+        # e.g. ENSMUST00000203335.1|ENSMUSG00000045962.16|chr6|-
+        name = row['Gene'].split("|")[1]
         # p val obtained from adjusted.P_val column
         significance = str(row['adjusted.P_val'])
         if name not in rows:

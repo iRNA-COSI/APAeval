@@ -36,6 +36,8 @@ Parameters used to run the two steps of DaPars are specified in conf/modules.con
 Parameters relevant to the workflow itself are:
 - `mode` - whether to run to obtain identification ("identification") or differential ("differential") challenge output.
    Specifying any other value will throw an error.
+- `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
+- `output_file` - name of the output file for the current run ending with .bed if running identification and .tsv if running differential
 - `genome_file` - absolute path from the DaPars folder to the input GTF annotation file.
 
 ### Running the differential workflow
