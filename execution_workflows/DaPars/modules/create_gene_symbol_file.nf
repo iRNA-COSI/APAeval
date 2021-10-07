@@ -16,7 +16,7 @@ process CREATE_GENE_SYMBOL_FILE {
     file genome_file
 
     output:
-    tuple path(gene_symbol_file), emit: ch_gene_symbol_file
+    path gene_symbol_file, emit: ch_gene_symbol_file
 
     script:
     gene_symbol_file = "gene_symbol_file.txt"

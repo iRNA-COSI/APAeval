@@ -63,22 +63,23 @@ def convert_to_identification(file_in, file_out):
         # e.g ENSMUST00000161802.1|NA|chr6|-
         chromosome = row['Gene'].split('|')[2]
         orientation = row['Gene'].split('|')[3]
-        proximal_apa = str(row['Predicted_Proximal_APA'])
+        proximal_apa = int(row['Predicted_Proximal_APA'])
+
         # Get distal apa site from the Loci column
         # e.g. chr6:119937615-119938018
         # if orientation is +, distal apa site is the right end of the loci
         if orientation == '+':
-            distal_apa = str(row['Loci'].split(':')[1].split('-')[1])
+            distal_apa = int(row['Loci'].split(':')[1].split('-')[1])
         # else, distal apa site is the left end of the loci
         else:
-            distal_apa = str(row['Loci'].split(':')[1].split('-')[0])
+            distal_apa = int(row['Loci'].split(':')[1].split('-')[0])
         # generate the name for the current identified apa site
         loci = row['Loci'].split(':')[1]
         name = '|'.join([row['Gene'].split('|')[0], chromosome, loci, orientation])
 
         # add proximal and distal apa sites in separate rows
-        identification_outputs.add((chromosome, proximal_apa, proximal_apa+1, name, '.', orientation))
-        identification_outputs.add((chromosome, distal_apa, distal_apa+1, name, '.', orientation))
+        identification_outputs.add((chromosome, str(proximal_apa), str(proximal_apa+1), name, '.', orientation))
+        identification_outputs.add((chromosome, str(distal_apa), str(distal_apa+1), name, '.', orientation))
 
     for identification_output in identification_outputs:
         identification_out.write("\t".join(identification_output) + "\n")

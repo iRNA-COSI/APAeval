@@ -14,7 +14,7 @@ process POSTPROCESSING {
     container "docker.io/apaeval/dapars:latest"
 
     input:
-    tuple path(config_file)
+    path config_file
 
     output:
     path "*"

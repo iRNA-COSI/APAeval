@@ -17,7 +17,7 @@ process PREPROCESSING {
     file genome_file
 
     output:
-    tuple path(converted_genome_file), emit: ch_genome_file
+    path converted_genome_file, emit: ch_genome_file
 
     script:
     converted_genome_file = "genemodel.bed"
