@@ -38,7 +38,8 @@ Parameters relevant to the workflow itself are:
    Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
 - `output_file` - name of the output file for the current run ending with .bed if running identification and .tsv if running differential
-- `genome_file` - absolute path from the DaPars folder to the input GTF annotation file.
+- `genome_file` - absolute path from the DaPars folder to the input GTF annotation file can be obtained by replacing `path_to`
+   with the path to DaPars
 
 ### Running the differential workflow
 - Set the 'mode' parameter in conf/modules.config to "differential".
