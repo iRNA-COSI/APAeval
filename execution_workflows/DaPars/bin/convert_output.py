@@ -77,8 +77,8 @@ def convert_to_identification(file_in, file_out):
         name = '|'.join([row['Gene'].split('|')[0], chromosome, loci, orientation])
 
         # add proximal and distal apa sites in separate rows
-        identification_outputs.add((chromosome, proximal_apa, proximal_apa, name, '.', orientation))
-        identification_outputs.add((chromosome, distal_apa, distal_apa, name, '.', orientation))
+        identification_outputs.add((chromosome, proximal_apa, proximal_apa+1, name, '.', orientation))
+        identification_outputs.add((chromosome, distal_apa, distal_apa+1, name, '.', orientation))
 
     for identification_output in identification_outputs:
         identification_out.write("\t".join(identification_output) + "\n")
