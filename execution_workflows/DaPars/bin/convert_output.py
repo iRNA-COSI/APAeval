@@ -60,7 +60,7 @@ def convert_to_identification(file_in, file_out):
     df = pd.read_csv(file_in, sep='\t')
     for index, row in df.iterrows():
         # keep just the gene name and orientation from Gene column
-        # e.g ENSMUST00000161802.1|NA|chr6|-
+        # e.g ENSMUST00000203335.1|ENSMUSG00000045962.16|chr6|-
         chromosome = row['Gene'].split('|')[2]
         orientation = row['Gene'].split('|')[3]
         proximal_apa = int(row['Predicted_Proximal_APA'])
