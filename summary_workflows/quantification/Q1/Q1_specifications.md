@@ -34,9 +34,9 @@ It includes the following entries:
 * `runtime_sec`: float of user CPU time in seconds.
 * `max_mem_kib`: integer of maximum memory usage in Kbytes as identified with `MaxRSS`.
 
-Example wrapping of command WORKFLOW to obtain desired json Input 1 (= output of workflow):
+Example wrapping of command `my_tool` to obtain desired json Input 1 (= output of workflow):
 ```bash
-\time -f "{\"runtime_sec\": %U, \"max_mem_kib\": %M}" -o input1.json WORKFLOW
+\time -f "{\"runtime_sec\": %U, \"max_mem_kib\": %M}" -o input1.json my_tool
 ```
 
 #### json 2
