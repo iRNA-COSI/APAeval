@@ -7,13 +7,14 @@ _Execution workflows_ contain all steps that need to be run _per method_ (in OEB
 ![EWFs][apaeval-ewfs]
 
 ## More details
-1. **Sanctioned input files**: Each of the processed input data APAeval is using for their challenges is provided as .bam file (For ease of use, as some participants require .fastq input, we also provide a .fastq file reconstructed from the processed .bam files). If participants need other file formats, these HAVE TO be created as part of the pre-processing within execution workflows (see 2.). Similarly, for each dataset we provide a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS. All other annotation formats that might be needed HAVE TO be created from those. Non-sanctioned annotation- or similar auxiliary files MUST NOT be downloaded as part of the execution workflows, in order to ensure comparability of all participants’ performance.  
+1. **Sanctioned input files**: Each of the processed input data APAeval is using for their challenges is provided as .bam file (For ease of use, as some participants require .fastq input, we also provide a .fastq file reconstructed from the processed .bam files). If participants need other file formats, these HAVE TO be created as part of the pre-processing **within** execution workflows (see 2.). Similarly, for each dataset we provide a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS. All other annotation formats that might be needed HAVE TO be created from those. Non-sanctioned annotation- or similar auxiliary files MUST NOT be downloaded as part of the execution workflows, in order to ensure comparability of all participants’ performance.  
 
 > As several execution workflows might have to do the same pre-processing tasks, we created a [utils][utils] directory, where scripts (which have their corresponding docker images uploaded to the APAeval dockerhub) are stored. Please check the [utils][utils] directory before writing your own conversion scripts, and/or add your pre-processing scripts to the utils directory if you think others might be able to re-use them.
 
 
 
-2. **Method execution:** For each tool to be benchmarked (“participant”) one execution workflow has to be written. The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). Those specifications might require that more than one output file is created by the workflow. If a tool has distinct run modes, the calls to those should be parameterized, so that the workflow can easily be run again with a different mode. In general, all tool parameters should be configurable in the workflow config files. Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow.
+2. **Method execution:** For each tool to be benchmarked (“participant”) one execution workflow has to be written. The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). Those specifications might require that more than one output file is created by the workflow. If a tool has distinct run modes, the calls to those should be parameterized, so that the workflow can easily be run again with a different mode. If those runmodes significantly alter the behaviour of the method, please discuss with the APAeval community whether the distinct runmodes should actually be treated as distinct participants in APAeval (see [section on parameters](#parameters)).   
+In general, all tool parameters should be configurable in the workflow config files. Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow. 
 
 > IMPORTANT: Do not download any other annotation files because the docs of your method say so. Instead, create all files the method needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
 
@@ -49,23 +50,23 @@ execution_workflows/
 
 ## Input
 ### Test data
-For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz` and/or`.gtf` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
+For more information about input files, see ["sanctioned input files"](#more-details) above. For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz` and/or`.gtf` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
 
-### Parameters
+### Parameters 
 Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template-dsl2] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the method you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
 
 Moreover, both workflow languages require additional information in `config` files. This is the place to specify *run- or method-specific* parameters
 
-**Important notes:**   
-* Describe in your README extensively where parameters (sample info, method specific parameters) have to be specified for a new run of the pipeline.
-* Describe in the README if your method has different run modes, or parameter settings that might alter the method's performance considerably. In such a case you should suggest that the method's different modes should be treated in APAeval as two entirely distinct participants.
-* Parameterize your code as much as possible, so that the user will only have to change the sample sheet and config file, and *not the code*. E.g. output file paths should be built from information the user has filled into the sample sheet or config file.
-* For information on how files need to be named see [below](#output)!
+>**Important notes:**   
+>* Describe in your README extensively where parameters (sample info, method specific parameters) have to be specified for a new run of the pipeline.
+>* Describe in the README if your method has different run modes, or parameter settings that might alter the method's performance considerably. In such a case you should suggest that the method's different modes should be treated in APAeval as entirely distinct participants. Please raise such considerations in our slack space.
+>* Parameterize your code as much as possible, so that the user will only have to change the sample sheet and config file, and *not the code*. E.g. output file paths should be built from information the user has filled into the sample sheet or config file.
+>* For information on how files need to be named see [below](#output)!
 
 ## Output 
 In principle you are free to store output files how it best suits you (or the method). 
 However, the "real" and final outputs for each run of the benchmarking will need to be *copied* to a directory in the format   
-`PATH/TO/s3-BUCKET/PARAMCODE/METHOD/`
+`PATH/TO/APAEVAL/CHALLENGECODE/METHOD/`
 
 This directory *must* contain:
 - Output files (check [formats](#formats) and [filenames](#filenames))
@@ -73,18 +74,18 @@ This directory *must* contain:
 - `logs/` directory with all log files created by the workflow exeuction.
 
 ### Formats
-File formats for the 3 benchmarking events are described in the [output specification][spec-doc] which also contains the `OUTCODE` needed for correct naming.
+File formats for the 3 benchmarking events are described in the [output specification][spec-doc] which also contains the `OUTCODE` (01 - Identification, 02 - Quantification, 03 - Differential expression) needed for correct naming.
 ### Filenames
 > As mentioned [above](#parameters) it is best to parameterize filenames, such that for each run the names and codes can be set by changing only the sample sheet and config file!
 
-File names **must** adhere to the following schema: `PARAMCODE_METHOD_OUTCODE.ext`   
+File names **must** adhere to the following schema: `CHALLENGECODE_METHOD_OUTCODE.ext`   
 For the codes please refer to the following documents:   
-- PARAMCODE: in [`summary_input_specification.md`][param-code]
+- CHALLENGECODE: in [`challenge_codes.md`][challenge-code]
 - METHOD: same as directory name in [`execution_workflows`][method]
-- OUTCODE: in [`execution_output_specification.md`][outcode]
+- OUTCODE: in [`execution_output_specification.md`][spec-doc]
 
 **Example:**   
- `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][outcode]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
+ `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][spec-doc]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
 ## Tools
@@ -122,13 +123,12 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
 [nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
 [spec-doc]: execution_output_specification.md 
-[param-code]: /summary_workflows/parameter_codes.md
-[method]: /execution_workflows/
-[outcode]: /execution_workflows/execution_output_specification.md
+[challenge-code]: ../summary_workflows/challenge_codes.md
+[method]: ../execution_workflows/
 [singularity]: <https://sylabs.io/singularity/>
 [snakemake-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/snakemake>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
-[test-data]: /tests/test_data
+[test-data]: ../tests/test_data
 [issue-26]: <https://github.com/iRNA-COSI/APAeval/issues/26>
 [issue-19]: <https://github.com/iRNA-COSI/APAeval/issues/19>
 [issue-27]: <https://github.com/iRNA-COSI/APAeval/issues/27>
