@@ -52,7 +52,35 @@ def get_sample_info(LinkedHashMap sample) {
 ch_samplesheet_reformat
     .splitCsv(header:true, sep:',')
     .map { get_sample_info(it) }
-    .set { ch_input }
+    .into { ch_input
+            ch_stringtie_input }
+
+if (params.use_stringtie2_gtf){
+    process STRINGTIE2 {
+        tag "$sample"
+        label 'process_medium'
+        publishDir "${params.outdir}/aptardi", mode: params.publish_dir_mode
+
+        input:
+        tuple val(sample), path(bam), path(gtf), path(fasta) from ch_stringtie_input
+
+        output:
+        tuple val(sample), path("stringtie.merged.gtf") into ch_stringtie_gtf
+
+        script:
+        """
+        stringtie -L -G $gtf -o ${sample}.stringtie.gtf $bam
+        stringtie --merge ${sample}.stringtie.gtf -G $gtf -o stringtie.merged.gtf
+        """
+    }
+    ch_input
+       .join(ch_stringtie_gtf, by:0)
+       .map { it -> [ it[0], it[1], it[4], it[3] ] }
+       .set { ch_aptardi_input }
+} else {
+    ch_input
+       .set { ch_aptardi_input }
+}
 
 /*
  * Run APTARDI
@@ -61,7 +89,7 @@ process APTARDI {
     publishDir "${params.outdir}/aptardi", mode: params.publish_dir_mode
 
     input:
-    tuple val(sample), path(bam), path(gtf), path(fasta) from ch_input
+    tuple val(sample), path(bam), path(gtf), path(fasta) from ch_aptardi_input
     path aptardi_model from ch_aptardi_model
     path aptardi_scale from ch_aptardi_scale
 
