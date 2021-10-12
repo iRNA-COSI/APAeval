@@ -112,7 +112,8 @@ For the codes please refer to the following documents:
  `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][spec-doc]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
-
+## PR reviews
+At least 2 independent reviews are required before your code can be merged into the main APAeval branch. Why not review some other PR while you wait for yours to be accepted? You can find some instructions in [Sam's PR review guide][pr-review-guide].
 
 ## Tools
 List of tools used in APAeval. Please update columns as the execution workflows progress.
@@ -158,6 +159,7 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [spec-doc]: execution_output_specification.md 
 [challenge-code]: ../summary_workflows/challenge_codes.md
 [method]: ../execution_workflows/
+[pr-review-guide]: ./execution_workflows/PR_review_guide.md
 [singularity]: <https://sylabs.io/singularity/>
 [snakemake-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/snakemake>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>

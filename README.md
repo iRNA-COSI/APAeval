@@ -96,10 +96,11 @@ are supported by OpenEBench.
 Apart from writing _execution_ and _summary workflows_, there are various other
 smaller jobs that you could work on, including, e.g.:
 
+- [**Pull request reviews**][pr-review-guide]
 - Pre-processing RNA-Seq input data via the [nf-core][nf-core] [RNA-Seq
   analysis pipeline][nf-core-rna-seq]
 - Writing additional benchmark specifications
-- Housekeeping jobs (reviewing code, helping to keep the repository clean,
+- Housekeeping jobs ( improve documentation, helping to keep the repository clean,
   enforce good coding practices, etc.)
 - Work with our partner OpenEBench on their open issues, e.g., by extending
   their portfolio of [supported visualization][oeb-open-issues]
@@ -380,7 +381,7 @@ report any violations to the Code of Conduct to either or both of
 [oeb-open-issues]: <https://github.com/inab/OpenEBench_scientific_visualizer/issues>
 [osi]: <https://opensource.org/>
 [osi-licenses]: <https://opensource.org/licenses>
-[pr-review-guide]: PR_review_guide.md
+[pr-review-guide]: ./execution_workflows/PR_review_guide.md
 [seqera-labs]: <https://seqera.io/>
 [singularity]: <https://sylabs.io/singularity/>
 [slack]: <http://slack.com/>
