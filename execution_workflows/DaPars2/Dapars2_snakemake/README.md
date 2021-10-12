@@ -1,6 +1,9 @@
 
 # DaPars2
 
+Execution workflow to run DaPars2 and generate poly(A) site identification challenge output. See [Notes section](#notes) for clarifications on exclusion from the quantification and differential usage challenges.
+
+
 Github repo: https://github.com/3UTR/DaPars2
 
 Documentation: http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html
@@ -62,7 +65,7 @@ bash run_local.sh
 
 ## Output & post-processing
 > *  DaPars2 output tables are generated per chromosome for each sample. Under the main results directory, these are available at `intermediate_<sample_name>/apa_<chr_name>/apa_result_temp.<chr_name>.txt`
-> * BED file of identified proximal and distal poly(A) sites per sample, generated at the base of the main results directory at `<sample_name><out_bed_suffix>` (out_bed_suffix is defined in `config/config.DaPars2.yaml`)
+> * BED file of identified proximal and distal poly(A) sites per sample, generated at the base of the main results directory at `<sample_name><out_bed_suffix>` (out_bed_suffix is defined in `config/config.DaPars2.yaml`). The BED file is **unsorted**.
 
 
 
@@ -70,3 +73,5 @@ bash run_local.sh
 > * This workflow uses `Dapars2_Multi_Sample.py` where one can assign chromosome name as a command line argument, whereas `DaPars2_Multi_Sample_Multi_Chr.py` is hardcoded for standard human chromosomes with the 'chr' prefix. Both scripts otherwise produce identical output with test data.
 > * In [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html), the input files are in wiggle format; however, the testing data that it provides is in bedgraph format. This workflow generates bedgraph files and runs successfully without error on test data
 > * The [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html) states a dependency on R but no scripts appears to use R. The Docker image does not install R and Dapars2 runs successfully without error on test data.
+> * DaPars2 only provides polyA site quantification through it's relative **P**ercent **D**istal site **U**sage **I**ndex (PDUI) metric. Our current quantification benchmarks require a [TPM value per polyA site](https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/execution_output_specification.md#format-02), so DaPars2 is not included for the quantification challenge as it stands.
+> * Unlike DaPars, DaPars2 does not perform differential polyA site usage testing and cannot be included for the differential usage challenge.
