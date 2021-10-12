@@ -9,11 +9,11 @@ from argparse import ArgumentParser
 from JSON_templates import JSON_templates
 
 parser = ArgumentParser()
-parser.add_argument("-i", "--participant_data", help="list of cancer genes prediction", required=True)
+parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
 parser.add_argument("-com", "--community_name", help="name of benchmarking community", required=True)
-parser.add_argument("-c", "--challenge_types", nargs='+', help="list of types of cancer selected by the user, separated by spaces", required=True)
+parser.add_argument("-c", "--challenge_types", nargs='+', help="list of types of APAeval benchmark challenge (identification, quantification, and differential usage) selected by the user, separated by spaces", required=True)
 parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
-parser.add_argument("-r", "--public_ref_dir", help="directory with the list of cancer genes used to validate the predictions", required=True)
+parser.add_argument("-r", "--public_ref_dir", help="directory with the list of PAS ground truth used to validate the predictions", required=True)
 parser.add_argument("-o", "--output", help="output path where participant JSON file will be written",
                     required=True)
 

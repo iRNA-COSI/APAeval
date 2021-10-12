@@ -10,7 +10,7 @@ fi
 if [ $# -gt 0 ]; then
 	tag_id="$1"
 
-	for docker_name in tcga_validation tcga_metrics tcga_consolidation ; do
+	for docker_name in apaeval_validation apaeval_metrics apaeval_consolidation ; do
 		docker build -t "$docker_name":"$tag_id" "$docker_name"
 	done
 else
