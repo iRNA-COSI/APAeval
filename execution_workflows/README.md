@@ -24,7 +24,7 @@ In general, all tool parameters should be configurable in the workflow config fi
 _Execution workflows_ should be implemented in either [Nexflow][nf] or
 [Snakemake][snakemake], and individual steps should be isolated through the
 use of either [Conda][conda] virtual environments (deprecated; to run on AWS we need containerized workflows) or
-[Docker][docker]/[Singularity][singularity] containers.
+[Docker][docker]/[Singularity][singularity] containers. For more information on how to create these containers, see section [containers](#containers).
 
 ## Templates
 To implement an execution workflow for a method, copy either the [snakemake template][snakemake-template] 
@@ -48,6 +48,30 @@ execution_workflows/
           |-- ...
 ```
 
+## Containers
+For the sake of reproducibility and interoperability, we require the use of docker containers in our execution workflows. The tools to be benchmarked have to be available in a container, but also any other tools that are used for pre- or post-processing in an execution workflow should. Whether you get individual containers for all the tools of your workflow, or combine them inside one container is up to you (The former being the more flexible option of course).
+
+> IMPORTANT: Do check out the [utils directory][utils] before you work on containers for pre- or post-processing tools, maybe someone already did the same thing. If not, and you're gonna build useful containers, don't forget to add them there as well.
+
+Here are some pointers on how to best approach the containerization:
+
+1. Check if your tool is already available as a Docker container, e.g. at
+   - [dockerhub][dockerhub]
+   - [biocontainers][biocontainers]
+   - google for `[TOOL_NAME] Docker`  or `[TOOL_NAME] Dockerfile`
+
+
+2. If no Docker image is availabe for your tool
+   - build one from a Dockerfile. There are thousands of Docker tutorials, for example [here][docker-tutorial]. An example of a Dockerfile in APAeval you can find [here][dockerfile].
+   - once you've successfully built your image locally, you should push the corresponding (*tested*) `Dockerfile` to your branch on the APAeval repo. In order to then get your image to our dockerhub account, please make yourself heard in our slack space and [Alex][docker-contact-alex] or [Yuk Kei][docker-contact-yukkei] will help you.
+   - naming conventions: 
+        - if your container only contains one tool:
+        `apaeval/{tool_name}:{tool_version}`, e.g. `apaeval/my_tool:v1.0.0`
+        - if you combine all tools required for your workflow: `apaeval/exwf_{participant_name}:{commit_hash}`, where `commit_hash` is the short SHA of the Git commit in the APAeval repo that last modified the corresponding Dockerfile, e.g., 65132f2
+
+3. Now you just have to specify the docker image(s) in your execution workflow:
+    - For [nextflow][nf-docker], the individual containers can be specified in the processes.
+    - For [Snakemake][smk-docker], the individual containers can be specified per rule.
 ## Input
 ### Test data
 For more information about input files, see ["sanctioned input files"](#more-details) above. For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz` and/or`.gtf` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
@@ -88,6 +112,8 @@ For the codes please refer to the following documents:
  `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][spec-doc]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
+
+
 ## Tools
 List of tools used in APAeval. Please update columns as the execution workflows progress.
 
@@ -119,7 +145,14 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [apaeval-ewfs]: ../images/EWFs.png 
 [conda]: <https://docs.conda.io/en/latest/>  
 [docker]: <https://www.docker.com/>
+[docker-contact-alex]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01PEJ5TW4V>
+[docker-contact-yukkei]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01SFJM5FM5>
+[dockerhub]: <https://hub.docker.com/>
+[dockerfile]: ../docs/templates/snakemake/workflow/envs/[METHOD].Dockerfile
+[docker-tutorial]: <https://stackify.com/docker-build-a-beginners-guide-to-building-docker-images/>
+[biocontainers]: <https://biocontainers.pro/registry>
 [nf]: <https://www.nextflow.io/>
+[nf-docker]: <https://www.nextflow.io/docs/latest/docker.html#multiple-containers.>
 [nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
 [nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
 [spec-doc]: execution_output_specification.md 
@@ -128,6 +161,7 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [singularity]: <https://sylabs.io/singularity/>
 [snakemake-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/snakemake>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
+[smk-docker]: <https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html#running-jobs-in-containers>
 [test-data]: ../tests/test_data
 [issue-26]: <https://github.com/iRNA-COSI/APAeval/issues/26>
 [issue-19]: <https://github.com/iRNA-COSI/APAeval/issues/19>
