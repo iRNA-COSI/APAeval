@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import sys
 
-configfile:"config/config.DaPars2.yaml"
+
 
 samples = pd.read_csv(config["samples"]).set_index("sample", drop=False)
 

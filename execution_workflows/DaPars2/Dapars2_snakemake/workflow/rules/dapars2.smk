@@ -6,8 +6,10 @@ rule makeDapars2Config:
         bed = os.path.join(config["out_dir"], "extracted_3UTR.bed"),
         seqDepth = os.path.join(config["out_dir"], "{sample}_pathReadcounts.tsv"),
         bedgraph = os.path.join(config["out_dir"], "{sample}.bedgraph")
+
     output:
         out=os.path.join(config["out_dir"], "{sample}_Dapars2_configure_file.txt")
+
     params:
         ct=config["coverageThreshold"],
         bedgraph = os.path.abspath(os.path.join(config["out_dir"], "{sample}.bedgraph")),
@@ -15,9 +17,12 @@ rule makeDapars2Config:
         bed = os.path.abspath(os.path.join(config["out_dir"],  "extracted_3UTR.bed")),
         out = os.path.join(config["out_dir"], "intermediate_{sample}", "apa"),
         outfile = "apa"
-    threads: 16
+
+    threads: config["dapars2_threads"]
+
     log:
         os.path.join(LOG_DIR, "{sample}_makeDapars2Config.log")
+
     run:
         ct=params.ct
         thr=threads
@@ -67,6 +72,9 @@ rule mainDapars2:
 
     container:
         "docker://apaeval/dapars2:1.0"
+
+    threads:
+        config["dapars2_threads"]
 
     log:
         os.path.join(LOG_DIR, "{sample}_{chr}_execute.mainDapars2.log")
