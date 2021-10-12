@@ -18,6 +18,9 @@ out_bed_suffix: .identified_polya.bed
 # Minumum coverage for event to be considered for further analysis
 coverageThreshold: 10
 
+# Number of threads to use for main DaPars2 script (Dapars2_Multi_Sample.py)
+dapars2_threads: 1
+
 # Pipeline parameters. No need to change these for specific runs
 
 # Name of subdirectory
