@@ -9,13 +9,19 @@ to create the nextflow pipeline of this module
 ## Running Aptardi workflow
 
 ### Input & pre-processing
-An example sample sheet is available at `samplesheet.csv`. Each row in the samplesheet has four
+An example sample sheet is available at `samplesheet.csv`. `samplesheet.csv` can contain multiple entries, where each row in the samplesheet has four
 columns:
 
 - sample: name of the sample for logs (e.g control_replicate1)
 - bam: BAM input file for the sample 
 - gtf: reference annotation
 - fasta: reference genome sequences
+- outdir: output directory
+- help: show help message (default: false)
+- use_stringtie2_gtf: use the gtf output from stringtie2 (default: false)
+- aptardi_model = for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/model.hdf5 provided by Aptardi)
+- aptardi_scale = for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/scale.pk provided by Aptardi)
+Note: Aptardi also allows users to build their own model during the Aptardi run. Please refer to [Aptardi's documentation](https://github.com/luskry/aptardi#options)
 
 ### Docker containers
 This workflow uses docker containers. To run, make sure that docker is installed and running 
@@ -30,8 +36,8 @@ Parameters relevant to the workflow itself are:
 - `output_bed` - name of the output file for the current run ending with .bed
 
 ### Running the Aptardi execution workflow
-- Download the test data [here](https://drive.google.com/drive/folders/1tsDu7TzxoVvnD-0UbVRd-pu-ZL36F190?usp=sharing)
-- Update the samplesheet.csv with the full path to the downloaded bam, gtf, and fasta files
+- Download the test data [here](https://drive.google.com/drive/folders/1tsDu7TzxoVvnD-0UbVRd-pu-ZL36F190?usp=sharing). The current dataset is in a genomic region where there are enough reads to test Aptardi's PAS identification functionality.
+- Update the samplesheet.csv with the full path to the downloaded bam, gtf, and fasta files.
 ```
 sample,bam,gtf,fasta
 sample,[path_to]/test.bam,[path_to]/gencode.vM26.primary_assembly.annotation.gtf,[path_to]/mm39.fa

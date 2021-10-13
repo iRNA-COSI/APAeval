@@ -56,6 +56,9 @@ ch_samplesheet_reformat
             ch_stringtie_input }
 
 if (params.use_stringtie2_gtf){
+    /*
+     * Generate GTF file from running STRINGTIE2
+     */
     process STRINGTIE2 {
         tag "$sample"
         label 'process_medium'
