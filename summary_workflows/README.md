@@ -4,7 +4,7 @@ This is where the summary workflows for APAeval live.
 ## Overview
 ![apaeval-swfs][apaeval-swfs]
 
-APAeval consists of three benchmarking events to evaluate the performance of different tasks that the tools of interest (=participants) might be able to perform: poly(A) site identification, quantification, and assessment of their differential usage. A tool can participate in one, two or all three events, depending on its functions.   
+APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: poly(A) site identification, quantification, and assessment of their differential usage. A method can participate in one, two or all three events, depending on its functions.   
 
 Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. A challenge is evaluated within a summary workflow, which is run on the OEB infrastructure. The summary workflow will compute all metrics relevant for the challenge. Summary workflows can be re-used between challenges, however, depending on the input dataset, different metrics might be calculated, and summary workflows might thus be adapted to individual challenges (Example here: in challenge Ix, metrics I1 and I2 are computed, whereas in challenge Iy, an additional metric I5 is assessed. Apart from calculating metric I5 however, the summary workflows for the challenges Ix and Iy are the same.)    
 

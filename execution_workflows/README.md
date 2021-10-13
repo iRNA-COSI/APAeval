@@ -2,7 +2,7 @@
 This is where the execution workflows for APAeval live. 
 
 ## Overview
-_Execution workflows_ contain all steps that need to be run _per method_ (in OEB terms: per _participant_). Depending on the method, an execution workflow will have to perform **pre-processing** steps to convert the APAeval sanctioned input files into a format that the method can consume. This does not include e.g. adapter trimming or mapping of reads, as those steps are already performed in our general pre-processing pipeline. After pre-processing, the actual **execution of the method** has to be implemented, and subsequently **post-processing** steps might be required to convert the output of the method into the format defined by the APAeval specifications.
+_Execution workflows_ contain all steps that need to be run _per method_ (in OEB terms: per _participant_). Depending on the participant, an execution workflow will have to perform **pre-processing** steps to convert the APAeval sanctioned input files into a format that the participant can consume. This does not include e.g. adapter trimming or mapping of reads, as those steps are already performed in our general pre-processing pipeline. After pre-processing, the actual **execution of the method** has to be implemented, and subsequently **post-processing** steps might be required to convert the obtained output into the format defined by the APAeval specifications.
 
 ![EWFs][apaeval-ewfs]
 
@@ -13,12 +13,12 @@ _Execution workflows_ contain all steps that need to be run _per method_ (in OEB
 
 
 
-2. **Method execution:** For each tool to be benchmarked (“participant”) one execution workflow has to be written. The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). Those specifications might require that more than one output file is created by the workflow. If a tool has distinct run modes, the calls to those should be parameterized, so that the workflow can easily be run again with a different mode. If those runmodes significantly alter the behaviour of the method, please discuss with the APAeval community whether the distinct runmodes should actually be treated as distinct participants in APAeval (see [section on parameters](#parameters)).   
-In general, all tool parameters should be configurable in the workflow config files. Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow. 
+2. **Method execution:** For each method to be benchmarked (“participant”) one execution workflow has to be written. The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). Those specifications might require that more than one output file is created by the workflow. If a method has distinct run modes, the calls to those should be parameterized, so that the workflow can easily be run again with a different mode. If those runmodes significantly alter the behaviour of the method, please discuss with the APAeval community whether the distinct runmodes should actually be treated as distinct participants in APAeval (see [section on parameters](#parameters)).   
+In general, all relevant participant parameters should be configurable in the workflow config files. Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow. 
 
-> IMPORTANT: Do not download any other annotation files because the docs of your method say so. Instead, create all files the method needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
+> IMPORTANT: Do not download any other annotation files because the docs of your participant say so. Instead, create all files the participant needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
 
-3. **Post-processing:** To ensure compatibility with the OEB benchmarking events, [specifications for file formats][spec-doc] (output of execution workflows = input for summary workflows) are provided by APAeval. There is one specification per metric (=statistical parameter to assess performance of a tool), but calculation of several metrics can require a common input file format (thus, the file has to be created only once by the execution workflow). The three required execution workflow outputs are a) a bed file containing coordinates of identified PAS and their respective expression in tpm, b) a tsv file containing information on differential expression (if applicable), c) a json file containing information about compute resource and time requirements (see specifications for detailed description of the file formats). These files have to be created within the execution workflows as post-processing steps.
+3. **Post-processing:** To ensure compatibility with the OEB benchmarking events, [specifications for file formats][spec-doc] (output of execution workflows = input for summary workflows) are provided by APAeval. There is one specification per metric (=statistical parameter to assess performance of a participant), but calculation of several metrics can require a common input file format (thus, the file has to be created only once by the execution workflow). The three required execution workflow outputs are a) a bed file containing coordinates of identified PAS and their respective expression in tpm, b) a tsv file containing information on differential expression (if applicable), c) a json file containing information about compute resource and time requirements (see specifications for detailed description of the file formats). These files have to be created within the execution workflows as post-processing steps.
 
 
 _Execution workflows_ should be implemented in either [Nexflow][nf] or
@@ -27,9 +27,9 @@ use of either [Conda][conda] virtual environments (deprecated; to run on AWS we 
 [Docker][docker]/[Singularity][singularity] containers. For more information on how to create these containers, see section [containers](#containers).
 
 ## Templates
-To implement an execution workflow for a method, copy either the [snakemake template][snakemake-template] 
+To implement an execution workflow for a participant, copy either the [snakemake template][snakemake-template] 
 or the [nextflow template dsl1][nextflow-template-dsl1]/[nextflow template dsl2][nextflow-template-dsl2] into 
-the method's directory and adapt the workflow directory names as described in the template's `README`. 
+the participant's directory and adapt the workflow directory names as described in the template's `README`. 
 Don't forget to adapt the `README` itself as well.  
 
 
@@ -49,13 +49,13 @@ execution_workflows/
 ```
 
 ## Containers
-For the sake of reproducibility and interoperability, we require the use of docker containers in our execution workflows. The tools to be benchmarked have to be available in a container, but also any other tools that are used for pre- or post-processing in an execution workflow should. Whether you get individual containers for all the tools of your workflow, or combine them inside one container is up to you (The former being the more flexible option of course).
+For the sake of reproducibility and interoperability, we require the use of docker containers in our execution workflows. The participants to be benchmarked have to be available in a container, but also any other tools that are used for pre- or post-processing in an execution workflow should be containerized. Whether you get individual containers for all the tools of your workflow, or combine them inside one container is up to you (The former being the more flexible option of course).
 
 > IMPORTANT: Do check out the [utils directory][utils] before you work on containers for pre- or post-processing tools, maybe someone already did the same thing. If not, and you're gonna build useful containers, don't forget to add them there as well.
 
 Here are some pointers on how to best approach the containerization:
 
-1. Check if your tool is already available as a Docker container, e.g. at
+1. Check if your participant (or other tool) is already available as a Docker container, e.g. at
    - [dockerhub][dockerhub]
    - [biocontainers][biocontainers]
    - google for `[TOOL_NAME] Docker`  or `[TOOL_NAME] Dockerfile`
@@ -77,20 +77,20 @@ Here are some pointers on how to best approach the containerization:
 For more information about input files, see ["sanctioned input files"](#more-details) above. For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam`, `.fastq.gz` and/or`.gtf` files as input to your workflow. The `.bed` file serves as an example for a ground truth file.
 
 ### Parameters 
-Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template-dsl2] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the method you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
+Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template-dsl2] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the workflow you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
 
-Moreover, both workflow languages require additional information in `config` files. This is the place to specify *run- or method-specific* parameters
+Moreover, both workflow languages require additional information in `config` files. This is the place to specify *run- or participant-specific* parameters
 
 >**Important notes:**   
->* Describe in your README extensively where parameters (sample info, method specific parameters) have to be specified for a new run of the pipeline.
->* Describe in the README if your method has different run modes, or parameter settings that might alter the method's performance considerably. In such a case you should suggest that the method's different modes should be treated in APAeval as entirely distinct participants. Please raise such considerations in our slack space.
+>* Describe in your README extensively where parameters (sample info, participant specific parameters) have to be specified for a new run of the pipeline.
+>* Describe in the README if your participant has different run modes, or parameter settings that might alter the participant's performance considerably. In such a case you should suggest that the different modes should be treated in APAeval as entirely *distinct participants*. Please raise such considerations in our slack space.
 >* Parameterize your code as much as possible, so that the user will only have to change the sample sheet and config file, and *not the code*. E.g. output file paths should be built from information the user has filled into the sample sheet or config file.
 >* For information on how files need to be named see [below](#output)!
 
 ## Output 
-In principle you are free to store output files how it best suits you (or the method). 
+In principle you are free to store output files how it best suits you (or the participant). 
 However, the "real" and final outputs for each run of the benchmarking will need to be *copied* to a directory in the format   
-`PATH/TO/APAEVAL/CHALLENGECODE/METHOD/`
+`PATH/TO/APAEVAL/CHALLENGECODE/PARTICIPANT/`
 
 This directory *must* contain:
 - Output files (check [formats](#formats) and [filenames](#filenames))
@@ -102,21 +102,21 @@ File formats for the 3 benchmarking events are described in the [output specific
 ### Filenames
 > As mentioned [above](#parameters) it is best to parameterize filenames, such that for each run the names and codes can be set by changing only the sample sheet and config file!
 
-File names **must** adhere to the following schema: `CHALLENGECODE_METHOD_OUTCODE.ext`   
+File names **must** adhere to the following schema: `CHALLENGECODE_PARTICIPANT_OUTCODE.ext`   
 For the codes please refer to the following documents:   
 - CHALLENGECODE: in [`challenge_codes.md`][challenge-code]
-- METHOD: same as directory name in [`execution_workflows`][method]
+- PARTICIPANT: same as directory name in [`execution_workflows`][participant]
 - OUTCODE: in [`execution_output_specification.md`][spec-doc]
 
 **Example:**   
- `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your method) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][spec-doc]), run on dataset "P19" using 4 cores (PARAMCODE AA, we know that from) [`summary_input_specification.md`][param-code])
+ `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your participant) for the identification benchmarking event (OUTCODE 01, we know that from [`execution_output_specification.md`][spec-doc]), run on dataset "P19" using 4 cores (CHALLENGECODE AA, we know that from) [`summary_input_specification.md`][param-code])
 
 
 ## PR reviews
 At least 2 independent reviews are required before your code can be merged into the main APAeval branch. Why not review some other PR while you wait for yours to be accepted? You can find some instructions in [Sam's PR review guide][pr-review-guide].
 
-## Tools
-List of tools used in APAeval. Please update columns as the execution workflows progress.
+## Benchmarking Participants (bioinformatic methods)
+List of bioinformatic methods benchmarked in APAeval. Please update columns as the execution workflows progress.
 
 | Method | Citation | Type | Status in APAeval | OpenEBench link | Installation | Can take your :poodle: for a walk? |
 |-|-|-|-|-|-|-|
@@ -158,7 +158,7 @@ List of tools used in APAeval. Please update columns as the execution workflows 
 [nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
 [spec-doc]: execution_output_specification.md 
 [challenge-code]: ../summary_workflows/challenge_codes.md
-[method]: ../execution_workflows/
+[participant]: ../execution_workflows/
 [pr-review-guide]: ./execution_workflows/PR_review_guide.md
 [singularity]: <https://sylabs.io/singularity/>
 [snakemake-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/snakemake>

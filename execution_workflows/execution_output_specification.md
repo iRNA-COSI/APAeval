@@ -2,9 +2,9 @@
 
 ## Synopsis
 
-This specification describes required output of `execution_workflows` to ensure that the `summary_workflows` have access to files in the same format from each tool.
+This specification describes required output of `execution_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
 
-Outputs depend on features available for the tool (i.e. not all tools perform *de novo* identification of PAS) and can be grouped into three categories:
+Outputs depend on features available for the participant (i.e. not all participants perform *de novo* identification of PAS) and can be grouped into three categories:
 
 - identification benchmarking event:
   - BED file with identified poly(A) sites with single nucleotide resolution
@@ -30,7 +30,7 @@ Inputs to execution workflows are provided by APAeval.
   
 #### Format 01
 
-This BED file contains single-nucleotide position of poly(A) sites identified by the tool.  
+This BED file contains single-nucleotide position of poly(A) sites identified by the participant.  
 Fields:
 
 - **chrom** - the name of the chromosome

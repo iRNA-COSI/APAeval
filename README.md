@@ -36,10 +36,10 @@ do are:
 
 ## Overview
 ![schema][apa-eval-overview]
-1. APAeval consists of three benchmarking events to evaluate the performance of different tasks that the tools of interest (=participants) might be able to perform: PAS identification, quantification, and assessment of their differential usage. A tool can participate in one, two or all three events, depending on its functions.
+1. APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: PAS identification, quantification, and assessment of their differential usage. A method can participate in one, two or all three events, depending on its functions.
 2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants.
 3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
-4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written for each tool in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
+4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
 5. To ensure compatibility with the OEB benchmarking events, specifications for file formats (output of execution workflows = input for summary workflows) are provided by APAeval. 
 6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. A challenge is computed within a summary workflow, which is run on the OEB infrastructure, for each participant. The summary workflow will compute all metrics relevant for the challenge. 
 7. In order to compare the performance of participants, OEB will collect the respective output files from all eligible participant summary workflows and will visualize all results per challenge, such that performance of participants can be compared for each metric.
@@ -55,12 +55,12 @@ workflows_ and benchmarking events' _summary workflows_.
 
 ### Execution workflows
 
-[_Execution workflows_][apaeval-ewf-readme] contain all steps that need to be run _per participant_:
+[_Execution workflows_][apaeval-ewf-readme] contain all steps that need to be run _per method_:
 
 1. **Pre-processing:** Convert the input files the APAeval team has prepared
-  into the input files a given method consumes, if applicable.
+  into the input files your participant consumes, if applicable.
 2. **Method execution:** Execute the method in any way necessary to compute the
-  output files for the benchmarking events the method qualifies for (may require more than one run of the tool
+  output files for all benchmarking events the participant qualifies for (may require more than one run of the method
   if, e.g., run in different execution modes).
 3. **Post-processing:** Convert the output files of the method into the formats
   consumed by the _summary workflows_ as specified by the APAeval team, if
@@ -74,7 +74,7 @@ use of either [Conda][conda] virtual environments (deprecated; to run on AWS we 
 ### Summary workflows
 
 **_Summary workflows_** contain all steps that need to be run _per challenge_,
-using outputs of the invididual method _execution workflows_ as inputs. They
+using outputs of the invididual participant _execution workflows_ as inputs. They
 follow the [OpenEBench][oeb] workflow model, described
 [here][oeb-example-workflow], implemented in Nextflow. OpenEBench workflows
 consist of the following 3 steps:
@@ -196,7 +196,7 @@ We are making extensive use of [**GitHub**][gh]'s project management resources
 to allow contributors to work independently on individual, largely
 self-contained, issues. There are several Kanban [project boards][gh-projects],
 listing relevant issues for different kinds of tasks, such as drafting
-benchmarking specifications and implementing/running method execution
+benchmarking specifications and implementing/running execution
 workflows.
 
 The idea is that people assign themselves to open issues (i.e., those issues
@@ -244,7 +244,7 @@ infrastructure initiative [ELIXIR][elixir].
 
 OpenEBench tooling will facilitate the computation and visualization of
 benchmarking results and store the results of all benchmarking events and challenges in their databases, making it easy for others to explore results. This should
-also make it easy to add additional methods to existing benchmarking events
+also make it easy to add additional participants to existing benchmarking events
 later on. OpenEBench developers are also advising us on creating benchmarks
 that are compatible with good practices in the wider community of
 bioinformatics challenges.
