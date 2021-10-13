@@ -5,19 +5,20 @@ When browsing the pull requests, watch out for the `Ready for review` tag; here 
 At least 2 independent reviews are required before merging a PR.
 
 
-## Start with the README of the execution workflow
+## Start with the README of *the execution workflow*
 
 - Try and follow the instructions as they are to run the pipeline (using the test data in `tests/test_data`)
-(Most workflows should have configs and sample-sheets set up to use this data anyway)
+(Most workflows should have configs and sample-sheets set up to use this data anyway). Request improvement of the README if you can't run the execution workflow with the given instructions.
 
-- Note anything that’s unclear - following (not exhaustive) should be obvious 
+- Note anything else that’s unclear or missing, for example concerning
     - Format of required input data
     - Layout of sample sheet and what the columns mean (there should be an example)
     - Output files produced (names, what they contain)
+    - links to the original repo/README/publication of the participant
 
 ## Check the output data matches our specifications
 
-Specifications are here at `exeuction_workflows/execution_output_specification.md`
+Refer to the [specifications][out-specs].
 
 
 ## Check that steps to run tools/pre-processing are wrapped in Dockerfiles
@@ -40,3 +41,8 @@ Specifications are here at `exeuction_workflows/execution_output_specification.m
 - Output files from test data shouldn’t be committed with the repository
 
 - Make sure (custom) code is clearly documented with comments explaining functions etc.
+
+
+[//]: # (References)
+
+[out-specs]: ./execution_output_specification.md
