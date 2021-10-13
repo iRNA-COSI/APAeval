@@ -27,9 +27,16 @@ To run DaPars with test data provided for APAeval, check the path to DaPars with
 the `path_to` in samplesheet_example_files.csv or samplesheet_example_files_identification.csv with the path 
 from the `pwd` command. 
 
-### Docker containers
-This workflow uses docker containers. To run, make sure that docker is installed and running 
-(e.g. by running the command `docker --help` and seeing a help message printed)
+### Running with Docker or Singularity
+## Docker
+This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
+(e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
+Additionally, make sure that line 49 in Dapars/nextflow.config file `docker.enabled=true` is uncommented while line
+51 `singularity.enabled=true` is commented out
+
+## Singularity
+To run with singularity, comment out line 49 in Dapars/nextflow.config file `docker.enabled=true` and make sure that line
+51 `singularity.enabled=true` is uncommented
 
 ### Parameters
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
