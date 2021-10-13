@@ -60,8 +60,7 @@ workflows_ and benchmarking events' _summary workflows_.
 1. **Pre-processing:** Convert the input files the APAeval team has prepared
   into the input files your participant consumes, if applicable.
 2. **Method execution:** Execute the method in any way necessary to compute the
-  output files for all benchmarking events the participant qualifies for (may require more than one run of the method
-  if, e.g., run in different execution modes).
+  output files for all benchmarking events the participant qualifies for.
 3. **Post-processing:** Convert the output files of the method into the formats
   consumed by the _summary workflows_ as specified by the APAeval team, if
   applicable.
