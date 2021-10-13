@@ -34,19 +34,20 @@ This BED file contains single-nucleotide position of poly(A) sites identified by
 Fields:
 
 - **chrom** - the name of the chromosome
-- **chromStart** - the starting position of the feature in the chromosome
-- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
+- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the last nucleotide just upstream of the cleavage and polyadenylation reaction; the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is equal to `chromStart + 1`
 - **name** - defines the name of the identified poly(A) site
 - **score** - not used, leave as "."
 - **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
 #### Format 02
 
-This BED file contains positions of unique poly(A) sites with TPM values for each identified site in the **score** column.
+This BED file contains positions of unique poly(A) sites with TPM values for each identified site in the **score** column.  
+Fields:
 
 - **chrom** - the name of the chromosome
-- **chromStart** - the starting position of the feature in the chromosome
-- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
+- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the last nucleotide just upstream of the cleavage and polyadenylation reaction; the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is equal to `chromStart + 1`
 - **name** - defines the name of the identified poly(A) site
 - **score** - TPM value for the identified site
 - **strand** - defines the strand; either "." (=no strand) or "+" or "-".

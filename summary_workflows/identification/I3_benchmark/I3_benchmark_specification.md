@@ -18,20 +18,7 @@ TP - true positives - PAS identified by the tool and present within X nucleotide
 FP - false positives  - PAS identified by the tool and not present within X nucleotides of PAS identified in the database
 
 The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified in the database i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified in the database for the prediction to be considered true.  
-The following distance thresholds should be used:
-
-- 0 nt
-- 20 nt
-- 40 nt
-- 60 nt
-- 80 nt
-- 100 nt
-- 120 nt
-- 140 nt
-- 160 nt
-- 180 nt
-- 200 nt
-
+Distance thresholds should be between 0 nt and 200 nt with 20 nt increments.
 
 ## General info
 
@@ -50,7 +37,15 @@ The following distance thresholds should be used:
   
 #### Format 1
 
-This BED file contains PAS identified by the benchmarked tool from RNAseq data. Poly(A) sites should be single nucleotide.
+This BED file contains single-nucleotide position of poly(A) sites identified by the benchmarked method.  
+Fields:
+
+- **chrom** - the name of the chromosome
+- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the last nucleotide just upstream of the cleavage and polyadenylation reaction; the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is equal to `chromStart + 1`
+- **name** - defines the name of the identified poly(A) site
+- **score** - not used, leave as "."
+- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
 #### Format 2
 

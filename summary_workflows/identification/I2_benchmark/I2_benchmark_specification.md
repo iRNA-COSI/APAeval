@@ -19,19 +19,7 @@ FP - false positives - PAS identified by the tool and not present in the orthogo
 FN - false negatives - PAS not identified by the tool but present in the orthogonal dataset
 
 The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified from the orthogonal 3'end seq dataset, i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified from the orthogonal dataset for the prediction to be considered true.  
-The following distance thresholds should be used:
-
-- 0 nt
-- 10 nt
-- 20 nt
-- 30 nt
-- 40 nt
-- 50 nt
-- 60 nt
-- 70 nt
-- 80 nt
-- 90 nt
-- 100 nt
+Distance thresholds should be between 0 nt and 100 nt with 10 nt increments.
 
 ## General info
 
@@ -53,8 +41,8 @@ This BED file contains single-nucleotide position of poly(A) sites identified by
 Fields:
 
 - **chrom** - the name of the chromosome
-- **chromStart** - the starting position of the feature in the chromosome
-- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
+- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the last nucleotide just upstream of the cleavage and polyadenylation reaction; the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is equal to `chromStart + 1`
 - **name** - defines the name of the identified poly(A) site
 - **score** - not used, leave as "."
 - **strand** - defines the strand; either "." (=no strand) or "+" or "-".
@@ -62,15 +50,8 @@ Fields:
 #### Format 2
 
 This BED file contains single-nucleotide position of poly(A) sites identified from the orthogonal 3'end-seq dataset.  
-Fields:
-
-- **chrom** - the name of the chromosome
-- **chromStart** - the starting position of the feature in the chromosome
-- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is the same as starting position
-- **name** - defines the name of the identified poly(A) site
-- **score** - not used, leave as "."
-- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
-
+Fields are the same as in Format 1.
+	
 ## Outputs
 
 | # | Format | Link | Example data |
