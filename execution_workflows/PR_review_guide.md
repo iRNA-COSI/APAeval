@@ -8,7 +8,7 @@ At least 2 independent reviews are required before merging a PR.
 ## Start with the README of *the execution workflow*
 
 - Try and follow the instructions as they are to run the pipeline (using the test data in `tests/test_data`)
-(Most workflows should have configs and sample-sheets set up to use this data anyway). Request improvement of the README if you can't run the execution workflow with the given instructions.
+(Most workflows should have configs and sample-sheets set up to use this data anyway). Request improvement of the README if you can't run the execution workflow with the given instructions. The workflow should run through on the test data without any errors, else please report those errors. However, if it has been documented in the README already that/why the method doesn't work on the test data, and sufficient proof that it works on larger datasets is given (ideally with links to that data), you can still approve. Note that "method doesn't work with ensembl/provided file format/etc." is **NOT** a valid reason. Those issues have to be adressed.
 
 - Note anything else that’s unclear or missing, for example concerning
     - Format of required input data
@@ -24,7 +24,7 @@ Refer to the [specifications][out-specs].
 ## Check that steps to run methods/pre-processing are wrapped in Dockerfiles
 
 - Should be uploaded to apaeval team Dockerhub, not on personal accounts 
-- If needs uploading, ping Yuk-Kei or Alex pointing towards commit ID with Dockerfile (which builds locally)
+(see [execution workflow README on Containers][ewf-readme-container])
 
 
 ## Code organisation & general comments
@@ -46,3 +46,4 @@ Refer to the [specifications][out-specs].
 [//]: # (References)
 
 [out-specs]: ./execution_output_specification.md
+[ewf-readme-container]: ./README#containers
