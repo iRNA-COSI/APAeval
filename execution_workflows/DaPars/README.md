@@ -27,6 +27,10 @@ To run DaPars with test data provided for APAeval, check the path to DaPars with
 the `path_to` in samplesheet_example_files.csv or samplesheet_example_files_identification.csv with the path 
 from the `pwd` command. 
 
+When using your own data and input file instead of the provided test data and sample sheet, make sure to include in the 
+input file you are using the absolute paths to the four files, with the four column names following the column
+names above.
+
 ### Running with Docker or Singularity
 ## Docker
 This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
@@ -46,7 +50,7 @@ Parameters relevant to the workflow itself are:
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
 - `output_file` - name of the output file for the current run ending with .bed if running identification and .tsv if running differential
 - `genome_file` - absolute path from the DaPars folder to the input GTF annotation file can be obtained by replacing `path_to`
-   with the path to DaPars
+   with the path to DaPars, and if using your own genome file, make sure to use the absolute path to your genome file
 
 ### Running the differential workflow
 - Set the 'mode' parameter in conf/modules.config to "differential"
