@@ -5,6 +5,7 @@
 def modules = params.modules.clone()
 def files   = modules['files']
 
+include { CHECK_INPUT_PARAMS      } from '../modules/check_input_params' addParams( options: [:] )
 include { PREPROCESSING           } from '../modules/preprocessing' addParams( options: [:] )
 include { CREATE_GENE_SYMBOL_FILE } from '../modules/create_gene_symbol_file' addParams( options: [:] )
 include { DAPARS_EXTRACT_3UTR     } from '../modules/dapars_extract_3utr' addParams( options: [:] )
@@ -18,6 +19,11 @@ workflow RUN_DAPARS {
     ch_sample
     
     main:
+    /*
+        Check input params
+    */
+    CHECK_INPUT_PARAMS()
+
     /*
         Convert gtf genome file to bed12
     */
