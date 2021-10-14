@@ -49,13 +49,15 @@ Parameters relevant to the workflow itself are:
    with the path to DaPars
 
 ### Running the differential workflow
-- Set the 'mode' parameter in conf/modules.config to "differential".
+- Set the 'mode' parameter in conf/modules.config to "differential"
+- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file 
   is samplesheet_example_files.csv
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ### Running the identification workflow
-- Set the 'mode' parameter in conf/modules.config to "identification".
+- Set the 'mode' parameter in conf/modules.config to "identification"
+- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.bed'
 - In the sample sheet, the same sample should be provided twice, but each row should have a distinct condition in 
   the `condition` column. Exactly two rows must be present in the sample sheet. The workflow will then treat the 
   two rows as two different conditions, a requirement for DaPars to run successfully. An example sample sheet is 
