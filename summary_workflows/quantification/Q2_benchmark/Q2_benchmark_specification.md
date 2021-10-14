@@ -52,14 +52,14 @@ Fields:
 #### Format 2
 
 This BED file contains genomic positions of unique unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from the orthogonal 3'end-seq dataset.
-Fields are the same as in format 1):
+Fields are the same as in format 1.
 
 ## Outputs
 
 | # | Format | Link | Example data |
- | --- | --- | --- | --- |
- | 1 | JSON | [Specification][spec-json] | [Link][out1] |
- 
+| --- | --- | --- | --- |
+| 1 | JSON | [Specification][spec-json] | [Link][out1] |
+
 ### Additional info outputs
  
 #### Format 1
@@ -67,15 +67,15 @@ Fields are the same as in format 1):
  The following table lists the attribute names, value types and units, and a
 description of each attribute-value pair:
  
- | Attribute | Type | Unit | Description |
- | --- | --- | --- | --- |
- | `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and 3'end-seq quantification |
+| Attribute | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and 3'end-seq quantification |
 
 ## Metrics
  
- | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
- | --- | --- | --- | --- | --- | --- | --- |
- | 1 | Correlation | N/A | Output 1 | Read file, parse JSON and extract attribute `correlation_coefficient` | `vector` | N/A |
+| # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Correlation | N/A | Output 1 | Read file, parse JSON and extract attribute `correlation_coefficient` | `vector` | N/A |
  
 ### Additional info metrics
  

@@ -83,9 +83,9 @@ description of each attribute-value pair:
 
 [//]: # (References)
   
-  [in1]: ./example_files/input1.bed
+[in1]: ./example_files/input1.bed
 [in2]: ./example_files/input2.bed
 [out1]: ./example_files/output1.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
-  [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
+[spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
   
