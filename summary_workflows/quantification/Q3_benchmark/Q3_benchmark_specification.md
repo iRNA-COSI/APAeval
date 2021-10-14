@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-Benchmark to test the agreement of RNAseq-based poly(A) site quantification with the ground truth, which is the relative abundance of transcripts that were used to **simulate** RNAseq data.
+Benchmark to test the agreement of poly(A) site quantification from **simulated** RNAseq data with the ground truth, which is the relative abundance of transcripts that were used to simulate RNAseq data.
 
 Input data:
 
@@ -42,39 +42,22 @@ To compute the metrics, the poly(A) sites identified from the RNAseq data using 
 This BED file contains genomic positions of unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from RNAseq data by the benchmarked tool. Fields:
 
 - **chrom** - the name of the chromosome
-- **chromStart** - the position of cleavage/polyadenylation in genomic coordinates
-- **chromEnd** - the position of cleavage/polyadenyalation in genomic coordinates
+- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the nucleotide just upstream of the cleavage and polyadenylation reaction; the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is equal to `chromStart + 1`
 - **name** - defines the name of the identified poly(A) site
 - **score** - the TPM value - quantified PAS
-- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
+- **strand** - defines the strand; either "." (=no strand) or "+" or "-"
 
 #### Format 2
 
 This BED file contains genomic positions of unique unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from abundances of transcripts assumed when generating the RNAseq-data.
-Fields (the same as format 1):
-
-- **chrom** - the name of the chromosome
-- **chromStart** - the position of cleavage/polyadenylation in genomic coordinates
-- **chromEnd** - the position of cleavage/polyadenylation in genomic coordinates
-- **name** - defines the name of the identified poly(A) site
-- **score** - the TPM value - quantified PAS
-- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
-
-#### Note on Genomic Coordinates of Cleavage Sites
-
-The positions specified in the **chromStart** and **chromEnd** fields have the interpretation:
-
- - `0` == 5'-end of first nucleotide
- - `1` == 5'-end of second nucleotide == 3'-end of first nucleotide 
- - `n` == 5'-end of (n+1)-th nucleotide == 3'-end of n-th nucleotide
-
-Since cleavage sites occur between nucleotides, the specification of a cleavage site corresponds to the case where **chromStart** and **chromEnd** are identical.
+Fields are the same as in format 1.
 
 ## Outputs
 
 | # | Format | Link | Example data |
- | --- | --- | --- | --- |
- | 1 | JSON | [Specification][spec-json] | [Link][out1] |
+| --- | --- | --- | --- |
+| 1 | JSON | [Specification][spec-json] | [Link][out1] |
  
 ### Additional info outputs
  
@@ -83,15 +66,15 @@ Since cleavage sites occur between nucleotides, the specification of a cleavage 
  The following table lists the attribute names, value types and units, and a
 description of each attribute-value pair:
  
- | Attribute | Type | Unit | Description |
- | --- | --- | --- | --- |
- | `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and abundances of transcripts used to simulate the RNAseq-data |
+| Attribute | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and abundances of transcripts used to simulate the RNAseq-data |
 
 ## Metrics
  
- | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
- | --- | --- | --- | --- | --- | --- | --- |
- | 1 | Correlation | N/A | Output 1 | Read file, parse JSON and extract attribute `correlation_coefficient` | `vector` | N/A |
+| # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Correlation | N/A | Output 1 | Read file, parse JSON and extract attribute `correlation_coefficient` | `vector` | N/A |
  
 ### Additional info metrics
  
