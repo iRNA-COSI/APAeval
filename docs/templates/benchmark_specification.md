@@ -40,7 +40,7 @@ specifications}
 
 ## General info
 
-* **Challenge:** {One of "Identification", "Quantification", and "Differential
+* **Benchmarking event:** {One of "Identification", "Quantification", and "Differential
   Usage"}
 * **Identifier:** {Benchmark identifier as listed in the spreadsheet of
   bechmarks, e.g., "Q1"}
@@ -57,7 +57,7 @@ specifications}
 ### Additional info inputs
 
 {Use this section to describe any custom formats or add any other additional
-information. Use subeading to structure the section, e.g., when further
+information. Use subheading to structure the section, e.g., when further
 describing formats, create a subheading referring to the object you would like
 to describe, e.g., "#### Format 1"}
 
@@ -73,7 +73,7 @@ to describe, e.g., "#### Format 1"}
 ### Additional info outputs
 
 {Use this section to describe any custom formats or add any other additional
-information. Use subeading to structure the section, e.g., when further
+information. Use subheading to structure the section, e.g., when further
 describing formats, create a subheading referring to the object you would like
 to describe, e.g., "#### Format 1"}
 
@@ -89,7 +89,7 @@ to describe, e.g., "#### Format 1"}
 ### Additional info metrics
 
 {Use this section to describe any custom formats or add any other additional
-information. Use subeading to structure the section, e.g., when further
+information. Use subheading to structure the section, e.g., when further
 describing formats, create a subheading referring to the object you would like
 to describe, e.g., "#### Format 1"}
 

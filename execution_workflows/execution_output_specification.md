@@ -1,22 +1,22 @@
-# Execution pipelines output specification
+# Execution workflows output specification
 
 ## Synopsis
 
-This specification describes required output of `execution_workflows` to ensure that the `summary_workflows` have access to files in the same format from each tool.
+This specification describes required output of `execution_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
 
-Outputs depend on features available for the tool (i.e. not all tools perform *de novo* identification of PAS) and can be grouped into three categories:
+Outputs depend on features available for the participant (i.e. not all participants perform *de novo* identification of PAS) and can be grouped into three categories:
 
-- identification challenge:
+- identification benchmarking event:
   - BED file with identified poly(A) sites with single nucleotide resolution
-- quantification challenge:
+- quantification benchmarking event:
   - BED file with identified unique poly(A) sites and TPM values for each site
-- differential usage challenge:
+- differential usage benchmarking event:
   - TSV file with gene ID and significance of differential PAS usage
 
 ## Inputs
 
-Inputs to the execution pipeline depend on the method/tool.
-
+Inputs to execution workflows are provided by APAeval.
+>Detailed specification currently missing. Please refer to the [execution workflow README][ex-readme-in]
 ## Outputs
 
 
@@ -30,7 +30,7 @@ Inputs to the execution pipeline depend on the method/tool.
   
 #### Format 01
 
-This BED file contains single-nucleotide position of poly(A) sites identified by the tool.  
+This BED file contains single-nucleotide position of poly(A) sites identified by the participant.  
 Fields:
 
 - **chrom** - the name of the chromosome
@@ -63,7 +63,7 @@ Column names should not be added to the file.
 
 
 ## Naming conventions
-For naming conventions please refer to the [execution workflow README][ex_readme]
+For naming conventions please refer to the [execution workflow README][ex-readme]
 
 [//]: # (References)
   
@@ -72,5 +72,5 @@ For naming conventions please refer to the [execution workflow README][ex_readme
 [out3]: ./example_output_files/output3.tsv
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [wiki-tsv]: <https://en.wikipedia.org/wiki/Tab-separated_values>
-[ex_readme]: /execution_workflows/README.md
-
+[ex-readme]: ./README.md
+[ex-readme-in]: ./README.md#more-details
