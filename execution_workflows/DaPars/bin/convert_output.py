@@ -69,7 +69,8 @@ def convert_to_identification(file_in, file_out):
         # e.g. chr6:119937615-119938018
         # if orientation is +, distal apa site is the right end of the loci
         if orientation == '+':
-            distal_apa = int(row['Loci'].split(':')[1].split('-')[1])
+            #TODO: remove -1 from the line below once Dapars has fixed the error of reporting 1 nt downstream of the actual annotated start
+            distal_apa = int(row['Loci'].split(':')[1].split('-')[1]) - 1
         # else, distal apa site is the left end of the loci
         else:
             distal_apa = int(row['Loci'].split(':')[1].split('-')[0])
