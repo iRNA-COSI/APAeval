@@ -69,6 +69,15 @@ def distal_site_to_bed_coords(df,
     if going from 0-based (BED) --> BED (one_based = False)
     + strand: start = loci_end - 1, end = loci_end (end coordinates in BED are exclusive)
     - strand: start = loci_start, end = loci_start + 1 (start coords in BED are inclusive)
+
+    Note on bug reported at https://github.com/3UTR/DaPars2/issues/8:
+
+    - 'loci_start' on minus strand is shifted 1 nt from of source transcript
+
+    when one_based = True:
+        1 is subtracted from 'loci_start' so last nucleotide matches source transcript
+        - This goes against BED coordinate convention due to DaPars_Extract_Anno.py processing
+        - *If* the bug is fixed, the subtraction should be removed so as to match source transcript
     '''
 
     #First pull out start and end coords from 'Loci' column
@@ -98,13 +107,17 @@ def distal_site_to_bed_coords(df,
 
     else:
         # BED of region to BED of single nucleotide
+        # DaPars adds 1 to start coord, so on minus strand loci 'Start' (3'end)
+        # Is 1 nt upstream of actual end on reference transcript
+        # To correct bug, need to subtract 1 from three_p on the minus strand
+        # Reported here as issue 8 - https://github.com/3UTR/DaPars2/issues/8
         df = df.assign(**{start_outcol: lambda x: np.where(x[strand_col] == "+",
                                                            x["three_p"] - 1,
-                                                           x["three_p"]
+                                                           x["three_p"] - 1 # When #8 fixed remove the - 1
                                                           ),
                           end_outcol: lambda x: np.where(x[strand_col] == "+",
                                                          x["three_p"],
-                                                         x["three_p"] + 1 # - strand: 3'most = loci_start, which is inclusive in BED
+                                                         x["three_p"] # When #8 fixed need + 1. - strand: 3'most = loci_start, which is inclusive in BED
                                                         )
                          }
                       )
