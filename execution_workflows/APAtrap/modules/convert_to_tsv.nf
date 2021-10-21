@@ -3,7 +3,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
-def inputs = params.workflow.clone()
 
 /*
     Create files for differential challenge

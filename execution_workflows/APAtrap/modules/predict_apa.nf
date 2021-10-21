@@ -5,8 +5,7 @@ params.options = [:]
 def options    = initOptions(params.options)
 def modules = params.modules.clone()
 def inputs = modules['predict_apa']
-def workflow_option = params.workflow.clone()
-def run_differential = workflow_option['run_differential']
+def run_differential = modules['final_output'].run_differential
 
 /*
     Run the second step of APAtrap: predictAPA to infer all potential

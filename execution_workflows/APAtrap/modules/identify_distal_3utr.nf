@@ -5,8 +5,7 @@ params.options = [:]
 def options    = initOptions(params.options)
 def modules = params.modules.clone()
 def inputs    = modules['identify_distal_3utr']
-def workflow_option = params.workflow.clone()
-def run_differential = workflow_option['run_differential']
+def run_differential = modules['final_output'].run_differential
 
 /*
     Run the first step of APAtrap: identifyDistal3UTR to refine
@@ -32,7 +31,7 @@ process IDENTIFY_DISTAL_3UTR {
         min_percentage = inputs.p
         pwd = "$PWD/${params.outdir}/$sample_bedgraph_files_dir"
         // if run differential, all sample files have to be ran together
-        if (run_differential) {
+        if (mode=='differential') {
             utr_output = "predictapa_input.bed"
             """
             #!/bin/bash

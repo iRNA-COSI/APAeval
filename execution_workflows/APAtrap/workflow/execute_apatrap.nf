@@ -31,8 +31,6 @@ def isOffline() {
 
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
-def workflow_option = params.workflow.clone()
-def run_differential = workflow_option['run_differential']
 
 include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
 include { RUN_APATRAP } from '../subworkflows/run_apatrap' addParams( options: [:] )

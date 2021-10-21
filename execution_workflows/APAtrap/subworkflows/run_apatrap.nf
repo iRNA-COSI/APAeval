@@ -2,11 +2,11 @@
     Run APAtrap
 */
 
-def workflow_option = params.workflow.clone()
-def run_differential = workflow_option['run_differential']
 def modules = params.modules.clone()
+def run_differential = modules['final_output'].run_differential
 def preprocessing    = modules['preprocessing']
 
+include { CHECK_INPUT_PARAMS      } from '../modules/check_input_params' addParams( options: [:] )
 include { CONVERT_TO_BEDGRAPH   } from '../modules/convert_to_bedgraph' addParams( options: [:] )
 include { PREPROCESSING         } from '../modules/preprocessing' addParams( options: [:] )
 include { IDENTIFY_DISTAL_3UTR  } from '../modules/identify_distal_3utr' addParams( options: [:] )
@@ -20,6 +20,11 @@ workflow RUN_APATRAP {
     ch_sample
 
     main:
+    /*
+        Check input params
+    */
+    CHECK_INPUT_PARAMS()
+
     // get the bam and bai files
     ch_sample
         .map { it -> [ it[0], it[1], it[2], it[3] ] }
@@ -85,7 +90,7 @@ workflow RUN_APATRAP {
     PREDICT_APA( ch_sample_bedgraph_files_dir,
                  ch_predict_apa_input )
 
-    // Convert PredictAPA output into identification and quantification challenges files
+    // Convert PredictAPA output into identification challenges files
     if (!run_differential) {
         CONVERT_TO_BED(PREDICT_APA.out.ch_de_apa_input)
     }
