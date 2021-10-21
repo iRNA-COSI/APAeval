@@ -16,12 +16,6 @@ columns:
 - bam: BAM input file for the sample 
 - gtf: reference annotation
 - fasta: reference genome sequences
-- outdir: output directory
-- help: show help message (default: false)
-- use_stringtie2_gtf: use the gtf output from stringtie2 (default: false)
-- aptardi_model = for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/model.hdf5 provided by Aptardi)
-- aptardi_scale = for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/scale.pk provided by Aptardi)
-Note: Aptardi also allows users to build their own model during the Aptardi run. Please refer to [Aptardi's documentation](https://github.com/luskry/aptardi#options)
 
 ### Docker containers
 This workflow uses docker containers. To run, make sure that docker is installed and running 
@@ -30,10 +24,13 @@ This workflow uses docker containers. To run, make sure that docker is installed
 ### Parameters
 Parameters used to run the Aptardi are specified in the nextflow.config file. 
 Parameters relevant to the workflow itself are:
-- `input` - whether to run to obtain identification ("identification") or differential ("differential") challenge output.
-   Specifying any other value will throw an error.
+- `input` - samplesheet.csv
 - `outdir` - name of the folder that the final output files are going to be in, located under ./results/aptardi/
 - `output_bed` - name of the output file for the current run ending with .bed
+- `use_stringtie2_gtf` - use the gtf output from stringtie2 (default: false)
+- `aptardi_model` - for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/model.hdf5 provided by Aptardi)
+- `aptardi_scale` - for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/scale.pk provided by Aptardi)
+Note: Aptardi also allows users to build their own model during the Aptardi run. Please refer to [Aptardi's documentation](https://github.com/luskry/aptardi#options)
 
 ### Running the Aptardi execution workflow
 - Download the test data [here](https://drive.google.com/drive/folders/1tsDu7TzxoVvnD-0UbVRd-pu-ZL36F190?usp=sharing). The current dataset is in a genomic region where there are enough reads to test Aptardi's PAS identification functionality.

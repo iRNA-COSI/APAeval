@@ -8,6 +8,3 @@ ENV PATH /opt/conda/envs/aptardi/bin:$PATH
 
 # Dump the details of the installed packages to a file for posterity
 RUN conda env export --name aptardi > aptardi.yml
-
-# Copy the current directory contents into the container at /
-#COPY . /
