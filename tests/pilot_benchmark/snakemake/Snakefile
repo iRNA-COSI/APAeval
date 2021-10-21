@@ -7,6 +7,7 @@ import pandas as pd
 
 samples = pd.read_csv(os.path.abspath(config["samples"])).set_index("sample", drop=False)
 
+localrules: finish
 rule finish:
     """Rule that specifies the final output.
         In this case a json file with compute resources used (OUTCODE 04)
@@ -20,29 +21,17 @@ rule finish:
 ###########
 # Method-specific rules
 
-rule index:
-    input:
-        config["genome"]
-    output:
-        os.path.join(config["out_dir"], "indexed", "genes.gff")
-    params:
-        dir=os.path.join(config["out_dir"], "indexed")
-    conda: 
-        os.path.join(config["envs"], "miso.yaml")
-    benchmark:
-        os.path.join(config["out_dir"], config["benchmarks"], "index.tsv")
-    log:
-        os.path.join(config["out_dir"], config["log_dir"], "index.log")
-    shell:
-        "index_gff --index {input} {params.dir} &> {log}"
-
 # TODO: use 'strandedness' to execute proper miso run
 rule execute:
     input:
-        index=os.path.join(config["out_dir"], "indexed", "genes.gff"),
+        genome=config["genome"],
         bam=lambda wildcards:
                 pd.Series(
                     samples.loc[wildcards.sample, "bam"]
+                ).values,
+        bai=lambda wildcards:
+                pd.Series(
+                    samples.loc[wildcards.sample, "bai"]
                 ).values
     output:
         os.path.join(config["out_dir"], "{sample}", "summary", "{sample}.miso_summary")
@@ -52,25 +41,28 @@ rule execute:
         out_dir=os.path.join(config["out_dir"], "{sample}"),
         read_len=config["read_len"]
     threads: 4
-    conda: 
-        os.path.join(config["envs"], "miso.yaml")
+    singularity: 
+        "docker://quay.io/biocontainers/misopy:0.5.4--py27heb79e2c_4"
     benchmark:
         os.path.join(config["out_dir"], config["benchmarks"], "execute.{sample}.tsv")
     log:
+        index=os.path.join(config["out_dir"], config["log_dir"], "index.{sample}.log"),
         run=os.path.join(config["out_dir"], config["log_dir"], "run.{sample}.log"),
         summarize=os.path.join(config["out_dir"], config["log_dir"], "summarize.{sample}.log")
     shell:
-        """miso --run {params.index_dir} {input.bam} \
+        """index_gff --index {input.genome} {params.index_dir} 2>&1 | tee {log.index}; \
+        miso --run {params.index_dir} {input.bam} \
             --settings-filename {params.settings} \
             --output-dir {params.out_dir} \
-            --read-len {params.read_len} &> {log.run}; \
+            --read-len {params.read_len} 2>&1 | tee {log.run}; \
         summarize_miso --summarize-sample \
-            {params.out_dir} {params.out_dir} &> {log.summarize}
+            {params.out_dir} {params.out_dir} 2>&1 | tee {log.summarize}
         """
 
 ################
 # Postprocessing & benchmark gathering
 
+localrules: gather_benchmark_Q1
 rule gather_benchmark_Q1:
     """Obtain runtime and max memory usage
 
@@ -79,7 +71,6 @@ rule gather_benchmark_Q1:
     
     """
     input:
-        T1=os.path.join(config["out_dir"], config["benchmarks"], "index.tsv"),
         T2=expand(os.path.join(config["out_dir"], config["benchmarks"], "execute.{sample}.tsv"),
             sample = samples.index)
     output:
