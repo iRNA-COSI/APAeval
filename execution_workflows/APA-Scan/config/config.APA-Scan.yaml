@@ -1,9 +1,13 @@
 # Configuration file for snakemake pipeline
 
-# Dataset samples
-samples: "config/samples.csv"
-out_dir: "AA/APA_Scan"
-annotation: "mm10.ncbiRefSeq.txt"
+# Sample table with sample condition, BAM files paths and data type information
+# Must be a 3 column CSV file with following headers - 'sample_bam', 'condition', 'data_type'
+sample_tbl: "config/samples.csv"
+
+#path to main sample
+out_dir: "APA_Scan_results/"
+
+gtf: ""
 genome: "mm10.fa"
 
 # Parameters
