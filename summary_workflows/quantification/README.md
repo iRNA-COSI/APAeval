@@ -1,3 +1,9 @@
+## Running the summary workflow
+One can use the following command to run the summary workflow from command line:
+```
+nextflow run main.nf -profile docker
+```
+
 ## Matching PA sites to ground truth
 
 The script `Leo_MatchPAsites_GT.py` contains the metric calculating functions that were in the following scripts [Leo Schärfen](https://github.com/lschaerfen) wrote: 
