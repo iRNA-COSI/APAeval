@@ -31,7 +31,7 @@ process IDENTIFY_DISTAL_3UTR {
         min_percentage = inputs.p
         pwd = "$PWD/${params.outdir}/$sample_bedgraph_files_dir"
         // if run differential, all sample files have to be ran together
-        if (mode=='differential') {
+        if (run_differential) {
             utr_output = "predictapa_input.bed"
             """
             #!/bin/bash

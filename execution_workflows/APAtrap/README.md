@@ -47,8 +47,8 @@ To run with singularity, comment out line 49 in Dapars/nextflow.config file `doc
 ### Parameters
 Parameters used to run APAtrap are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
-- `mode` - whether to run to obtain identification ("identification") or differential ("differential") challenge output.
-   Specifying any other value will throw an error.
+- `run_differentail` - set to true to obtain identification and quantification challenge outputs, or set to false
+                       to obtain differential challenge output. Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
 - `identification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running identification,
                                 the prefix will be the different sample names obtained from the sample column in the sample sheet
@@ -57,13 +57,13 @@ Parameters relevant to the workflow itself are:
    with the path to APAtrap, and if using your own genome file, make sure to use the absolute path to your genome file
 
 ### Running the differential workflow
-- Set the 'mode' parameter in conf/modules.config to "differential"
+- Set the 'run_differential' parameter in conf/modules.config to false
 - Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains at least two distinct conditions in the condition column
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ### Running the identification workflow
-- Set the 'mode' parameter in conf/modules.config to "identification"
+- Set the 'run_differential' parameter in conf/modules.config to true
 - Change 'identification_out_suffix' parameter in conf/modules.config to the desired file suffix that ends with '.bed'
 - In the sample sheet, at least one row is required to be provided
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files_identification.csv
@@ -81,9 +81,6 @@ The differential output file will stay as the name specified in modules.config f
 
 
 ## Notes
-- It is not possible to obtain quantification challenge output data since the TPM value in the output file
-  is provided per transcript instead of per site. Hence, this tool is not compatible for quantification
-  challenge. 
 - When running differential, as clarified with APAtrap author, Dr. Congting Ye, predictAPA step requires that the input files are placed
   by group and in the same order of values specified by parameter -n. So for example, if we have two replicates for each condition, we'll then do
   `predictAPA -i condition1_replicate1.bedgraph condition1_replicate2.bedgraph condition2_replicate1.bedgraph condition2_replicate2.bedgraph -g 2 -n 2 2 -u  hg19.utr.bed -o output.txt`. 

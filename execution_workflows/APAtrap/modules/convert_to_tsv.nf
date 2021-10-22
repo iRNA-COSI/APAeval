@@ -3,6 +3,9 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
+def modules = params.modules.clone()
+def inputs = modules['final_output']
+def preprocessing    = modules['preprocessing']
 
 /*
     Create files for differential challenge
@@ -13,7 +16,7 @@ process CONVERT_TO_TSV {
     container "docker.io/apaeval/apatrap:latest"
 
     input:
-    tuple val(sample), path(de_apa_output_file)
+    tuple path(genome_file), val(sample), path(de_apa_output_file)
 
     output:
     path "*"
@@ -21,7 +24,7 @@ process CONVERT_TO_TSV {
     script:
     differential_out = inputs.differential_out
     """
-    convert_to_tsv.py $de_apa_output_file $differential_out
+    convert_to_tsv.py $genome_file $de_apa_output_file $differential_out
     """
 
 }

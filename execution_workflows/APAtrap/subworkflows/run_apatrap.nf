@@ -47,7 +47,7 @@ workflow RUN_APATRAP {
         Convert gtf genome file to bed12
     */
     Channel
-        .fromPath("$PWD/${preprocessing.genome_file}")
+        .fromPath("${preprocessing.genome_file}")
         .set{ ch_preprocessing_input }
 
     PREPROCESSING( ch_preprocessing_input )
@@ -105,7 +105,11 @@ workflow RUN_APATRAP {
         /*
             Convert deAPA output into differential challenge tsv file
         */
-        CONVERT_TO_TSV( DE_APA.out.ch_de_apa_output )
+        ch_preprocessing_input
+            .combine(DE_APA.out.ch_de_apa_output)
+            .set{ ch_convert_to_tsv }
+
+        CONVERT_TO_TSV( ch_convert_to_tsv )
     }
 }
 
