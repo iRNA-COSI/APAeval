@@ -12,5 +12,3 @@ RUN apt-get update && apt-get -y install procps && rm -rf /var/lib/apt/lists/* &
 
 # Copy the current directory contents into the container at /app
 COPY . /app
-
-ENTRYPOINT ["python","validation.py"]

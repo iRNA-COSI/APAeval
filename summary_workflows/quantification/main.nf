@@ -15,13 +15,13 @@ if (params.help) {
 	    Run the pipeline with default parameters:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
- 	    nextflow run main.nf -profile docker --input {driver.genes.file} --public_ref_dir {validation.reference.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
+ 	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --public_ref_dir {validation.reference.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
 	    Mandatory arguments:
-                --input		List of cancer genes prediction
-				--community_id			Name or OEB permanent ID for the benchmarking community
+                --input		BED/TXT file with APA site information
+		--community_id			Name or OEB permanent ID for the benchmarking community
                 --public_ref_dir 		Directory with list of cancer genes used to validate the predictions
                 --participant_id  		Name of the tool used for prediction
-                --goldstandard_dir 		Dir that contains metrics reference datasets for all cancer types
+                --goldstandard_dir 		Dir that contains Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
                 --challenges_ids  		List of challenge ids selected by the user, separated by spaces
                 --assess_dir			Dir where the data for the benchmark are stored
 	    Other options:
@@ -47,13 +47,13 @@ if (params.help) {
 	         Benchmarking community = ${params.community_id}
 	         Public reference directory : ${params.public_ref_dir}
 	         Tool name : ${params.participant_id}
-	         Metrics reference datasets: ${params.goldstandard_dir}
+	         Gold standard dataset directory: ${params.goldstandard_dir}
 	         Challenge ids: ${params.challenges_ids}
-	         Published benchmark data: ${params.assess_dir}
-	         Validation results directory: ${params.validation_result}
-	         Assessment results directory: ${params.assessment_results}
+	         Published benchmark data directory: ${params.assess_dir}
+	         Validation result JSON file: ${params.validation_result}
+	         Assessment result JSON file: ${params.assessment_results}
 	         Consolidated benchmark results directory: ${params.outdir}
-	         Statistics results about nextflow run: ${params.statsdir}
+	         Nextflow statistics directory: ${params.statsdir}
 	         Benchmarking data model file location: ${params.data_model_export_dir}
 	         Directory with community-specific results: ${params.otherdir}
 

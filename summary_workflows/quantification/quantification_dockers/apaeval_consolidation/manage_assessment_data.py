@@ -8,8 +8,9 @@ import fnmatch
 from argparse import ArgumentParser
 import numpy as np
 from assessment_chart import assessment_chart
+from assessment_chart import conf
 
-DEFAULT_eventMark = '2021-06-04'
+DEFAULT_eventMark = DEFAULT_eventMark()
 
 def main(args):
 

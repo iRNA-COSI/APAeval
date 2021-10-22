@@ -242,7 +242,7 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
     # change plot style
     # set plot title
 
-    plt.title("Quantification benchmark 2 - number of matched sites vs number of unmatched sites " + challenge_type, fontsize=18, fontweight='bold')
+    plt.title("Quantification benchmark 2 - number of matched sites vs number of unmatched sites in challenge" + challenge_type, fontsize=18, fontweight='bold')
 
     # set plot title depending on the analysed tool
 

@@ -21,4 +21,4 @@ the benchmark itself is performed by merging the assessment metrics with the res
 For the tool execution workflows please refer to the [iRNA-COSI/APAeval/execution_workflows](https://github.com/iRNA-COSI/APAeval/tree/main/execution_workflows) repository.
 
 ## Usage
-In order to build the Docker images locally, please run `./build.sh`
+In order to build the Docker images locally, please run `./build.sh <tag_id>`

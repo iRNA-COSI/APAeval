@@ -1,8 +1,9 @@
 ## Matching PA sites to ground truth
 
-The script `match_with_gt.py` uses bedtools window to assign ground truth PAS to the predictions. Each prediction is extended by `n` base pairs, depending on the parameter chosen for `window`.
+The script `Leo_MatchPAsites_GT.py` contains the metric calculating functions that were in the following scripts [Leo Schärfen](https://github.com/lschaerfen) wrote: 
 
-The script `corr_with_gt.py` calculates the correlation coefficient between prediction and matched ground truth quantification values. The input must be a BED file containing the columns below. Usage: `python3 corr_with_gt.py <prediction_merged.bed>`
+- [`match_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/match_with_gt.py) uses bedtools window to assign ground truth PAS to the predictions. Each prediction is extended by `n` base pairs, depending on the parameter chosen for `window`.
+- [`corr_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/corr_with_gt.py) calculates the correlation coefficient between prediction and matched ground truth quantification values. The input must be a BED file containing the columns below. Usage: `python3 corr_with_gt.py <prediction_merged.bed>`
 
 Processing steps:
 - run bedtools window for prediction file with itself
