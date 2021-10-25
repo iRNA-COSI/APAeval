@@ -42,16 +42,16 @@ def reformat_bed(file_in, identification_out, quantification_out):
         # column with proximal apa sites
         # in decreasing order when strand is - e.g 119924739,119924260
         # in increasing order when strand i + e.g. 78340249,78340414
-        apas = row['Predicted_APA'].split(",")
+        proximal_apa_sites = row['Predicted_APA'].split(",")
 
         # Write identification file
-        for apa in apas:
-            proximal_apa = int(apa)
+        for proximal_apa_site in proximal_apa_sites:
+            proximal_apa_site = int(proximal_apa_site)
             # replace score column with "."
             score = "."
             # As identified PAS are single-nucleotide, the ending position is the
             # same as starting position, end exclusive
-            output = (chrom, str(proximal_apa), str(proximal_apa + 1), name, score, strand)
+            output = (chrom, str(proximal_apa_site), str(proximal_apa_site + 1), name, score, strand)
             identification_outputs.add(output)
 
         # Get distal apa site from the Loci column
@@ -59,23 +59,23 @@ def reformat_bed(file_in, identification_out, quantification_out):
         # if orientation is +, distal apa site is the right end of the loci
         if strand == '+':
             # -1 because bed file coordinate is 0 based and end exclusive
-            distal_apa = int(row['Loci'].split(':')[1].split('-')[1]) - 1
+            distal_apa_site = int(row['Loci'].split(':')[1].split('-')[1]) - 1
             # else, distal apa site is the left end of the loci
         else:
-            distal_apa = int(row['Loci'].split(':')[1].split('-')[0])
+            distal_apa_site = int(row['Loci'].split(':')[1].split('-')[0])
             # generate the name for the current identified apa site
-        output = (chrom, str(distal_apa), str(distal_apa + 1), name, score, strand)
+        output = (chrom, str(distal_apa_site), str(distal_apa_site + 1), name, score, strand)
         identification_outputs.add(output)
 
         # Write quantification file
-        apas = [int(x) for x in apas]
-        apas.append(distal_apa)
+        all_apa_sites = [int(x) for x in proximal_apa_sites]
+        all_apa_sites.append(distal_apa_site)
 
         # Expression level of each APA sites (from the most proximal site to the distal site, seperated by comma).
         expressions = row['Group_1_1_Separate_Exp'].split(',')
 
-        for i in range(len(apas)):
-            output = (chrom, str(apas[i]), str(apas[i] + 1), name, str(expressions[i]), strand)
+        for i in range(len(all_apa_sites)):
+            output = (chrom, str(all_apa_sites[i]), str(all_apa_sites[i] + 1), name, str(expressions[i]), strand)
             quantification_outputs.add(output)
 
     # write to files
