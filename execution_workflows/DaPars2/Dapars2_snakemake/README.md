@@ -31,7 +31,13 @@ The config file `config/config.DaPars2.yaml` also needs to be updated with run-s
 
 ## Running instructions
 
-Activate the `apaeval_execution_workflows` conda environment. If you haven't installed this yet, the 'environment' file is available at the base of the main repo (`apaeval_env.yaml` or `../../../apaeval_env.yaml` relative to this README)
+Activate the `apaeval_execution_workflows` conda environment ('environment' YAML file available at the base of the main repo at `apaeval_env.yaml`). If you haven't installed the environment, execute the following command (assuming you're in the same directory as this README):
+
+```
+conda env create -f ../../../apaeval_env.yaml`
+```
+
+Once installed, activate the environment with the command below:
 
 ```
 conda activate apaeval_execution_workflows
@@ -60,9 +66,6 @@ bash run_local.sh
 ```
 
 
-
-
-
 ## Output & post-processing
 > *  DaPars2 output tables are generated per chromosome for each sample. Under the main results directory, these are available at `intermediate_<sample_name>/apa_<chr_name>/apa_result_temp.<chr_name>.txt`
 > * BED file of identified proximal and distal poly(A) sites per sample, generated at the base of the main results directory at `<sample_name><out_bed_suffix>` (out_bed_suffix is defined in `config/config.DaPars2.yaml`). The BED file is **unsorted**.
@@ -75,4 +78,4 @@ bash run_local.sh
 > * The [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html) states a dependency on R but no scripts appears to use R. The Docker image does not install R and Dapars2 runs successfully without error on test data.
 > * DaPars2 only provides polyA site quantification through it's relative **P**ercent **D**istal site **U**sage **I**ndex (PDUI) metric. Our current quantification benchmarks require a [TPM value per polyA site](https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/execution_output_specification.md#format-02), so DaPars2 is not included for the quantification challenge as it stands.
 > * Unlike DaPars, DaPars2 does not perform differential polyA site usage testing and cannot be included for the differential usage challenge.
-> * Owing to bug report at 3UTR/DaPars2#8, the 'Loci' column start coordinates (which originate from a BED file and should follow BED coordinate conventions) are shifted forward by 1nt. If extracted without modification, distal poly(A) sites on the minus strand would be 1nt upstream of the source transcript. 1nt is subtracted from the 'Loci start' coordinate for transcripts on the minus strand to ensure they match the source transcript. 
+> * Owing to bug report at 3UTR/DaPars2#8, the 'Loci' column start coordinates (which originate from a BED file and should follow BED coordinate conventions) are shifted forward by 1nt. If extracted without modification, distal poly(A) sites on the minus strand would be 1nt upstream of the source transcript. 1nt is subtracted from the 'Loci start' coordinate for transcripts on the minus strand to ensure they match the source transcript.
