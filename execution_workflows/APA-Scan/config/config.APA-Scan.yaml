@@ -4,11 +4,15 @@
 # Must be a 3 column CSV file with following headers - 'sample_bam', 'condition', 'data_type'
 sample_tbl: "config/samples.csv"
 
-#path to main sample
-out_dir: "APA_Scan_results/"
+#path to main output directory for run
+out_dir: "starting_with_repo_APA_Scan_results/"
 
-gtf: ""
-genome: "mm10.fa"
+gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+genome: "/home/sam/Documents/PhD/Data/Sequence/ensembl_v102_Mus_musculus.GRCm38.dna.primary_assembly.fa"
+
+# Extended mode
+#"yes" to run, "no" to not run
+run_extended_mode: "no"
 
 # Parameters
 # define method specific parameters here
@@ -19,5 +23,5 @@ paramcode: "AA"
 # Settings
 envs: "envs"
 scripts: "workflow/scripts"
-local_log: "logs/local_log"
+local_log: "logs_starting_with_repo/local_log"
 cluster_log: "logs/cluster_log"

@@ -2,7 +2,6 @@
 
 
 import pandas as pd
-from itertools import starmap
 from fnmatch import fnmatch
 import os
 import sys
@@ -17,8 +16,26 @@ This script takes as input:
 
 And outputs:
 - Directories under output_directory_path, 1 for each condition
-- All BAM files for samples of the same condition under their respective
+- All BAM files for samples of the same condition under their respective dir
 """
+
+def find_rm_existing_files(dir, pattern):
+    '''
+    '''
+
+    files = [f for f in os.listdir(dir) if fnmatch(f,pattern)]
+
+    if len(files) == 0:
+        sys.stderr.write(f"No existing {pattern} files are present in {dir}\n")
+        return None
+
+    else:
+        sys.stderr.write(f"{len(files)} files already exist in {dir} matching {pattern} - removing to avoid files not specified in sample table from being included in the analysis...\n")
+        for f in files:
+            sys.stderr.write(f"Removing {os.path.join(dir, f)}\n")
+            os.remove(os.path.join(dir, f))
+
+        return None
 
 
 def main(sample_tbl, outdir):
@@ -38,22 +55,27 @@ def main(sample_tbl, outdir):
     conditions = list(set(sample_tbl["condition"]))
 
     for cond in conditions:
-        subdir = os.path.join(outdir, cond)
+        subdir = os.path.join(outdir, cond, "")
 
         if os.path.isdir(subdir):
-            raise Exception(f"{subdir} already exists - exiting to avoid incorporation of .bam files not specified in sample table")
+            sys.stderr.write(f"{subdir} already exists - checking for *.bam files in this directory\n")
+            find_rm_existing_files(subdir, "*.bam")
 
-        os.makedirs(subdir)
+            sys.stderr.write(f"{subdir} already exists - checking for *.bam.bai files in this directory\n")
+            find_rm_existing_files(subdir, "*.bam.bai")
+
+        else:
+            os.makedirs(subdir)
 
     # generate list of tuples of (path_to_bam, out_soft_link_path) for each sample
     bam_in_out_paths = [(os.path.abspath(bam),
-                        os.path.join(outdir, condition, sample + ".bam")
-                        ) for sample, bam, condition in zip(sample_tbl["sample"],
-                                                            sample_tbl["bam"],
-                                                            sample_tbl["condition"])
-                       ]
+                         os.path.join(outdir, condition, sample + ".bam")
+                         ) for sample, bam, condition in zip(sample_tbl["sample"],
+                                                             sample_tbl["bam"],
+                                                             sample_tbl["condition"])
+                        ]
 
-    sys.stderr.write("(source_bam, out_destination) for bams in sample table:\n")
+    sys.stderr.write("source_bam --> out_destination for bams in sample table:\n")
 
 
     for src, dest in bam_in_out_paths:
@@ -61,7 +83,9 @@ def main(sample_tbl, outdir):
 
 
     sys.stderr.write("generating softlinks for BAM files...\n")
-    [os.symlink(in_bam, out_link_dest) for in_bam, out_link_dest in bam_in_out_paths]
+
+    for in_bam, out_link_dest in bam_in_out_paths:
+        os.symlink(in_bam, out_link_dest)
 
     bai_in_out_paths = [(os.path.abspath(bam + ".bai"),
                         os.path.join(outdir, condition, sample + ".bam.bai")
@@ -70,15 +94,16 @@ def main(sample_tbl, outdir):
                                                             sample_tbl["condition"])
                         ]
 
-    sys.stderr.write("(source_bai, out_destination) for bais relative to bam in sample table:\n")
+    sys.stderr.write("source_bai --> out_destination for bais relative to bam in sample table:\n")
 
     for src, dest in bai_in_out_paths:
         print(src + " --> " + dest, file=sys.stderr)
 
     sys.stderr.write("generating softlinks for BAI files...\n")
-    [os.symlink(in_bai, out_link_dest) for in_bai, out_link_dest in bai_in_out_paths]
+    for in_bai, out_link_dest in bai_in_out_paths:
+        os.symlink(in_bai, out_link_dest)
 
-    sys.stderr.write("Done!")
+    sys.stderr.write("Done!\n")
     return None
 
 

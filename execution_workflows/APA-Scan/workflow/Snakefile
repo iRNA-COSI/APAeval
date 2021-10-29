@@ -82,7 +82,6 @@ For help see: https://snakemake.readthedocs.io/en/stable/index.html.
 # ------------------------------------------------------------------------------
 # Packages, Libraries and Sources
 
-# Import Python equivalent of BioConductor's BiomaRt
 import pandas as pd
 
 
@@ -101,7 +100,8 @@ import pandas as pd
 configfile: "config/config.APA-Scan.yaml"
 
 # Convert config to dataframe
-samples = pd.read_csv(os.path.abspath(config["samples"]),sep=",")
+# No need to call abspath here
+samples = pd.read_csv(config["sample_tbl"], sep=",")
 
 
 
@@ -137,25 +137,32 @@ CONVERT_ID_PYSCRIPT = config["scripts"] + "/convert_geneids.py"
 
 # Input file directories
 CURRENT_DIR = os.getcwd()
-CONDITION1 = samples["sample_type"].unique()[0]
-CONDITION2 = samples["sample_type"].unique()[1]
+conds = samples["condition"].unique()
+
+assert len(conds) == 2, f"2 distinct condition strings must be present in 'condition' column of sample table - there are {len(conds)}"
+
+BASE_COND = conds[0]
+TEST_COND = conds[1]
+
+BASE_SAMPLES = samples.loc[samples["condition"] == BASE_COND, "sample"].tolist()
+TEST_SAMPLES = samples.loc[samples["condition"] == TEST_COND, "sample"].tolist()
 
 # Output filename shorthands
 PARAMCODE = config["paramcode"]
-APA_SCAN_OUTPUT = config["method"].replace("-","_") + "_" + CONDITION1 + "_Vs_" + CONDITION2 + ".xlsx" # Raw output of APA-Scan.py
+APA_SCAN_OUTPUT = config["method"].replace("-","_") + "_" + BASE_COND + "_Vs_" + TEST_COND + ".xlsx" # Raw output of APA-Scan.py
 APA_SCAN_OUTPREFIX = PARAMCODE + "_" + config["method"] # Prefix for final APA-Scan output
 
 # Annotation file
 # These NEED to be in the same directory you run APA-Scan.py from.
-ANNOTATION = config["annotation"]
+ANNOTATION = config["gtf"]
 GENOMEFILE = config["genome"]
 
 
 # Print to compare conditions and check correct way round
-print(">>>>> COMPARING: ")
-print("   >> " + CONDITION1)
-print("   >> " + CONDITION2)
-print("   >> APA-Scan RAW OUTPUT IS :- " + config["out_dir"] + "/" + APA_SCAN_OUTPUT)
+# print(">>>>> COMPARING: ")
+# print("   >> " + BASE_COND)
+# print("   >> " + TEST_COND)
+# print("   >> APA-Scan RAW OUTPUT IS :- " + config["out_dir"] + "/" + APA_SCAN_OUTPUT)
 
 
 
@@ -202,40 +209,215 @@ rule finish:
 
 ################################################################################
 
-
-
-rule generate_configurationfile:
-    """Generate configuration.ini file for input to run_apa_scan
+rule gtfToGenePred:
+    """
+    Generate input transcript annotation format for APA-Scan
+    Expects 'RefSeq' table format, with first column corresponding to 'bin'
+    https://genome.ucsc.edu/cgi-bin/hgTables?db=hg38&hgta_group=genes&hgta_track=refSeqComposite&hgta_table=ncbiRefSeqCurated&hgta_doSchema=describe+table+schema
+    gtfToGenePred does not output this bin field as it is not part of the GTF transcript annotation
+    The awk line adds a dummy 1st field so column indexes are as expected for APA-Scan.py
+    and a header column
     """
     input:
-        "blank_configuration.ini"
+        config["gtf"]
+
     output:
+        os.path.join(config["out_dir"], "annotation.txt")
+
+    params:
+        header = "\t".join(["bin", "name",
+                            "chrom", "strand",
+                            "txStart", "txEnd",
+                            "cdsStart", "cdsEnd",
+                            "exonCount", "exonStarts",
+                            "exonEnds", "score",
+                            "name2", "cdsStartStat",
+                            "cdsEndStat", "exonFrames"])
+    conda:
+        os.path.join(config["envs"], CONDA_YAML)
+
+    log:
+        os.path.join(config["out_dir"], "logs", "gtfToGenePred.log")
+
+    shell:
+        """
+        (gtfToGenePred -genePredExt {input} {output}.tmp
+        awk '{{print "0\t",$0}}' {output}.tmp | \
+        awk 'BEGIN{{ print "{params.header}" }}1' > {output} && \
+        rm {output}.tmp
+        ) &> {log}
+        """
+
+rule bams_to_condition_subdir:
+    """
+    Takes BAM files in sample table,
+    creates soft links to provided paths under distinct subdirectories of outdir,
+    so all BAMs of the same condition are under their own directory
+    (requirement of APA-Scan)
+    """
+
+    input:
+        sample_tbl = config["sample_tbl"]
+
+    output:
+        base_cond = expand(os.path.join(config["out_dir"],BASE_COND, "{sample}.bam"), sample=BASE_SAMPLES),
+        test_cond = expand(os.path.join(config["out_dir"],TEST_COND, "{sample}.bam"), sample=TEST_SAMPLES)
+
+    params:
+        main_outdir = config["out_dir"]
+
+    log:
+        os.path.join(config["out_dir"], "logs", "bams_to_condition_subdir.log")
+
+    shell:
+        """
+        (python3 workflow/scripts/condition_bams_to_subdirs.py \
+        -i {input.sample_tbl} \
+        -o {params.main_outdir}) &> {log}
+        """
+
+rule APA_Scan_config_file:
+    input:
+        annotation=os.path.join(config["out_dir"], "annotation.txt"),
+        bams_base_cond=expand(os.path.join(config["out_dir"], BASE_COND, "{sample}.bam"), sample=BASE_SAMPLES),
+        bams_test_cond=expand(os.path.join(config["out_dir"], TEST_COND, "{sample}.bam"), sample=TEST_SAMPLES)
+
+    output:
+        os.path.join(config["out_dir"], "configuration.ini")
+
+    params:
+        base_cond_dir = os.path.join(config["out_dir"], BASE_COND, ""),
+        test_cond_dir = os.path.join(config["out_dir"], TEST_COND, ""),
+        genome_fa = config["genome"],
+        extended_mode = config["run_extended_mode"],
+        outdir = os.path.join(config["out_dir"], "APA-Scan_output")
+
+    log:
+        os.path.join(config["out_dir"], "logs", "APA_Scan_config_file.log")
+
+    shell:
+        """
+        python workflow/scripts/create_apascan_config.py \
+        -b {params.base_cond_dir} \
+        -t {params.test_cond_dir} \
+        -a {input.annotation} \
+        -f {params.genome_fa} \
+        -e {params.extended_mode} \
+        -d {params.outdir} \
+        -o {output}
+        """
+
+
+rule ln_config_to_pwd:
+    """
+    APA-Scan hardcodes for the config file to be present in the current working directory
+    To prevent this from over-writing across multiple runs
+    Make a temporary config file in the PWD (soft-linked to run-specific config generated by rule APA_Scan_config_file)
+    """
+
+    input:
+        os.path.join(config["out_dir"], "configuration.ini")
+
+    output:
+        temp("configuration.ini")
+
+    log:
+        os.path.join(config["out_dir"], "logs", "ln_config_to_pwd.log")
+
+    group:
+        "APA-Scan_pre_processing"
+
+    shell:
+        """
+        (ln -s {input} {output}) &> {log}
+        """
+
+
+rule run_apa_scan:
+    """Run APA-Scan
+    """
+    input:
         "configuration.ini"
+    output:
+        os.path.join(config["out_dir"], "APA-Scan_output", APA_SCAN_OUTPUT)
     threads: THREADS
     conda: os.path.join(config["envs"], CONDA_YAML)
     group: "APA_SCAN"
     log:
-        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".generate_configurationfile.preprocess.log")
+        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".run_apa_scan.execute.python_script.log")
     shell:
-        "( sed " + \
+        "( python3 APA-Scan.py ) &> {log}"
 
-             # Set the rna-seq input directories
-             " 's#input_rnaseq1#" + CURRENT_DIR + "/" + CONDITION1 + "#g; " + \
-             "  s#input_rnaseq2#" + CURRENT_DIR + "/" + CONDITION2 + "#g; " + \
 
-             # Set the PAS-seq input directories
-#             "  s#input_passeq1#" + os.getcwd() + "/test/" + PASSEQ1 + "#g; " + \ # BLANKED OUT AS CAN'T GET THE SCRIPT WORKING WITH PAS-Seq DATA
-#             "  s#input_passeq2#" + os.getcwd() + "/test/" + PASSEQ2 + "#g; " + \ # BLANKED OUT AS CAN'T GET THE SCRIPT WORKING WITH PAS-Seq DATA
+# This rule just converts the output .xslx from APA-Scan to a csv
+rule convert_to_tsv:
+    """
+    This tool takes the xlsx output of APA-Scan and converts it to .tsv
+    """
+    input:
+        os.path.join(config["out_dir"], "APA-Scan_output", APA_SCAN_OUTPUT)
+    output:
+        os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + ".genenames.tsv")
+    threads: THREADS
+    conda: os.path.join(config["envs"], CONDA_YAML)
+    group: "APA_SCAN"
+    log:
+        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".convert_to_tsv.postprocess_APA-Scan.log")
+    shell:
+        "( xlsx2csv -d 'tab' {input} > {output} ) &> {log} "
 
-             # Set the annotation and genome directories
-             "  s#annotation_name#" + CURRENT_DIR + "/" + ANNOTATION + "#g; " + \
-             "  s#genome_name#" + CURRENT_DIR + "/" + GENOMEFILE + "#g; " + \
 
-             # Set the output directory
-             "  s#out_dir#" + CURRENT_DIR + "/" + os.path.join(config["out_dir"]) + "#g' " + \
+rule convert_gene_ids:
+    """
+    This tool takes the .tsv format of APA-Scan and converts it to the desired formatted .bed and .tsv files
+    """
+    input:
+        infile=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + ".genenames.tsv")
+    output:
+        out01=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_01.bed"),
+        out03=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_03.tsv")
+    threads: THREADS
+    conda: os.path.join(config["envs"], CONDA_YAML)
+    group: "APA_SCAN"
+    log:
+        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".change_gene_ids_and_save.postprocess.log")
+    shell:
+          " python " + CONVERT_ID_PYSCRIPT + \
+                   " {input.infile} {output.out01} {output.out01} "
 
-             # Input/Output and Log
-             " {input} > {output} ) &> {log} "
+
+# rule generate_configurationfile:
+#     """Generate configuration.ini file for input to run_apa_scan
+#     """
+#     input:
+#         "blank_configuration.ini"
+#     output:
+#         "configuration.ini"
+#     threads: THREADS
+#     conda: os.path.join(config["envs"], CONDA_YAML)
+#     group: "APA_SCAN"
+#     log:
+#         os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".generate_configurationfile.preprocess.log")
+#     shell:
+#         "( sed " + \
+#
+#              # Set the rna-seq input directories
+#              " 's#input_rnaseq1#" + CURRENT_DIR + "/" + CONDITION1 + "#g; " + \
+#              "  s#input_rnaseq2#" + CURRENT_DIR + "/" + CONDITION2 + "#g; " + \
+#
+#              # Set the PAS-seq input directories
+# #             "  s#input_passeq1#" + os.getcwd() + "/test/" + PASSEQ1 + "#g; " + \ # BLANKED OUT AS CAN'T GET THE SCRIPT WORKING WITH PAS-Seq DATA
+# #             "  s#input_passeq2#" + os.getcwd() + "/test/" + PASSEQ2 + "#g; " + \ # BLANKED OUT AS CAN'T GET THE SCRIPT WORKING WITH PAS-Seq DATA
+#
+#              # Set the annotation and genome directories
+#              "  s#annotation_name#" + CURRENT_DIR + "/" + ANNOTATION + "#g; " + \
+#              "  s#genome_name#" + CURRENT_DIR + "/" + GENOMEFILE + "#g; " + \
+#
+#              # Set the output directory
+#              "  s#out_dir#" + CURRENT_DIR + "/" + os.path.join(config["out_dir"]) + "#g' " + \
+#
+#              # Input/Output and Log
+#              " {input} > {output} ) &> {log} "
 
 
 
@@ -259,68 +441,13 @@ rule generate_configurationfile:
 
 
 
-rule run_apa_scan:
-    """Run APA-Scan
-    """
-    input:
-        "configuration.ini"
-    output:
-        os.path.join(config["out_dir"], APA_SCAN_OUTPUT)
-    threads: THREADS
-    conda: os.path.join(config["envs"], CONDA_YAML)
-    group: "APA_SCAN"
-    log:
-        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".run_apa_scan.execute.python_script.log")
-    shell:
-        "( python3 APA-Scan.py ) &> {log}"
-
-
-
-
-
 #-------------------------------------------------------------------------------
 # Postprocessing: obtain suitable output formats (for benchmarks)
-
-
-# This rule just converts the output .xslx from APA-Scan to a csv
-rule convert_to_tsv:
-    """
-    This tool takes the xlsx output of APA-Scan and converts it to .tsv
-    """
-    input:
-        os.path.join(config["out_dir"], APA_SCAN_OUTPUT)
-    output:
-        os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + ".genenames.tsv")
-    threads: THREADS
-    conda: os.path.join(config["envs"], CONDA_YAML)
-    group: "APA_SCAN"
-    log:
-        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".convert_to_tsv.postprocess_APA-Scan.log")
-    shell:
-        "( xlsx2csv -d 'tab' {input} > {output} ) &> {log} "
-
 
 
 # This takes the .csv from above, changes the gene name to ensembl gene id and
 # then saves it as a both a bed file (Format 01) and as Format 02
 # (see Execution worfklows of README on GitHub: https://github.com/iRNA-COSI/APAeval/tree/main/execution_workflows )
-rule convert_gene_ids:
-    """
-    This tool takes the .tsv format of APA-Scan and converts it to the desired formatted .bed and .tsv files
-    """
-    input:
-        infile=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + ".genenames.tsv")
-    output:
-        out01=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_01.bed"),
-        out03=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_03.tsv")
-    threads: THREADS
-    conda: os.path.join(config["envs"], CONDA_YAML)
-    group: "APA_SCAN"
-    log:
-        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".change_gene_ids_and_save.postprocess.log")
-    shell:
-          " python " + CONVERT_ID_PYSCRIPT + \
-                   " {input.infile} {output.out01} {output.out01} "
 
 
 
