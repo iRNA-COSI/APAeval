@@ -50,7 +50,7 @@ def reformat_bed(file_in, identification_out, quantification_out):
             # replace score column with "."
             score = "."
             # As identified PAS are single-nucleotide, the ending position is the
-            # same as starting position, end exclusive
+            # starting position + 1 since bed file is end exclusive
             output = (chrom, str(proximal_apa_site), str(proximal_apa_site + 1), name, score, strand)
             identification_outputs.add(output)
 

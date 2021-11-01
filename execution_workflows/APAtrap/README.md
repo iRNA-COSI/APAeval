@@ -37,36 +37,39 @@ names in `samplesheet_example_files.csv`.
 ## Docker
 This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
 (e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
-Additionally, make sure that line 49 in Dapars/nextflow.config file `docker.enabled=true` is uncommented while line
+Additionally, make sure that line 49 in Apatrap/nextflow.config file `docker.enabled=true` is uncommented while line
 51 `singularity.enabled=true` is commented out.
 
 ## Singularity
-To run with singularity, comment out line 49 in Dapars/nextflow.config file `docker.enabled=true` and make sure that line
+To run with singularity, comment out line 49 in Apatrap/nextflow.config file `docker.enabled=true` and make sure that line
 51 `singularity.enabled=true` is uncommented.
 
 ### Parameters
 Parameters used to run APAtrap are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
-- `run_differentail` - set to true to obtain identification and quantification challenge outputs, or set to false
+- `run_differentail` - set to false to obtain identification and quantification challenge outputs, or set to true
                        to obtain differential challenge output. Specifying any other value will throw an error.
-- `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
+- `output_dir` - name of the folder that the final output files are going to be in, located under Apatrap/results/apatrap/
 - `identification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running identification,
+                                the prefix will be the different sample names obtained from the sample column in the sample sheet
+- `quantification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running quantification,
                                 the prefix will be the different sample names obtained from the sample column in the sample sheet
 - `differential_out` - name of the output file for the current run ending with .tsv when running differential
 - `genome_file` - absolute path from the APAtrap folder to the input GTF annotation file can be obtained by replacing `path_to`
    with the path to APAtrap, and if using your own genome file, make sure to use the absolute path to your genome file
 
 ### Running the differential workflow
-- Set the 'run_differential' parameter in conf/modules.config to false
+- Set the 'run_differential' parameter in conf/modules.config to true
 - Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains at least two distinct conditions in the condition column
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
-### Running the identification workflow
-- Set the 'run_differential' parameter in conf/modules.config to true
-- Change 'identification_out_suffix' parameter in conf/modules.config to the desired file suffix that ends with '.bed'
+### Running the identification and quantification workflow
+- Set the 'run_differential' parameter in conf/modules.config to false
+- Both identification and quantification challenges will be ran
+- Change 'identification_out_suffix' and 'quantification_out_suffix' parameters in conf/modules.config to the desired file suffix that ends with '.bed'
 - In the sample sheet, at least one row is required to be provided
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files_identification.csv
+- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 
 Note that it's recommended to delete the existing `results` folder to remove results from the previous run, if any. 
