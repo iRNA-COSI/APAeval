@@ -19,9 +19,9 @@ if (params.help) {
 	    Mandatory arguments:
                 --input		BED/TXT file with APA site information
 		--community_id			Name or OEB permanent ID for the benchmarking community
-                --public_ref_dir 		Directory with list of cancer genes used to validate the predictions
+                --public_ref_dir 		Directory with external reference file(s) for validating the structure of the output file(s) from the execution workflows (not utilized currently)
                 --participant_id  		Name of the tool used for prediction
-                --goldstandard_dir 		Dir that contains Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
+                --goldstandard_dir 		Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
                 --challenges_ids  		List of challenge ids selected by the user, separated by spaces
                 --assess_dir			Dir where the data for the benchmark are stored
 	    Other options:
@@ -72,6 +72,7 @@ gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' )
 challenges_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
+eventMark = params.eventMark
 
 // output 
 validation_file = file(params.validation_result)
@@ -142,13 +143,14 @@ process benchmark_consolidation {
 	file assessment_out
 	file validation_out
 	val challenges_ids
+        val eventMark
 	
 	output:
 	path 'aggregation_dir', type: 'dir'
 	path 'data_model_export.json'
 
 	"""
-	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir
+	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir -m $eventMark
 	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -c $challenges_ids -a aggregation_dir -o data_model_export.json
 	"""
 

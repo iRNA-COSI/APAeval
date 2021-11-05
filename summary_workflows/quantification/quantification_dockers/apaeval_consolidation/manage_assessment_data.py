@@ -8,9 +8,6 @@ import fnmatch
 from argparse import ArgumentParser
 import numpy as np
 from assessment_chart import assessment_chart
-from assessment_chart import conf
-
-DEFAULT_eventMark = DEFAULT_eventMark()
 
 def main(args):
 
@@ -18,13 +15,14 @@ def main(args):
     data_dir = args.benchmark_data
     participant_path = args.participant_data
     output_dir = args.output
-    
+    DEFAULT_eventMark = args.eventMark
+
     # Assuring the output directory does exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     # read participant metrics
     participant_data = read_participant_data(participant_path)
-    generate_manifest(data_dir, output_dir, participant_data)
+    generate_manifest(data_dir, output_dir, participant_data,DEFAULT_eventMark)
 
 
 def read_participant_data(participant_path):
@@ -37,7 +35,7 @@ def read_participant_data(participant_path):
 
     return participant_data
 
-def generate_manifest(data_dir,output_dir, participant_data):
+def generate_manifest(data_dir,output_dir,participant_data,DEFAULT_eventMark):
 
     info = []
 
@@ -163,7 +161,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--participant_data", help="path where the data for the participant is stored", required=True)
     parser.add_argument("-b", "--benchmark_data", help="dir where the data for the benchmark are stored", required=True)
     parser.add_argument("-o", "--output", help="output directory where the manifest and output JSON files will be written", required=True)
-
+    parser.add_argument("-m", "--eventMark", help="passes in the eventMark defined in nextflow.config", required=True)
     args = parser.parse_args()
 
     main(args)

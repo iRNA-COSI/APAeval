@@ -1,55 +1,42 @@
-## Running the summary workflow
+# OpenEBench assessment workflow in Nextflow
+
+Example pipeline with Nextflow used to assess results, comparing the metrics being computed with this workflow with APAeval pilot benchmark results.
+
+#### DON'T FREAK OUT IF YOU'RE UNFAMILIAR WITH `NEXTFLOW`! MOST CHANGES YOU'LL MAKE ARE IN `PYTHON`! 😉
+There are three steps in the summary workflow:
+ - Validation
+    - `input_file`: tab-separated output file from execution workflow
+    - Change the `benchmarking_dockers/apaeval_validation/validation.py` for the specific input_file
+    - Each input_file may have different fields from different execution workflows
+    - `public_ref/[validation_ref].txt` stores the values required to be in the input_files for validating the input_file 
+    - The `[output].json` file is not used in the subsequent steps
+ - Metrics Computation
+    - `input_file`: tab-separated output file from execution workflow
+    - Change the `benchmarking_dockers/apaeval_metrics/compute_metrics.py` for the specific input_file and the specific metric calculation
+    - the gold standard from `metrics_ref_dataset/[challenge].txt` and input_file values are used for computing the metrics
+    - The `output.json` file is used in the following step
+ - Results Consolidation
+    - Inputs the `output.json` file from the metrics computation step and the `data/` directory, which stores files with benchmark values
+    - The current python scripts are as they are in https://github.com/inab/TCGA_benchmarking_dockers, and only supports 2D plots with x and y axes
+
+#### After making the necessary changes for your specific challenge, you will have to build the docker image locally
+Go to the specific docker directory for each step in `benchmarking_dockers/`:
+ - `apaeval_validation/`, `apaeval_metrics/`, and `apaeval_consolidation/`
+and type the following
+```
+docker build . -t apaeval_[challenge]_[validation/metrics/consolidation]:1.0
+```
+If you want to update the docker container, please remove your original image first:
+```
+docker image ls #look for the IMAGE_ID of your docker image
+docker rmi [IMAGE_ID]
+```
+Then, you can rebuild the docker image locally (see above).
+ - Note: please don't push it up to docker hub because that may use quite a bit `AWS` rates
+
+#### Running the summary workflow
 One can use the following command to run the summary workflow from command line:
 ```
 nextflow run main.nf -profile docker
 ```
 
-## Matching PA sites to ground truth
-
-The script `Leo_MatchPAsites_GT.py` contains the metric calculating functions that were in the following scripts [Leo Schärfen](https://github.com/lschaerfen) wrote: 
-
-- [`match_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/match_with_gt.py) uses bedtools window to assign ground truth PAS to the predictions. Each prediction is extended by `n` base pairs, depending on the parameter chosen for `window`.
-- [`corr_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/corr_with_gt.py) calculates the correlation coefficient between prediction and matched ground truth quantification values. The input must be a BED file containing the columns below. Usage: `python3 corr_with_gt.py <prediction_merged.bed>`
-
-Processing steps:
-- run bedtools window for prediction file with itself
-- if necessary, merge prediction sites that fall into the window, expression is summed
-- run bedtools window for merged predictions with ground truth file
-- find multiple ground truth sites overlapping one predicted site
-	- weigths are added for the predicted site based on distance to the ground truth site
-	- expression can be calculated by weight_i*expression_i for all prediction sites having the same ground truth site assigned
-- find multiple predicted sites overlapping one ground truth site
-	- weigths are added for the predicted sites based on distance to the ground truth site
-	- expression can be calculated by sum(weight_i*expression_i) to get a single value matching the one ground truth site OR just summed without considering weight
-- write output file with the following columns:
-	1. chromosome prediction
-	2. start prediction
-	3. end prediction
-	4. name prediction
-	5. expression prediction
-	6. strand prediction
-	7. chromosome ground truth
-	8. start ground truth
-	9. end ground truth
-	10. name ground truth
-	11. expression ground truth (additional columns go after this one, such as ground truth gene_ID)
-	12. weight of prediction expression
-
-### Usage:
-
-```bash
-python3 prediction.bed ground_truth.bed window
-
-# example:
-python3 match_with_gt.py adultCortex.PAPERCLIP.mm10.bed siControl_R1.MACEseq.mm10.bed 15
-```
-
-### Output:
-- a copy of the prediction file `prediction_merged_<window>.bed` with rows merged, only in case there were overlapping sites given the window
-- the output file containing ground truth matches `prediction_matched_<window>.bed`
-
-
-### Issues:
-- currently, predicted sites that have no overlapping ground truth site within the window are discarded
-- there is no option in `bedtools window` to keep those, except for `-v` which requires another  `bedtools window` run
-- this needs to be addressed because it would favor tools that find less sites but with higher accuracy
