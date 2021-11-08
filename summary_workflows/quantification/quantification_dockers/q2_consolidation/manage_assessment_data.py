@@ -15,14 +15,14 @@ def main(args):
     data_dir = args.benchmark_data
     participant_path = args.participant_data
     output_dir = args.output
-    DEFAULT_eventMark = args.eventMark
+    event_date = args.event_date
 
     # Assuring the output directory does exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     # read participant metrics
     participant_data = read_participant_data(participant_path)
-    generate_manifest(data_dir, output_dir, participant_data,DEFAULT_eventMark)
+    generate_manifest(data_dir, output_dir, participant_data,event_date)
 
 
 def read_participant_data(participant_path):
@@ -35,7 +35,7 @@ def read_participant_data(participant_path):
 
     return participant_data
 
-def generate_manifest(data_dir,output_dir,participant_data,DEFAULT_eventMark):
+def generate_manifest(data_dir,output_dir,participant_data,event_date):
 
     info = []
 
@@ -79,7 +79,7 @@ def generate_manifest(data_dir,output_dir,participant_data,DEFAULT_eventMark):
                 metric_Y = "precision"
             
             aggregation_file = {
-                "_id": "APAeval:{}_{}_Aggregation".format(DEFAULT_eventMark, challenge),
+                "_id": "APAeval:{}_{}_Aggregation".format(event_date, challenge),
                 "challenge_ids": [
                     challenge
                 ],
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--participant_data", help="path where the data for the participant is stored", required=True)
     parser.add_argument("-b", "--benchmark_data", help="dir where the data for the benchmark are stored", required=True)
     parser.add_argument("-o", "--output", help="output directory where the manifest and output JSON files will be written", required=True)
-    parser.add_argument("-m", "--eventMark", help="passes in the eventMark defined in nextflow.config", required=True)
+    parser.add_argument("-m", "--event_date", help="passes in the event_date defined in nextflow.config", required=True)
     args = parser.parse_args()
 
     main(args)

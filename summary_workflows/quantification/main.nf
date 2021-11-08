@@ -72,7 +72,7 @@ gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' )
 challenges_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
-eventMark = params.eventMark
+event_date = params.event_date
 
 // output 
 validation_file = file(params.validation_result)
@@ -143,14 +143,14 @@ process benchmark_consolidation {
 	file assessment_out
 	file validation_out
 	val challenges_ids
-        val eventMark
+        val event_date
 	
 	output:
 	path 'aggregation_dir', type: 'dir'
 	path 'data_model_export.json'
 
 	"""
-	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir -m $eventMark
+	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir -m $event_date
 	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -c $challenges_ids -a aggregation_dir -o data_model_export.json
 	"""
 
