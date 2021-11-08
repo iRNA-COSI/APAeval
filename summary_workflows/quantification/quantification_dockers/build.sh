@@ -10,8 +10,8 @@ fi
 if [ $# -gt 0 ]; then
 	tag_id="$1"
 
-	for docker_name in apaeval_validation apaeval_metrics apaeval_consolidation ; do
-		docker build -t "$docker_name":"$tag_id" "$docker_name"
+	for docker_name in q2_validation q2_metrics q2_consolidation ; do
+		docker build -t apaeval/"$docker_name":"$tag_id" "$docker_name"
 	done
 else
 	echo "Usage: $0 tag_id" 1>&2
