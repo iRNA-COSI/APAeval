@@ -1,0 +1,12 @@
+{
+    "_id" : "Laura.Portell",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "helpdesk",
+    "surname" : "Portell",
+    "givenName" : "Laura",
+    "email" : [
+        "laura.portell@bsc.es"
+    ],
+    "notes" : "Contact for OpenEBench integration.",
+    "community_id" : "OEBC007"
+}

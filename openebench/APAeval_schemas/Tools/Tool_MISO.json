@@ -1,0 +1,24 @@
+{
+    "_id": "APAeval:MISO",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "MISO, RNA-Seq isoform quantitation",
+    "is_automated": true,
+    "name": "MISO",
+    "references": [
+        "doi:10.1038/nmeth.1528"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://github.com/yarden/MISO",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Edoardo.M.Airoldi",
+        "Christopher.B.Burge" 
+    ]
+}

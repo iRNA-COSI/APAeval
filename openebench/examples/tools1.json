@@ -1,0 +1,24 @@
+{
+    "_id": "QfO:SonicParanoid",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "activation": "2011-07-07T00:00:00Z",
+    "community_ids": [
+        "OEBC002"
+    ],
+    "description": "version: 1.0.9 mode: sensitive Length difference threshold = 0.5 ",
+    "is_automated": true,
+    "name": "SonicParanoid",
+    "references": [
+        "doi:10.1038/nmeth.3830"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "http://iwasakilab.bs.s.u-tokyo.ac.jp/sonicparanoid",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Christophe.Dessimoz"
+    ]
+}

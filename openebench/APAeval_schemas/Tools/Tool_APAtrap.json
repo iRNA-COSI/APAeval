@@ -1,0 +1,24 @@
+{
+    "_id": "APAeval:APAtrap",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
+    "community_ids": [
+        "OEBC007"
+    ],
+    "description": "APAtrap, identification and quantification of alternative polyadenylation sites from RNA-seq data.",
+    "is_automated": true,
+    "name": "APAtrap",
+    "references": [
+        "doi:10.1093/bioinformatics/bty029"
+    ],
+    "status": "unknown",
+    "tool_access": [
+        {
+            "link": "https://sourceforge.net/projects/apatrap/",
+            "tool_access_type": "other"
+        }
+    ],
+    "tool_contact_ids": [
+        "Qingshun.Quinn.Li",
+        "Xiaohui.Wu"
+    ]
+}

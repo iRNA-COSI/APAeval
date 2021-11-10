@@ -1,0 +1,18 @@
+{
+    "_id" : "Denis.Seyres",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Seyers",
+    "givenName" : "Denic",
+    "email" : [
+        "denis.seyres@unibas.ch"
+    ],
+    "notes" : "APAeval participant.",
+    "community_id" : "OEBC007",
+    "links": [
+		{
+			"label": "ORCID",
+			"uri": "https://orcid.org/0000-0002-2066-6980"
+		}
+	]
+}

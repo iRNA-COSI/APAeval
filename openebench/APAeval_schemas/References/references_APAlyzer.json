@@ -1,0 +1,7 @@
+{
+	"_id":"doi:10.1093/bioinformatics/btaa266",
+	"_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Reference",
+	"title": "APAlyzer: a bioinformatics package for analysis of alternative polyadenylation isoforms",
+	"bibliographic_ids":["pmid:32321166", "doi:10.1093/bioinformatics/btaa266"],
+	"abstract": "Most eukaryotic genes produce alternative polyadenylation (APA) isoforms. APA is dynamically regulated under different growth and differentiation conditions. Here, we present a bioinformatics package, named APAlyzer, for examining 3′UTR APA, intronic APA and gene expression changes using RNA-seq data and annotated polyadenylation sites in the PolyA_DB database. Using APAlyzer and data from the GTEx database, we present APA profiles across human tissues."
+}

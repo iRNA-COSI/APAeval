@@ -1,0 +1,38 @@
+{
+    "_id": "APAeval:2021-06-04_Q2",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Challenge",
+    "name": "Correlation benchmark for RNA-seq poly(A) site quantification.",
+    "acronym": "Q2",
+    "benchmarking_event_id": "OEBE0070000000",
+    "is_automated": true,
+    "dates": {
+        "creation": "2021-06-04T00:00:00Z",
+        "modification": "2021-06-04T00:00:00Z"
+    },
+    "challenge_contact_ids": [
+        "Alexander.Kanitz",
+        "Mervin.M.Fansler"
+    ],
+    "metrics_categories": [
+        {
+            "category": "assessment",
+            "description": "Metrics used to benchmark the correlation between RNAseq-based poly(A) site quantification and poly(A)-sites quantification based on orthogonal 3'end seq data.",
+            "metrics": [
+                {
+                    "metrics_id": "OEBM0070000000",
+                    "tool_id": "OEBT0070000001"
+                }
+            ]
+        },
+        {
+            "category": "aggregation",
+            "description": "Aggregation of correlation values.",
+            "metrics": [
+                {
+                    "metrics_id": "OEBM0070000001",
+                    "tool_id": "OEBT0070000000"
+                }
+            ]
+        }
+    ]
+}

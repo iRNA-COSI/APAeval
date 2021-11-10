@@ -1,0 +1,12 @@
+{
+    "_id" : "Christopher.B.Burge",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Burge",
+    "givenName" : "Christopher",
+    "email" : [
+        "cburge@mit.edu"
+    ],
+    "notes" : "Contact for MISO.",
+    "community_id" : "OEBC007"
+}

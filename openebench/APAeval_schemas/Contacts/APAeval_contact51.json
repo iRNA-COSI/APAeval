@@ -1,0 +1,12 @@
+{
+    "_id" : "Benjamin.J.Blencowe",
+    "_schema" : "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Contact",
+    "contact_type" : "person",
+    "surname" : "Blencowe",
+    "givenName" : "Benjamin",
+    "email" : [
+        "b.blencowe@utoronto.ca"
+    ],
+    "notes" : "Contact for QAPA.",
+    "community_id" : "OEBC007"
+}

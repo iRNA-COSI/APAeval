@@ -11,7 +11,293 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/50838086?v=4",
       "profile": "http://chelseaherdman.com",
       "contributions": [
+        "projectManagement",
+        "eventOrganizing",
+        "ideas",
+        "review",
+        "talk",
+        "doc"
+      ]
+    },
+    {
+      "login": "ninsch3000",
+      "name": "ninsch3000",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36634279?v=4",
+      "profile": "https://github.com/ninsch3000",
+      "contributions": [
+        "code",
+        "data",
+        "doc",
+        "design",
+        "eventOrganizing",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "talk",
+        "ideas"
+      ]
+    },
+    {
+      "login": "EuancRNA",
+      "name": "Euan McDonnell",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46812323?v=4",
+      "profile": "https://github.com/EuancRNA",
+      "contributions": [
+        "code",
+        "ideas",
+        "mentoring"
+      ]
+    },
+    {
+      "login": "uniqueg",
+      "name": "Alex Kanitz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10855418?v=4",
+      "profile": "https://git.scicore.unibas.ch/kanitz",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "example",
+        "eventOrganizing",
+        "ideas",
+        "infra",
+        "maintenance",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "talk"
+      ]
+    },
+    {
+      "login": "yuukiiwa",
+      "name": "Yuk Kei Wan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41866052?v=4",
+      "profile": "https://yuukiiwa.github.io/",
+      "contributions": [
+        "bug",
+        "blog",
+        "code",
+        "data",
+        "doc",
+        "example",
+        "eventOrganizing",
+        "ideas",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "test",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "BenNicolet",
+      "name": "Ben",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59935248?v=4",
+      "profile": "https://github.com/BenNicolet",
+      "contributions": [
+        "data",
+        "ideas",
         "projectManagement"
+      ]
+    },
+    {
+      "login": "pjewell-biociphers",
+      "name": "pjewell-biociphers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63738218?v=4",
+      "profile": "https://github.com/pjewell-biociphers",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "mzavolan",
+      "name": "mzavolan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44894507?v=4",
+      "profile": "https://github.com/mzavolan",
+      "contributions": [
+        "data",
+        "doc",
+        "eventOrganizing",
+        "financial",
+        "ideas",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "talk"
+      ]
+    },
+    {
+      "login": "mfansler",
+      "name": "Mervin Fansler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1182216?v=4",
+      "profile": "https://github.com/mfansler",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "eventOrganizing",
+        "ideas",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review"
+      ]
+    },
+    {
+      "login": "mkatsanto",
+      "name": "Maria Katsantoni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31883096?v=4",
+      "profile": "https://github.com/mkatsanto",
+      "contributions": [
+        "code",
+        "ideas",
+        "mentoring",
+        "question"
+      ]
+    },
+    {
+      "login": "daneckaw",
+      "name": "daneckaw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30384499?v=4",
+      "profile": "https://github.com/daneckaw",
+      "contributions": [
+        "code",
+        "data",
+        "eventOrganizing",
+        "ideas",
+        "projectManagement",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "dominikburri",
+      "name": "Dominik Burri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7873536?v=4",
+      "profile": "https://github.com/dominikburri",
+      "contributions": [
+        "bug",
+        "code",
+        "data",
+        "doc",
+        "example",
+        "eventOrganizing",
+        "ideas",
+        "infra",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "test",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "mrgazzara",
+      "name": "mrgazzara",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58347523?v=4",
+      "profile": "https://github.com/mrgazzara",
+      "contributions": [
+        "code",
+        "doc",
+        "data",
+        "eventOrganizing",
+        "ideas",
+        "infra",
+        "maintenance",
+        "projectManagement",
+        "mentoring",
+        "talk"
+      ]
+    },
+    {
+      "login": "FitzsimmonsCM",
+      "name": "Christina Fitzsimmons",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33811247?v=4",
+      "profile": "https://github.com/FitzsimmonsCM",
+      "contributions": [
+        "doc",
+        "eventOrganizing",
+        "ideas",
+        "projectManagement",
+        "talk"
+      ]
+    },
+    {
+      "login": "lschaerfen",
+      "name": "Leo Schärfen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76001100?v=4",
+      "profile": "https://github.com/lschaerfen",
+      "contributions": [
+        "code",
+        "ideas",
+        "talk"
+      ]
+    },
+    {
+      "login": "chilampoon",
+      "name": "poonchilam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43943114?v=4",
+      "profile": "https://chilampoon.github.io",
+      "contributions": [
+        "code",
+        "ideas",
+        "question"
+      ]
+    },
+    {
+      "login": "dseyres",
+      "name": "dseyres",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85220637?v=4",
+      "profile": "https://github.com/dseyres",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas"
+      ]
+    },
+    {
+      "login": "plger",
+      "name": "Pierre-Luc",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9786697?v=4",
+      "profile": "https://github.com/plger",
+      "contributions": [
+        "data",
+        "doc",
+        "eventOrganizing",
+        "ideas",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "SamBryce-Smith",
+      "name": "SamBryce-Smith",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49978382?v=4",
+      "profile": "https://github.com/SamBryce-Smith",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "pinjouwu9325",
+      "name": "Pin-Jou Wu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41280353?v=4",
+      "profile": "https://github.com/pinjouwu9325",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "yoseopyoon",
+      "name": "yoseopyoon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84806078?v=4",
+      "profile": "https://github.com/yoseopyoon",
+      "contributions": [
+        "code",
+        "ideas"
       ]
     }
   ],

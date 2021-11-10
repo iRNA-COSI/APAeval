@@ -1,0 +1,14 @@
+# You can use this file to create a conda environment for this pipeline:
+#   conda env create -f environment.yml
+name: diffUTR_nextflow
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # please remove any unnecessary dependencies
+  #- conda-forge::python=3.8.6
+  - conda-forge::markdown=3.3.3
+  #- conda-forge::pymdown-extensions=8.0.1
+  - conda-forge::r-base=4.1
+  

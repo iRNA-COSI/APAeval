@@ -1,0 +1,58 @@
+{
+    "_id": "QfO:2011-07-07_G_STD_Eukaryota",
+    "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Challenge",
+    "acronym": "G_STD_Eukaryota",
+    "benchmarking_event_id": "QfO:2011-07-07",
+    "challenge_contact_ids": [
+        "Christophe.Dessimoz",
+        "Paul.Thomas",
+        "Toni.Gabaldon",
+        "Erik.Sonnhammer"
+    ],
+    "dates": {
+        "benchmark_start": "2011-07-07T00:00:00Z",
+        "benchmark_stop": "2011-07-07T00:00:00Z",
+        "creation": "2011-07-07T00:00:00Z",
+        "modification": "2011-07-07T00:00:00Z"
+    },
+    "is_automated": true,
+    "metrics_categories": [
+        {
+            "category": "assessment",
+            "description": "metrics used to benchmark the performance of ortholog predictors in Challenge Generalized Species Tree Discordance in Eukaryota, generating the assessment dataset",
+            "metrics": [
+                {
+                    "metrics_id": "QfO:STD_comp_trees",
+                    "tool_id": "QfO:metrics_computator"
+                },
+                {
+                    "metrics_id": "QfO:STD_num_orthologs",
+                    "tool_id": "QfO:metrics_computator"
+                },
+                {
+                    "metrics_id": "QfO:STD_RF_distance",
+                    "tool_id": "QfO:metrics_computator"
+                },
+                {
+                    "metrics_id": "QfO:STD_incorrect_trees",
+                    "tool_id": "QfO:metrics_computator"
+                }
+            ]
+        },
+        {
+            "category": "aggregation",
+            "description": "metrics used to aggregate the assessment data of all ortholog predictors participating in challenge Generalized Species Tree Discordance in Eukaryota in a consolidated Aggregation dataset",
+            "metrics": [
+                {
+                    "metrics_id": "QfO:aggregation",
+                    "tool_id": "QfO:aggregate_benchmark"
+                }
+            ]
+        }
+    ],
+    "name": "Generalized Species Tree Discordance in Eukaryota benchmark",
+    "references": [
+        "doi:10.1093/bib/bbr034"
+    ],
+    "url": "https://orthology.benchmarkservice.org/cgi-bin/gateway.pl?f=CheckResults&p1=72d29d4aebb02e0d396fcad2"
+}

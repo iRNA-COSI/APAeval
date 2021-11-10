@@ -11,7 +11,7 @@ method: "MISO" # same as the name of the directory
 benchmarks: "benchmark"
 
 miso_settings: "configs/miso_settings.txt"
-envs: "../envs"
+envs: "envs"
 read_len: 75
-genome: "../../test_data/gencode_2genes_noChr.vM18.annotation.gff3"
+genome: "test_data/gencode_2genes_noChr.vM18.annotation.gff3"
 log_dir: "logs"
