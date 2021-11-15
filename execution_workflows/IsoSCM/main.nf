@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 /*
 ========================================================================================
-                         PILOT BENCHMARK PIPELINE RUNNING QAPA
+                         BENCHMARK PIPELINE RUNNING ISOSCM
 ========================================================================================
 */
 
@@ -37,10 +37,10 @@ if (params.help) {
 
 workflow {
     /*
-     * RUN PILOT WORKFLOW
+     * RUN ISOSCM WORKFLOW
      */
-    include { PILOT } from './workflow/pilot' addParams( [:] )
-    PILOT ()
+    include { EXECUTE_ISOSCM } from './workflow/execute_isoscm' addParams( [:] )
+    EXECUTE_ISOSCM ()
 }
 
 ////////////////////////////////////////////////////

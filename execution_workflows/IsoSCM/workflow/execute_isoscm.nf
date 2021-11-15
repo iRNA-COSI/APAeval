@@ -32,11 +32,8 @@ def isOffline() {
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 
-// TO DO -- define options for the processes below
-def qapa_options    = modules['qapa']
-
 include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
-include { RUN_QAPA    } from '../subworkflows/run_qapa'          addParams( options: qapa_options )
+include { RUN_ISOSCM    } from '../subworkflows/run_isoscm'   addParams( options: qapa_options )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -47,7 +44,7 @@ workflow PILOT{
          INPUT_CHECK ( ch_input )
                .set { ch_sample }
 
-         RUN_QAPA ( ch_sample )
+         RUN_ISOSCM ( ch_sample )
     }
 
 ////////////////////////////////////////////////////
