@@ -19,9 +19,9 @@ process CONVERT_GTF_TO_BED {
     path converted_genome_file, emit: ch_genome_file
 
     script:
-    converted_genome_file = "./data/annotations/Mm10.CSIs.annot.bed"
+    converted_genome_file = "/Mm10.CSIs.annot.bed"
     """
     gtfToGenePred $genome_file test.genePred
-    genePredToBed test.genePred $converted_genome_file
+    genePredToBed test.genePred \$PWD$converted_genome_file
     """
 }
