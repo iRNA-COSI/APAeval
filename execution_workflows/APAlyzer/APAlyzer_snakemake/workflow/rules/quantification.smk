@@ -6,7 +6,7 @@ rule quantification:
         bam=lambda wildcards: os.path.join(samples.loc[wildcards.sample, "bam"]),
         genome=os.path.join(config["out_dir"],"reference_genome.RData")
     output:
-        out_quantification=os.path.join(config["out_dir"],"{sample}_{experiment}_quant_APAlyzer.csv")
+        out_quantification=os.path.join(config["out_dir"],"{sample}_quant_APAlyzer.csv")
     params:
         sample_name="{sample}",
         read_orientation=lambda wildcards: samples.loc[wildcards.sample, "orientation"]
