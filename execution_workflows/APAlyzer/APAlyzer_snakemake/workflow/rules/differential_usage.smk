@@ -1,12 +1,13 @@
 # Differential APA usage
 rule differential_usage:
-    """A rule that does the differential usage estimate of the 3' UTRs.
+    """
+    A rule that does the differential usage estimate of the 3' UTRs.
     """
     input:
         quants = lambda wildcards: expand(
             os.path.join(
                 config["out_dir"],
-                "{sample}_{experiment}_quant_APAlyzer.csv"),
+                "{sample}_quant_APAlyzer.csv"),
             sample=samples.index.values,
             experiment=wildcards.experiment)
     output:

@@ -1,6 +1,7 @@
 # Quantification
 rule quantification:
-    """A rule that does the 3' UTR quantification.
+    """
+    A rule that does the 3' UTR quantification.
     """
     input:
         bam=lambda wildcards: os.path.join(samples.loc[wildcards.sample, "bam"]),
