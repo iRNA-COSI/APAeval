@@ -1,0 +1,32 @@
+# Configuration file for snakemake pipeline
+
+# Path to run-specific sample table of | sample | bam
+samples: "config/samples.csv"
+
+# Path to main output directory for run
+out_dir: "results/"
+
+# Path to GTF annotation file
+#gtf: "Mus_musculus.GRCm38.99.gtf.gz"
+gtf: "../../../tests/test_data/gencode_2genes_Chr_prefix.vM18.annotation.gtf"
+
+genome_name: "gencode_2genes_noChr.vM18.annotation"
+# Parameters
+# define method specific parameters here
+
+# Parameters
+# Minumum coverage for event to be considered for further analysis
+#coverageThreshold: 10
+
+# Number of threads to use for main DaPars2 script (Dapars2_Multi_Sample.py)
+dapars2_threads: 1
+
+# Pipeline parameters. No need to change these for specific runs
+
+# Name of subdirectory
+logs_subdir: logs/
+
+# Settings
+envs: "envs"
+local_log: "logs/local_log"
+cluster_log: "logs/cluster_log"
