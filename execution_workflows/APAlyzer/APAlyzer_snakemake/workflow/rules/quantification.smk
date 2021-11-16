@@ -11,7 +11,7 @@ rule quantification:
         sample_name="{sample}",
         read_orientation=lambda wildcards: samples.loc[wildcards.sample, "orientation"]
     log:
-        os.path.join(config["local_log"],"{sample}_{experiment}_quantification.log")
+        os.path.join(config["local_log"],"{sample}_quantification.log")
     container:
         "docker://apaeval/apalyzer:latest"
 
