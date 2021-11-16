@@ -4,20 +4,17 @@ rule differential_usage:
     A rule that does the differential usage estimate of the 3' UTRs.
     """
     input:
-        quants = lambda wildcards: expand(
-            os.path.join(
+        lambda wildcards: expand(os.path.join(
                 config["out_dir"],
-                "{sample}_quant_APAlyzer.csv"),
-            sample=samples.index.values,
-            experiment=wildcards.experiment)
+                "{sample}_quant_APAlyzer.csv"), sample=wildcards.sample)
     output:
         diff_usage = os.path.join(
             config["out_dir"],
-            "{experiment}_differential_usage_APAlyzer.csv")
+            "differential_usage_APAlyzer.csv")
     params:
         sample_name = "{sample}"
     log:
-        os.path.join(config["local_log"], "{experiment}_differential_usage_APAlyzer.log")
+        os.path.join(config["local_log"], "differential_usage_APAlyzer.log")
     container:
         "docker://apaeval/apalyzer:latest"
     shell:

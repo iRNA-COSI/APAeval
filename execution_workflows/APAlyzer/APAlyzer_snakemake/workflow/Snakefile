@@ -7,22 +7,26 @@ import pandas as pd
 import os
 
 
-samples = pd.read_csv(config["samples"]).set_index("sample", drop=False)
+df = pd.read_csv(config["samples"], index_col="sample")
+samples = df.index
 
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
 include: "rules/genome_preprocessing.smk"
-include: "rules/quantification.smk"
-include: "rules/differential_usage.smk"
+#include: "rules/quantification.smk"
+#include: "rules/differential_usage.smk"
 
 #-------------------------------------------------------------------------------
 localrules: finish
-print(list(set(samples.bam.values)))
+
+
 rule finish:
-    """Rule that specifies the final output."""
+    """
+    Rule that specifies the final output.
+    """
     input:
-        diff_usage = expand(os.path.join(config["out_dir"],"{experiment}_differential_usage_APAlyzer.csv"),
-            experiment=list(set(samples.experiment.values)))
+	final = os.path.join(config["out_dir"],"reference_genome.RData")
+        #diff_usage = expand(os.path.join(config["out_dir"],"differential_usage_APAlyzer.csv"))
 
 
 #-------------------------------------------------------------------------------

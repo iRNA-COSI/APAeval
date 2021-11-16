@@ -1,5 +1,5 @@
 #!/bin/bash
 snakemake \
     --snakefile="workflow/Snakefile" \
-    --configfile "config/config.[METHOD].yaml" \
-    --rulegraph -np | dot -Tpng > rulegraph.[METHOD].png
+    --configfile "config/config.APAlyzer.yaml" \
+    --rulegraph -np | dot -Tpng > rulegraph.APAlyzer.png

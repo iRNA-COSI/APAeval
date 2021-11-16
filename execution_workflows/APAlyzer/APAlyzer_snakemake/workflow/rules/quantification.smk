@@ -4,13 +4,14 @@ rule quantification:
     A rule that does the 3' UTR quantification.
     """
     input:
-        bam=lambda wildcards: os.path.join(samples.loc[wildcards.sample, "bam"]),
+        bam=lambda wildcards: os.path.join(df.loc[wildcards.sample, "bam"]),
         genome=os.path.join(config["out_dir"],"reference_genome.RData")
+
     output:
         out_quantification=os.path.join(config["out_dir"],"{sample}_quant_APAlyzer.csv")
     params:
         sample_name="{sample}",
-        read_orientation=lambda wildcards: samples.loc[wildcards.sample, "orientation"]
+        read_orientation=lambda wildcards: df.loc[wildcards.sample, "orientation"]
     log:
         os.path.join(config["local_log"],"{sample}_quantification.log")
     container:
