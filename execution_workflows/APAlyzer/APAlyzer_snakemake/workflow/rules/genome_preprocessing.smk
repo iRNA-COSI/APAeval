@@ -9,8 +9,8 @@ rule genome_preprocessing:
         gtf = config["gtf"]
     output:
         out_genome = os.path.join(config["out_dir"], 'reference_genome.RData')
-    # params:
-    #     outdir = config["out_dir"]
+    params:
+        outdir = config["out_dir"]
     # log:
     #     os.path.join(config["local_log"], "genome_preprocessing.log")
 
