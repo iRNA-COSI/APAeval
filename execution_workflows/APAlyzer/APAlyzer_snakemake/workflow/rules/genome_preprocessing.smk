@@ -2,15 +2,15 @@
 import os
 
 rule rename_gtf:
-   """
-   A rule that renames gtf file to the correct format for preprocessing
-   """
-   
-   input:
-      gtf = config["gtf"]
-   
-   output:
-      gtf_renamed = os.path.join(
+    """
+    A rule that renames gtf file to the correct format for preprocessing
+    """
+
+    input:
+        gtf = config["gtf"]
+
+    output:
+        gtf_renamed = os.path.join(
 		config["out_dir"], 
 		config["gtf_organism"]+ "." + \
 		config["gtf_genome_version"] + "." + \
@@ -27,8 +27,8 @@ rule genome_preprocessing:
     output:
         out_genome = os.path.join(config["out_dir"], 'reference_genome.RData')
  
-   params:
-        outdir = config["out_dir"]
+    params:
+       outdir = config["out_dir"]
  
     log:
         os.path.join(LOG_DIR, "genome_preprocessing.log")
