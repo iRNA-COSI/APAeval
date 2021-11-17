@@ -1,10 +1,9 @@
 #!/bin/bash
-snakemake --unlock;
 snakemake \
     --snakefile="workflow/Snakefile" \
     --configfile="config/config.APAlyzer.yaml" \
-    --use-conda \
-    --conda-frontend conda \
+    --use-singularity \
+    --singularity-args="--bind ${PWD}/../../../tests/test_data" \
     --cores 4 \
     --printshellcmds
 # adjust number of cores as needed
