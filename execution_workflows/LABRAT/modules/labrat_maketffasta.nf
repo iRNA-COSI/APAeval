@@ -8,11 +8,14 @@ process LABRAT_MAKETFFASTA {
         publishDir "${params.outdir}/labrat", mode: params.publish_dir_mode
         container "quay.io/biocontainers/labrat:0.2.2--pyhdfd78af_0"
 
+        time '8h'
+
         input:
         tuple path(gff), path(fasta)
 
         output:
         path "*.fasta", emit: ch_tffasta
+        path "*.db", emit: ch_gffutilsdb
 
         script:
         """

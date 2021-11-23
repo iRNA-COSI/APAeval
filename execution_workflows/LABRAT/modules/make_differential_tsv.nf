@@ -8,7 +8,7 @@ process MAKE_DIFFERENTIAL_TSV {
     tag "$samplesheet"
     publishDir "${params.outdir}/labrat", mode: params.publish_dir_mode
 
-    container "quay.io/biocontainers/python:3.8.3"
+    container "quay.io/biocontainers/python:3.8--1"
 
     input:
     path labrat_diff_results

@@ -58,7 +58,8 @@ workflow RUN_LABRAT {
                            ch_sampconds,
                            ch_conditionA,
                            ch_conditionB,
-                           ch_gff )
+                           ch_gff ,
+                           LABRAT_MAKETFFASTA.out.ch_gffutilsdb)
      MAKE_DIFFERENTIAL_TSV ( LABRAT_CALCULATEPSI.out.ch_pval_results )
 }
 
