@@ -16,13 +16,16 @@ rule rename_gtf:
 		config["gtf_genome_version"] + "." + \
 		config["gtf_ensemble_version"] + ".gtf")
 
+    shell:
+        "cp {input} {output}"
+
 rule genome_preprocessing:
     """
     A rule that creates the APA sites from a gtf file.
     """
 
     input:
-        gtf = gtf_renamed
+        gtf = rules.rename_gtf.output.gtf_renamed
 
     output:
         out_genome = os.path.join(config["out_dir"], 'reference_genome.RData')
