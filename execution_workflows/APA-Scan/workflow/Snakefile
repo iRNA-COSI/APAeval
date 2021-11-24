@@ -215,8 +215,8 @@ rule gtfToGenePred:
     Expects 'RefSeq' table format, with first column corresponding to 'bin'
     https://genome.ucsc.edu/cgi-bin/hgTables?db=hg38&hgta_group=genes&hgta_track=refSeqComposite&hgta_table=ncbiRefSeqCurated&hgta_doSchema=describe+table+schema
     gtfToGenePred does not output this bin field as it is not part of the GTF transcript annotation
-    The awk line adds a dummy 1st field so column indexes are as expected for APA-Scan.py
-    and a header column
+    The 1st awk line adds a dummy 1st field so column indexes are as expected for APA-Scan.py
+    2nd awk line adds a header column (required for APA-Scan)
     """
     input:
         config["gtf"]
@@ -242,8 +242,8 @@ rule gtfToGenePred:
     shell:
         """
         (gtfToGenePred -genePredExt {input} {output}.tmp
-        awk '{{print "0\t",$0}}' {output}.tmp | \
-        awk 'BEGIN{{ print "{params.header}" }}1' > {output} && \
+        awk 'BEGIN {{FS=OFS}} {{ print "0\t"$0}}' {output}.tmp | \
+        awk -F"\\t" 'BEGIN {{ print "{params.header}" }}1' > {output} && \
         rm {output}.tmp
         ) &> {log}
         """
