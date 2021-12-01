@@ -54,33 +54,7 @@ rule execute_container:
         param2 = "PARAM_STRING"
     threads: 4
     container: # OR URL/TO/CONTAINER
-        os.path.join(config["envs"], "[METHOD].Dockerfile") 
-    log:
-        os.path.join(config["local_log"], "execute.{sample}.log")
-    shell:
-        "(EXECUTE_COMMAND \
-            -i {input.bam} \
-            -o {output.out} \
-            -p1 {params.param1} \
-            -p2 {params.param2}) \
-            &> {log}"
-
-rule execute_conda:
-    """Execution rule with conda environment.
-    """
-    input:
-        bam=lambda wildcards:
-                pd.Series(
-                    samples.loc[wildcards.sample, "bam"]
-                ).values
-    output:
-        out=os.path.join(config["out_dir"], "{sample}", "execute.out")
-    params:
-        param1 = 0,
-        param2 = "PARAM_STRING"
-    threads: 4
-    conda: 
-        os.path.join(config["envs"], "[METHOD].yaml")
+        os.path.join(config["envs"], "[METHOD].Dockerfile")
     log:
         os.path.join(config["local_log"], "execute.{sample}.log")
     shell:

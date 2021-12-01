@@ -11,6 +11,23 @@ method: "METHOD" # same as the name of the directory
 
 
 # Parameters
+
+# Flags to run/output files for each benchmarking challenge
+# REMOVE the flag from the file if the tool does not output files compatible with a challenge
+# All flags are 'True/False' to 'switch on/off' rules to produce challenge output. Valid parameter values are:
+# 'True': Run/output challenge files
+# 'False': Don't run/output challenge files
+# Note: Do not enclose True/False in quotation marks
+# If combinations of flags are incompatible with one another (e.g. run_differential requires a different workflow to run_quantification), this should be noted here and in the README
+
+
+# Whether to run steps to produce output files for identification challenge
+run_identification: True
+
+run_quantification: True
+
+run_differential: True
+
 # define method specific parameters here
 
 # Settings

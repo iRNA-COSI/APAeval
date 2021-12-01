@@ -8,20 +8,24 @@ Read this section, but do NOT include it your final README.
 > * Place any scripts or subworkflows you're going to use into the directories `workflow/scripts` and `workflow/rules`, respectively.
 > * Write your workflow in `Snakefile`.
 > * Here are the [snakemake docs](https://snakemake.readthedocs.io/en/stable/index.html)
-> * Create the [conda](https://docs.conda.io/en/latest/) environment named `snakemake` with `conda env create -f snakemake.yaml`. Alternatively, create an own virtual environment, but ensure to use same versions as in `snakemake.yaml`.
+> * The pipeline's config.yaml file should contain 'True/False' flags to run each benchmarking event ('run_identification', 'run_quantification', 'run_differential') with which the tool is compatible. Wherever possible, these flags should be compatible with one another (i.e. 'switching on' any combination of flags will produce a valid workflow). If workflows are incompatible with one another (e.g. 'run_differential' & 'run_quantification' require different workflows), this should be clearly stated in the README.
 > * General good practices:
 >     * Test your code with [snakemake --lint](https://snakemake.readthedocs.io/en/stable/snakefiles/writing_snakefiles.html#best-practices).
->     * One (shell) command per rule. 
->     * If samples differ in a meaningful way (e.g. single end and paired end samples), it might be better to write subworkflows within `workflow/rules`. 
->     * If applicable, each rule has it's own [Docker container](https://www.docker.com/resources/what-container) or conda environment.
+>     * One (shell) command per rule.
+>     * If samples differ in a meaningful way (e.g. single end and paired end samples), it might be better to write subworkflows within `workflow/rules`.
+>     * Each rule has it's own [Docker container](https://www.docker.com/resources/what-container). All containers should be pushed to the [APAeval team Dockerhub](https://hub.docker.com/u/apaeval)
 > * There are some shell scripts which can be used to start a snakemake run. Adjust the name of the `config file` in these scripts:
 >     * `dryrun.sh`
 >     * `rulegraph.sh` (Also adjust name of output `.png`)
 >     * `run_local.sh`
-> * Check out the pilot benchmark at `tests/pilot_benchmark/snakemake` for a running example. It illustrates how the execution workflow can look in practice. 
+> * Check out the pilot benchmark at `tests/pilot_benchmark/snakemake` for a running example. It illustrates how the execution workflow can look in practice.
 > * Adjust this `README.md`: Delete this description section and populate the sections below with your awesome experience ;)
 
 # [METHOD] {Method name as specified in Algorithm table.}
+
+## Benchmarking challenges
+
+{Bullet point list of the benchmarking challenges with which this workflow is compatible and produces challenge output files}
 
 ## Rulegraph
 
@@ -37,12 +41,14 @@ Read this section, but do NOT include it your final README.
 
 {Describe parameters needed by your METHOD.}
 
+{Describe the parameters for running different modes `--run_identification/`, `--run_quantification/`, `--run_differential`}
+
 ## Output & post-processing
 
 {Describe output files and postprocessing steps if necessary.}
 
 ## Notes
 
-{Notes about the METHOD. 
-e.g. Did you have to adjust the method's soure code?
+{Notes about the METHOD.
+e.g. Did you have to adjust the method's source code/recommended running instructions?
 }
