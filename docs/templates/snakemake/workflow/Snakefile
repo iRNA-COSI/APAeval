@@ -107,23 +107,6 @@ rule execute_container:
 #-------------------------------------------------------------------------------
 # Postprocessing: obtain suitable output formats (for benchmarks)
 
-# rule postprocess_step_1:
-#     """A rule that does some postprocessing.
-#
-#     Note: expand() with wildcard sample gathers all samples.
-#
-#     """
-#     input:
-#         expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
-#                sample = samples.index)
-#     output:
-#         os.path.join(config["out_dir"], config["param_code"], config["method"],
-#         "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
-#     log:
-#         os.path.join(config["local_log"], "postprocess_step_1.{sample}.log")
-#     shell:
-#         "(cat {input} {output}) &> {log}"
-
 
 rule postprocess_identification:
     """
@@ -201,7 +184,7 @@ rule postprocess_differential:
     """
     input:
         expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
-               sample = samples.index)
+               sample=samples.index)
     output:
         out = os.path.join(config["out_dir"],
                            config["param_code"],
