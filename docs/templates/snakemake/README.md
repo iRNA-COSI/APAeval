@@ -41,7 +41,7 @@ Read this section, but do NOT include it your final README.
 
 {Describe parameters needed by your METHOD.}
 
-{Describe the parameters for running different modes `--run_identification/`, `--run_quantification/`, `--run_differential`}
+{Describe the parameters for running different modes `run_identification`, `run_quantification`, `run_differential`}
 
 ## Output & post-processing
 
