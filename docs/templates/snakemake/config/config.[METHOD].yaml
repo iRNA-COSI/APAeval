@@ -28,6 +28,10 @@ run_quantification: True
 
 run_differential: True
 
+identification_output_suffix: ".identification.bed"
+quantification_output_suffix: ".quantification.bed"
+differential_output_file: "differential_challenge.tsv"
+
 # define method specific parameters here
 
 # Settings

@@ -7,6 +7,9 @@ import pandas as pd
 samples = pd.read_csv(os.path.abspath(
     config["samples"])).set_index("sample", drop=False)
 
+assert isinstance(config["run_identification"], bool), f"'run_identification' must be True/False boolean, {config['run_identification']} (type {type(config['run_identification'])}) was provided"
+assert isinstance(config["run_quantification"], bool), f"'run_quantification' must be True/False boolean, {config['run_quantification']} (type {type(config['run_quantification'])}) was provided"
+assert isinstance(config["run_differential"], bool), f"'run_differential' must be True/False boolean, {config['run_differential']} (type {type(config['run_differential'])}) was provided"
 
 #-------------------------------------------------------------------------------
 localrules: finish
@@ -15,8 +18,39 @@ rule finish:
     """Rule that specifies the final output. Add all output files needed for the different challenges here. OUTCODE: 01 for identification challenge, 02 for quantification challenge, 03 for differential expression challenge. For more info refer to https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/README.md
     """
     input:
-        os.path.join(config["out_dir"], config["param_code"], config["method"],
-        "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+        expand(os.path.join(config["out_dir"],
+                     config["param_code"],
+                     config["method"],
+                     "_".join([config["param_code"],
+                               config["method"],
+                               "{sample}" + config["identification_output_suffix"]
+                               ]
+                              )
+                            ),
+               sample=list(samples.index) if config["run_identification"] else []
+               ),
+        expand(os.path.join(config["out_dir"],
+                     config["param_code"],
+                     config["method"],
+                     "_".join([config["param_code"],
+                               config["method"],
+                               "{sample}" + config["quantification_output_suffix"]
+                               ]
+                              )
+                            ),
+               sample=list(samples.index) if config["run_quantification"] else []
+               ),
+        os.path.join(config["out_dir"],
+                     config["param_code"],
+                     config["method"],
+                     "_".join([config["param_code"],
+                               config["method"],
+                               config["differential_output_file"]
+                               ]
+                              )
+                     ) if config["run_differential"] else []
+
+
 
 
 #-------------------------------------------------------------------------------
@@ -27,13 +61,18 @@ rule preprocess_step_1:
     This example copies input to output and writes stdout and stderr to log.
     """
     input:
-        INPUT_FILE
+        bam = lambda wildcards:
+                pd.Series(
+                    samples.loc[wildcards.sample, "bam"]
+                ).values
     output:
-        OUTPUT_FILE
+        os.path.join(config["out_dir"],
+                     "bam_files",
+                     "{sample}.bam")
     log:
-        os.path.join(config["local_log"], "preprocess_step_1.log")
+        os.path.join(config["local_log"], "preprocess_step_1.{sample}.log")
     shell:
-        "(cp {input} {output}) &> {log}"
+        "(cp {input.bam} {output}) &> {log}"
 
 
 #-------------------------------------------------------------------------------
@@ -43,10 +82,9 @@ rule execute_container:
     """Execution rule in a container (e.g. Dockerfile).
     """
     input:
-        bam=lambda wildcards:
-                pd.Series(
-                    samples.loc[wildcards.sample, "bam"]
-                ).values
+        bam = os.path.join(config["out_dir"],
+                           "bam_files",
+                           "{sample}.bam")
     output:
         out=os.path.join(config["out_dir"], "{sample}", "execute.out")
     params:
@@ -69,23 +107,128 @@ rule execute_container:
 #-------------------------------------------------------------------------------
 # Postprocessing: obtain suitable output formats (for benchmarks)
 
-rule postprocess_step_1:
-    """A rule that does some postprocessing.
+# rule postprocess_step_1:
+#     """A rule that does some postprocessing.
+#
+#     Note: expand() with wildcard sample gathers all samples.
+#
+#     """
+#     input:
+#         expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
+#                sample = samples.index)
+#     output:
+#         os.path.join(config["out_dir"], config["param_code"], config["method"],
+#         "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+#     log:
+#         os.path.join(config["local_log"], "postprocess_step_1.{sample}.log")
+#     shell:
+#         "(cat {input} {output}) &> {log}"
 
-    Note: expand() with wildcard sample gathers all samples.
 
+rule postprocess_identification:
+    """
+    A rule that produces output files for the identification challenge
+    """
+    input:
+        os.path.join(config["out_dir"], "{sample}", "execute.out"),
+        # os.path.join(config["out_dir"], config["param_code"], config["method"],
+        # "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+    output:
+        out = os.path.join(config["out_dir"],
+                           config["param_code"],
+                           config["method"],
+                           "_".join([config["param_code"],
+                                     config["method"],
+                                     "{sample}" + config["identification_output_suffix"]
+                                     ]
+                                    )
+                           )
+    params:
+        param1 = 0,
+        param2 = "PARAM_STRING"
+    threads: 4
+    container: # OR URL/TO/CONTAINER
+        os.path.join(config["envs"], "[METHOD].Dockerfile")
+    log:
+        os.path.join(config["local_log"], "postprocess_identification.{sample}.log")
+    shell:
+        """
+        (EXECUTE_COMMAND \
+        -i {input} \
+        -o {output.out} \
+        -p1 {params.param1} \
+        -p2 {params.param2}) \
+        &> {log}
+        """
+
+
+rule postprocess_quantification:
+    """
+    A rule that produces output files for the quantification challenge
+    """
+    input:
+        os.path.join(config["out_dir"], "{sample}", "execute.out"),
+        # os.path.join(config["out_dir"], config["param_code"], config["method"],
+        # "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+    output:
+        out = os.path.join(config["out_dir"], config["param_code"], config["method"],
+        "_".join([config["param_code"],
+                  config["method"],
+                  "{sample}" + config["quantification_output_suffix"]
+                  ]
+                 ))
+    params:
+        param1 = 0,
+        param2 = "PARAM_STRING"
+    threads: 4
+    container: # OR URL/TO/CONTAINER
+        os.path.join(config["envs"], "[METHOD].Dockerfile")
+    log:
+        os.path.join(config["local_log"], "postprocess_quantification.{sample}.log")
+    shell:
+        """
+        (EXECUTE_COMMAND \
+        -i {input} \
+        -o {output.out} \
+        -p1 {params.param1} \
+        -p2 {params.param2}) \
+        &> {log}
+        """
+
+rule postprocess_differential:
+    """
+    A rule that produces output files for the differential challenge
     """
     input:
         expand(os.path.join(config["out_dir"], "{sample}", "execute.out"),
-            sample = samples.index)
+               sample = samples.index)
     output:
-        os.path.join(config["out_dir"], config["param_code"], config["method"],
-        "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+        out = os.path.join(config["out_dir"],
+                           config["param_code"],
+                           config["method"],
+                           "_".join([config["param_code"],
+                                     config["method"],
+                                     config["differential_output_file"]
+                                     ]
+                                    )
+                           )
+    params:
+        param1 = 0,
+        param2 = "PARAM_STRING"
+    threads: 4
+    container: # OR URL/TO/CONTAINER
+        os.path.join(config["envs"], "[METHOD].Dockerfile")
     log:
-        os.path.join(config["local_log"], "postprocess_step_1.{sample}.log")
+        os.path.join(config["local_log"], "postprocess_differential.log")
     shell:
-        "(cat {input} {output}) &> {log}"
-
+        """
+        (EXECUTE_COMMAND \
+        -i {input} \
+        -o {output.out} \
+        -p1 {params.param1} \
+        -p2 {params.param2}) \
+        &> {log}
+        """
 
 #-------------------------------------------------------------------------------
 # How did it go?
