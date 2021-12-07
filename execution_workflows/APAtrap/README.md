@@ -47,7 +47,7 @@ To run with singularity, comment out line 49 in Apatrap/nextflow.config file `do
 ### Parameters
 Parameters used to run APAtrap are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
-- `run_differentail` - set to false to obtain identification and quantification challenge outputs, or set to true
+- `run_differential` - set to false to obtain identification and quantification challenge outputs, or set to true
                        to obtain differential challenge output. Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Apatrap/results/apatrap/
 - `identification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running identification,
