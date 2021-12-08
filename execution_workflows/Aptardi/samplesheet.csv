@@ -1,2 +1,2 @@
-sample,bam,gtf,fasta
-sample,[path_to]/test.bam,[path_to]/gencode.vM26.primary_assembly.annotation.gtf,[path_to]/mm39.fa
+sample,bam
+sample,[path_to]/test.bam

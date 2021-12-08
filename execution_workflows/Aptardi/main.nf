@@ -21,6 +21,8 @@ if (params.help) {
 
 // define parameters (add more parameters if necessary)
 if (params.input) { ch_input = file(params.input, checkIfExists: true) } else { exit 1, "Samplesheet file not specified!" }
+if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) } else { exit 1, "FASTA file not specified!" }
+if (params.gtf)   { ch_gtf   = file(params.gtf, checkIfExists: true)   } else { exit 1, "GTF file not specified!" }
 ch_output_bed = params.output_bed
 if (params.aptardi_model) { ch_aptardi_model = file(params.aptardi_model, checkIfExists: true) } // if not specify, the default one will be used
 if (params.aptardi_scale) { ch_aptardi_scale = file(params.aptardi_scale, checkIfExists: true) } // if not specify, the default one will be used
@@ -45,7 +47,7 @@ process CHECK_SAMPLESHEET {
 }
 
 def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.bam, sample.gtf, sample.fasta ]
+    return [ sample.sample, sample.bam ]
 }
 
 // create input channel for aptardi
@@ -65,10 +67,12 @@ if (params.use_stringtie2_gtf){
         publishDir "${params.outdir}/aptardi", mode: params.publish_dir_mode
 
         input:
-        tuple val(sample), path(bam), path(gtf), path(fasta) from ch_stringtie_input
+        tuple val(sample), path(bam) from ch_stringtie_input
+        path gtf from ch_gtf
+        path fasta from ch_fasta
 
         output:
-        tuple val(sample), path("stringtie.merged.gtf") into ch_stringtie_gtf
+        tuple val(sample), path("stringtie.merged.gtf"), path(fasta) into ch_stringtie_gtf
 
         script:
         """
@@ -78,10 +82,12 @@ if (params.use_stringtie2_gtf){
     }
     ch_input
        .join(ch_stringtie_gtf, by:0)
-       .map { it -> [ it[0], it[1], it[4], it[3] ] }
+       .map { it -> [ it[0], it[1], it[2], it[3] ] }
        .set { ch_aptardi_input }
 } else {
     ch_input
+       .combine([ch_gtf])
+       .combine([ch_fasta])
        .set { ch_aptardi_input }
 }
 

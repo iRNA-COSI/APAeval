@@ -13,9 +13,7 @@ An example sample sheet is available at `samplesheet.csv`. `samplesheet.csv` can
 columns:
 
 - sample: name of the sample for logs (e.g control_replicate1)
-- bam: BAM input file for the sample 
-- gtf: reference annotation
-- fasta: reference genome sequences
+- bam: BAM input file for the sample
 
 ### Docker and Singularity containers
 This workflow uses docker containers. To run, make sure that docker is installed and running 
@@ -26,6 +24,8 @@ If running with Singularity, please include the `-profile singularity` in the co
 Parameters used to run the Aptardi are specified in the nextflow.config file. 
 Parameters relevant to the workflow itself are:
 - `input` - samplesheet.csv
+- `fasta` - reference_genome_sequence.fasta file
+- `gtf` - reference_annotation.gtf file
 - `outdir` - name of the folder that the final output files are going to be in, located under ./results/aptardi/
 - `output_bed` - name of the output file for the current run ending with .bed
 - `use_stringtie2_gtf` - use the gtf output from stringtie2 (default: false)
@@ -42,7 +42,7 @@ sample,[path_to]/test.bam,[path_to]/gencode.vM26.primary_assembly.annotation.gtf
 ```
 - Run the pipeline with the samplesheet.csv with the input paths updated using either docker or singularity containers
 ```
-nextflow main.nf --input samplesheet.csv -profile <docker/singularity>
+nextflow main.nf --input samplesheet.csv --fasta [fasta file] --gtf [gtf file] -profile <docker/singularity>
 ```
 
 ## Output & post-processing
