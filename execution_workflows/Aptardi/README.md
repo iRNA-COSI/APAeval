@@ -17,9 +17,10 @@ columns:
 - gtf: reference annotation
 - fasta: reference genome sequences
 
-### Docker containers
+### Docker and Singularity containers
 This workflow uses docker containers. To run, make sure that docker is installed and running 
 (e.g. by running the command `docker --help` and seeing a help message printed)
+If running with Singularity, please include the `-profile singularity` in the command, which enables Singularity.
 
 ### Parameters
 Parameters used to run the Aptardi are specified in the nextflow.config file. 
@@ -39,9 +40,9 @@ Note: Aptardi also allows users to build their own model during the Aptardi run.
 sample,bam,gtf,fasta
 sample,[path_to]/test.bam,[path_to]/gencode.vM26.primary_assembly.annotation.gtf,[path_to]/mm39.fa
 ```
-- Run the pipeline with the samplesheet.csv with the input paths updated
+- Run the pipeline with the samplesheet.csv with the input paths updated using either docker or singularity containers
 ```
-nextflow main.nf --input samplesheet.csv -profile docker
+nextflow main.nf --input samplesheet.csv -profile <docker/singularity>
 ```
 
 ## Output & post-processing
