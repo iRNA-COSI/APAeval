@@ -72,7 +72,7 @@ if (params.use_stringtie2_gtf){
 
         script:
         """
-        stringtie -L -G $gtf -o ${sample}.stringtie.gtf $bam
+        stringtie -G $gtf -o ${sample}.stringtie.gtf $bam
         stringtie --merge ${sample}.stringtie.gtf -G $gtf -o stringtie.merged.gtf
         """
     }
