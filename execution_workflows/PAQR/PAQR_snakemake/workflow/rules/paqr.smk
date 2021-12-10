@@ -19,8 +19,7 @@ rule get_PAQR_scripts:
 
 # Import the PAQR module
 module paqr:
-    snakefile: github("zavolanlab/PAQR2", path="Snakefile", commit="1fc88f1")
+    snakefile: github("zavolanlab/PAQR2", path="Snakefile", commit="fdf56bc")
     config: config
 
 use rule * from paqr as PAQR_*
-

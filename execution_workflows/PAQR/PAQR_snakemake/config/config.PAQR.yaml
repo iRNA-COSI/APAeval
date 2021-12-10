@@ -1,25 +1,37 @@
 # Configuration file for snakemake pipeline
 
 # Dataset samples
-samples: "config/samples.tsv"
+samples: "config/samples.csv"
 
 # For development purposes, you can freely choose out_dir.
 # Note that final outputs need to be copied to a global APAeval output directory in the form of "PATH/TO/s3-BUCKET/PARAMCODE/METHOD/"
 out_dir: "results"
-param_code : "AA" # find at https://github.com/iRNA-COSI/APAeval/blob/main/summary_workflows/parameter_codes.md
+challenge_code : "AA" # find at https://github.com/iRNA-COSI/APAeval/blob/main/summary_workflows/parameter_codes.md
 method: "PAQR" # same as the name of the directory
+outcode: "02"
 
 ##################################
 # Create Tandem poly(A)-sites
 ##################################
 # Import https://github.com/zavolanlab/tandem-pas as module,
 # thus config keys have to match the published pipeline
-scriptsdir: "workflow/scripts"
+
+# directory that contains the scripts
+scriptsdir: workflow/scripts
+
+# annotations (files can be zipped or unzipped)
 polyasites: "config/pas_ID_clusters.bed"
-atlas_version: 2.0
+atlas_version: 2.0 #For naming output tandem PAS file
 gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
-outdir: "results"
-logdir: "results/logs"
+
+# directory for results
+outdir: results
+
+# directory for log files
+logdir: results/logs
+
+# Caculate TPAS for stranded or unstranded data, or both?
+# specify as list of strings (e.g. ["unstranded", "stranded"])
 strandedness: ["stranded"]
 
 
@@ -32,9 +44,9 @@ min_support: 0
 # ensembl: transcript_biotype, gencode: transcript_type
 biotype_key: transcript_type
 # If not filtering, comment the key 'biotype_values', else an error is raised
-biotype_values: 
-  - lncRNA
-  - protein_coding
+# biotype_values: 
+#   - lncRNA
+#   - protein_coding
 
 # number of nucleotides by which each terminal exon is extended at the 3' end
 three_prime_offset: 100
@@ -58,17 +70,16 @@ downstream_extend: 200
 # (relative to the 'execution' directory)
 PAQ_scripts_dir: "workflow/scripts"
 
-  # path to tab separated file containing samples info
+# path to tab separated file containing samples info
 # NOTE: alignment files (bam) and their repective indices (bam.bai) must be located in the same directory! 
 PAQ_samples_table: "config/samples.tsv"
-
-# path to input directory containing the samples files specified in samples table
-PAQ_indir: "../../../tests/test_data/"
-
 
 # path for the output directory
 # (relative to the 'execution' directory)
 PAQ_outdir: "results"
+
+# path for log directory
+PAQ_logdir: "results/logs"
 
 # path to the poly(A) site set
 # (sites located on terminal exons with at least two poly(A) sites on the exon

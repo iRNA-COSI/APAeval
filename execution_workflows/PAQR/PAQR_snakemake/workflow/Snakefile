@@ -5,51 +5,26 @@ For help see: https://snakemake.readthedocs.io/en/stable/index.html.
 import pandas as pd
 import os
 import sys
-
-
        
 
-# samples = pd.read_csv(config["samples"], header=0, index_col=0)
+samples = pd.read_table(config["PAQ_samples_table"], header=0, index_col=0)
 
 
 include: "rules/create_tandem_pas.smk"
 include: "rules/paqr.smk"
-# include: "rules/postprocess.smk"
+include: "rules/postprocess.smk"
 
 
-#-------------------------------------------------------------------------------
-localrules: finish, get_TPAS_scripts, all, create_log_dir, 
+localrules: create_log_dir, get_TPAS_scripts, get_PAQR_scripts, finish
 
 rule finish:
     """Rule that specifies the final output. 
     """
     input:
-        tandem_pas_TE = expand(os.path.join(config["outdir"],
-                str(config["atlas_version"]) + ".tandem_pas.terminal_exons.{strandedness}.bed"),
-                strandedness = config["strandedness"]),
-        TSV_filtered_expression = expand(
-            os.path.join(
-                "{PAQ_output_dir}",
-                "filtered_pas_expression.tsv"
-            ),
-            PAQ_output_dir = config["PAQ_outdir"]
-        ),
-        TSV_filtered_pas_positions = expand(
-            os.path.join(
-                "{PAQ_output_dir}",
-                "filtered_pas_positions.tsv"
-            ),
-            PAQ_output_dir = config["PAQ_outdir"]
-        ),
-        PDF_exon_lengths = expand(
-            os.path.join(
-                "{PAQ_output_dir}",
-                "weighted_avg_exon_lengths.pdf"
-            ),
-            PAQ_output_dir = config["PAQ_outdir"]
-        )
-
-
+        BED_quantification = expand(os.path.join(
+                config["PAQ_outdir"],
+                "{sample}" + config["challenge_code"] + config["method"] + config["outcode"] + ".bed"),
+                sample = samples.index)
 
 
 

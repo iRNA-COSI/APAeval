@@ -29,12 +29,44 @@ Read this section, but do NOT include it your final README.
 ![rulegraph](rulegraph.PAQR.png)
 
 ## Input & pre-processing
+> IMPORTANT:   
+PAQR requires samples, annotations and reference poly(A) sites files to all use the same chromosome naming scheme ("chr1" in gencode, "1" in ensembl) or else will fail.
 
 {Describe input files and how they will be processed in order for the method to work. Describe how sample tables have to look like, and any other input that is needed (e.g. genome).}
 
+1. Sample files  
+`.bam` files of all samples have to be provided alongside their respective `.bai` index files (**in the same directory, with the same basename**)
+
+2. Sample table  
+A table specifying all samples to be analyzed has to be provided in `.tsv` format (not `.csv`) and contain the following columns:   
+
+| ID | bam | condition |
+| - | - | - |
+| siRNA1 | path/to/bamfile1 | KO |
+| siRNA2 | path/to/bamfile2 | KO |
+| control1 | path/to/bamfile3 | CTRL |
+
+3. reference poly(A) site file   
+This file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].
 ## Params
 
 {Describe parameters needed by your METHOD.}
+All parameters are specified (and explained) in `config/config.yaml`. Most of the parameters don't have to be changed for a run with default behaviour, but do make sure the following ones are appropriate for your setup:
+### Paths to input files
+- `samples`
+- `polyasite`
+- `gtf`
+- `PAQ_samples_table`
+- `PAQ_tandem_pas`: This file is created as output of the tandem PAS module and its location and name follows the format `[outdir]/[atlas_version]_tandem_pas.terminal_exons.[strandedness].bed`, where expressions in brackets correspond to the respective values in `config/config.yaml`.
+
+### Data dependent
+- `strandedness`: Specify whether the tandem PAS file should be created for use with stranded or unstranded data
+- `PAQ_coverage_unstranded`: "no" for stranded data
+- `PAQ_read_length`: avg read length of the samples
+
+### Annotation dependent
+- `biotype_key`: "transcript_biotype" if using ensembl annotations, "transcript_type" if using gencode
+
 
 ## Output & post-processing
 
@@ -45,3 +77,5 @@ Read this section, but do NOT include it your final README.
 {Notes about the METHOD. 
 e.g. Did you have to adjust the method's soure code?
 }
+
+[polyasite-web]: <https://polyasite.unibas.ch/atlas>
