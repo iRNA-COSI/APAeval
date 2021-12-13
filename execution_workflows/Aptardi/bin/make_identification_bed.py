@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 
 import sys
+import pyranges as pr
+import pandas as pd
 
 input_gtf_path=sys.argv[1]
-input_gtf=open(input_gtf_path,"r")
 output_bed_path=sys.argv[2]
 if output_bed_path == 'not_specified':
- output_bed=open(input_gtf_path.split(".")[0]+"_identification.bed","w")
-else:
- output_bed=open(output_bed_path,"w")
+ output_bed_path=input_gtf_path.split(".")[0]+"_identification.bed"
 
-for ln in input_gtf:
- if not ln.startswith("#"):
-  ln=ln.strip().split("\t")
-  if ln[1] == "aptardi": #get the Aptardi identified transcripts only
-   attrList=ln[-1].split(";")
-   attrDict={}
-   for k in attrList:
-    p=k.strip().split(" ")
-    if len(p) == 2:
-     attrDict[p[0]]=p[1].strip('\"')
-   name=attrDict["transcript_id"]
-   #chrom,chromStart,chromEnd,name,score,strand
-   output_bed.write("\t".join([ln[0],ln[3],ln[4],name,".",ln[6]])+"\n")
-output_bed.close()
+gtf=pr.read_gtf(input_gtf_path)
+# Source is 2nd col in GTF, Feature is 3rd col
+gtf = gtf.subset(lambda df: (df["Source"] == "aptardi") & (df["Feature"] == "transcript"))
+# Strand aware, reports 3'most coordinate for each interval
+# PyRanges coordinates follow BED conventions
+three_ends = gtf.three_end()
+# Some reformatting to get a BED6 file
+three_ends = three_ends[["Strand"]]
+# Dummy score column
+three_ends.Score = "."
+
+# Making up a Name column, can be whatever you like though
+# <chr>:<start>:<end>
+three_ends = three_ends.assign("Name",
+lambda df: df[["Chromosome","Start","End"]].apply(lambda row: ":".join(row.values.astype(str)), axis=1))
+three_ends.to_bed(output_bed_path)

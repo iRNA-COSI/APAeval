@@ -1,7 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM nfcore/base:1.13
 
-RUN conda create -n aptardi --channel conda-forge -c bioconda aptardi samtools bedtools && conda clean -a
+RUN conda create -n aptardi --channel conda-forge -c bioconda aptardi samtools bedtools pyranges pandas && conda clean -a
 
 # Add conda installation dir to PATH (instead of doing 'conda activate')
 ENV PATH /opt/conda/envs/aptardi/bin:$PATH
