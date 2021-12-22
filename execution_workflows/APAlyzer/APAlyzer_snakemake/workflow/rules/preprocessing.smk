@@ -16,7 +16,7 @@ rule rename_gtf:
 		config["gtf_genome_version"] + "." + \
 		config["gtf_ensemble_version"] + ".gtf")
 
-rule genome_preprocessing:
+rule preprocessing:
     """
     A rule that creates the APA sites from a gtf file.
     """
@@ -25,19 +25,21 @@ rule genome_preprocessing:
         gtf = gtf_renamed
 
     output:
-        out_genome = os.path.join(config["out_dir"], 'reference_genome.RData')
+        out_genome = os.path.join(config["out_dir"], 'preprocessing.RData')
  
     params:
-       outdir = config["out_dir"]
- 
+       outdir = config["out_dir"],
+       sample_file = config["sample_file"]
+
     log:
-        os.path.join(LOG_DIR, "genome_preprocessing.log")
+        os.path.join(LOG_DIR, "preprocessing.log")
 
     container:
         "docker://apaeval/apalyzer:latest"
 
     shell:
-        """(Rscript  workflow/scripts/APAlyzer_build_reference_genome.R \
+        """(Rscript  workflow/scripts/APAlyzer_preprocessing.R \
             --dir_path {params.outdir} \
+            --sample_file_path {params.sample_file} \
             --input_gtf {input.gtf} \
             --out_reference {output.out_genome};) &> {log}"""
