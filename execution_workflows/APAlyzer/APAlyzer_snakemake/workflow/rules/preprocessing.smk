@@ -18,9 +18,6 @@ rule rename_gtf:
     shell:
         "cp {input} {output}"
 
-    shell:
-        "cp {input} {output}"
-
 rule preprocessing:
     """
     A rule that creates the APA sites from a gtf file.
