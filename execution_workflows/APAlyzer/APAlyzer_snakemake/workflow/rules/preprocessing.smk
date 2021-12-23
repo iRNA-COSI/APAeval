@@ -35,7 +35,7 @@ rule preprocessing:
         os.path.join(LOG_DIR, "preprocessing.log")
 
     container:
-        "docker://apaeval/apalyzer:1.0.3"
+        config["container"]
 
     shell:
         """(Rscript  workflow/scripts/APAlyzer_preprocessing.R \
