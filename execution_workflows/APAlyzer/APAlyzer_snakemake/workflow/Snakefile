@@ -8,99 +8,21 @@ import os
 
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
-rule rename_gtf:
-    """
-    A rule that renames gtf file to the correct format for preprocessing
-    """
+include: "rules/preprocessing.smk"
+include: "rules/main.smk"
+include: "rules/postprocessing.smk"
 
+#-------------------------------------------------------------------------------
+localrules: finish
+
+
+rule finish:
+    """
+    Rule that specifies the final output.
+    """
     input:
-        gtf=config["gtf"]
-
-    output:
-        gtf_renamed=os.path.join(
-            config["out_dir"],
-            config["gtf_organism"] + "." + \
-            config["gtf_genome_version"] + "." + \
-            config["gtf_ensemble_version"] + ".gtf")
-    shell:
-        "cp {input} {output}"
-
-rule preprocessing:
-    """
-    A rule that creates the APA sites from a gtf file.
-    """
-
-    input:
-        gtf=rules.rename_gtf.output.gtf_renamed
-
-    output:
-        out_preprocessing=os.path.join(config["out_dir"],'preprocessing.RData')
-
-    params:
-        outdir=config["out_dir"],
-        sample_file=config["sample_file"]
-
-    log:
-        os.path.join(LOG_DIR,"preprocessing.log")
-
-    container:
-        config["container"]
-
-    shell:
-        """(Rscript  workflow/scripts/APAlyzer_preprocessing.R \
-            --dir_path {params.outdir} \
-            --sample_file_path {params.sample_file} \
-            --input_gtf {input.gtf} \
-            --out_preprocessing {output.out_preprocessing};) &> {log}"""
-
-rule main:
-    """
-    A rule that runs APAlyzer.
-    """
-
-    input:
-        in_main = rules.preprocessing.output.out_preprocessing
-
-    output:
-        out_main = os.path.join(config["out_dir"],'main.RData')
-
-    params:
-        outdir = config["out_dir"]
-
-    log:
-        os.path.join(LOG_DIR,"main.log")
-
-    container:
-        config["container"]
-
-    shell:
-        """(Rscript  workflow/scripts/APAlyzer_main.R \
-            --dir_path {params.outdir} \
-            --in_main {input.in_main} \
-            --out_main {output.out_main};) &> {log}"""
-
-# Differential APA usage
-rule postprocessing:
-    """
-    Blabla
-    """
-
-    input:
-        in_postprocessing = rules.main.output.out_main
-
-    output:
-        out_postprocessing = os.path.join(config["out_dir"],'differential_challenege_output.tsv')
-
-    log:
-        os.path.join(LOG_DIR,"postprocessing.log")
-
-    container:
-        config["container"]
-
-    shell:
-       """(Rscript  APAlyzer_postprocessing.R \
-            --in_postprocessing {input.in_postprocessing} \
-            --out_postprocessing {output.out_postprocessing}) &> {log}"""
+        final = rules.postprocessing.output.out_postprocessing
+        #final = os.path.join(config["out_dir"],"differential_challenge_output.tsv")
 
 #-------------------------------------------------------------------------------
 # How did it go?
