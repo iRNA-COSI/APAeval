@@ -7,14 +7,12 @@ import pandas as pd
 import os
 import sys
 
-df = pd.read_csv(config["samples"], index_col="sample")
-samples = df.index
 
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
-include: "rules/genome_preprocessing.smk"
+include: "rules/preprocessing.smk"
 include: "rules/quantification.smk"
-#include: "rules/differential_usage.smk"
+include: "rules/postprocessing.smk"
 
 #-------------------------------------------------------------------------------
 localrules: finish
@@ -26,7 +24,6 @@ rule finish:
     """
     input:
         final = os.path.join(config["out_dir"],"siControl_R1_quant_APAlyzer.csv")
-        #diff_usage = expand(os.path.join(config["out_dir"],"differential_usage_APAlyzer.csv"))
 
 
 #-------------------------------------------------------------------------------
