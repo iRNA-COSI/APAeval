@@ -7,27 +7,12 @@ import pandas as pd
 import os
 import sys
 
-df = pd.read_csv(config["samples"], index_col="sample")
-samples = df.index
 
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
 include: "rules/preprocessing.smk"
-#include: "rules/quantification.smk"
-#include: "rules/postprocessing.smk"
-
-#-------------------------------------------------------------------------------
-localrules: finish
-
-
-rule finish:
-    """
-    Rule that specifies the final output.
-    """
-    input:
-        final = os.path.join(config["out_dir"],"reference_genome.RData")
-        #diff_usage = expand(os.path.join(config["out_dir"],"differential_usage_APAlyzer.csv"))
-
+include: "rules/main.smk"
+include: "rules/postprocessing.smk"
 
 #-------------------------------------------------------------------------------
 # How did it go?

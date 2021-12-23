@@ -15,6 +15,8 @@ rule rename_gtf:
 		config["gtf_organism"]+ "." + \
 		config["gtf_genome_version"] + "." + \
 		config["gtf_ensemble_version"] + ".gtf")
+    shell:
+        "cp {input} {output}"
 
     shell:
         "cp {input} {output}"
@@ -25,7 +27,7 @@ rule preprocessing:
     """
 
     input:
-        gtf = gtf_renamed
+        gtf = rules.rename_gtf.output.gtf_renamed
 
     output:
         out_preprocessing = os.path.join(config["out_dir"], 'preprocessing.RData')

@@ -7,11 +7,10 @@ sample_file: "config/samples.csv"
 out_dir: "results/"
 
 # Path to GTF annotation file
-#gtf: "Mus_musculus.GRCm38.99.gtf.gz"
 gtf: "../../../tests/test_data/gencode_2genes_Chr_prefix.vM18.annotation.gtf"
 gtf_organism: "Mus_musculus"
-gtf_genome_version: "GRCm38"
-gtf_ensemble_version: 93
+gtf_genome_version: "GRCm39"
+gtf_ensemble_version: "103"
 
 genome_name: "gencode_2genes_noChr.vM18.annotation"
 
