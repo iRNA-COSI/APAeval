@@ -11,20 +11,8 @@ import sys
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
 include: "rules/preprocessing.smk"
-include: "rules/quantification.smk"
+include: "rules/main.smk"
 include: "rules/postprocessing.smk"
-
-#-------------------------------------------------------------------------------
-localrules: finish
-
-
-rule finish:
-    """
-    Rule that specifies the final output.
-    """
-    input:
-        final = os.path.join(config["out_dir"],"siControl_R1_quant_APAlyzer.csv")
-
 
 #-------------------------------------------------------------------------------
 # How did it go?
