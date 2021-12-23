@@ -11,7 +11,7 @@ rule postprocessing:
         os.path.join(LOG_DIR,"postprocessing.log")
 
     container:
-        "docker://apaeval/apalyzer:1.0.3"
+        config["container"]
 
     shell:
        """(Rscript  APAlyzer_postprocessing.R \

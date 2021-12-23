@@ -16,6 +16,8 @@ genome_name: "gencode_2genes_noChr.vM18.annotation"
 
 logs_subdir: logs/
 
+container: "docker://apaeval/apalyzer:1.0.4"
+
 # Settings
 envs: "envs"
 local_log: "logs/local_log"

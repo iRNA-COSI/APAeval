@@ -13,7 +13,7 @@ rule main:
         os.path.join(LOG_DIR,"main.log")
 
     container:
-        "docker://apaeval/apalyzer:1.0.3"
+        config["container"]
 
     shell:
         """(Rscript  workflow/scripts/APAlyzer_main.R \

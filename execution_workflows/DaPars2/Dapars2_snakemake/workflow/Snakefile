@@ -1,0 +1,44 @@
+"""Snakemake pipeline for Dapars2.
+For help see: https://snakemake.readthedocs.io/en/stable/index.html.
+"""
+
+import pandas as pd
+import os
+import sys
+
+
+
+samples = pd.read_csv(config["samples"]).set_index("sample", drop=False)
+
+LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
+
+include: "rules/preprocess_annotation.smk"
+include: "rules/preprocess_seq.smk"
+include: "rules/dapars2.smk"
+include: "rules/get_identification_bed.smk"
+
+#-------------------------------------------------------------------------------
+localrules: finish
+
+
+rule finish:
+    """Rule that specifies the final output.
+    """
+    input:
+        final = expand(
+            os.path.join(config["out_dir"], "{sample}" + config["out_bed_suffix"]),
+            sample=samples.index.values)
+
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred, check log at %s." % {log})
