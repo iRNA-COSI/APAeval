@@ -12,9 +12,9 @@ samples = df.index
 
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
-include: "rules/genome_preprocessing.smk"
+include: "rules/preprocessing.smk"
 #include: "rules/quantification.smk"
-#include: "rules/differential_usage.smk"
+#include: "rules/postprocessing.smk"
 
 #-------------------------------------------------------------------------------
 localrules: finish

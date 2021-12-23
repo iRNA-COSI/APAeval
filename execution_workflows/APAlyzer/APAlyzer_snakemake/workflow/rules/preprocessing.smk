@@ -25,7 +25,7 @@ rule preprocessing:
         gtf = gtf_renamed
 
     output:
-        out_genome = os.path.join(config["out_dir"], 'preprocessing.RData')
+        out_preprocessing = os.path.join(config["out_dir"], 'preprocessing.RData')
  
     params:
        outdir = config["out_dir"],
@@ -35,11 +35,11 @@ rule preprocessing:
         os.path.join(LOG_DIR, "preprocessing.log")
 
     container:
-        "docker://apaeval/apalyzer:latest"
+        "docker://apaeval/apalyzer:1.0.3"
 
     shell:
         """(Rscript  workflow/scripts/APAlyzer_preprocessing.R \
             --dir_path {params.outdir} \
             --sample_file_path {params.sample_file} \
             --input_gtf {input.gtf} \
-            --out_reference {output.out_genome};) &> {log}"""
+            --out_preprocessing {output.out_preprocessing]};) &> {log}"""

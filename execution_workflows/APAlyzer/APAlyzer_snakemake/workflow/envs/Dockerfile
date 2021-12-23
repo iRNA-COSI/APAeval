@@ -36,3 +36,5 @@ RUN apt-get update -y \
 RUN Rscript -e 'install.packages(c("optparse", "BiocManager"), dependencies=TRUE, repos = "http://cran.us.r-project.org")'
 RUN Rscript -e 'BiocManager::install("RJWANGbioinfo/APAlyzer")'
 RUN Rscript -e 'BiocManager::install("diffloop")'
+RUN Rscript -e 'install.packages("hash")'
+RUN Rscript -e 'install.packages("stringr")'

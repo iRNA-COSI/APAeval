@@ -41,11 +41,11 @@ option_list <- list(
     metavar="files"
   ),
   make_option(
-    "--out_reference",
+    "--out_preprocessing",
     action="store",
     type="character",
     default=FALSE,
-    help="Reference genome file compatible with APAlyzer",
+    help="Preprocessing variables needed for APAlyzer",
     metavar="files"
   ),
   make_option(
@@ -80,15 +80,24 @@ assert_colnames(df, colnames, only_colnames = TRUE, quiet = FALSE)
 
 # Check that there are exactly two conditions
 conditions = df[, "condition"]
-conditions = conditions[!duplicated(conditions)]
-if(length(conditions != 2)) {
+unique_conditions = conditions[!duplicated(conditions)]
+if(length(unique_conditions != 2)) {
     print(paste0("Number of conditions in sample file should be exactly 2, got ", length(conditions)), quote=FALSE)
     exit()
 }
 
+# Rearrange rows in sample file to group by condition
+df = df[order(df$condition),]
+
 # Get list of sample names
 flsall = df[, "bam"]
 names(flsall) = df[, "sample"]
+
+# Get list of conditions and counts
+condition_counts = c()
+for(condition in conditions){
+    condition_counts = c(condition_counts, rep(condition, sum(conditions==condition))
+}
 
 # Get a dictionary of gene symbol to gene id from gtf file
 # initialize a dictionary
@@ -116,4 +125,4 @@ for(row in df[,9]) {
 
 # Save the variables needed for APAlyzer_main
 setwd(pwd)
-save(list = c("flsall", "gene_dict"), file=opt$out_reference)
+save(list = c("flsall", "gene_dict", "GTFfile", "unique_conditions", "condition_counts"), file=opt$out_preprocessing)
