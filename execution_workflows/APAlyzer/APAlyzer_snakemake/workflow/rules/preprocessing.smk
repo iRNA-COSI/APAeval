@@ -16,6 +16,9 @@ rule rename_gtf:
 		config["gtf_genome_version"] + "." + \
 		config["gtf_ensemble_version"] + ".gtf")
 
+    shell:
+        "cp {input} {output}"
+
 rule preprocessing:
     """
     A rule that creates the APA sites from a gtf file.
