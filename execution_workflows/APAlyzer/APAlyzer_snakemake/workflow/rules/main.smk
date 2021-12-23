@@ -2,12 +2,15 @@ rule main:
     """
     A rule that runs APAlyzer.
     """
+    
+    input:
+        input_main=rules.preprocessing.output
 
     output:
         out_main=os.path.join(config["out_dir"],'main.RData')
 
     params:
-        outdir=config["out_dir"],
+        outdir=config["out_dir"]
 
     log:
         os.path.join(LOG_DIR,"main.log")
@@ -18,4 +21,5 @@ rule main:
     shell:
         """(Rscript  workflow/scripts/APAlyzer_main.R \
             --dir_path {params.outdir} \
-            --out_main {output.out_main]};) &> {log}"""
+            --intput_main {input.input_main} \
+            --out_main {output.out_main};) &> {log}"""

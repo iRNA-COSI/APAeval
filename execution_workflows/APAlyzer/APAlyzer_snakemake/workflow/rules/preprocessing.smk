@@ -44,4 +44,4 @@ rule preprocessing:
             --dir_path {params.outdir} \
             --sample_file_path {params.sample_file} \
             --input_gtf {input.gtf} \
-            --out_preprocessing {output.out_preprocessing]};) &> {log}"""
+            --out_preprocessing {output.out_preprocessing};) &> {log}"""

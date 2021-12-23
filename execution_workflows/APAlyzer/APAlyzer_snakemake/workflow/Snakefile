@@ -15,6 +15,17 @@ include: "rules/main.smk"
 include: "rules/postprocessing.smk"
 
 #-------------------------------------------------------------------------------
+localrules: finish
+
+
+rule finish:
+    """
+    Rule that specifies the final output.
+    """
+    input:
+        final = os.path.join(config["out_dir"],"differential_challenge_output.tsv")
+
+#-------------------------------------------------------------------------------
 # How did it go?
 #-------------------------------------------------------------------------------
 onsuccess:

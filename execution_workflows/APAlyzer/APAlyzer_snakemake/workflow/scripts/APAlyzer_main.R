@@ -25,11 +25,19 @@ option_list <- list(
     metavar="files"
   ),
   make_option(
+    "--input_main",
+    action="store",
+    type="character",
+    default=FALSE,
+    help="Input from preprocessing step to run APAlyzer",
+    metvar="files"
+  ),
+  make_option(
     "--out_main",
     action="store",
     type="character",
     default=FALSE,
-    help="Preprocessing variables needed for APAlyzer",
+    help="APAlyzer output variables to postprocess",
     metavar="files"
   ), 
   make_option(
