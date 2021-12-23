@@ -4,8 +4,11 @@ rule postprocessing:
     Blabla
     """
 
+    input:
+        in_postprocessing = rules.main.output.out_main
+
     output:
-        out_final = os.path.join(config["out_dir"],'differential_challenege_output.tsv')
+        out_postprocessing = os.path.join(config["out_dir"],'differential_challenege_output.tsv')
 
     log:
         os.path.join(LOG_DIR,"postprocessing.log")
@@ -15,4 +18,5 @@ rule postprocessing:
 
     shell:
        """(Rscript  APAlyzer_postprocessing.R \
-            --out_final {output.out_final}) &> {log}"""
+            --in_postprocessing {input.in_postprocessing} \
+            --out_postprocessing {output.out_postprocessing}) &> {log}"""

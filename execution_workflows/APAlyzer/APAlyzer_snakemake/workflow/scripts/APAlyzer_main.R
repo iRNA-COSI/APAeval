@@ -25,7 +25,7 @@ option_list <- list(
     metavar="files"
   ),
   make_option(
-    "--input_main",
+    "--in_main",
     action="store",
     type="character",
     default=FALSE,
@@ -59,7 +59,7 @@ opt_parser <- OptionParser(usage=paste("Usage:", script, "[OPTIONS] \n", sep=" "
 opt <- parse_args(opt_parser)
 
 # Load variables from preprocessing step
-load(opt$out_preprocessing)
+load(opt$in_main)
 
 #----------------------Build the PAS reference regions----------------------
 PASREFraw=PAS2GEF(GTFfile, AnnoMethod="V2")

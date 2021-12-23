@@ -14,7 +14,15 @@ msg <- paste(description, version, requirements, sep="\n")
 # Define list of arguments
 option_list <- list(
   make_option(
-    "--out_final",
+    "--in_postprocessing",
+    action="store",
+    type="character",
+    default=FALSE,
+    help="APAlyzer output variables to preprocess.",
+    metavar="files"
+  ),
+  make_option(
+    "--out_postprocessing",
     action="store",
     type="character",
     default=FALSE,
@@ -40,7 +48,7 @@ opt_parser <- OptionParser(usage=paste("Usage:", script, "[OPTIONS] \n", sep=" "
 opt <- parse_args(opt_parser)
 
 # Load variables from preprocessing step
-load(opt$out_main)
+load(opt$in_postprocessing)
 
 # Create a dictionary with gene id and p pvalue
 out_dict = hash()
@@ -62,6 +70,6 @@ df = as.data.frame(cbind(gene_ids, pvalues))
 df.df = data.frame(lapply(df, as.character), stringsAsFactors=FALSE)
 
 # Writing gene id and pvalue to tsv output file
-write.table(mtcars, file = opt$out_final, sep = "\t",
+write.table(df, file = opt$out_postprocessing, sep = "\t",
             row.names = FALSE, col.names = NA)
 

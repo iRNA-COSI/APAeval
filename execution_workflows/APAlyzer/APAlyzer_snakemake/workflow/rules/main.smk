@@ -4,13 +4,13 @@ rule main:
     """
     
     input:
-        input_main=rules.preprocessing.output
+        in_main = rules.preprocessing.output.out_preprocessing
 
     output:
-        out_main=os.path.join(config["out_dir"],'main.RData')
+        out_main = os.path.join(config["out_dir"],'main.RData')
 
     params:
-        outdir=config["out_dir"]
+        outdir = config["out_dir"]
 
     log:
         os.path.join(LOG_DIR,"main.log")
@@ -21,5 +21,5 @@ rule main:
     shell:
         """(Rscript  workflow/scripts/APAlyzer_main.R \
             --dir_path {params.outdir} \
-            --intput_main {input.input_main} \
+            --in_main {input.in_main} \
             --out_main {output.out_main};) &> {log}"""
