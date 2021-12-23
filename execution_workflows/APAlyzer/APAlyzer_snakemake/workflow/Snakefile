@@ -13,7 +13,7 @@ samples = df.index
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
 include: "rules/genome_preprocessing.smk"
-#include: "rules/quantification.smk"
+include: "rules/quantification.smk"
 #include: "rules/differential_usage.smk"
 
 #-------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ rule finish:
     Rule that specifies the final output.
     """
     input:
-        final = os.path.join(config["out_dir"],"reference_genome.RData")
+        final = os.path.join(config["out_dir"],"siControl_R1_quant_APAlyzer.csv")
         #diff_usage = expand(os.path.join(config["out_dir"],"differential_usage_APAlyzer.csv"))
 
 
