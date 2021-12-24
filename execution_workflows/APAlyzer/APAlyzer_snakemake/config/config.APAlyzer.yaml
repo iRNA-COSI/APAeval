@@ -7,7 +7,7 @@ sample_file: "config/samples.csv"
 out_dir: "results/"
 
 # Path to GTF annotation file
-gtf: "../../../tests/test_data/gencode_2genes_Chr_prefix.vM18.annotation.gtf"
+gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 gtf_organism: "Mus_musculus"
 gtf_genome_version: "GRCm39"
 gtf_ensemble_version: "103"
@@ -16,4 +16,4 @@ genome_name: "gencode_2genes_noChr.vM18.annotation"
 
 logs_subdir: "logs/"
 
-container: "docker://apaeval/apalyzer:1.0.4"
+container: "docker://apaeval/apalyzer:1.0.5"

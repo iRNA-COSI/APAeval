@@ -1,6 +1,11 @@
 if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("APAlyzer"))) == FALSE ) { stop("[ERROR] Package 'APAlyzer' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("repmis"))) == FALSE ) { stop("[ERROR] Package 'repmis' required! Aborted.") }
+if ( suppressWarnings(suppressPackageStartupMessages(require("diffloop"))) == FALSE ) { stop("[ERROR] Package 'diffloop' required! Aborted.") }
+
+library(APAlyzer)
+library(GenomicFeatures)
+
 #######################
 ###  PARSE OPTIONS  ###
 #######################
@@ -30,7 +35,7 @@ option_list <- list(
     type="character",
     default=FALSE,
     help="Input from preprocessing step to run APAlyzer",
-    metvar="files"
+    metavar="files"
   ),
   make_option(
     "--out_main",
@@ -74,21 +79,37 @@ dfIPA=PASREF$dfIPA
 dfLE=PASREF$dfLE
 
 #----------Calculation of relative expression of 3'UTR APA and IPA----------
-UTR_APA_OUT=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="invert")
-IPA_OUT=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="invert", nts=1)
+# calculate relative expression of 3' UTR APA
+UTR_APA_OUT=PASEXP_3UTR(UTRdbraw, flsall, Strandtype="NONE")
 
+# ensure that coordinates are numeric
+dfIPA$Pos = as.numeric(as.character(dfIPA$Pos))
+dfIPA$upstreamSS = as.numeric(as.character(dfIPA$upstreamSS))
+dfIPA$downstreamSS = as.numeric(as.character(dfIPA$downstreamSS))
+dfLE$LEstart = as.numeric(as.character(dfLE$LEstart))
+dfLE$TES = as.numeric(as.character(dfLE$TES))
+
+# calculate relative expression of IPA
+IPA_OUT=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="NONE", nts=1)
+
+print("UTR_APA_OUT")
+print(UTR_APA_OUT)
 #------------------Significantly regulated APA in 3’UTRs--------------------
 ############# 3utr APA #################
 sampleTable = data.frame(samplename =
                            names(flsall),
                          condition = condition_counts)
 
+print("sample table")
+print(sampleTable)
 out_3UTRAPA=APAdiff(sampleTable,UTR_APA_OUT,
                      conKET=unique_conditions[1],
                      trtKEY=unique_conditions[2],
                      PAS='3UTR',
                      CUTreads=5)
 
+print("IPA_OUT")
+print(IPA_OUT)
 #-----------------Significantly regulated APA in Intron--------------------
 ############# IPA #################
 out_IPA=APAdiff(sampleTable,

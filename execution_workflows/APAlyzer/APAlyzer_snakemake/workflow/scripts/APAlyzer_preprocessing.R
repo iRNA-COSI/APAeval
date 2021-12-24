@@ -8,6 +8,9 @@ if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FA
 if ( suppressWarnings(suppressPackageStartupMessages(require("stringr"))) == FALSE ) { stop("[ERROR] Package 'stringr' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("hash"))) == FALSE ) { stop("[ERROR] Package 'hash' required! Aborted.") }
 
+# Get script name
+script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
+
 # Build description message
 description <- "Build reference genome\n"
 version <- "Version: 1.0.0 (May 2021)"
@@ -65,25 +68,40 @@ option_list <- list(
 # Parse command-line arguments
 opt_parser = OptionParser(usage=paste("Usage:", script, "[OPTIONS] \n", sep=" "), option_list = option_list, add_help_option=FALSE, description=msg)
 opt = parse_args(opt_parser)
+
+# get sample file
+sample_file = opt$sample_file_path
+
+# Read the sample file
+df = read.csv(file=sample_file)
+
+# get GTF file
 pwd = getwd()
 GTFfile = file.path(pwd, opt$input_gtf)
 setwd(opt$dir_path)
 pwd1 = getwd()
 file.copy(GTFfile, pwd1)
 
-# Read the sample file
-df = read.csv(file=opt$sample_file_path)
-
 # Check column names of the sample file
-colnames = c("sample", "bam", "condition", "orientation")
-assert_colnames(df, colnames, only_colnames = TRUE, quiet = FALSE)
+show_col_error = FALSE
+expected_colnames = c("sample", "bam", "condition", "orientation")
+if(length(expected_colnames) != length(colnames(df))){
+    show_col_error = TRUE
+}
+for(colname in colnames(df)){
+    if(colname %in% expected_colnames == FALSE){
+        show_col_error = TRUE
+    }
+}
+if(show_col_error){
+    stop(paste0("The expected column names are ", expected_colnames," but got ", colnames(df)))
+}
 
 # Check that there are exactly two conditions
 conditions = df[, "condition"]
 unique_conditions = conditions[!duplicated(conditions)]
-if(length(unique_conditions != 2)) {
-    print(paste0("Number of conditions in sample file should be exactly 2, got ", length(conditions)), quote=FALSE)
-    exit()
+if(length(unique_conditions) != 2) {
+    stop(paste0("Number of conditions in sample file should be exactly 2, got ", length(conditions)))
 }
 
 # Rearrange rows in sample file to group by condition
@@ -96,10 +114,11 @@ names(flsall) = df[, "sample"]
 # Get list of conditions and counts
 condition_counts = c()
 for(condition in conditions){
-    condition_counts = c(condition_counts, rep(condition, sum(conditions==condition))
+    condition_counts = c(condition_counts, rep(condition, sum(conditions==condition)))
 }
 
 # Get a dictionary of gene symbol to gene id from gtf file
+df = read.csv(file=GTFfile, sep='\t', comment.char='#')
 # initialize a dictionary
 gene_dict = hash()
 for(row in df[,9]) {
