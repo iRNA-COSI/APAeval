@@ -1,10 +1,6 @@
 if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("APAlyzer"))) == FALSE ) { stop("[ERROR] Package 'APAlyzer' required! Aborted.") }
-if ( suppressWarnings(suppressPackageStartupMessages(require("repmis"))) == FALSE ) { stop("[ERROR] Package 'repmis' required! Aborted.") }
-if ( suppressWarnings(suppressPackageStartupMessages(require("diffloop"))) == FALSE ) { stop("[ERROR] Package 'diffloop' required! Aborted.") }
-
-library(APAlyzer)
-library(GenomicFeatures)
+if ( suppressWarnings(suppressPackageStartupMessages(require("GenomicFeatures"))) == FALSE ) { stop("[ERROR] Package 'repmis' required! Aborted.") }
 
 #######################
 ###  PARSE OPTIONS  ###

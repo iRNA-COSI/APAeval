@@ -13,7 +13,7 @@ script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
 
 # Build description message
 description <- "Build reference genome\n"
-version <- "Version: 1.0.0 (May 2021)"
+version <- "Version: 1.0.0 (Dec 2021)"
 requirements <- "Requires: optparse, stringr, hash"
 msg <- paste(description, version, requirements, sep="\n")
 

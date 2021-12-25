@@ -1,5 +1,5 @@
-if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) {  stop("[ERROR] Package 'optparse' required! Aborted.") }
-if ( suppressWarnings(suppressPackageStartupMessages(require("hash"))) == FALSE ) {  stop("[ERROR] Package 'optparse' required! Aborted.") }
+if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
+if ( suppressWarnings(suppressPackageStartupMessages(require("hash"))) == FALSE ) { stop("[ERROR] Package 'hash' required! Aborted.") }
 
 #######################
 ###  PARSE OPTIONS  ###
