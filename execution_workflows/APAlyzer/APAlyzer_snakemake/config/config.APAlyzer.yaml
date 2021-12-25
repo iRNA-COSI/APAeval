@@ -1,19 +1,22 @@
-# Configuration file for snakemake pipeline
+# Configuration file for APAlyzer snakemake pipeline
 
-# Path to run-specific sample table of | sample | bam
+# Note: paths in this config file are relative to the
+#       working directory APAlyzer_snakemake
+
+# Path to run-specific sample file
 sample_file: "config/samples.csv"
 
-# Path to main output directory for run
+# Path to output directory for run. Default: results/
 out_dir: "results/"
+# Name of log directory to be placed in out_dir. Default: logs/
+logs_subdir: "logs/"
 
 # Path to GTF annotation file
 gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+# GTF annotation file organism, genome version, and ensemble version details
 gtf_organism: "Mus_musculus"
 gtf_genome_version: "GRCm39"
 gtf_ensemble_version: "103"
 
-genome_name: "gencode_2genes_noChr.vM18.annotation"
-
-logs_subdir: "logs/"
-
-container: "docker://apaeval/apalyzer:1.0.5"
+# APAlyzer docker container
+container: "docker://apaeval/apalyzer:1.0.0"
