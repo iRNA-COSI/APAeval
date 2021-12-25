@@ -5,7 +5,7 @@ FROM r-base:latest
 
 ##### METADATA #####
 LABEL base.image="r-base:latest"
-LABEL version="1"
+LABEL version="1.0.0"
 LABEL software="APAlyzer_R"
 LABEL software.version="1.9.1"
 LABEL software.description="APAlyzer bioconductor library"
@@ -13,7 +13,7 @@ LABEL software.website="https://github.com/RJWANGbioinfo/APAlyzer"
 LABEL software.documentation="https://github.com/RJWANGbioinfo/APAlyzer#readme"
 LABEL software.license="https://github.com/RJWANGbioinfo/APAlyzer/blob/master/LICENSE"
 LABEL authors="Farica Zhuang and Maria Katsantoni" \
-      description="Docker image containing all software requirements for the APAlyzer execution_workflow pipeline"
+      description="Docker image containing all software requirements for APAlyzer execution workflow pipeline"
 
 ##### VARIABLES #####
 # Use variables for convenient updates/re-usability
@@ -33,8 +33,5 @@ RUN apt-get update -y \
     apt-transport-https
 
 # Install r packages needed for APAlyzer
-RUN Rscript -e 'install.packages(c("optparse", "BiocManager"), dependencies=TRUE, repos = "http://cran.us.r-project.org")'
-RUN Rscript -e 'BiocManager::install("RJWANGbioinfo/APAlyzer")'
-RUN Rscript -e 'BiocManager::install("diffloop")'
-RUN Rscript -e 'install.packages("hash")'
-RUN Rscript -e 'install.packages("stringr")'
+RUN Rscript -e 'install.packages(c("optparse", "BiocManager", "hash", "stringr"), dependencies=TRUE, repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'BiocManager::install(c("RJWANGbioinfo/APAlyzer"), dependencies=TRUE)'
