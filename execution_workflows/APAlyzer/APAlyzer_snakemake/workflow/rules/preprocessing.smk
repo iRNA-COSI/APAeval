@@ -1,4 +1,9 @@
-# Preprocessing: obtain suitable input formats
+"""
+This file contains rules to obtain suitable input gtf file format and calls
+APAlyzer_preprocessing.R script to prepare variables needed
+to run APAlyzer
+"""
+
 import os
 
 rule rename_gtf:
@@ -20,7 +25,8 @@ rule rename_gtf:
 
 rule preprocessing:
     """
-    A rule that creates the APA sites from a gtf file.
+    A rule that called APAlyzer_preprocessing.R script to prepare
+    variables needed to run APAlyzer
     """
 
     input:

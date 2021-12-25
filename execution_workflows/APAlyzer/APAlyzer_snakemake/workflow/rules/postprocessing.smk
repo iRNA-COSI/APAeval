@@ -1,7 +1,13 @@
-# Differential APA usage
+"""
+This file contains a rule that runs APAlyzer_postprocessing.R script
+using the output from APAlyzer and creates a final differential
+challenge output tsv file
+"""
+
 rule postprocessing:
     """
-    Blabla
+    A rule that postprocesses APAlyzer output and creates differential
+    output tsv file
     """
 
     input:

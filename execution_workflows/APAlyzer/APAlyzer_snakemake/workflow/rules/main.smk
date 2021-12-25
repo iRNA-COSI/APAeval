@@ -1,3 +1,8 @@
+"""
+This file contains a rule that runs APAlyzer_main.R script
+using outputs from preprocessing step
+"""
+
 rule main:
     """
     A rule that runs APAlyzer.
