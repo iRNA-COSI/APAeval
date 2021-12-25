@@ -1,3 +1,6 @@
+if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) {  stop("[ERROR] Package 'optparse' required! Aborted.") }
+if ( suppressWarnings(suppressPackageStartupMessages(require("hash"))) == FALSE ) {  stop("[ERROR] Package 'optparse' required! Aborted.") }
+
 #######################
 ###  PARSE OPTIONS  ###
 #######################
@@ -56,20 +59,19 @@ for(i in 1:length(out_df)){
     gene_symbol = out_df[i, 1]
     gene_id = gene_dict[[gene_symbol]]
     p_value = out_df[i, 2]
-    if(!has.key(gene_id, out_dict) {
+    if(!has.key(gene_id, out_dict)) {
         out_dict[[gene_id]] = p_value
-    }
-    else {
+    } else {
         out_dict[[gene_id]] = min(c(out_dict[[gene_id]], p_value))
     }
 }
 # Populate a df with gene id and pvalue from dictionary
-gene_ids = keys(hash)
-pvalues = values(hash)
+gene_ids = keys(out_dict)
+pvalues = values(out_dict)
 df = as.data.frame(cbind(gene_ids, pvalues))
 df.df = data.frame(lapply(df, as.character), stringsAsFactors=FALSE)
 
 # Writing gene id and pvalue to tsv output file
 write.table(df, file = opt$out_postprocessing, sep = "\t",
-            row.names = FALSE, col.names = NA)
+            row.names = FALSE, col.names = FALSE, quote = FALSE)
 

@@ -17,6 +17,6 @@ rule postprocessing:
         config["container"]
 
     shell:
-       """(Rscript  APAlyzer_postprocessing.R \
+       """(Rscript  workflow/scripts/APAlyzer_postprocessing.R \
             --in_postprocessing {input.in_postprocessing} \
             --out_postprocessing {output.out_postprocessing}) &> {log}"""
