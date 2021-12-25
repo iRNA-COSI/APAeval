@@ -19,4 +19,4 @@ gtf_genome_version: "GRCm39"
 gtf_ensemble_version: "103"
 
 # APAlyzer docker container
-container: "docker://apaeval/apalyzer:1.0.0"
+container: "docker://apaeval/apalyzer:1.0.6"
