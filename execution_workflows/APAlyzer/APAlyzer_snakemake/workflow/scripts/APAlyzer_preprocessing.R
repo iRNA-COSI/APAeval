@@ -4,9 +4,14 @@
 # 3. Get list of sample names and absolute paths to bam file
 # 4. Get a dictionary of gene symbol to gene id from gtf file
 
+# load libraries
 if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("stringr"))) == FALSE ) { stop("[ERROR] Package 'stringr' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("hash"))) == FALSE ) { stop("[ERROR] Package 'hash' required! Aborted.") }
+
+#########################
+###  PARSE ARGUMENTS  ###
+#########################
 
 # Get script name
 script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
@@ -69,6 +74,10 @@ option_list <- list(
 opt_parser = OptionParser(usage=paste("Usage:", script, "[OPTIONS] \n", sep=" "), option_list = option_list, add_help_option=FALSE, description=msg)
 opt = parse_args(opt_parser)
 
+####################
+###  GET INPUTS  ###
+####################
+
 # get sample file
 sample_file = opt$sample_file_path
 
@@ -81,6 +90,10 @@ GTFfile = file.path(pwd, opt$input_gtf)
 setwd(opt$dir_path)
 pwd1 = getwd()
 file.copy(GTFfile, pwd1)
+
+###########################
+###  CHECK SAMPLE FILE  ###
+###########################
 
 # Check column names of the sample file
 show_col_error = FALSE
@@ -103,6 +116,10 @@ unique_conditions = conditions[!duplicated(conditions)]
 if(length(unique_conditions) != 2) {
     stop(paste0("Number of conditions in sample file should be exactly 2, got ", length(conditions)))
 }
+
+################################
+###  PREPARE APALYZER INPUTS ###
+################################
 
 # Rearrange rows in sample file to group by condition
 df = df[order(df$condition),]
@@ -141,6 +158,10 @@ for(row in df[,9]) {
     }
   }
 }
+
+############################
+###  SAVE FINAL OUTPUTS  ###
+############################
 
 # Save the variables needed for APAlyzer_main
 setwd(pwd)

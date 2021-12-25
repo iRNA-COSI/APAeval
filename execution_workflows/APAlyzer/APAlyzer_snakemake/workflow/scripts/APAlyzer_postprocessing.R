@@ -1,9 +1,14 @@
+#------------------------Postprocessing------------------------
+# Takes APAlyzer output and generates differential challenge
+# output tsv file
+
+# load libraries
 if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("hash"))) == FALSE ) { stop("[ERROR] Package 'hash' required! Aborted.") }
 
-#######################
-###  PARSE OPTIONS  ###
-#######################
+#########################
+###  PARSE ARGUMENTS  ###
+#########################
 
 # Get script name
 script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
@@ -49,6 +54,10 @@ option_list <- list(
 # Parse command-line arguments
 opt_parser <- OptionParser(usage=paste("Usage:", script, "[OPTIONS] \n", sep=" "), option_list = option_list, add_help_option=FALSE, description=msg)
 opt <- parse_args(opt_parser)
+
+#########################
+###  GENERATE OUTPUT  ###
+#########################
 
 # Load variables from preprocessing step
 load(opt$in_postprocessing)
