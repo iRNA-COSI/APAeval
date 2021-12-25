@@ -5,7 +5,7 @@ FROM r-base:latest
 
 ##### METADATA #####
 LABEL base.image="r-base:latest"
-LABEL version="1.0.0"
+LABEL version="1.0.6"
 LABEL software="APAlyzer_R"
 LABEL software.version="1.9.1"
 LABEL software.description="APAlyzer bioconductor library"
