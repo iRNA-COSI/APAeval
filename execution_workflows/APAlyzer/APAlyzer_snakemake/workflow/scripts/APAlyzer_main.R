@@ -92,39 +92,41 @@ dfLE$TES = as.numeric(as.character(dfLE$TES))
 # calculate relative expression of IPA
 IPA_OUT=PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype="NONE", nts=1)
 
-print("UTR_APA_OUT")
-print(UTR_APA_OUT)
 #------------------Significantly regulated APA in 3’UTRs--------------------
 ############# 3utr APA #################
 sampleTable = data.frame(samplename =
                            names(flsall),
                          condition = condition_counts)
 
-print("sample table")
-print(sampleTable)
-out_3UTRAPA=APAdiff(sampleTable,UTR_APA_OUT,
-                     conKET=unique_conditions[1],
-                     trtKEY=unique_conditions[2],
-                     PAS='3UTR',
-                     CUTreads=5)
+if(nrow(UTR_APA_OUT) > 1) {
+    out_3UTRAPA=APAdiff(sampleTable,UTR_APA_OUT,
+                        conKET=unique_conditions[1],
+                        trtKEY=unique_conditions[2],
+                        PAS='3UTR',
+                        CUTreads=5)
+    out_3UTRAPA = out_3UTRAPA[,c("gene_symbol", "pvalue")]
+} else {
+    out_3UTRAPA = NULL	
+}
 
-print("IPA_OUT")
-print(IPA_OUT)
 #-----------------Significantly regulated APA in Intron--------------------
 ############# IPA #################
-out_IPA=APAdiff(sampleTable,
-                 IPA_OUT,
-                 conKET=unique_conditions[1],
-                 trtKEY=unique_conditions[2],
-                 PAS='IPA',
-                 CUTreads=5)
-
+if(nrow(IPA_OUT) > 1) {
+    out_IPA=APAdiff(sampleTable,
+                    IPA_OUT,
+                    conKET=unique_conditions[1],
+                    trtKEY=unique_conditions[2],
+                    PAS='IPA',
+                    CUTreads=5)
+    out_IPA = out_IPA[,c("gene_symbol", "pvalue")]
+} else {
+   out_IPA = NULL	
+}
 # merge the output dataframes for postprocessing
-out_3UTRAPA = out_3UTRAPA[,c("gene_symbol", "pvalue")]
-out_IPA = out_IPA[,c("gene_symbol", "pvalue")]
 out_df = rbind(out_3UTRAPA, out_IPA)
 
 # Save the variables needed for APAlyzer_main
+pwd = getwd()
 setwd(pwd)
 gene_dict = gene_dict
 save(list = c("gene_dict", "out_df"), file=opt$out_main)
