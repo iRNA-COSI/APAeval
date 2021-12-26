@@ -1,3 +1,3 @@
-sample,bam,condition,orientation
-siControl_R1,../../../tests/test_data/siControl_R1_2genes.bam,control,NONE
-siSrsf3_R1,../../../tests/test_data/siSrsf3_R1_2genes.bam,srsf3,NONE
+condition,bam
+control,../../../tests/test_data/siControl_R1_2genes.bam
+srsf3,../../../tests/test_data/siSrsf3_R1_2genes.bam
