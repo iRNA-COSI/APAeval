@@ -8,6 +8,8 @@ sample_file: "config/samples.csv"
 
 # Path to output directory for run. Default: results/
 out_dir: "results/"
+# Output file name, ends with .tsv
+out_filename: "differential_challenge_output.tsv"
 # Name of log directory to be placed in out_dir. Default: logs/
 logs_subdir: "logs/"
 
