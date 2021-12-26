@@ -16,6 +16,7 @@ Required files are to be specified in the input `config/samples.csv`.
 Each row in the sample sheet has two columns:
 
 - condition: name of the condition (e.g control)
+- sample: name of the sample (e.g. control_replicate1)
 - bam: relative path from APAlyzer working directory to the
        BAM input file for the sample 
 

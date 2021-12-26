@@ -101,7 +101,7 @@ file.copy(GTFfile, pwd1)
 
 # Check column names of the sample file
 show_col_error = FALSE
-expected_colnames = c("sample", "bam", "condition", "orientation")
+expected_colnames = c("condition", "sample", "bam")
 if(length(expected_colnames) != length(colnames(df))) {
     show_col_error = TRUE
 }
@@ -111,7 +111,7 @@ for(colname in colnames(df)) {
     }
 }
 if(show_col_error) {
-    stop(paste0("The expected column names are ", expected_colnames," but got ", colnames(df)))
+    stop(paste(c("The expected columns are", expected_colnames, "but got", actual_colnames), collapse = " "))
 }
 
 # Check that there are exactly two conditions

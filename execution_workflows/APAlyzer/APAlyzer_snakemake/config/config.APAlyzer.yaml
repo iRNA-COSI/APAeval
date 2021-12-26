@@ -20,5 +20,8 @@ gtf_organism: "Mus_musculus"
 gtf_genome_version: "GRCm39"
 gtf_ensemble_version: "103"
 
+# Read cutoff, default: 0
+read_cutoff: 0
+
 # APAlyzer docker container
 container: "docker://apaeval/apalyzer:1.0.6"
