@@ -30,6 +30,13 @@ option_list = list(
     metavar = "files"
   ),
   make_option(
+    "--read_cutoff",
+    action = "store",
+    type = "character",
+    default = FALSE,
+    help = "read cutoff",
+  ),
+  make_option(
     "--in_main",
     action = "store",
     type = "character",
@@ -110,7 +117,7 @@ if(nrow(UTR_APA_OUT) > 1) {
                         conKET = unique_conditions[1],
                         trtKEY = unique_conditions[2],
                         PAS = '3UTR',
-                        CUTreads = 5)
+                        CUTreads = opt$read_cutoff)
     out_3UTRAPA = out_3UTRAPA[,c("gene_symbol", "pvalue")]
 } else {
     out_3UTRAPA = NULL	
@@ -122,7 +129,7 @@ if(nrow(IPA_OUT) > 1) {
                     conKET = unique_conditions[1],
                     trtKEY = unique_conditions[2],
                     PAS = 'IPA',
-                    CUTreads = 5)
+                    CUTreads = opt$read_cutoff)
     out_IPA = out_IPA[,c("gene_symbol", "pvalue")]
 } else {
    out_IPA = NULL	
