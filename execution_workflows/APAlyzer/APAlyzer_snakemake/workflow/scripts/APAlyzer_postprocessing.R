@@ -65,9 +65,9 @@ opt = parse_args(opt_parser)
 
 # Load variables from preprocessing step
 load(opt$in_postprocessing)
-
+out_df = NULL
 # If output df from APAlyzer is null, write a an empty tsv file
-if(out_df == NULL) {
+if(is.null(out_df)) {
   file.create(opt$out_postprocessing)
   quit()
 }
