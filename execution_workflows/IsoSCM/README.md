@@ -76,22 +76,7 @@ Each DaPars run results in differential challenge file located under DaPars/resu
 Identification challenege file is located under DaPars/results/dapars/dapars_identification_output.tsv.
 
 ## Notes
-- It is not possible to obtain quantification challenge output data since the TPM value in the output file
-  is provided per transcript instead of per site. Hence, this tool is not compatible for quantification
-  challenge. 
-- Make sure that the input bam files have leading 'chr' in the chromosome column. Otherwise, once 
-  converted to input bedgraph file for DaPars, the workflow will exit with an error
-![](chr_prefix_error_msg.png)
-   This is because DaPars checks for the leading 'chr' in the process and would error out otherwise.
-   Hence, we've added a step to check for this leading 'chr' early in the workflow to prevent having to
-   go through the entire workflow before erroring out for efficiency.
-- DaPars' [documentation](http://xiazlab.org/dapars_tutorial/html/DaPars.html) specifies that a gene symbol file
-  is required. The gene symbol file consists of a column of transcript id and another column of gene symbol. This
-  file is then used to include the gene symbol for each row in the output file under `Gene` column, for example looks
-  like `ENSMUST00000203335.1|Wnk1|chr6|-`. However, since the differential output file requires a gene id instead of a 
-  gene symbol, this workflow extracts a gene symbol file required by DaPars by populating it with transcript id and gene id,
-  such that the `Gene` column in Dapars' output file looks like `ENSMUST00000203335.1|ENSMUSG00000045962.16|chr6|-`.The gene
-  id for each row can then be easily extracted for differential output file by taking the second item from the output above.
+- Running STAR requires docker to have 6GB allocated memory
 
 ## Author contact
 If you have any question or comment about DaPars, please post on DaPars Google Groups (https://groups.google.com/u/1/g/DaPars) or the author, Dr. Zheng Xia (xiaz@ohsu.edu).
