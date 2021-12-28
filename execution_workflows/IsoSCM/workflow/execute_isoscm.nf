@@ -33,13 +33,13 @@ def isOffline() {
 def modules = params.modules.clone()
 
 include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
-include { RUN_ISOSCM    } from '../subworkflows/run_isoscm'   addParams( options: qapa_options )
+include { RUN_ISOSCM    } from '../subworkflows/run_isoscm'   addParams( options: [:] )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
 
-workflow PILOT{
+workflow EXECUTE_ISOSCM {
 
          INPUT_CHECK ( ch_input )
                .set { ch_sample }

@@ -1,2 +1,3 @@
-sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
-test,[pwd]/../../test_data/siSrsf3_R1_100genes.fastq.gz,,[pwd]/../../test_data/siSrsf3_R1_100genes.bam,[pwd]/../../test_data/siSrsf3_R1_100genes.bam.bai,[pwd]/../../example_files/input4.gff3,path_to/mm39.fa,path_to/qapa_3utrs.gencode_VM22.mm10.bed,path_to/mart_export.txt
+sample,bam,
+srsf3_r1,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/IsoSCM/../../test_data/siSrsf3_R1_2genes.bam
+control_r1,/Users/fzhuang/Desktop/APAeval/APAeval/execution_workflows/IsoSCM/../../test_data/siControl_R1_2genes.bam
