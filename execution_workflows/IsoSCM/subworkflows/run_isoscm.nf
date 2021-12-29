@@ -17,7 +17,7 @@ workflow RUN_ISOSCM {
         Check input parameters
     */
 //      CHECK_INPUT_PARAMS()
-      
+
     /*
         Run STAR alignment on genome files
     */
