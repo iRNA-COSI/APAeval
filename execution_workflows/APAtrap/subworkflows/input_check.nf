@@ -27,5 +27,5 @@ workflow INPUT_CHECK {
     CHECK_INPUT_PARAMS( samplesheet )
 
     emit:
-    ch_sample // [ sample,  ]
+    ch_sample // [ condition, sample, bam, bai  ]
 }

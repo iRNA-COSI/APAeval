@@ -3,6 +3,8 @@
 */
 
 def modules = params.modules.clone()
+def run_identification = modules['final_output'].run_identification
+def run_quantification = modules['final_output'].run_quantification
 def run_differential = modules['final_output'].run_differential
 def preprocessing    = modules['preprocessing']
 
