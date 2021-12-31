@@ -4,26 +4,33 @@ import sys
 import argparse
 import pandas as pd
 
-def parse_args(args=None):
-    Description = "Reformat APAtrap identifyDistal3UTR bed file into the output files of identification and quantification challenges"
-    Epilog = "Example usage: python convert_to_tsv.py <FILE_IN> <IDENTIFICATION_OUT> <QUANTIFICATION_OUT>"
 
-    parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
+def parse_args(args=None):
+    description = "Reformat APAtrap identifyDistal3UTR bed file into the output files of " + \
+                  "identification and quantification challenges"
+    epilog = "Example usage: python convert_to_tsv.py <FILE_IN> <RUN_IDENTIFICATION> " + \
+             "<RUN_QUANTIFICATION> <IDENTIFICATION_OUT> <QUANTIFICATION_OUT>"
+
+    parser = argparse.ArgumentParser(description=description, epilog=epilog)
     parser.add_argument("FILE_IN", help="Input deAPA output txt file.")
+    parser.add_argument("RUN_IDENTIFICATION", help="Boolean indicating whether identification run mode is on")
+    parser.add_argument("RUN_QUANTIFICATION", help="Boolean indicating whether quantification run mode is on")
     parser.add_argument("IDENTIFICATION_OUT", help="Name of output file for identification challenge")
     parser.add_argument("QUANTIFICATION_OUT", help="Name of output file for quantification challenge")
     return parser.parse_args(args)
 
 
-def reformat_bed(file_in, identification_out, quantification_out):
+def reformat_bed(file_in, run_identification, run_quantification, identification_out, quantification_out):
     """
     This function reformats the txt predictAPA output file to files for
     identification and quantification challenges
     :param file_in: txt file to be reformatted
+    :param run_identification: boolean whether to write identification file
+    :param run_quantification: boolean whether to write quantification file
+    :param identification_out: identification output file name
+    :param quantification_out: quantification output file name
     :return: N/A
     """
-    identification_out = open(identification_out, "wt")
-    quantification_out = open(quantification_out, "wt")
 
     identification_outputs = set()
     quantification_outputs = set()
@@ -79,10 +86,14 @@ def reformat_bed(file_in, identification_out, quantification_out):
             quantification_outputs.add(output)
 
     # write to files
-    for row in identification_outputs:
-        identification_out.write("\t".join(row) + "\n")
-    for row in quantification_outputs:
-        quantification_out.write("\t".join(row) + "\n")
+    if run_identification:
+        identification_out = open(identification_out, "wt")
+        for row in identification_outputs:
+            identification_out.write("\t".join(row) + "\n")
+    if run_quantification:
+        quantification_out = open(quantification_out, "wt")
+        for row in quantification_outputs:
+            quantification_out.write("\t".join(row) + "\n")
 
     identification_out.close()
     quantification_out.close()

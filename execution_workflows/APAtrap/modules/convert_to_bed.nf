@@ -21,11 +21,18 @@ process CONVERT_TO_BED {
     path "*"
 
     script:
+    run_identification = inputs.run_identification
+    run_quantification = inputs.run_quantification
     identification_out = sample + "_" + inputs.identification_out_suffix
     quantification_out = sample + "_" + inputs.quantification_out_suffix
 
     """
-    convert_to_bed.py $predict_apa_output_file $identification_out $quantification_out
+    convert_to_bed.py \
+    $predict_apa_output_file \
+    $run_identification \
+    $run_quantification \
+    $identification_out \
+    $quantification_out
     """
 
 }

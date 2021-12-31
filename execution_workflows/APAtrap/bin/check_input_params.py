@@ -5,7 +5,9 @@ import argparse
 import pandas as pd
 
 """
-This file checks if mode and the extension of the file names set in conf/modules.config are valid
+This file checks if the extension of the file names set in conf/modules.config are valid for each mode
+and checks that if run_differential is true, there should be exactly two distinct conditions in 
+the input sample file
 """
 
 

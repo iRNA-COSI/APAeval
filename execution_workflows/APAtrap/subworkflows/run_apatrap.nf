@@ -6,7 +6,6 @@ def modules = params.modules.clone()
 def run_differential = modules['final_output'].run_differential
 def preprocessing    = modules['preprocessing']
 
-include { CHECK_INPUT_PARAMS      } from '../modules/check_input_params' addParams( options: [:] )
 include { CONVERT_TO_BEDGRAPH   } from '../modules/convert_to_bedgraph' addParams( options: [:] )
 include { PREPROCESSING         } from '../modules/preprocessing' addParams( options: [:] )
 include { IDENTIFY_DISTAL_3UTR  } from '../modules/identify_distal_3utr' addParams( options: [:] )
@@ -20,10 +19,6 @@ workflow RUN_APATRAP {
     ch_sample
 
     main:
-    /*
-        Check input params
-    */
-    CHECK_INPUT_PARAMS()
 
     // get the bam and bai files
     ch_sample
@@ -57,45 +52,59 @@ workflow RUN_APATRAP {
         .combine(ch_3utr_input)
         .set{ ch_3utr_input }
 
+    if ( run_identification || run_quantification ) {
+         /*
+            Perform first step of APAtrap: identify distal 3'utr
+        */
+        IDENTIFY_DISTAL_3UTR( ch_sample_bedgraph_files_dir,
+                              ch_3utr_input )
+        // combine the bedgraph read with the inputfile for predictAPA
+        ch_3utr_input
+            .map{ it -> [ it[1], it[2] ] }
+            .combine(IDENTIFY_DISTAL_3UTR.out.ch_predictapa_input, by:0)
+            .unique()
+            .set { ch_predict_apa_input }
+
+        /*
+            Perform second step of APAtrap: infer all potential APA sites
+        */
+        PREDICT_APA( ch_sample_bedgraph_files_dir,
+                    ch_predict_apa_input )
+
+
+        // Convert PredictAPA output into identification challenges files
+        CONVERT_TO_BED(PREDICT_APA.out.ch_de_apa_input)
+    }
+
     // If we are running differential, only the first inputs in the channels are required.
     // The input files used are in ch_sample_bedgraph_files_dir
     if ( run_differential ) {
         ch_sample_bedgraph_files_dir
             .first()
             .set{ ch_sample_bedgraph_files_dir }
-    }
 
-    /*
-        Perform first step of APAtrap: identify distal 3'utr
-    */
-    IDENTIFY_DISTAL_3UTR( ch_sample_bedgraph_files_dir,
-                          ch_3utr_input )
+         /*
+            Perform first step of APAtrap: identify distal 3'utr
+        */
+        IDENTIFY_DISTAL_3UTR( ch_sample_bedgraph_files_dir,
+                              ch_3utr_input )
+        // combine the bedgraph read with the inputfile for predictAPA
+        ch_3utr_input
+            .map{ it -> [ it[1], it[2] ] }
+            .combine(IDENTIFY_DISTAL_3UTR.out.ch_predictapa_input, by:0)
+            .unique()
+            .set { ch_predict_apa_input }
 
-    // combine the bedgraph read with the inputfile for predictAPA
-    ch_3utr_input
-        .map{ it -> [ it[1], it[2] ] }
-        .combine(IDENTIFY_DISTAL_3UTR.out.ch_predictapa_input, by:0)
-        .unique()
-        .set { ch_predict_apa_input }
-
-    if ( run_differential ) {
         ch_predict_apa_input
             .first()
             .set{ ch_predict_apa_input }
-    }
 
-    /*
+        /*
         Perform second step of APAtrap: infer all potential APA sites
-    */
-    PREDICT_APA( ch_sample_bedgraph_files_dir,
-                 ch_predict_apa_input )
+        */
+        PREDICT_APA( ch_sample_bedgraph_files_dir,
+                     ch_predict_apa_input )
 
-    // Convert PredictAPA output into identification challenges files
-    if (!run_differential) {
-        CONVERT_TO_BED(PREDICT_APA.out.ch_de_apa_input)
-    }
-
-    if (run_differential) {
         /*
             Perform third step of APAtrap: detect genes having significant changes
             in APA site usage between conditions
