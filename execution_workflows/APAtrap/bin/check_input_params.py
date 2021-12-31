@@ -28,7 +28,9 @@ def parse_args(args=None):
 
 
 def main(args=None):
+    # parse arguments
     args = parse_args(args)
+
     # check that output file names are valid
     if args.RUN_IDENTIFICATION:
         if not args.IDENTIFICATION_OUT_SUFFIX.endswith(".bed"):
@@ -38,16 +40,17 @@ def main(args=None):
         if not args.QUANTIFICATION_OUT_SUFFIX.endswith(".bed"):
             msg = "The quantification output file name should end with '.bed'"
             sys.exit(msg)
-    elif not args.RUN_DIFFERENTIAL:
-        if not args.FILE_OUT.endswith(".tsv"):
+    if args.RUN_DIFFERENTIAL:
+        if not args.DIFFERENTIAL_OUT.endswith(".tsv"):
             msg = "The differential output file name should end with '.tsv'"
             sys.exit(msg)
         # check that there are exactly two distinct conditions
         sample = pd.read_csv(args.SAMPLE_FILE)
-        num_conditions = len(set(sample[:,"condition"]))
+        num_conditions = len(set(sample["condition"]))
         if num_conditions != 2:
             msg = "The number of distinct conditions in the input sample file to run differential should be 2.\n"
             msg += "Got " + str(num_conditions) + "."
+            sys.exit(msg)
 
 
 if __name__ == '__main__':
