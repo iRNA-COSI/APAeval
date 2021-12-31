@@ -86,22 +86,22 @@ def reformat_bed(file_in, run_identification, run_quantification, identification
             quantification_outputs.add(output)
 
     # write to files
-    if run_identification:
+    if run_identification == 'true':
         identification_out = open(identification_out, "wt")
         for row in identification_outputs:
             identification_out.write("\t".join(row) + "\n")
-    if run_quantification:
+        identification_out.close()
+    if run_quantification == 'true':
         quantification_out = open(quantification_out, "wt")
         for row in quantification_outputs:
             quantification_out.write("\t".join(row) + "\n")
-
-    identification_out.close()
-    quantification_out.close()
+        quantification_out.close()
 
 
 def main(args=None):
     args = parse_args(args)
-    reformat_bed(args.FILE_IN, args.IDENTIFICATION_OUT, args.QUANTIFICATION_OUT)
+    reformat_bed(args.FILE_IN, args.RUN_IDENTIFICATION, args.RUN_QUANTIFICATION,
+                 args.IDENTIFICATION_OUT, args.QUANTIFICATION_OUT)
 
 
 if __name__ == '__main__':
