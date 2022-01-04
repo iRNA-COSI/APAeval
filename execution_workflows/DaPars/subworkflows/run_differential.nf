@@ -15,6 +15,7 @@ workflow RUN_DIFFERENTIAL {
     ch_convert_to_bedgraph_out.first()
         .combine(ch_extracted_3utr_output)
         .set { ch_create_config_file_input }
+
     /*
      * Create config file to be used as input for step 2 of DaPars
      */
@@ -28,8 +29,7 @@ workflow RUN_DIFFERENTIAL {
      */
     DAPARS_MAIN (
         CREATE_CONFIG_FILE.out.ch_dapars_input,
-        null,
-        "differential"
+        CREATE_CONFIG_FILE.out.ch_sample
     )
 
     /*
@@ -40,6 +40,7 @@ workflow RUN_DIFFERENTIAL {
 
     POSTPROCESSING_DIFFERENTIAL (
         ch_postprocessing_input,
+        CREATE_CONFIG_FILE.out.ch_sample
     )
 }
 

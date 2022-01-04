@@ -21,10 +21,9 @@ process POSTPROCESSING_IDENTIFICATION {
     path "*"
 
     script:
-    //file = "$PWD/${params.outdir}/dapars/dapars_output_All_Prediction_Results.txt"
-    file = output_file
-    identification_out = "${sample}_${options.identification_out_suffix}"
     run_mode = "identification"
+    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
+    identification_out = "${sample}_${options.identification_out_suffix}"
     """
     convert_output.py $file $identification_out $run_mode
     """

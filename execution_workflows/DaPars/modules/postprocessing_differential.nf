@@ -15,14 +15,15 @@ process POSTPROCESSING_DIFFERENTIAL {
 
     input:
     path config_file
+    val sample
 
     output:
     path "*"
 
     script:
-    file = "$PWD/${params.outdir}/dapars/dapars_output_All_Prediction_Results.txt"
-    differential_out = options.differential_out
     run_mode = "differential"
+    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
+    differential_out = options.differential_out
     """
     convert_output.py $file $differential_out $run_mode
     """

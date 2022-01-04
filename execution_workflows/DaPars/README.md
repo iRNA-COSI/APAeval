@@ -63,6 +63,7 @@ Parameters relevant to the workflow itself are:
 ### Running the identification workflow
 - Set the 'run_identification' parameter in conf/modules.config to true
 - Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.bed'
+- Sample name for each row in the sample sheet should be unique
 - Every sample (every row) in the sample sheet will run through the identification workflow
 
 ### Running the workflow

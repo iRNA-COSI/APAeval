@@ -12,7 +12,6 @@ workflow RUN_IDENTIFICATION {
     ch_extracted_3utr_output
 
     main:
-
     ch_convert_to_bedgraph_out
         .map { it -> it[0] }
         .set { ch_sample }
@@ -34,8 +33,7 @@ workflow RUN_IDENTIFICATION {
      */
     DAPARS_MAIN (
         CREATE_CONFIG_FILE.out.ch_dapars_input,
-        ch_sample,
-        "identification"
+        ch_sample
     )
 
     /*
