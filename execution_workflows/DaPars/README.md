@@ -45,6 +45,8 @@ To run with singularity, comment out line 49 in Dapars/nextflow.config file `doc
 ### Parameters
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
+- `run_identification` - set to true to obtain identification challenge output. Specifying any other value will throw an error.
+- `run_differential` - set to true to obtain differential challenge output. Specifying any other value will throw an error.
 - `mode` - whether to run to obtain identification ("identification") or differential ("differential") challenge output.
    Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
@@ -53,24 +55,24 @@ Parameters relevant to the workflow itself are:
    with the path to DaPars, and if using your own genome file, make sure to use the absolute path to your genome file
 
 ### Running the differential workflow
-- Set the 'mode' parameter in conf/modules.config to "differential"
+- Set the 'run_differential' parameter in conf/modules.config to true
 - Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file 
   is samplesheet_example_files.csv
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ### Running the identification workflow
-- Set the 'mode' parameter in conf/modules.config to "identification"
+- Set the 'run_identification' parameter in conf/modules.config to true
 - Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.bed'
-- In the sample sheet, the same sample should be provided twice, but each row should have a distinct condition in 
-  the `condition` column. Exactly two rows must be present in the sample sheet. The workflow will then treat the 
-  two rows as two different conditions, a requirement for DaPars to run successfully. An example sample sheet is 
-  samplesheet_example_files_identification.csv.
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files_identification.csv
+- Every sample (every row) in the sample sheet will run through the identification workflow
+
+### Running the workflow
+Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
+`nextflow main.nf --input samplesheet_example_files.csv`. 
 
 ## Output & post-processing
 Each DaPars run results in differential challenge file located under DaPars/results/dapars/dapars_differential_output.tsv.
-Identification challenege file is located under DaPars/results/dapars/dapars_identification_output.tsv.
+Identification challenge file is located under DaPars/results/dapars/(sample)_identification_output.bed where (sample)
+is obtained from the sample column of the sample sheet for each row.
 
 ## Notes
 - It is not possible to obtain quantification challenge output data since the TPM value in the output file

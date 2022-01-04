@@ -11,8 +11,8 @@ process CREATE_CONFIG_FILE {
         container "docker.io/apaeval/dapars:latest"
 
         input:
-        tuple val(sample), path(bedgraph_file)
-        path annotated_3utr
+        tuple val(sample), val(bedgraph_file), path(annotated_3utr)
+        val run_mode
 
         output:
         path config_output, emit: ch_dapars_input
@@ -21,13 +21,18 @@ process CREATE_CONFIG_FILE {
         annotated_3utr = "$PWD/${params.outdir}/dapars/final_extracted_3utr.bed"
         bedgraphs_dir = "$PWD/${params.outdir}/dapars/sample_bedgraph_files"
         output_dir = "$PWD/${params.outdir}/dapars/"
-        config_output = "config"
         num_least_in_group1 = options.num_least_in_group1
         num_least_in_group2 = options.num_least_in_group2
         coverage_cutoff = options.coverage_cutoff
         fdr_cutoff = options.fdr_cutoff
         pdui_cutoff = options.pdui_cutoff
         fold_change_cutoff = options.fold_change_cutoff
+        if ( run_mode == "identification" ) {
+            config_output = sample + "_config"
+        }
+        else {
+            config_outout = "config"
+        }
 
         """
         create_config_file.py \
@@ -40,6 +45,8 @@ process CREATE_CONFIG_FILE {
         $fdr_cutoff \
         $pdui_cutoff \
         $fold_change_cutoff \
-        $config_output
+        $config_output \
+        $bedgraph_file \
+        $run_mode
         """
  }

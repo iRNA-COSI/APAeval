@@ -11,14 +11,23 @@ process DAPARS_MAIN {
         container "docker.io/apaeval/dapars:latest"
 
         input:
-        path(config_file)
+        path config_file
+        val sample
+        val run_mode
 
         output:
-        path config_file, emit: ch_dapars_output
+        path output_file, emit: ch_dapars_output
 
         script:
+        if ( run_mode == "identification" ) {
+            output_file = sample + "_dapars_main_out.txt"
+        }
+        else {
+            output_file = "dapars_main_out.txt"
+        }
+
         """
-        python /dapars/src/DaPars_main.py $config_file
+        python /dapars/src/DaPars_main.py $config_file > $output_file
         """
  }
 
