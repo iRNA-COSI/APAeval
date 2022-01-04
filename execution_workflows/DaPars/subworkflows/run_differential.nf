@@ -1,5 +1,5 @@
 /*
- * Run DaPars
+ * Run DaPars for differential challenge
  */
 
 include { CREATE_CONFIG_FILE          } from '../modules/create_config_file' addParams( options: [:] )
@@ -12,6 +12,9 @@ workflow RUN_DIFFERENTIAL {
     ch_extracted_3utr_output
 
     main:
+    /*
+     *  Prepare input channel
+     */
     ch_convert_to_bedgraph_out.first()
         .combine(ch_extracted_3utr_output)
         .set { ch_create_config_file_input }

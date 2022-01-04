@@ -12,6 +12,9 @@ workflow RUN_IDENTIFICATION {
     ch_extracted_3utr_output
 
     main:
+    /*
+     *   Prepare input channles
+     */
     ch_convert_to_bedgraph_out
         .map { it -> it[0] }
         .set { ch_sample }

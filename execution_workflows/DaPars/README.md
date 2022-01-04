@@ -56,13 +56,14 @@ Parameters relevant to the workflow itself are:
 
 ### Running the differential workflow
 - Set the 'run_differential' parameter in conf/modules.config to true
-- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.tsv'
+- Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file 
   is samplesheet_example_files.csv
 
 ### Running the identification workflow
 - Set the 'run_identification' parameter in conf/modules.config to true
-- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.bed'
+- Change 'identification_out_suffix' parameter in conf/modules.config to 
+  the desired file suffix that ends with '.bed'
 - Sample name for each row in the sample sheet should be unique
 - Every sample (every row) in the sample sheet will run through the identification workflow
 
@@ -71,9 +72,10 @@ Once parameters have been set in conf/modules.config file, run the pilot benchma
 `nextflow main.nf --input samplesheet_example_files.csv`. 
 
 ## Output & post-processing
-Each DaPars run results in differential challenge file located under DaPars/results/dapars/dapars_differential_output.tsv.
-Identification challenge file is located under DaPars/results/dapars/(sample)_identification_output.bed where (sample)
-is obtained from the sample column of the sample sheet for each row.
+When using the default output_dir parameter value in conf/modules.config, DaPars store results under
+DaPars/results/dapars/challenge_outputs folder. For identification 
+outputs, the files have sample names as prefixes to differentiate the different runs. The differential output file 
+will stay as the name specified in modules.config file.
 
 ## Notes
 - It is not possible to obtain quantification challenge output data since the TPM value in the output file
