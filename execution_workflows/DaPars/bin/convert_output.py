@@ -35,14 +35,14 @@ def convert_to_differential(file_in, file_out):
         # e.g. ENSMUST00000203335.1|ENSMUSG00000045962.16|chr6|-
         name = row['Gene'].split("|")[1]
         # p val obtained from P_val column
-        significance = str(row['P_val'])
+        significance = row['P_val']
         if name not in rows:
             rows[name] = [significance]
         else:
             rows[name].append(significance)
     # only get the smallest p-value for the corresponding gene
     for gene in rows:
-        output = [gene, min(rows[gene])]
+        output = [gene, str(min(rows[gene]))]
         differential_out.write("\t".join(output) + "\n")
     differential_out.close()
 
