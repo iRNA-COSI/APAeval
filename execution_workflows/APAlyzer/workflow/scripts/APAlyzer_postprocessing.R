@@ -65,7 +65,7 @@ opt = parse_args(opt_parser)
 
 # Load variables from preprocessing step
 load(opt$in_postprocessing)
-out_df = NULL
+
 # If output df from APAlyzer is null, write a an empty tsv file
 if(is.null(out_df)) {
   file.create(opt$out_postprocessing)
@@ -76,7 +76,7 @@ if(is.null(out_df)) {
 
 # Create a dictionary with gene id and p pvalue
 out_dict = hash()
-for(i in 1:length(out_df)) {
+for(i in 1:nrow(out_df)) {
     gene_symbol = out_df[i, 1]
     gene_id = gene_dict[[gene_symbol]]
     p_value = out_df[i, 2]
