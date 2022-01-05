@@ -13,9 +13,21 @@ _Execution workflows_ contain all steps that need to be run _per method_ (in OEB
 
 
 
-2. **Method execution:** For each method to be benchmarked (“participant”) one execution workflow has to be written. The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). The workflow has to compute the output files for *all benchmarking events the participant qualifies for* (this may require more than one run of the method inside the same execution workflow if, e.g., the calls for identification and quantification can't be combined). 
-If a method has distinct run modes other than those concerning the three benchmarking events, the calls to those should also be parameterized, so that the workflow can easily be run again with a different mode. If those runmodes could significantly alter the behaviour of the method, please discuss with the APAeval community whether the distinct runmodes should actually be treated as distinct participants in APAeval (see [section on parameters](#parameters)). That could for example be the case if the method can be run with either mathematical model A or model B, and the expected results would be quite different. At the moment we can't foresee all possibilities, so we count on you to report and discuss any such cases. In any case, please do document extensively how the method can be used and how you employed it.       
-In general, all relevant participant parameters should be configurable in the workflow config files. Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow. 
+2. **Method execution:** For each method to be benchmarked (“participant”) one execution workflow has to be written. 
+  The workflow MUST include all necessary pre- and post-processing steps that are needed to get from the input formats 
+  provided by APAeval (see 1.), to the output specified by APAeval in their metrics specifications (see 3.). 
+  The workflow should include run mode parameters for the benchmarking events that it qualifies for, set 
+  to either true or false (e.g. run_identification = true). Each execution workflow run should output files for the events whose run modes are set to 
+  true. If a method has distinct run modes other than those concerning the three benchmarking events, the calls to 
+  those should also be parameterized. 
+  If those run modes could significantly alter the behaviour of the method, 
+  please discuss with the APAeval community whether the distinct run modes should actually be treated as distinct 
+  participants in APAeval (see [section on parameters](#parameters)). That could for example be the case if the method 
+  can be run with either mathematical model A or model B, and the expected results would be quite different. At the 
+  moment we can't foresee all possibilities, so we count on you to report and discuss any such cases. In any case, 
+  please do document extensively how the method can be used and how you employed it.
+  In general, all relevant participant parameters should be configurable in the workflow config files. 
+  Parameters, file names, run modes, etc. MUST NOT be hardcoded within the workflow. 
 
 > IMPORTANT: Do not download any other annotation files because the docs of your participant say so. Instead, create all files the participant needs from the ones provided by APAeval. If you don't know how, please don't hesitate to start discussions within the APAeval community! Chances are high that somebody already encountered a similar problem and will be able to help.
 
