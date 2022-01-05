@@ -14,13 +14,16 @@ out_filename: "differential_challenge_output.tsv"
 logs_subdir: "logs/"
 
 # Path to GTF annotation file
-gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 # GTF annotation file organism, genome version, and ensemble version details
 gtf_organism: "Mus_musculus"
 gtf_genome_version: "GRCm39"
 gtf_ensemble_version: "103"
 
 # Read cutoff, default: 0
+# This is the minimum read count for UTRs. When set to some number
+# greater than 0, this allows us to exclude UTRs with small number of reads
+# to reduce noise that stems from genes with low read coverages
 read_cutoff: 0
 
 # APAlyzer docker container

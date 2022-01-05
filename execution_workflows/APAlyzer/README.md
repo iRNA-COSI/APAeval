@@ -38,20 +38,8 @@ genome version, and ensemble version details:
 `gtf, gtf_organism, gtf_genome_version, gtf_ensemble_version`.
 
 ### Setting up the environment
-To run the execution workflow, we first need to activate the conda environment.
-Activate the `apaeval_execution_workflows` conda environment ('environment' YAML file available 
-at the base of the main repo at `apaeval_env.yaml`). If you haven't installed the environment, 
-execute the following command (assuming you're in the same directory as this README):
-
-```
-conda env create -f ../../../apaeval_env.yaml`
-```
-
-Once installed, activate the environment with the command below:
-
-```
-conda activate apaeval_execution_workflows
-```
+To run the execution workflow, we first need to activate `apaeval_execution_workflows` conda environment
+following the instructions on [APAeval README](https://github.com/iRNA-COSI/APAeval#conda-environment-file).
 
 ### Running the workflow
 Before running, you can perform a 'dry run' to check which steps will be run and where output files will be 
@@ -61,7 +49,7 @@ generated given the provided parameters and input sample file:
 bash dryrun.sh
 ```
 
-To run the workflow locally, you can use the provided wrapper script `run_local.sh`.
+To run the workflow locally, you can use the provided wrapper script `run_local.sh` which executes with singularity.
 
 ```
 bash run_local.sh
