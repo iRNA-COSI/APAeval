@@ -9,7 +9,7 @@ to create the nextflow pipeline of this module
 ## Running Aptardi workflow
 
 ### Input & pre-processing
-An example sample sheet is available at `samplesheet.csv`. `samplesheet.csv` can contain multiple entries, where each row in the samplesheet has four
+An example sample sheet is available at `samplesheet.csv`. `samplesheet.csv` can contain multiple entries, where each row in the samplesheet has two
 columns:
 
 - sample: name of the sample for logs (e.g control_replicate1)
@@ -29,16 +29,16 @@ Parameters relevant to the workflow itself are:
 - `outdir` - name of the folder that the final output files are going to be in, located under ./results/aptardi/
 - `output_bed` - name of the output file for the current run ending with .bed
 - `use_stringtie2_gtf` - use the gtf output from stringtie2 (default: false)
-- `aptardi_model` - for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/model.hdf5 provided by Aptardi)
+- `aptardi_model` - for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/model.hdf5 provided by Aptardi.)
 - `aptardi_scale` - for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/scale.pk provided by Aptardi)
-Note: Aptardi also allows users to build their own model during the Aptardi run. Please refer to [Aptardi's documentation](https://github.com/luskry/aptardi#options)
+Note: Aptardi also allows users to build their own model during the Aptardi run, but this pipeline does not support building one's own model (one would have to build his/her own model by running Aptardi outside of this pipeline). Please refer to [Aptardi's documentation](https://github.com/luskry/aptardi#options)
 
 ### Running the Aptardi execution workflow
 - Download the test data [here](https://drive.google.com/drive/folders/1tsDu7TzxoVvnD-0UbVRd-pu-ZL36F190?usp=sharing). The current dataset is in a genomic region where there are enough reads to test Aptardi's PAS identification functionality.
 - Update the samplesheet.csv with the full path to the downloaded bam, gtf, and fasta files.
 ```
-sample,bam,gtf,fasta
-sample,[path_to]/test.bam,[path_to]/gencode.vM26.primary_assembly.annotation.gtf,[path_to]/mm39.fa
+sample,bam
+sample,[path_to]/test.bam
 ```
 - Run the pipeline with the samplesheet.csv with the input paths updated using either docker or singularity containers
 ```

@@ -72,12 +72,11 @@ if (params.use_stringtie2_gtf){
         path fasta from ch_fasta
 
         output:
-        tuple val(sample), path("stringtie.merged.gtf"), path(fasta) into ch_stringtie_gtf
+        tuple val(sample), path("*.stringtie.gtf"), path(fasta) into ch_stringtie_gtf
 
         script:
         """
         stringtie -G $gtf -o ${sample}.stringtie.gtf $bam
-        stringtie --merge ${sample}.stringtie.gtf -G $gtf -o stringtie.merged.gtf
         """
     }
     ch_input
