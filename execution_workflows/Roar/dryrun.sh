@@ -2,8 +2,8 @@
 snakemake \
     --rerun-incomplete \
     --snakefile="workflow/Snakefile" \
-    --configfile="config/config.Roar.yaml" \
+    --configfile="workflow/config/config.Roar.yaml" \
     --cores 4 \
-    --use-conda \
+    --use-singularity \
     --printshellcmds \
     --dryrun

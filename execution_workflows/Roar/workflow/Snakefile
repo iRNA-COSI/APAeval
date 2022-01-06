@@ -17,7 +17,7 @@ import pandas as pd
 # Config/Metadata
 
 # Read in config file
-configfile: "config/config.Roar.yaml"
+# configfile: "config/config.Roar.yaml"
 
 # Convert config to dataframe
 samples = pd.read_csv(os.path.abspath(config["samples"]),sep=",")
@@ -42,32 +42,32 @@ samples = pd.read_csv(os.path.abspath(config["samples"]),sep=",")
 
 # Parameters
 THREADS = config["threads"]
-
-
-# Input file patterns
-CONDITION1 = samples["sample_type"].unique()[0]
-CONDITION2 = samples["sample_type"].unique()[1]
-
-
-# Output filename shorthands
-ROAR_OUTPUT = config["paramcode"] + "_" + config["method"]
-
-
-# This is the 3' UTR gtf file for the multiple APA site roar analysis (see
-# section 3.6 of vignette)
-ANNOTATION = config["gtf"]
-
-
-# RScript outputs
-RSCRIPT = os.path.join(config["scripts"], config["method"] + ".R")
-
-
-# Print to compare conditions and check correct way round
-print(">>>>> COMPARING: ")
-print("   >> " + CONDITION1)
-print("   >> " + CONDITION2)
-print("   >> ROAR OUTPUT PREFIX IS :- " + config["out_dir"] + "/" + ROAR_OUTPUT)
-
+#
+#
+# # Input file patterns
+# CONDITION1 = samples["sample_type"].unique()[0]
+# CONDITION2 = samples["sample_type"].unique()[1]
+#
+#
+# # Output filename shorthands
+# ROAR_OUTPUT = config["paramcode"] + "_" + config["method"]
+#
+#
+# # This is the 3' UTR gtf file for the multiple APA site roar analysis (see
+# # section 3.6 of vignette)
+# ANNOTATION = config["gtf"]
+#
+#
+# # RScript outputs
+# RSCRIPT = os.path.join(config["scripts"], config["method"] + ".R")
+#
+#
+# # Print to compare conditions and check correct way round
+# print(">>>>> COMPARING: ")
+# print("   >> " + CONDITION1)
+# print("   >> " + CONDITION2)
+# print("   >> ROAR OUTPUT PREFIX IS :- " + config["out_dir"] + "/" + ROAR_OUTPUT)
+#
 
 
 
@@ -81,38 +81,77 @@ rule finish:
     """Rule that specifies the final output.
     """
     input:
-        os.path.join(config["out_dir"], ROAR_OUTPUT + "_01.bed"),
-        os.path.join(config["out_dir"], ROAR_OUTPUT + "_03.tsv")
-
-
-
+        os.path.join(config["out_dir"], "roar_results.tsv")
 
 
 #-------------------------------------------------------------------------------
+
+rule generate_roar_gtf:
+    input:
+        gtf = config["reference_gtf"],
+        polya = config["polya_sites"]
+
+    output:
+        os.path.join(config["out_dir"], "roar_annotations.gtf")
+
+    log:
+        os.path.join(config["local_log"], "generate_roar_gtf.log")
+
+    container:
+        "docker://quay.io/biocontainers/pyranges:0.0.115--pyh5e36f6f_0"
+
+    shell:
+        """
+        (python workflow/scripts/generate_roar_annotations.py \
+        --gtf {input.gtf} \
+        --polya {input.polya} \
+        -o {output} )
+        """
+
+
 # Run Roar
 
-rule run_roar_rscript:
-    """This runs the Roar Rscript.
-    """
+rule run_roar:
     input:
-        rscript=RSCRIPT,
-        gtf=ANNOTATION
+        gtf = os.path.join(config["out_dir"], "roar_annotations.gtf"),
+        sample_tbl = config["samples"]
+
     output:
-        os.path.join(config["out_dir"], ROAR_OUTPUT + "_01.bed"),
-        os.path.join(config["out_dir"], ROAR_OUTPUT + "_03.tsv")
+        os.path.join(config["out_dir"], "roar_results.tsv")
+
+    params:
+        base_condition = config["control_condition_key"],
+        stranded = "--stranded" if config["is_stranded"] else ""
+
     threads: THREADS
-    conda: os.path.join(config["envs"], "Roar.yaml")
+
+    container:
+        "docker://quay.io/biocontainers/bioconductor-roar:1.28.0--r41hdfd78af_0"
+
     log:
-        os.path.join(config["local_log"], ROAR_OUTPUT + "execute.rscript.log")
+        os.path.join(config["local_log"], "run_roar.log")
+
     shell:
-        "( Rscript {input.rscript}  " + \
-                 " {input.gtf} " + \
-                   CONDITION1 + " " + CONDITION2 + " " + \
-                   os.path.join(config["out_dir"], ROAR_OUTPUT) + " ) &> {log} "
+        """
+        (Rscript workflow/scripts/Roar.R \
+        {input.gtf} \
+        {input.sample_tbl} \
+        {params.base_condition} \
+        {output} \
+        {params.stranded}) &> {log}
+        """
 
 
-
-
+# rule get_differential_tsv:
+#     input:
+#         results = os.path.join(config["out_dir"], "roar_results.tsv"),
+#         sample_tbl = config["samples"]
+#
+#     output:
+#         ""
+#
+#     container:
+#         ""
 
 #-------------------------------------------------------------------------------
 # How did it go?

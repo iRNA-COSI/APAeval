@@ -1,109 +1,92 @@
+# Command line script to run Roar on a set of BAM files
 
-### Libraries
+help <- c("Usage: Roar.R GTF SAMPLE_TABLE BASE_KEY OUTPUT_TSV [--stranded] [--help] [-h]",
+          "GTF - Path to Roar annotation GTF file",
+          "SAMPLE_TABLE - Path to sample table CSV file used as input to the Roar execution workflow. The CSV should contain 'sample_name', 'bam' and 'condition' columns.",
+          "BASE_KEY - Name of 'base' or 'control' condition in the 'condition' column of the sample table",
+          "OUTPUT_TSV - Name of/path to output TSV file to write Roar results table",
+          "--stranded - (Optional) whether input RNA-seq data were generated with a stranded protocol",
+          "--help / -h - (Optional) print this help message and exit")
+
+cl_args <- commandArgs(trailingOnly = TRUE)
+
+if ((length(cl_args) == 0) | ("--help" %in% cl_args) | ("-h" %in% cl_args)) {
+  cat(help, sep = "\n")
+  stop()
+}
 
 library(roar)
-library(rtracklayer)
-library(org.Mm.eg.db)
 
-# Input files
-args = commandArgs(trailingOnly=TRUE)
+gtf_path <- cl_args[1]
+sample_tbl_path <- cl_args[2]
+base_key <- cl_args[3]
+output_tsv <- cl_args[4]
 
-# Input gtf
-gtf <- args[1]
+if ("--stranded" %in% cl_args) {
+  stranded <- TRUE
+} else {
+  stranded <- FALSE
+}
 
-# Input bams
-bam1 <- paste(path=args[2],list.files(path=args[2],pattern="*.bam"),sep="/")
-bam2 <- paste(path=args[3],list.files(path=args[3],pattern="*.bam"),sep="/")
-bams <- c(bam1, bam2)
-# Output prefix
-out.prefix <- args[4]
-
-
-
-
+#1. Extract lists of bams per condition from sample table
+sample_tbl <- read.table(sample_tbl_path,
+                         header = T,
+                         sep = ",",
+                         stringsAsFactors = F)
 
 
-# Print out inputs
-print(">>>>> INPUT ARGS ARE:")
-print(paste0("   >> GTF:  ",args[1]))
-print(paste0("   >> BAM1: ",bam1))
-print(paste0("   >> BAM2: ",bam2))
+n_cond <- length(unique(sample_tbl$condition))
+
+if ( n_cond != 2) {
+
+  stop(paste("Sample table must only contain 2 distinct conditions -",
+             n_cond,
+             "were found", ))
+}
 
 
+if (!(base_key %in% sample_tbl$condition)) {
 
+  stop(paste("'base-condition-key' -",
+             base_key,
+             "- not found in sample table -",
+             paste(unique(sample_tbl$condition), sep = ","),
+             "were found",
+             sep = " ")
+  )
+}
 
-### Create RoarData Object
+base <- sample_tbl[sample_tbl$condition == base_key, ]
 
-# Generate RoarDataSet
-print(">>>>> GENERATING ROAR DATA SET")
-rds <- RoarDatasetMultipleAPAFromFiles(bams[1:2], bams[3:4], gtf)
+treat <- sample_tbl[sample_tbl$condition != base_key, ]
 
+# Create lists of paths to bam files for each condition
+base_bams <- list(base$bam)
+names(base_bams) <- base$sample_name
 
+treat_bams <- list(treat$bam)
+names(treat_bams) <- treat$sample_name
 
+# 2. Run Roar
 
-### Compute Roar and Associated Statistics/Metrics
+rds <- RoarDatasetFromFiles(treatmentBams = treat_bams,
+                            controlBams = base_bams,
+                            gtf = gtf_path
+)
 
-# UTR Counts
-print(">>>>> COUNTING 3UTR READS")
-rds <- countPrePost(rds, FALSE)
+rds <- countPrePost(rds, stranded = stranded)
 
-# Compute Roars
-print(">>>>> COMPUTING ROAR")
 rds <- computeRoars(rds)
 
-# Compute p-values, using Fisher's Exact test, considering pairing of samples and combining p-values
-# for those of the same level
-print(">>>>> COMPUTING PAIRED PVALUES")
-rds <- computePairedPvals(rds, c(1,2), c(1,2))
+rds <- computePvals(rds)
 
+results <- totalResults(rds)
 
+# Gene IDs are stored as rownames so add as 1st column
+results <- cbind(gene_id = rownames(results), results)
 
-
-### Get Output
-
-# Get results df
-print(">>>>> GETTING OUTPUT")
-results.paired <- totalResults(rds)
-
-# Add columns for UTR ids & gene IDS
-results.paired["3utrid"] <- gsub(".*_","",rownames(results.paired))
-results.paired["ENTREZID"] <- gsub("_.*","",rownames(results.paired))
-
-
-
-
-### Convert Gene IDs
-
-# Get ENTREZID
-print(">>>>> CONVERTING IDS")
-geneids <- gsub("_.*","",rownames(results.paired))
-
-# Map to ENSEMBL gene Id
-enz2ens <- select(org.Mm.eg.db, # The annotation library object (contains the info needed to convert ids)
-                   keys=geneids,
-                   columns=c("ENTREZID","ENSEMBL"),
-                   keytype="ENTREZID")
-
-# Get gtf as GRanges and format to PolyA site
-gtf.granges <- import(gtf)
-gtf.granges$apa <- gsub("_.*","",gtf.granges$apa)
-gtf.granges <- data.frame(gtf.granges,stringsAsFactors=FALSE)
-colnames(gtf.granges)[[10]] <- "3utrid"
-
-# Merge it all together
-outdf <- merge(enz2ens,results.paired,by="ENTREZID")
-outdf <- merge(gtf.granges,outdf,by="3utrid")
-
-
-
-
-### Format output
-
-print(">>>>> SAVING RESULTS")
-# Output df - format 1 (BED) & format 3
-outdf01 <- outdf[,c("seqnames","start","end","source","3utrid","strand")]; outdf01["source"] <- "."
-outdf03 <- outdf[,c("ENSEMBL","pval")]; outdf03 <- outdf03[!duplicated(outdf03),]
-
-# save files
-write.table(outdf01,paste0(out.prefix,"_01.bed"),sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-write.table(outdf03,paste0(out.prefix,"_03.tsv"),sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+write.table(results,
+            output_tsv,
+            row.names = FALSE,
+            sep = "\t",
+            quote = FALSE)

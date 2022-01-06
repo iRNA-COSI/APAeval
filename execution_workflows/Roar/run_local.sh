@@ -1,8 +1,9 @@
 #!/bin/bash
 snakemake \
     --snakefile="workflow/Snakefile" \
-    --configfile="config/config.Roar.yaml" \
-    --cores 4 \ # adjust number as needed
-    --use-conda \ # or --use-singularity
+    --configfile="workflow/config/config.Roar.yaml" \
+    --cores 4 \
+    --use-singularity \
+    --singularity-args="--bind ${PWD}/../../tests/test_data" \
     --printshellcmds \
-    --forcerun generate_configurationfile
+    

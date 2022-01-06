@@ -1,13 +1,25 @@
 # Configuration file for snakemake pipeline
 
-# Dataset samples
-samples: "config/samples.csv"
-out_dir: "AA/Roar"
-gtf: "mm_multiple.gtf"
+
+# Path to sample table
+samples: "workflow/config/samples.csv"
+
+# Name of 'control' condition found in 'condition' column of sample table (becomes denominator in Roar's metrics)
+control_condition_key: "control"
+
+out_dir: "roar_results"
+reference_gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+
+# Path to BED file containing 'reference' polyA site coordinates
+polya_sites: "../../tests/test_data/siControl_R1_2genes.MACEseq.mm10.bed"
 
 
 # Parameters
 # define method specific parameters here
+
+# Are input data stranded? 'True'/'False' (no quotes)
+is_stranded: False
+
 threads: 4
 method: "Roar"
 paramcode: "AA"
