@@ -18,6 +18,7 @@ process LABRAT_CALCULATEPSI {
         val conditionB
         path gff
         path db
+        val bed
 
         output:
         path "*.psis" , emit: ch_psis
@@ -25,7 +26,8 @@ process LABRAT_CALCULATEPSI {
         path "*.pval" , emit: ch_pval_results
 
         script:
+        def add_to_path = (params.run_quantification) ? "$PWD/${params.outdir}" : ""
         """
-        LABRAT.py --mode calculatepsi --librarytype RNAseq --salmondir $PWD/${params.outdir}/$salmon_dir --sampconds $sampcond --conditionA $conditionA --conditionB $conditionB --gff $gff
+        LABRAT.py --mode calculatepsi --librarytype RNAseq --salmondir $add_to_path/$salmon_dir --sampconds $sampcond --conditionA $conditionA --conditionB $conditionB --gff $gff
         """
 }

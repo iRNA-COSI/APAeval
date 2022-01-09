@@ -12,12 +12,14 @@ process MAKE_DIFFERENTIAL_TSV {
 
     input:
     path labrat_diff_results
-    
+    val  conditionA
+    val  conditionB
+
     output:
     path "*"
 
     script:
     """
-    make_differential_tsv.py $labrat_diff_results labrat_differential.tsv
+    make_differential_tsv.py $labrat_diff_results ${conditionA}_${conditionB}_labrat_differential.tsv
     """
 }

@@ -14,9 +14,26 @@ source code: https://github.com/TaliaferroLab/LABRAT
 
 ## Params
 
-- `--input` samplesheet.csv 
-- `--conditionA` the first condition in the condition column of the samplesheet.csv
-- `--conditionB` the second condition in the condition column of the samplesheet.csv
+- `--input` samplesheet.csv
+- `--run_quantification` for running quantification
+- `--run_differential` for running differential analysis
+- `--labrat_quant_dir` location of the quantification results directory. Please provide this if `--run_differential` but not `--run_quantification`
+- `--conditionA` the first condition in the condition column of the samplesheet.csv. Please provide this if `--run_differential`
+- `--conditionB` the second condition in the condition column of the samplesheet.csv. Please provide this if `--run_differential`
+
+## example commands
+#### running quantification only
+```
+nextflow main.nf -profile docker --input <samplesheet.csv> --run_quantification
+```
+#### running differential analysis only
+```
+nextflow main.nf -profile docker --input <samplesheet.csv> --run_differential --conditionA <first condition> --conditionB <second condition> --labrat_quant_dir <full_path to labrat_quantification_results_dir>
+```
+#### running both quantification and differential analysis
+```
+nextflow main.nf -profile docker --input <samplesheet.csv> --run_quantification --run_differential --conditionA <first_condition> --conditionB <second_condition>
+```
 
 ## Output & post-processing
 
