@@ -6,7 +6,10 @@ samples: "workflow/config/samples.csv"
 # Name of 'control' condition found in 'condition' column of sample table (becomes denominator in Roar's metrics)
 control_condition_key: "control"
 
+# path to main output directory storing output files for run
 out_dir: "roar_results"
+
+# Path to GTF file containing reference transcript models
 reference_gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 
 # Path to BED file containing reference polyA site coordinates
@@ -20,6 +23,7 @@ is_stranded: False
 
 threads: 4
 participant: "Roar"
+# Alias for 'Challenge code'
 paramcode: "AA"
 
 differential_outcode: "03"
