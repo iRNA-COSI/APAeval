@@ -57,14 +57,13 @@ if (!(base_key %in% sample_tbl$condition)) {
 }
 
 base <- sample_tbl[sample_tbl$condition == base_key, ]
-
 treat <- sample_tbl[sample_tbl$condition != base_key, ]
 
 # Create lists of paths to bam files for each condition
-base_bams <- list(base$bam)
+base_bams <- as.list(base$bam)
 names(base_bams) <- base$sample_name
 
-treat_bams <- list(treat$bam)
+treat_bams <- as.list(treat$bam)
 names(treat_bams) <- treat$sample_name
 
 # 2. Run Roar
