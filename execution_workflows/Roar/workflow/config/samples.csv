@@ -1,3 +1,5 @@
 sample_name,bam,condition
 siSrsf3_R1,../../tests/test_data/siSrsf3_R1_2genes.bam,srsf3
+siSrsf3_R2,../../tests/test_data/siSrsf3_R1_2genes.bam,srsf3
 siControl_R1,../../tests/test_data/siControl_R1_2genes.bam,control
+siControl_R2,../../tests/test_data/siControl_R1_2genes.bam,control

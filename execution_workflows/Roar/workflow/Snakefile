@@ -1,16 +1,9 @@
-"""
-Snakemake pipeline for APA-Scan.
-For help see: https://snakemake.readthedocs.io/en/stable/index.html.
-"""
-
 
 # ------------------------------------------------------------------------------
 # Packages, Libraries and Sources
 
 import pandas as pd
-
-
-
+import os
 
 
 # ------------------------------------------------------------------------------
@@ -23,103 +16,71 @@ import pandas as pd
 samples = pd.read_csv(os.path.abspath(config["samples"]),sep=",")
 
 
-
-
-
 #-------------------------------------------------------------------------------
 # Parameters, filenames & sample data
 
-#### NOTES #####################################################################
-
-# MAY NEED TO ADJUST THE INDEXING DEPENDING ON THE LEVELS, BUT CAN PROBABLY MAKE
-# THIS CUSTOMISABLE FROM THE COMMAND LINE OR A CONFIG FILE ETC. THIS IS BECAUSE
-# THE LAYOUT OF THESE WILL DICTATE THE ORIENTATION OF LEVELS THAT ARE COMPARED
-# BY ROAR. IE FOR THE TEST DATA, THIS MAKES SO SRSF3 is CONDITION1 AND
-# THE CONTROL IS CONDITION 2
-
-################################################################################
-
-
 # Parameters
 THREADS = config["threads"]
-#
-#
-# # Input file patterns
-# CONDITION1 = samples["sample_type"].unique()[0]
-# CONDITION2 = samples["sample_type"].unique()[1]
-#
-#
-# # Output filename shorthands
-# ROAR_OUTPUT = config["paramcode"] + "_" + config["method"]
-#
-#
-# # This is the 3' UTR gtf file for the multiple APA site roar analysis (see
-# # section 3.6 of vignette)
-# ANNOTATION = config["gtf"]
-#
-#
-# # RScript outputs
-# RSCRIPT = os.path.join(config["scripts"], config["method"] + ".R")
-#
-#
-# # Print to compare conditions and check correct way round
-# print(">>>>> COMPARING: ")
-# print("   >> " + CONDITION1)
-# print("   >> " + CONDITION2)
-# print("   >> ROAR OUTPUT PREFIX IS :- " + config["out_dir"] + "/" + ROAR_OUTPUT)
-#
-
-
+SCRIPTS = config["scripts"]
+OUTDIR = config["out_dir"]
 
 
 # Final Target Rule ------------------------------------------------------------
 localrules: finish
 
-# Final output to .bed (format 01) and .tsv (format 03)
 
 rule finish:
     """Rule that specifies the final output.
     """
     input:
-        os.path.join(config["out_dir"], "roar_results.tsv")
+        os.path.join(OUTDIR,
+                     "_".join([config["paramcode"],
+                               config["participant"],
+                               config["differential_outcode"]]
+                              ) + ".tsv")
 
 
 #-------------------------------------------------------------------------------
 
 rule generate_roar_gtf:
+    '''
+    Generate 'single APA' type Roar annotations (i.e. single prox site per gene)
+    '''
     input:
         gtf = config["reference_gtf"],
         polya = config["polya_sites"]
 
     output:
-        os.path.join(config["out_dir"], "roar_annotations.gtf")
+        os.path.join(OUTDIR, "roar_annotations.gtf")
+
+    params:
+        script = os.path.join(SCRIPTS, "make_roar_annotations.py")
 
     log:
-        os.path.join(config["local_log"], "generate_roar_gtf.log")
+        os.path.join(OUTDIR, config["local_log"], "generate_roar_gtf.log")
 
     container:
         "docker://quay.io/biocontainers/pyranges:0.0.115--pyh5e36f6f_0"
 
     shell:
         """
-        (python workflow/scripts/generate_roar_annotations.py \
+        (python {params.script} \
         --gtf {input.gtf} \
         --polya {input.polya} \
-        -o {output} )
+        -o {output}) &> {log}
         """
 
 
-# Run Roar
-
 rule run_roar:
     input:
-        gtf = os.path.join(config["out_dir"], "roar_annotations.gtf"),
+        gtf = os.path.join(OUTDIR, "roar_annotations.gtf"),
         sample_tbl = config["samples"]
 
     output:
-        os.path.join(config["out_dir"], "roar_results.tsv")
+        os.path.join(OUTDIR, "roar_results.tsv")
 
     params:
+        script = os.path.join(SCRIPTS, "Roar.R"),
         base_condition = config["control_condition_key"],
         stranded = "--stranded" if config["is_stranded"] else ""
 
@@ -129,11 +90,11 @@ rule run_roar:
         "docker://quay.io/biocontainers/bioconductor-roar:1.28.0--r41hdfd78af_0"
 
     log:
-        os.path.join(config["local_log"], "run_roar.log")
+        os.path.join(OUTDIR, config["local_log"], "run_roar.log")
 
     shell:
         """
-        (Rscript workflow/scripts/Roar.R \
+        (Rscript {params.script} \
         {input.gtf} \
         {input.sample_tbl} \
         {params.base_condition} \
@@ -142,16 +103,34 @@ rule run_roar:
         """
 
 
-# rule get_differential_tsv:
-#     input:
-#         results = os.path.join(config["out_dir"], "roar_results.tsv"),
-#         sample_tbl = config["samples"]
-#
-#     output:
-#         ""
-#
-#     container:
-#         ""
+rule get_differential_tsv:
+    input:
+        os.path.join(OUTDIR, "roar_results.tsv")
+
+    output:
+        os.path.join(OUTDIR,
+                     "_".join([config["paramcode"],
+                               config["participant"],
+                               config["differential_outcode"]]
+                              ) + ".tsv")
+
+    params:
+        script = os.path.join(config["scripts"],
+                              "make_differential_tsv.py")
+
+    # PyRanges is built on top of pandas - re-using image to avoid extra images
+    container:
+        "docker://quay.io/biocontainers/pyranges:0.0.115--pyh5e36f6f_0"
+
+    log:
+        os.path.join(OUTDIR, config["local_log"], "get_differential_tsv.log")
+
+    shell:
+        """
+        (python {params.script} \
+        -i {input} \
+        -o {output}) &> {log}
+        """
 
 #-------------------------------------------------------------------------------
 # How did it go?
