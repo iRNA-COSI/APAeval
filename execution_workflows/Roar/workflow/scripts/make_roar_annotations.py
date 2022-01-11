@@ -7,12 +7,103 @@ import argparse
 import sys
 
 '''
-Script to generate Roar-compliant GTF annotations
+Script to generate Roar-compliant GTF annotations ('single' APA type currently)
+
+Attempting to recreate 'single' and 'multiple' APA custom annotation files from a GTF of tx & BED file of polyA sites
+
+Instructions are  in the vignette - (https://bioconductor.org/packages/release/bioc/vignettes/roar/inst/doc/roar.pdf)
+
+Example files can be found at the Github repo - (https://github.com/vodkatad/roar/wiki/Identify-differential-APA-usage-from-RNA-seq-alignments#hg38-annotation-files-refseq-version-79)
+
+Workflow/interpretation of how to generate these annotations is described below:
+
+**Part 1 - Selecting representative proximal polyA site**
+
+Direct quote from manual:
+
+"Every gene with at least one APA site is considered; their
+longest transcript is used to get the “classical” polyadenylation syte (canonical
+end of the longest transcript stored in UCSC) and the most proximal (with
+respect to the TSS, that is the farther to the canonical end of the transcript;
+but preferring sites still in the 3’UTR) reported APA site found in PolyA DB is
+used to define the end of the short isoform"
+
+1. Overlap GTF with polyA sites, retain gene IDs that have at least 1 overlapping polyA site
+2. Select the longest transcript for each gene
+    - Sum length of individual exons to get Tx length ('transcript' features in GTF span exons + introns of transcript)
+3. Select single overlapping polyA site per gene (preferring 3'UTRs)
+    - Using exons as proxy for 3'UTR, annotate last exons for each transcript
+        - (+ strand = largest Start, - Strand = smallest Start)
+        - 3'UTR contained within last exon, UTR features labelled differently between Gencode & Ensembl
+        - PRE region definition (see below) uses 5'end of last exon not the 3'UTR
+    - Overlap join (add PAS columns) transcript exons + introns with provided polyA sites
+    - Grouping by transcript ID, check if has polyA site overlapping last exon
+        - If overlapping last, pick most proximal polyA site from last exon PAS
+        - Otherwise pick most TSS proximal overlapping site
+        - (+ strand = min Start , - strand = max End)
+
+
+**Part 2 - Defining 'PRE' & 'POST' regions**
+
+Direct quote from manual:
+
+"""
+Therefore we define the “PRE” portion as the stretch of DNA starting from the beginning of the exon containing
+(or proximal to) the APA site and ending at the site position, while the POST
+portion starts there and ends at the canonical transcript end. Using only the
+nearest exon to the APA site and not the entire transcript to define the short
+isoform avoids spurious signals deriving from other alternative splicing events.
+"""
+
+
+Using same joined (exon/intron + polyA site) object:
+
+4. Define PRE region for each proximal polyA site
+    - plus strand - 5'end of exon (Start) --> polyA site (End_b)
+    - minus strand - polyA site (Start_b) --> 5'end of exon (End)
+    - if overlapping feature is intron
+        - Subset original introns object to these introns, take 5'ends
+        - Overlap join exons with 5'ends of introns, setting slack to 1 to allow bookended to overlap
+        - Take 5p coordinate for each overlapping exon as the PRE 5'end
+        - Take the PolyA site as the PRE 3'end
+5. Define POST region for each gene
+   - Take transcripts object, use pr.three_end() to get canonical transcript end
+   - apply_pair join PRE region with 3'ends, using gene_id/transcript ID as the key
+        - Takes 2 PyRanges objects, performs pandas join between dfs of same chrom/strand
+        - Puts PRE region & distal polyA site coordinates on the same row
+   - Update 5'end to Start of PRE region
+   - Use pr.subtract with PRE regions to get final POST region
+
+** Part 3 - Formatting/post-processing**
+
+
+Quote:
+>"To summarize the package requirements are: every entry in the gtf should
+have an attribute called “gene id” formed by a prefix representing unique gene
+identifiers and a suffix. The suffix defines if the given coordinates refer to the
+portion of this gene common between the short and the long isoform (“ PRE”)
+or to the portion pertaining only to the long isoform (“ POST”)"
+
+
+Separately, there is also the optional (simple) step of adding lengths of each region as an attribute:
+
+Quote:
+>"The gtf can also contain an attribute (metadata column for the GRanges
+object) that represents the lengths of PRE and POST portions on the transcriptome. If this is omitted the lengths on the genome are used instead (this
+will results in somewhat inaccurate length corrections for genes with either the
+PRE or the POST portion comprising an intron). Note that right now every gtf
+entry (or none of them) should have it.""
+
+Separately for each region type (PRE/POST)
+- Add corresponding suffix to gene
+- Add `length` column for each region using gr.lengths()
+
+
 '''
 
 
 # Pyranges default GTF columns are named as below
-#https://github.com/biocore-ntnu/pyranges/blob/1ee215c645f7dbec3282555fcd0ccec610236614/pyranges/out.py#L44
+# https://github.com/biocore-ntnu/pyranges/blob/1ee215c645f7dbec3282555fcd0ccec610236614/pyranges/out.py#L44
 pyranges_gtf_cols = "Chromosome   Source   Feature    Start     End       Score    Strand   Frame".split()
 
 # Minimal cols needed from GTF for processing (no need to carry loads of cols)
@@ -24,7 +115,8 @@ roar_gtf_outcols = pyranges_gtf_cols + ["gene_id", "length"]
 
 def check_int64(gr1, gr2):
     '''
-    Check Start and End columns in 2 PyRanges are 'int64' dtype and coerce if not
+    Coerce Start and End columns in 2 PyRanges to 'int64' dtype
+    (Avoids cryptic errors in underlying ncls library, overlap queries need cols to be of same type)
     '''
 
     gr1 = gr1.apply(lambda df: df.astype({"Start": "int64",
@@ -41,7 +133,24 @@ def check_int64(gr1, gr2):
 
 def longest_tx_per_gene(gr, gene_id_col="gene_id", tx_id_col="transcript_id"):
     '''
+    Selects longest transcript ID (sub-group, tx_id_col) for each gene (gene_id_col)
+    Length calculated by summing lengths of all exons belonging to a transcript
+
+    Returns gr subsetted for regions of the longest transcript per gene
+
+    gr: PyRanges object must contain 'transcript' & 'exon' entries in the 'Feature' column.
     '''
+
+    assert gene_id_col in gr.columns
+    assert tx_id_col in gr.columns
+
+    feat_vals = gr.Feature.drop_duplicates()
+
+    assert all([True if feat in feat_vals
+                else False
+                for feat in ["transcript", "exon"]]), f"gr must contain both 'transcript' & 'exon' features in 'Feature' column, following found - {feat_vals}"
+
+
 
     # Get a df of gene_id | tx_id
     tx2gene = (gr.subset(lambda df: df["Feature"] == "transcript")
@@ -66,6 +175,7 @@ def longest_tx_per_gene(gr, gene_id_col="gene_id", tx_id_col="transcript_id"):
                   )
 
     # print(tx_lengths)
+    # Get a df of tx_id | tx_length
     tx_lengths = pd.concat(tx_lengths, ignore_index=True)
 
     # Get set of longest transcripts for each gene
@@ -80,6 +190,7 @@ def longest_tx_per_gene(gr, gene_id_col="gene_id", tx_id_col="transcript_id"):
 
 def _sort_exons_by_tx(df, id_col):
     '''
+    Sorts regions in df by ID and then 5' - 3' order in ID (based on Start coordinate, strand-aware)
     Intended to be applied inside a pr.apply() call (i.e. operates on underlying df of PyRanges object)
     '''
 
@@ -118,6 +229,7 @@ def annotate_last_exon(gr, id_col="transcript_id", out_col="last_exon"):
 def _most_tss_proximal(df, start_col="Start_b", end_col="End_b"):
     '''
     Return most 5' polyA site (strand-aware)
+    Intended to be applied to a pandas dataframe
     '''
     assert start_col in df.columns
     assert end_col in df.columns
@@ -133,7 +245,7 @@ def _most_tss_proximal(df, start_col="Start_b", end_col="End_b"):
 
 def _representative_proximal_site(df, utr3_col="last_exon", utr3_key=1):
     '''
-    intended for groupby pandas object
+    intended to be applied in a groupby.apply pandas operation
     '''
 
     utr_df = df.loc[df[utr3_col] == utr3_key, :]
@@ -149,6 +261,8 @@ def _representative_proximal_site(df, utr3_col="last_exon", utr3_key=1):
 
 def _df_change_coordinate(df, change_5p=False, suffix="_b"):
     '''
+    Swaps 5'/3' coordinate between default Start/End column and suffixed Start/End column in the same row
+    Not the original Start/End column values are dropped from the output dataframe
     Intended to be applied inside a pr.apply() call (i.e. operates on underlying df of PyRanges object)
     '''
 
@@ -182,10 +296,12 @@ def _df_change_coordinate(df, change_5p=False, suffix="_b"):
 
 def get_pre_regions(gr, exons):
     '''
+    Return PyRanges object containing 'PRE' regions for each gene/proximal polyA site
+    PRE region - the stretch of DNA starting from the beginning of the exon containing
+    (or proximal to) the APA site and ending at the site position.
 
-    Introns - stretch of DNA starting from the beginning of the exon containing
-(or proximal to) the APA site and ending at the site position.
-        - Need to find nearest upstream exon and use that 5'end
+    gr: PyRanges object containing exons joined with overlapping polyA sites (suffixed with '_b')
+    exons: PyRanges object containing exon regions
     '''
 
     gr_ex = gr.subset(lambda df: df.Feature == "exon")
@@ -197,7 +313,7 @@ def get_pre_regions(gr, exons):
                                                           change_5p=False,
                                                           suffix="_b"))
 
-    # Generate 'PREP' regions for introns
+    # Generate 'PRE' regions for introns
 
     # Need to find nearest upstream exon to update 5'end
     # slack=1 reports bookended intervals as overlapping
@@ -227,6 +343,7 @@ def get_pre_regions(gr, exons):
         #     print(gr_int_up.subset(lambda df: df.gene_id == df.gene_id_c).gene_id.nunique())
 
         # Now can generate PRE regions as before
+
         # First update the 5'end
         pre_int = gr_int_up.apply(lambda df: _df_change_coordinate(df, change_5p=True, suffix="_c"))
         # Now 3'end in same way as exons
@@ -238,14 +355,14 @@ def get_pre_regions(gr, exons):
 def _pd_merge_gr(df, df_to_merge, how, on, suffixes, to_merge_cols):
     '''
     Perform a pd.merge inside a pr.apply to add columns from gr_to_merge based on metadata in gr_df
-    Here, will check the chromosome and strand of provided gr (gr_df)
-    and subset gr_to_merge to chr/strand before converting to df
+
     PyRanges dfs must have same columns across chr/strand pairs
-    If not present in to merge need to output expected columns in df
-    This should cut down on memory requirements vs convert to df (which requires pd.concat() x chrom & strand)
-    For this kind of merge, only expect joins between regions on same chr/strand
+        - if no corresponding df in df_to_merge need to output expected columns (to_merge_cols) in df
+
+    For this kind of merge, will only try to join between regions/rows on same chr/strand
+    Also cuts down on memory requirements vs convert to df (which requires pd.concat() x chrom & strand)
     '''
-    #chromsomes returns a list of chr names (always 1 val)
+
     assert isinstance(to_merge_cols, list)
 
     if df_to_merge.empty:
@@ -284,6 +401,10 @@ def _pd_merge_gr(df, df_to_merge, how, on, suffixes, to_merge_cols):
 
 def get_post_regions(pre_regions, tx_gr):
     '''
+    Return PyRanges object containing 'POST' regions for each gene
+
+    pre_regions: PyRanges containing pre_regions output by get_pre_regions()
+    tx_gr: PyRanges containing 'transcript' regions for transcripts in pre_regions
     '''
 
     #1. Get canonical transcript ends
@@ -334,6 +455,7 @@ def main(gtf_path,
     gtf = gtf[processing_gtf_cols]
 
     #1. Get set of gene IDs with at least 1 overlapping pas
+    # Default overlap is strand-aware (provided pas BED contains strand)
     apa_gene_ids = set(gtf.overlap(pas).gene_id)
 
     gtf_apa = gtf.subset(lambda df: df["gene_id"].isin(apa_gene_ids))
