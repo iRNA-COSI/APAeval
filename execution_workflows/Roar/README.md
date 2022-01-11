@@ -12,6 +12,9 @@ The Roar execution workflow is currently compatible with the following APAeval c
 * Reference Manual: https://bioconductor.org/packages/release/bioc/manuals/roar/man/roar.pdf
 * GitHub: https://github.com/vodkatad/roar
 
+# Rulegraph
+
+![rulegraph](rulegraph.Roar.png)
 
 # Input files & parameters
 
