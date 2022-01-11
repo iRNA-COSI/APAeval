@@ -15,7 +15,14 @@ Instructions are  in the vignette - (https://bioconductor.org/packages/release/b
 
 Example files can be found at the Github repo - (https://github.com/vodkatad/roar/wiki/Identify-differential-APA-usage-from-RNA-seq-alignments#hg38-annotation-files-refseq-version-79)
 
-Workflow/interpretation of how to generate these annotations is described below:
+
+I've used PyRanges (https://github.com/biocore-ntnu/pyranges) throughout for the analysis.
+TL;DR: PyRanges objects are dictionaries of {(chromosome, strand): pd.DataFrame}
+Dataframes store the corresponding intervals.
+pr.apply (/ pr.apply_pair()) is used to expose the underlying dataframes (on which standard pandas functions/methods can be applied)
+
+
+Workflow/interpretation of how to generate these annotations is described below.
 
 **Part 1 - Selecting representative proximal polyA site**
 
