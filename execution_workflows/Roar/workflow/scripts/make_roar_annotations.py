@@ -144,7 +144,7 @@ def longest_tx_per_gene(gr, gene_id_col="gene_id", tx_id_col="transcript_id"):
     assert gene_id_col in gr.columns
     assert tx_id_col in gr.columns
 
-    feat_vals = gr.Feature.drop_duplicates()
+    feat_vals = gr.Feature.drop_duplicates().tolist()
 
     assert all([True if feat in feat_vals
                 else False

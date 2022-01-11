@@ -25,6 +25,34 @@ SCRIPTS = config["scripts"]
 OUTDIR = config["out_dir"]
 
 
+# Checking challenge flag values
+assert isinstance(config["run_identification"], bool), f"'run_identification' must be True/False boolean, {config['run_identification']} (type {type(config['run_identification'])}) was provided"
+assert isinstance(config["run_quantification"], bool), f"'run_quantification' must be True/False boolean, {config['run_quantification']} (type {type(config['run_quantification'])}) was provided"
+assert isinstance(config["run_differential"], bool), f"'run_differential' must be True/False boolean, {config['run_differential']} (type {type(config['run_differential'])}) was provided"
+
+
+def flag_info_message(flag_name, challenge_name):
+
+    if config[flag_name]:
+        sys.stderr.write(f"config['{flag_name}'] set to True - {challenge_name} challenge output to be generated\n")
+
+    elif not config[flag_name]:
+        sys.stderr.write(f"config['{flag_name}'] set to False - {challenge_name} challenge output will not be generated. Is this desired run mode?\n")
+
+
+# # Info messages
+flag_info_message("run_identification", "identification")
+flag_info_message("run_quantification", "quantification")
+flag_info_message("run_differential", "differential")
+
+# Roar is currently incompatible with both identification and quantification challenges (see README)
+if config["run_identification"] is not False:
+    raise ValueError("'run_identification' must be set to False as tool is incompatible with the identification challenge/does not perform this task (see README for details).")
+
+if config["run_quantification"] is not False:
+    raise ValueError("'run_quantification' must be set to False as tool is incompatible with the quantification challenge/does not perform this task (see README for details).")
+
+
 # Final Target Rule ------------------------------------------------------------
 localrules: finish
 
@@ -36,8 +64,8 @@ rule finish:
         os.path.join(OUTDIR,
                      "_".join([config["paramcode"],
                                config["participant"],
-                               config["differential_outcode"]]
-                              ) + ".tsv")
+                               config["differential_output_suffix"]]
+                              )) if config["run_differential"] else []
 
 
 #-------------------------------------------------------------------------------
@@ -111,8 +139,9 @@ rule get_differential_tsv:
         os.path.join(OUTDIR,
                      "_".join([config["paramcode"],
                                config["participant"],
-                               config["differential_outcode"]]
-                              ) + ".tsv")
+                               config["differential_output_suffix"]]
+                              )
+                     )
 
     params:
         script = os.path.join(config["scripts"],
