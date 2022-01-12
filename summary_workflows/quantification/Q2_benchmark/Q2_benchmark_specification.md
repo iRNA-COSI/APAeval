@@ -21,7 +21,9 @@ To compute the metrics, the poly(A) sites identified from the RNAseq data using 
 - find multiple predicted sites overlapping one ground truth site
   - weigths are added for the predicted sites based on distance to the ground truth site
   - expression can be calculated by `sum(weight_i*expression_i)` to get a single value matching the one ground truth site OR just summed without considering weight
-
+  
+The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified from the orthogonal 3'end seq dataset, i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified from the orthogonal dataset for the prediction to be considered true.  
+Distance thresholds should be between 0 nt and 100 nt with 10 nt increments.
 
 ## General info
 
@@ -54,6 +56,32 @@ Fields:
 This BED file contains genomic positions of unique unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from the orthogonal 3'end-seq dataset.
 Fields are the same as in format 1.
 
+## Plots
+
+The results of this benchmark will be visualised in OpenEBench using the following plots:
+
+1. **bar plot** visualizing **Correlation** of poly(A) site quantification. Separate plots should be prepared for different values of distance threshold:
+
+- 10 nt
+- 50 nt
+- 100 nt
+
+**X axis** - benchmarked tool  
+**Y axis** - correlation
+
+Ranking: The best performing tool is the one with the highest correlation value.
+
+Optional plots:
+
+2.  **2D line plot** visualising **correlation** as a function of distance threshold.
+
+**X axis** - correlation(d)  
+**Y axis** - distance threshold _d_ 
+
+Ranking: For each tool, the area under the curve (AUC) is calculated. The best performing tool is the one with the highest AUC.
+
+Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, the data should be visualised outside of OpenEBench.
+
 ## Outputs
 
 | # | Format | Link | Example data |
@@ -69,13 +97,13 @@ description of each attribute-value pair:
  
 | Attribute | Type | Unit | Description |
 | --- | --- | --- | --- |
-| `correlation_coefficient` | `float` | N/A | Correlation between RNAseq-based quantification and 3'end-seq quantification |
+| `correlation_coefficient` | `vector` | N/A | A vector of length=11 containing values of correlation between RNAseq-based quantification and 3'end-seq quantification; calculated for distance between 0 nt and 100 nt with 10 nt intervals; Each value in the vector is of type `float` |
 
 ## Metrics
  
 | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Correlation | N/A | Output 1 | Read file, parse JSON and extract attribute `correlation_coefficient` | `vector` | N/A |
+| 1 | Correlation | N/A | Output 1 | Read file, parse JSON and extract attribute `correlation_coefficient` that has type `vector` of `float` | `array` | N/A |
  
 ### Additional info metrics
  
