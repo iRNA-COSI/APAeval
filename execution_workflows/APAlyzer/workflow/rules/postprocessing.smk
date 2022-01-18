@@ -14,7 +14,7 @@ rule postprocessing:
         in_postprocessing = rules.main.output.out_main
 
     output:
-        out_postprocessing = os.path.join(config["out_dir"],config["out_filename"])
+        out_postprocessing = os.path.join(config["out_dir"],config["differential_output_file"])
 
     log:
         os.path.join(LOG_DIR,"postprocessing.log")

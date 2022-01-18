@@ -27,7 +27,7 @@ column since samples are grouped per condition to be processed by APAlyzer.
 ### Setting parameters in the config file
 Parameters used to run APAlyzer are specified in `config/config.APAlyzer.yaml`.
 In the config file, users are able to specify the output directory and output 
-file name: `out_dir, out_filename`. <br>
+file name: `out_dir, differential_output_file`. <br>
 
 In addition, the relative path from the working directory to the input sample file 
 from the previous step is to be specified with parameter `sample_file`. <br>

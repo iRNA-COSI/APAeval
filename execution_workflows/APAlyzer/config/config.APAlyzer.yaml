@@ -6,10 +6,19 @@
 # Path to run-specific sample file
 sample_file: "config/samples.csv"
 
+# Apalyzer isn't compatible with identification challenge. Always set this value to False
+run_identification: False
+
+# Apalyzer isn't compatible with quantification challenge. Always set this value to False
+run_quantification: False
+
+# Apalyzer is only compatible with differential challenge. Always set this value to True
+run_differential: True
+
 # Path to output directory for run. Default: results/
 out_dir: "results/"
 # Output file name, ends with .tsv
-out_filename: "differential_challenge_output.tsv"
+differential_output_file: "differential_challenge_output.tsv"
 # Name of log directory to be placed in out_dir. Default: logs/
 logs_subdir: "logs/"
 
