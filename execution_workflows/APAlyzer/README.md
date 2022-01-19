@@ -17,8 +17,8 @@ Each row in the sample sheet has two columns:
 
 - condition: name of the condition (e.g control)
 - sample: name of the sample (e.g. control_replicate1)
-- bam: relative path from APAlyzer working directory to the
-       BAM input file for the sample 
+- bam: relative path from APAlyzer working directory / absolute path to the
+       BAM input file for the sample
 
 
 It is important to name samples of the same condition with the exact condition name under the condition
@@ -54,6 +54,20 @@ To run the workflow locally, you can use the provided wrapper script `run_local.
 ```
 bash run_local.sh
 ```
+
+**Note: The run_local.sh script is currently set up to run with the APAeval test data**. 
+If you have specified **absolute paths** in your sample sheet (e.g. `config/samples.csv`) or the config file (`config/config.DaPars2.yaml`), 
+or have input data that is **not in the current directory**, you will need to modify Singularity bind arguments so the 
+input files will be available to the container.
+
+e.g. The path to the input GTF file is `/share/annotation/annotation.gtf`, and my current working directory is `/home/sam/DaPars2_snakemake/`. 
+Modify the `--singularity-args` line in `run_local.sh` like below to ensure the file is available to the container:
+
+```
+--sigularity-args="--bind /share/" \
+```
+
+If you are satisfied with the bind arguments, you can run the workflow locally by doing `bash run_local.sh`
 
 ### Output & post-processing
 The output of APAlyzer qualifies for _differential challenge_.
