@@ -4,7 +4,7 @@
 # load libraries
 if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
 if ( suppressWarnings(suppressPackageStartupMessages(require("APAlyzer"))) == FALSE ) { stop("[ERROR] Package 'APAlyzer' required! Aborted.") }
-if ( suppressWarnings(suppressPackageStartupMessages(require("GenomicFeatures"))) == FALSE ) { stop("[ERROR] Package 'repmis' required! Aborted.") }
+if ( suppressWarnings(suppressPackageStartupMessages(require("GenomicFeatures"))) == FALSE ) { stop("[ERROR] Package 'GenomicFeatures' required! Aborted.") }
 
 #########################
 ###  PARSE ARGUMENTS  ###
@@ -146,4 +146,5 @@ out_df = rbind(out_3UTRAPA, out_IPA)
 pwd = getwd()
 setwd(pwd)
 gene_dict = gene_dict
-save(list = c("gene_dict", "out_df"), file = opt$out_main)
+# outputting out_3UTRAPA and out_IPA in case user wants to look into these dfs separately, they would have the option to
+save(list = c("gene_dict", "out_df", "out_3UTRAPA", "out_IPA"), file = opt$out_main)
