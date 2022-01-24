@@ -6,7 +6,7 @@ The [application](https://github.com/luskry/aptardi) is free to download,
 and the [README documentation](https://github.com/luskry/aptardi#aptardi) was used as a reference
 to create the nextflow pipeline of this module.
 
-This workflow qualifies for the APAeval **identification challenge only**
+This workflow qualifies for the APAeval **identification challenge only**.
 
 ## Running Aptardi workflow
 
