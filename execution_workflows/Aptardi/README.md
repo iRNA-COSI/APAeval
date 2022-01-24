@@ -57,7 +57,7 @@ Please do note that the column names are extracted from the transcript_id attrib
 
 ## Notes
 
-- Test data for the StringTie2 workflow can be downloaded from [here](https://drive.google.com/drive/folders/1KAWKU_7saa8fHQQ3smARxL6Py-UXac7G?usp=sharing) as Aptardi predicts no new poly(A) sites with the test data provided in the main section. You will need to unzip the FASTA & GTF file before inputting them to the workflow.
+- Test data for the StringTie2 workflow can be downloaded from [here](https://drive.google.com/drive/folders/1KAWKU_7saa8fHQQ3smARxL6Py-UXac7G?usp=sharing) (Aptardi predicts no new poly(A) sites with the test data provided in the main section). You will need to unzip the FASTA & GTF file before inputting them to the workflow.
 
 ## Author contact
 If you have any question or comment about Aptardi, please post on Aptardi GitHub Issues (https://github.com/luskry/aptardi/issues) or the author, Dr. Ryan Lusk (ryan.lusk@cuanschutz.edu).
