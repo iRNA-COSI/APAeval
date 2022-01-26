@@ -9,8 +9,6 @@ process SALMON_QUANT {
         publishDir "${params.outdir}/labrat/salmon/", mode: params.publish_dir_mode
         container "quay.io/biocontainers/salmon:1.6.0--h84f40af_0"
 
-        cpus 8
-
         input:
         tuple path(txfasta_idx), val(sample), path(fastq1), val(fastq2)
 
