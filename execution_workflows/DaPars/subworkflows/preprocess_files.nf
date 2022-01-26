@@ -1,6 +1,6 @@
 /*
- * Run DaPars
- */
+    Run DaPars preprocessing steps
+*/
 
 def modules = params.modules.clone()
 def files   = modules['files']
@@ -10,14 +10,11 @@ include { PREPROCESSING           } from '../modules/preprocessing' addParams( o
 include { CREATE_GENE_SYMBOL_FILE } from '../modules/create_gene_symbol_file' addParams( options: [:] )
 include { DAPARS_EXTRACT_3UTR     } from '../modules/dapars_extract_3utr' addParams( options: [:] )
 include { CONVERT_TO_BEDGRAPH     } from '../modules/convert_to_bedgraph' addParams( options: [:] )
-include { CREATE_CONFIG_FILE      } from '../modules/create_config_file' addParams( options: [:] )
-include { DAPARS_MAIN             } from '../modules/dapars_main' addParams( options: [:] )
-include { POSTPROCESSING          } from '../modules/postprocessing' addParams( options: [:] )
 
-workflow RUN_DAPARS {
+workflow PREPROCESS_FILES {
     take:
     ch_sample
-    
+
     main:
     /*
         Check input params
@@ -56,23 +53,16 @@ workflow RUN_DAPARS {
     CONVERT_TO_BEDGRAPH ( ch_convert_to_bedgraph_input )
 
     /*
-     * Create config file to be used as input for step 2 of DaPars
-     */
-    CREATE_CONFIG_FILE (
-        CONVERT_TO_BEDGRAPH.out.ch_convert_to_bedgraph_out.first(),
-        DAPARS_EXTRACT_3UTR.out.ch_extracted_3utr_output
-    )
+    * Rename output files
+    */
+    CONVERT_TO_BEDGRAPH.out.ch_convert_to_bedgraph_out
+        .set{ ch_convert_to_bedgraph_out }
 
-    /*
-     * Run step 2 of DaPars: identify the dynamic APA usages between two conditions.
-     */
-    DAPARS_MAIN ( CREATE_CONFIG_FILE.out.ch_dapars_input )
+    DAPARS_EXTRACT_3UTR.out.ch_extracted_3utr_output
+        .set{ ch_extracted_3utr_out }
 
-    /*
-     * Convert DaPars output file to differential challenge output file
-     */
-     DAPARS_MAIN.out.ch_dapars_output
-        .set { ch_postprocessing_input }
-    POSTPROCESSING ( ch_postprocessing_input )
+    emit:
+    ch_convert_to_bedgraph_out
+    ch_extracted_3utr_out
+
 }
-

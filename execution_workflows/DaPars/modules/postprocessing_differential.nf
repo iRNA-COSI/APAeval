@@ -9,21 +9,22 @@ def options = modules['final_output']
 /*
     Convert DaPars output file to differential challenge file
 */
-process POSTPROCESSING {
+process POSTPROCESSING_DIFFERENTIAL {
     publishDir "${params.outdir}/dapars/${options.output_dir}", mode: params.publish_dir_mode
     container "docker.io/apaeval/dapars:latest"
 
     input:
     path config_file
+    val sample
 
     output:
     path "*"
 
     script:
-    mode = options.mode
-    output_file_name = options.output_file
-    file = "$PWD/${params.outdir}/dapars/dapars_output_All_Prediction_Results.txt"
+    run_mode = "differential"
+    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
+    differential_out = options.differential_out
     """
-    convert_output.py $file $output_file_name $mode
+    convert_output.py $file $differential_out $run_mode
     """
 }

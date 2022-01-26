@@ -9,16 +9,22 @@ def options = modules['final_output']
 /*
     Convert DaPars output file to differential challenge file
 */
-process CHECK_INPUT_PARAMS {
+process POSTPROCESSING_IDENTIFICATION {
     publishDir "${params.outdir}/dapars/${options.output_dir}", mode: params.publish_dir_mode
     container "docker.io/apaeval/dapars:latest"
 
+    input:
+    val sample
+    path output_file
+
+    output:
+    path "*"
+
     script:
-    run_identification = options.run_identification
-    run_differential = options.run_differential
-    identification_out_suffix = options.identification_out_suffix
-    differential_out = options.differential_out
+    run_mode = "identification"
+    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
+    identification_out = "${sample}_${options.identification_out_suffix}"
     """
-    check_input_params.py $identification_out_suffix $differential_out $run_identification $run_differential
+    convert_output.py $file $identification_out $run_mode
     """
 }
