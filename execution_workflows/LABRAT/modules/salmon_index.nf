@@ -6,7 +6,7 @@ def options    = initOptions(params.options)
 
 process SALMON_INDEX {
         publishDir "${params.outdir}/labrat/salmon", mode: params.publish_dir_mode
-        container "quay.io/biocontainers/salmon:0.14.0--h86b0361_1"
+        container "quay.io/biocontainers/salmon:1.6.0--h84f40af_0"
 
         input:
         path txfasta
@@ -16,6 +16,6 @@ process SALMON_INDEX {
 
         script:
         """
-        salmon index -t $txfasta -i txfasta.idx --type quasi -k 31 --keepDuplicates
+        salmon index -t $txfasta -i txfasta.idx -k 31 --keepDuplicates
         """
 }

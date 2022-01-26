@@ -14,10 +14,7 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 // Check mandatory parameters (missing protocol or profile will exit the run.)
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-if (params.conditionA) { ch_conditionA = params.conditionA }
-if (params.conditionB) { ch_conditionB = params.conditionB }
-
-
+if (params.labrat_quant_dir) { ch_labrat_quant_dir = file(params.labrat_quant_dir) } else { ch_labrat_quant_dir = '' }
 // Function to check if running offline
 def isOffline() {
     try {
@@ -48,7 +45,9 @@ workflow EXECUTE_LABRAT{
 
          INPUT_CHECK ( ch_input )
 
-         RUN_LABRAT ( INPUT_CHECK.out.ch_sample, INPUT_CHECK.out.ch_condition, ch_conditionA, ch_conditionB )
+         RUN_LABRAT ( INPUT_CHECK.out.ch_sample, INPUT_CHECK.out.ch_condition,
+                      ch_labrat_quant_dir, params.conditionA, params.conditionB,
+                      params.run_quantification, params.run_differential )
     }
 
 ////////////////////////////////////////////////////
