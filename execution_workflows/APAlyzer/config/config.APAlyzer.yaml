@@ -35,5 +35,11 @@ gtf_ensemble_version: "103"
 # to reduce noise that stems from genes with low read coverages
 read_cutoff: 0
 
+# strand type of the bam file;
+#  "forward" is forwad sequencing,
+#  "invert" is reverse sequencing,
+#  "NONE" is non-strand specific,
+strandtype: "forward"
+
 # APAlyzer docker container
 container: "docker://apaeval/apalyzer:1.0.6"

@@ -20,7 +20,6 @@ Each row in the sample sheet has two columns:
 - bam: relative path from APAlyzer working directory / absolute path to the
        BAM input file for the sample
 
-
 It is important to name samples of the same condition with the exact condition name under the condition
 column since samples are grouped per condition to be processed by APAlyzer.
 

@@ -16,7 +16,8 @@ rule main:
 
     params:
         outdir = config["out_dir"],
-	read_cutoff = config["read_cutoff"]
+	    read_cutoff = config["read_cutoff"],
+        strandtype = config["strandtype"]
 
     log:
         os.path.join(LOG_DIR,"main.log")
@@ -27,6 +28,7 @@ rule main:
     shell:
         """(Rscript  workflow/scripts/APAlyzer_main.R \
             --dir_path {params.outdir} \
-	    --read_cutoff {params.read_cutoff} \
+	        --read_cutoff {params.read_cutoff} \
+	        --strandtype{params.strandtype} \
             --in_main {input.in_main} \
             --out_main {output.out_main};) &> {log}"""
