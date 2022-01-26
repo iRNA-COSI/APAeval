@@ -8,6 +8,8 @@ process LABRAT_CALCULATEPSI {
         publishDir "${params.outdir}/labrat", mode: params.publish_dir_mode
         container "quay.io/biocontainers/labrat:0.2.2--pyhdfd78af_0"
 
+        label "process_low"
+
         input:
         val salmon_dir
         path sampcond
