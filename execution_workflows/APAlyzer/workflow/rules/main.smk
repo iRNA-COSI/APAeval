@@ -29,6 +29,6 @@ rule main:
         """(Rscript  workflow/scripts/APAlyzer_main.R \
             --dir_path {params.outdir} \
 	        --read_cutoff {params.read_cutoff} \
-	        --strandtype{params.strandtype} \
+	        --strandtype {params.strandtype} \
             --in_main {input.in_main} \
             --out_main {output.out_main};) &> {log}"""
