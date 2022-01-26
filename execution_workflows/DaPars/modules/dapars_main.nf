@@ -3,7 +3,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
-def modules = params.modules.clone()
 
 process DAPARS_MAIN {
         tag "$sample"
@@ -11,7 +10,8 @@ process DAPARS_MAIN {
         container "docker.io/apaeval/dapars:latest"
 
         input:
-        path(config_file)
+        path config_file
+        val sample
 
         output:
         path config_file, emit: ch_dapars_output
