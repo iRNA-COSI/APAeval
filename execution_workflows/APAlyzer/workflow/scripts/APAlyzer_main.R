@@ -102,7 +102,7 @@ dfLE = PASREF$dfLE
 
 #----------Calculation of relative expression of 3'UTR APA and IPA----------
 # calculate relative expression of 3' UTR APA
-UTR_APA_OUT = PASEXP_3UTR(UTRdbraw, flsall, Strandtype = strandtype)
+UTR_APA_OUT = PASEXP_3UTR(UTRdbraw, flsall, Strandtype = opt$strandtype)
 
 # ensure that coordinates are numeric
 dfIPA$Pos = as.numeric(as.character(dfIPA$Pos))
@@ -112,7 +112,7 @@ dfLE$LEstart = as.numeric(as.character(dfLE$LEstart))
 dfLE$TES = as.numeric(as.character(dfLE$TES))
 
 # calculate relative expression of IPA
-IPA_OUT = PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype = strandtype, nts = 1)
+IPA_OUT = PASEXP_IPA(dfIPA, dfLE, flsall, Strandtype = opt$strandtype, nts = 1)
 
 #---------------Significantly regulated APA in 3’UTRs and introns-----------------
 sampleTable = data.frame(samplename =
