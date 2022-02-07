@@ -12,7 +12,7 @@ if (params.help) {
 		2021
 	    =====================================================
 	    Usage:
-	    Run the pipeline with default parameters:
+	    Run the pipeline with default parameters read from nextflow.config:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
  	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --public_ref_dir {validation.reference.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
