@@ -39,4 +39,4 @@ One can use the following command to run the summary workflow from command line:
 ```
 nextflow run main.nf -profile docker
 ```
-
+This reads the parameters from the [nextflow.config](nextflow.config) file.
