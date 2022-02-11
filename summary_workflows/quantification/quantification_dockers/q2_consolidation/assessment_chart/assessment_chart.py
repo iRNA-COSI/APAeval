@@ -242,12 +242,11 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
     # change plot style
     # set plot title
 
-    plt.title("Quantification benchmark 2 - number of matched sites vs number of unmatched sites in challenge" + challenge_type, fontsize=18, fontweight='bold')
+    plt.title("Quantification benchmark 2 - percentage of matched sites in challenge" + challenge_type, fontsize=18, fontweight='bold')
 
     # set plot title depending on the analysed tool
 
-    ax.set_xlabel("Number of matched sites", fontsize=12)
-    ax.set_ylabel("Number of unmatched sites", fontsize=12)
+    ax.set_xlabel("Percentage of matched sites", fontsize=12)
 
     # Shrink current axis's height  on the bottom
     box = ax.get_position()

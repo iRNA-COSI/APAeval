@@ -120,6 +120,7 @@ process compute_metrics {
 	path gold_standards_dir
 	val tool_name
 	val community_id
+        val window
 
 	output:
 	file 'assessment.json' into assessment_out
@@ -128,7 +129,7 @@ process compute_metrics {
 	file_validated == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $challenges_ids -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json
+	python3 /app/compute_metrics.py -i $input_file -c $challenges_ids -m $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $window
 	"""
 }
 

@@ -21,4 +21,22 @@ the benchmark itself is performed by merging the assessment metrics with the res
 For the tool execution workflows please refer to the [iRNA-COSI/APAeval/execution_workflows](https://github.com/iRNA-COSI/APAeval/tree/main/execution_workflows) repository.
 
 ## Usage
-In order to build the Docker images locally, please run `./build.sh <tag_id>`
+#### After making the necessary changes for your specific challenge, you will have to build the docker image locally by either of the following two$
+1. Go to the `benchmarking_dockers/` directory and run the following (note: the `tag_id` should match the one in ../`nextflow.config`):
+```
+run `./build.sh <tag_id>`
+```
+2. Go to the specific docker directory for each step in `benchmarking_dockers/`:
+ - `apaeval_validation/`, `apaeval_metrics/`, and `apaeval_consolidation/`
+and run the following
+```
+docker build . -t apaeval_[challenge]_[validation/metrics/consolidation]:1.0
+```
+If you want to update the docker container, please remove your original image first:
+```
+docker image ls #look for the IMAGE_ID of your docker image
+docker rmi [IMAGE_ID]
+```
+Then, you can rebuild the docker image locally (see above).
+ - Note: please don't push it up to docker hub because that may use quite a bit `AWS` rates
+

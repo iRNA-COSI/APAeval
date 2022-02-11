@@ -19,6 +19,7 @@ def main(args):
     participant = args.participant_name
     community = args.community_name
     out_path = args.output
+    window = args.window
 
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
@@ -41,7 +42,7 @@ def convertRunTimeToSec(runtime_str):
         runtime = int(runtime_broken_down[-1].strip('s'))+int(runtime_broken_down[-2].strip('m'))*60+int(runtime_broken_down[-3].strip('h'))*60*60
     return runtime
 
-def compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path):
+def compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path, window):
 
     # get participant dataset
 #    participant_data = pandas.read_csv(input_participant, sep='\t',
@@ -57,9 +58,10 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         metrics_data=os.path.join(gold_standards_dir, challenge + ".bed") ##NO LONGER HARD-CODED
 
         # metric on the number of matched sites
-        window = 15
+        #window = 15
         match_with_gt_run = Leo_MatchPAsites_GT.match_wtih_gt(input_participant,metrics_data,window)
         merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
+        percent_matched=n_matched_sites/(n_matched_sites+n_unmatched_sites)
 
         # metric on correlation coffecient
         correlation=Leo_MatchPAsites_GT.corr_with_gt(merged_bed_df)
@@ -67,17 +69,13 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         #assessment_data = {'toolname': participant, 'x': TPR, 'y': acc, 'e': 0, 'challenge_type': challenge} #not used anywhere
 
         # get json assessment file for both metrics
-        data_id_1 = "APAeval" + ":" + challenge + "_matched_" + participant
+        data_id_1 = "APAeval" + ":" + challenge + "_percent_matched_" + participant
         std_error= 0
-        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "n_matched_sites", n_matched_sites, std_error)
+        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "percent_matched", percent_matched, std_error)
 
-        data_id_2 = "APAeval" + ":" + challenge + "_unmatched_" + participant
+        data_id_2 = "APAeval" + ":" + challenge + "_correlation_" + participant
         std_error= 0
-        assessment_unmatched_sites = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "n_unmatched_sites", n_unmatched_sites, std_error)
-
-        data_id_3 = "APAeval" + ":" + challenge + "_correlation_" + participant
-        std_error= 0
-        assessment_correlation = JSON_templates.write_assessment_dataset(data_id_3, community, challenge, participant, "correlation", correlation, std_error)
+        assessment_correlation = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "correlation", correlation, std_error)
 
         # push the two assessment datasets to the main dataset array
         ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_unmatched_sites, assessment_correlation])
@@ -98,6 +96,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
+    parser.add_argument("-w", "--window", help="window for scanning for poly(A) sites", required=True)
     
     args = parser.parse_args()
 

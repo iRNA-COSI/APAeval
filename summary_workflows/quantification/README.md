@@ -19,10 +19,14 @@ There are three steps in the summary workflow:
     - Inputs the `output.json` file from the metrics computation step and the `data/` directory, which stores files with benchmark values
     - The current python scripts are as they are in https://github.com/inab/TCGA_benchmarking_dockers, and only supports 2D plots with x and y axes
 
-#### After making the necessary changes for your specific challenge, you will have to build the docker image locally
-Go to the specific docker directory for each step in `benchmarking_dockers/`:
+#### After making the necessary changes for your specific challenge, you will have to build the docker image locally by either of the following two methods:
+1. Go to the `benchmarking_dockers/` directory and run the following
+```
+run `./build.sh <tag_id>`
+```
+2. Go to the specific docker directory for each step in `benchmarking_dockers/`:
  - `apaeval_validation/`, `apaeval_metrics/`, and `apaeval_consolidation/`
-and type the following
+and run the following
 ```
 docker build . -t apaeval_[challenge]_[validation/metrics/consolidation]:1.0
 ```
