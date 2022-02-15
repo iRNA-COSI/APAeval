@@ -31,6 +31,7 @@ if (params.help) {
 				--statsdir	The output directory with nextflow statistics
 				--data_model_export_dir	The output dir where json file with benchmarking data model contents will be saved
 	  			--otherdir					The output directory where custom results will be saved (no directory inside)
+				--window				Window site for scanning for poly(A) sites (default: 15).
 	    Flags:
                 --help			Display this message
 	    """.stripIndent()
@@ -56,6 +57,7 @@ if (params.help) {
 	         Nextflow statistics directory: ${params.statsdir}
 	         Benchmarking data model file location: ${params.data_model_export_dir}
 	         Directory with community-specific results: ${params.otherdir}
+			 Window size for scanning for poly(A) sites: ${params.window}
 
          """
 	.stripIndent()
@@ -73,6 +75,7 @@ challenges_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 event_date = params.event_date
+window = params.window
 
 // output 
 validation_file = file(params.validation_result)
@@ -120,7 +123,7 @@ process compute_metrics {
 	path gold_standards_dir
 	val tool_name
 	val community_id
-        val window
+    val window
 
 	output:
 	file 'assessment.json' into assessment_out

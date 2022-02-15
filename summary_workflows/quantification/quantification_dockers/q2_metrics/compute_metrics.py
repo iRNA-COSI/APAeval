@@ -3,8 +3,6 @@
 from __future__ import division
 import io
 import os
-import pandas
-import math
 import json
 from argparse import ArgumentParser
 from JSON_templates import JSON_templates
@@ -30,7 +28,7 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path)
+    compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path, window)
 
 def convertRunTimeToSec(runtime_str):
     runtime_broken_down = runtime_str.split()
@@ -78,7 +76,7 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
         assessment_correlation = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "correlation", correlation, std_error)
 
         # push the two assessment datasets to the main dataset array
-        ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_unmatched_sites, assessment_correlation])
+        ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_correlation])
 
     # once all assessments have been added, print to json file
     with io.open(out_path,
@@ -96,7 +94,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
-    parser.add_argument("-w", "--window", help="window for scanning for poly(A) sites", required=True)
+    parser.add_argument("-w", "--window", help="window for scanning for poly(A) sites", required=True, type=int)
     
     args = parser.parse_args()
 
