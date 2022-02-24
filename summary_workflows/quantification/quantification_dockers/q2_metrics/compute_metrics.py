@@ -6,7 +6,7 @@ import os
 import json
 from argparse import ArgumentParser
 from JSON_templates import JSON_templates
-from Leo_MatchPAsites_GT import Leo_MatchPAsites_GT
+from matchPAS import matchPAS
 
 def main(args):
 
@@ -42,36 +42,27 @@ def convertRunTimeToSec(runtime_str):
 
 def compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path, window):
 
-    # get participant dataset
-#    participant_data = pandas.read_csv(input_participant, sep='\t',
-#                                       comment="#", header=0, index_col=0)
-
     # define array that will hold the full set of assessment datasets
     ALL_ASSESSMENTS = []
 
     for challenge in challenge_types:
-        # get metrics dataset
-#        metrics_data = pandas.read_csv(os.path.join(gold_standards_dir, challenge + ".txt"),
-#                                       comment="#", header=0, sep='\t',index_col=0)
+        
         metrics_data=os.path.join(gold_standards_dir, challenge + ".bed") ##NO LONGER HARD-CODED
 
         # metric on the number of matched sites
-        #window = 15
-        match_with_gt_run = Leo_MatchPAsites_GT.match_wtih_gt(input_participant,metrics_data,window)
+        match_with_gt_run = matchPAS.match_with_gt(input_participant,metrics_data,window)
         merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
         percent_matched=n_matched_sites/(n_matched_sites+n_unmatched_sites)
 
         # metric on correlation coffecient
-        correlation=Leo_MatchPAsites_GT.corr_with_gt(merged_bed_df)
-
-        #assessment_data = {'toolname': participant, 'x': TPR, 'y': acc, 'e': 0, 'challenge_type': challenge} #not used anywhere
+        correlation= matchPAS.corr_with_gt(merged_bed_df)
 
         # get json assessment file for both metrics
-        data_id_1 = "APAeval" + ":" + challenge + "_percent_matched_" + participant
+        data_id_1 = community + ":" + challenge + "_percent_matched_" + participant
         std_error= 0
         assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "percent_matched", percent_matched, std_error)
 
-        data_id_2 = "APAeval" + ":" + challenge + "_correlation_" + participant
+        data_id_2 = community + ":" + challenge + "_correlation_" + participant
         std_error= 0
         assessment_correlation = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "correlation", correlation, std_error)
 
@@ -88,13 +79,13 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
 if __name__ == '__main__':
     
     parser = ArgumentParser()
-    parser.add_argument("-i", "--participant_data", help="list of challenge genes prediction", required=True)
+    parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
     parser.add_argument("-c", "--challenge_types", nargs='+', help="list of types of challenge selected by the user, separated by spaces", required=True)
     parser.add_argument("-m", "--metrics_ref", help="dir that contains metrics reference datasets for all challenge types", required=True)
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
-    parser.add_argument("-w", "--window", help="window for scanning for poly(A) sites", required=True, type=int)
+    parser.add_argument("-w", "--window", help="window (nt) for scanning for poly(A) sites", required=True, type=int)
     
     args = parser.parse_args()
 
