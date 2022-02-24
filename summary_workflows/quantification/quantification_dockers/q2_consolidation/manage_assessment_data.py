@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
 from __future__ import division
-import shutil
 import json
 import os
-import fnmatch
 from argparse import ArgumentParser
-import numpy as np
 from assessment_chart import assessment_chart
 
 def main(args):
@@ -79,7 +76,7 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
                 metric_Y = "precision"
             
             aggregation_file = {
-                "_id": "APAeval:{}_{}_Aggregation".format(event_date, challenge),
+                "_id": "{}:{}_{}_Aggregation".format(metrics_file[0]["community_id"],event_date, challenge),
                 "challenge_ids": [
                     challenge
                 ],
