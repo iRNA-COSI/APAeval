@@ -10,9 +10,9 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y curl unzip python python-dev python3 python3-pip r-base bedtools wget
 
 # Install DaPars
-RUN curl -LJO gitreleases.dev/gh/ZhengXia/dapars/latest/dapars_0.9.1.zip
-RUN unzip -q "dapars_0.9.1.zip"
-RUN chmod +x /dapars/src/*
+RUN wget https://github.com/ZhengXia/dapars/archive/master.zip
+RUN unzip -q "master.zip"
+RUN chmod +x /dapars-master/src/*
 ENV PATH=$PATH:/dapars/src/
 
 # Download tools to convert gtf gene model file to bed
@@ -23,7 +23,7 @@ RUN mv gtfToGenePred /usr/local/bin
 RUN mv genePredToBed /usr/local/bin
 
 # Install python packages
-RUN wget wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
 RUN pip3 install pandas
 RUN python2.7 get-pip.py
 RUN pip2.7 install numpy
