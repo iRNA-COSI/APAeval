@@ -6,10 +6,8 @@ Example pipeline with Nextflow used to assess results, comparing the metrics bei
 There are three steps in the summary workflow:
  - Validation
     - `input_file`: tab-separated output file from execution workflow
-    - Change the `benchmarking_dockers/apaeval_validation/validation.py` for the specific input_file
-    - Each input_file may have different fields from different execution workflows
-    - `public_ref/[validation_ref].txt` stores the values required to be in the input_files for validating the input_file 
-    - The `[output].json` file is not used in the subsequent steps
+    - Change the validation in `benchmarking_dockers/apaeval_validation/validation.py` (around line 50)for the kind of input_file requested by your benchmarking event
+    - The `[output].json` file is not used in the subsequent steps, but the workflow exits if the input file doesn't comply to the specifications of the current benchmarking event
  - Metrics Computation
     - `input_file`: tab-separated output file from execution workflow
     - Change the `benchmarking_dockers/apaeval_metrics/compute_metrics.py` for the specific input_file and the specific metric calculation
@@ -28,7 +26,7 @@ run `./build.sh <tag_id>`
  - `apaeval_validation/`, `apaeval_metrics/`, and `apaeval_consolidation/`
 and run the following
 ```
-docker build . -t apaeval_[challenge]_[validation/metrics/consolidation]:1.0
+docker build . -t apaeval/[challenge]_[validation/metrics/consolidation]:1.0
 ```
 If you want to update the docker container, please remove your original image first:
 ```

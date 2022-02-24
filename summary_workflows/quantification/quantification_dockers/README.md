@@ -30,7 +30,7 @@ run `./build.sh <tag_id>`
  - `apaeval_validation/`, `apaeval_metrics/`, and `apaeval_consolidation/`
 and run the following
 ```
-docker build . -t apaeval_[challenge]_[validation/metrics/consolidation]:1.0
+docker build . -t apaeval/[challenge]_[validation/metrics/consolidation]:1.0
 ```
 If you want to update the docker container, please remove your original image first:
 ```
