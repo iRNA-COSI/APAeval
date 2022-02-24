@@ -26,6 +26,10 @@ process CSI_UTR_MAIN {
         outdir = "$PWD/${params.outdir}/csi_utr/"
         bed_data_dir = "$PWD/${params.outdir}/csi_utr/input_files/"
         """
+        mkdir ./data/locations
+
+        mv $genome_file ./data/locations/.
+
         CSI-UTR \
         -genome=$genome \
         -r=$r \

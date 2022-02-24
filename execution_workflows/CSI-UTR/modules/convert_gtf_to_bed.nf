@@ -22,6 +22,6 @@ process CONVERT_GTF_TO_BED {
     converted_genome_file = "/Mm10.CSIs.annot.bed"
     """
     gtfToGenePred $genome_file test.genePred
-    genePredToBed test.genePred \$PWD$converted_genome_file
+    genePredToBed test.genePred \$PWD$converted_genome_fileØ
     """
 }
