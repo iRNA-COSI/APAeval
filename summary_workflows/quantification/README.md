@@ -6,7 +6,13 @@ Example pipeline with Nextflow used to assess results, comparing the metrics bei
 There are three steps in the summary workflow:
  - Validation
     - `input_file`: tab-separated output file from execution workflow
-    - Change the validation in `benchmarking_dockers/apaeval_validation/validation.py` (around line 50)for the kind of input_file requested by your benchmarking event
+    - Change the validation in `benchmarking_dockers/apaeval_validation/validation.py` (around line 50) for the kind of input_file requested by your benchmarking event. 
+      > NOTE: Currently, the following restrictions are in place:
+      >- tab separated file with 6 columns
+      >- start and end coordinates (col 2,3) have to be int64
+      >- strand (col 6) has to be one of [+,-]
+      >- chromosome (col 1) has to be one of [1..22,X,Y]
+
     - The `[output].json` file is not used in the subsequent steps, but the workflow exits if the input file doesn't comply to the specifications of the current benchmarking event
  - Metrics Computation
     - `input_file`: tab-separated output file from execution workflow
