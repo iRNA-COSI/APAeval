@@ -47,7 +47,7 @@ def compute_metrics(input_participant, gold_standards_dir, challenge_types, part
 
     for challenge in challenge_types:
         
-        metrics_data=os.path.join(gold_standards_dir, challenge + ".bed") ##NO LONGER HARD-CODED
+        metrics_data=os.path.join(gold_standards_dir, challenge + ".bed")
 
         # metric on the number of matched sites
         match_with_gt_run = matchPAS.match_with_gt(input_participant,metrics_data,window)
