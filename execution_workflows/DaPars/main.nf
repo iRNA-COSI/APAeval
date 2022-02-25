@@ -35,11 +35,12 @@ if (params.help) {
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
 
+include { EXECUTE_DAPARS } from './workflow/execute_dapars' addParams( [:] )
+
 workflow {
     /*
      * RUN DAPARS WORKFLOW
      */
-    include { EXECUTE_DAPARS } from './workflow/execute_dapars' addParams( [:] )
     EXECUTE_DAPARS ()
 }
 
