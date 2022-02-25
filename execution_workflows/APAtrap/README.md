@@ -47,8 +47,9 @@ To run with singularity, comment out line 49 in Apatrap/nextflow.config file `do
 ### Parameters
 Parameters used to run APAtrap are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
-- `run_differential` - set to false to obtain identification and quantification challenge outputs, or set to true
-                       to obtain differential challenge output. Specifying any other value will throw an error.
+- `run_identification` - set to true to obtain identification challenge output. Specifying any other value will throw an error.
+- `run_quantification` - set to true to obtain quantification challenge output. Specifying any other value will throw an error.
+- `run_differential` - set to true to obtain differential challenge output. Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Apatrap/results/apatrap/
 - `identification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running identification,
                                 the prefix will be the different sample names obtained from the sample column in the sample sheet
@@ -61,16 +62,19 @@ Parameters relevant to the workflow itself are:
 ### Running the differential workflow
 - Set the 'run_differential' parameter in conf/modules.config to true
 - Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
-- Ensure the sample sheet contains at least two distinct conditions in the condition column
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- Ensure the sample sheet contains exactly two distinct conditions in the condition column
 
 ### Running the identification and quantification workflow
-- Set the 'run_differential' parameter in conf/modules.config to false
-- Both identification and quantification challenges will be ran
-- Change 'identification_out_suffix' and 'quantification_out_suffix' parameters in conf/modules.config to the desired file suffix that ends with '.bed'
-- In the sample sheet, at least one row is required to be provided
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- Set the 'run_identification' and/or 'run_quantification' parameters in conf/modules.config to true to 
+  run identification and/or quantification workflows
+- Change 'identification_out_suffix' and/or 'quantification_out_suffix' parameters in conf/modules.config to 
+  the desired file suffix that ends with '.bed'
+- In the sample sheet, at least one row is required to be provided 
 
+
+### Running the workflow
+Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
+`nextflow main.nf --input samplesheet_example_files.csv`. 
 
 Note that it's recommended to delete the existing `results` folder to remove results from the previous run, if any. 
 This is to avoid polluting the next run with the results from the previous run when we are using the same sample name(s),
