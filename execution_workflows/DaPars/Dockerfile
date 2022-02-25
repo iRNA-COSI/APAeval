@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y curl unzip python python-dev python3 py
 # Install DaPars
 RUN wget https://github.com/ZhengXia/dapars/archive/master.zip
 RUN unzip -q "master.zip"
-RUN chmod +x /dapars-master/src/*
+RUN mv dapars-master dapars
+RUN chmod +x /dapars/src/*
 ENV PATH=$PATH:/dapars/src/
 
 # Download tools to convert gtf gene model file to bed
