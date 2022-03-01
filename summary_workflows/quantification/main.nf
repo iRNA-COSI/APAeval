@@ -5,21 +5,21 @@ if (params.help) {
 	    log.info"""
 	    =====================================================
 	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
-		Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3)
+		Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3), CJ Herrmann (*4)
 		*1 iRNA COSI
 		*2 Genomic Institute of Singapore, A*STAR, Singapore
 		*3 Barcelona Supercomputing Center, Barcelone, Spain
 		2021
+		*4 Biozentrum, University of Basel, Switzerland
 	    =====================================================
 	    Usage:
 	    Run the pipeline with default parameters read from nextflow.config:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
- 	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --public_ref_dir {validation.reference.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
+ 	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
 	    Mandatory arguments:
-                --input		BED/TXT file with APA site information
-		--community_id			Name or OEB permanent ID for the benchmarking community
-                --public_ref_dir 		Directory with external reference file(s) for validating the structure of the output file(s) from the execution workflows (not utilized currently)
+                --input					BED/TXT file with APA site information
+				--community_id			Name or OEB permanent ID for the benchmarking community
                 --participant_id  		Name of the tool used for prediction
                 --goldstandard_dir 		Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
                 --challenges_ids  		List of challenge ids selected by the user, separated by spaces
@@ -31,7 +31,7 @@ if (params.help) {
 				--statsdir	The output directory with nextflow statistics
 				--data_model_export_dir	The output dir where json file with benchmarking data model contents will be saved
 	  			--otherdir					The output directory where custom results will be saved (no directory inside)
-				--window				Window site for scanning for poly(A) sites (default: 15).
+				--window				Window size for scanning for poly(A) sites (default: 15).
 	    Flags:
                 --help			Display this message
 	    """.stripIndent()
@@ -46,7 +46,6 @@ if (params.help) {
 	     ==============================================
 	         Input file: ${params.input}
 	         Benchmarking community = ${params.community_id}
-	         Public reference directory : ${params.public_ref_dir}
 	         Tool name : ${params.participant_id}
 	         Gold standard dataset directory: ${params.goldstandard_dir}
 	         Challenge ids: ${params.challenges_ids}
@@ -68,7 +67,6 @@ if (params.help) {
 // input files
 
 input_file = file(params.input)
-ref_dir = Channel.fromPath( params.public_ref_dir, type: 'dir' )
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
 challenges_ids = params.challenges_ids
@@ -95,7 +93,6 @@ process validation {
 
 	input:
 	file input_file
-	path ref_dir
 	val challenges_ids
 	val tool_name
 	val community_id
@@ -105,7 +102,7 @@ process validation {
 	file 'validation.json' into validation_out
 	
 	"""
-	python /app/validation.py -i $input_file -r $ref_dir -com $community_id -c $challenges_ids -p $tool_name -o validation.json
+	python /app/validation.py -i $input_file -com $community_id -c $challenges_ids -p $tool_name -o validation.json
 	"""
 
 }
@@ -147,7 +144,7 @@ process benchmark_consolidation {
 	file assessment_out
 	file validation_out
 	val challenges_ids
-        val event_date
+    val event_date
 	
 	output:
 	path 'aggregation_dir', type: 'dir'

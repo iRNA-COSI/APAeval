@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set the working directory to /app
