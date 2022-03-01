@@ -1,6 +1,17 @@
 # Summary workflows
 This is where the summary workflows for APAeval live.
 
+  - [Overview](#overview)
+  - [Summary workflow general description](#summary-workflow-general-description)
+  - [HOW TO](#how-to)
+    - [1. Copy template](#1-copy-template)
+    - [2. Establish proper validation](#2-establish-proper-validation)
+    - [3. Calculate the metrics](#3-calculate-the-metrics)
+    - [4. Consolidation](#4-consolidation)
+    - [5. Adapt `nextflow.config`](#5-adapt-nextflowconfig)
+    - [6. Don't forget to update `README.md`](#6-dont-forget-to-update-readmemd)
+  - [Origin](#origin)
+
 ## Overview
 ![apaeval-swfs][apaeval-swfs]
 
