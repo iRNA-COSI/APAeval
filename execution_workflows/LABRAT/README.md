@@ -1,7 +1,10 @@
 # Execution workflow for LABRAT
 
-`LABRAT` is for quantifying the alternative usage of polyadenylation and cleavage sites in RNAseq data. You can find the [publication on BioRXiv](https://www.biorxiv.org/content/10.1101/2020.10.05.326702v1).
+`LABRAT` is for quantifying the alternative usage of polyadenylation and cleavage sites in RNAseq data. You can find the [publication](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-07781-1).
 source code: https://github.com/TaliaferroLab/LABRAT
+
+The quantification step of LABRAT does not qualify for the benchmark quantification, which requires TPM values for each polyA site. LABRAT only provides TPM per transcript. 
+However, the output could be generated in the future by collecting the polyA site coordinates. 
 
 ## Input & pre-processing
 - samplesheet.csv with the following columns (more_samplesheets/samplesheet_paired.csv was used for testing locally)
@@ -14,9 +17,47 @@ source code: https://github.com/TaliaferroLab/LABRAT
 
 ## Params
 
-- `--input` samplesheet.csv 
-- `--conditionA` the first condition in the condition column of the samplesheet.csv
-- `--conditionB` the second condition in the condition column of the samplesheet.csv
+- `--input` samplesheet.csv
+- `--run_quantification` for running quantification
+- `--run_differential` for running differential analysis
+- `--labrat_quant_dir` location of the quantification results directory. Please provide this if `--run_differential` but not `--run_quantification`
+- `--conditionA` the first condition in the condition column of the samplesheet.csv. Please provide this if `--run_differential`
+- `--conditionB` the second condition in the condition column of the samplesheet.csv. Please provide this if `--run_differential`
+
+The Nextflow workflow contains two profiles: *docker* and *singularity*. Either can be used for exeuction and they are defined in `nextflow.config`.
+
+## example commands
+#### running quantification only
+```
+nextflow main.nf -profile docker --input <samplesheet.csv> --run_quantification
+```
+#### running differential analysis only
+```
+nextflow main.nf -profile docker --input <samplesheet.csv> --run_differential --conditionA <first condition> --conditionB <second condition> --labrat_quant_dir <full_path to labrat_quantification_results_dir>
+```
+#### running both quantification and differential analysis
+```
+nextflow main.nf -profile docker --input <samplesheet.csv> --run_quantification --run_differential --conditionA <first_condition> --conditionB <second_condition>
+```
+
+#### Run test data
+
+The workflow does not contain the setup to run the test data in `tests/test_data` as the genome sequence is necessary. 
+The following steps are meant to setup the test data in order to be comparable with other execution workflows.
+
+   * Create `siControl_R1_2genes.fastq.gz` and `siSrsf3_R1_2genes.fastq.gz` from corresponding BAM files with `samtools bam2fq` as described here: `tests/test_data/README.md`.
+   * Use `gencode_2genes_Chr_prefix.vM18.annotation.gff3` as genome annotation (gff).
+   * Download genome sequence of *mm10* from Gencode, preferentially only *chr6* and *chr16* as only those are used in the test.
+   * Provide the files with absolute paths in a sample sheet, by e.g. adjusting `more_samplesheets/samplesheet_single.csv`.
+      * Leave column *fastq2* empty
+      * sample: *siControl_R1* and *siSrsf3_R1*
+      * condition: *siControl_* and *siSrsf3*
+   * Run the quantification and differential analysis with (use actual sample sheet):
+   ```
+   nextflow main.nf --profile docker --input more_samplesheets/samplesheet_single.csv \
+      --run_quantification --run_differential \
+      --conditionA siControl --conditionB siSrsf3
+   ```
 
 ## Output & post-processing
 
