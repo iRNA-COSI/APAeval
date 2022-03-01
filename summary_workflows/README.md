@@ -1,17 +1,18 @@
 # Summary workflows
 This is where the summary workflows for APAeval live.
 
-  - [Overview](#overview)
-  - [Summary workflow general description](#summary-workflow-general-description)
-  - [HOW TO](#how-to)
-    - [1. Copy template](#1-copy-template)
-    - [2. Establish proper validation](#2-establish-proper-validation)
-    - [3. Calculate the metrics](#3-calculate-the-metrics)
-    - [4. Consolidation](#4-consolidation)
-    - [5. Adapt `nextflow.config`](#5-adapt-nextflowconfig)
-    - [6. Don't forget to update `README.md`](#6-dont-forget-to-update-readmemd)
-  - [Origin](#origin)
-
+- [Overview](#overview)
+- [Summary workflow general description](#summary-workflow-general-description)
+- [HOW TO](#how-to)
+  - [1. Copy template](#1-copy-template)
+  - [2. Establish proper validation](#2-establish-proper-validation)
+  - [3. Calculate the metrics](#3-calculate-the-metrics)
+  - [4. Consolidation](#4-consolidation)
+  - [5. Adapt `nextflow.config`](#5-adapt-nextflowconfig)
+  - [6. Don't forget to update `README.md`](#6-dont-forget-to-update-readmemd)
+  - [7.Build containers](#7build-containers)
+  - [8. Run the summary workflow](#8-run-the-summary-workflow)
+- [Origin](#origin)
 ## Overview
 ![apaeval-swfs][apaeval-swfs]
 
@@ -88,6 +89,35 @@ Here you'll adjust the docker container names, as well as input, participant and
 
 ### 6. Don't forget to update `README.md`
 Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification summary workflow][q-swf]).
+
+### 7.Build containers
+After making the necessary changes for your specific challenge, you will have to build the docker images locally by either of the following two methods:
+
+1. Go to the `[Y]_dockers/` directory and run the following
+(note: the `tag_id` should match the one in ../`nextflow.config`)
+```
+run `./build.sh <tag_id>`
+```
+2. Go to the specific docker directory for each step in `[Y]_dockers/`:
+ - `[X]_validation/`, `[X]_metrics/`, and `[X]_consolidation/`
+and run the following
+```
+docker build . -t apaeval/[X]_[validation/metrics/consolidation]:1.0
+```
+If you want to update the docker containers, please remove your original images first:
+```
+docker image ls #look for the IMAGE_ID of your docker image
+docker rmi [IMAGE_ID]
+```
+Then, you can rebuild the docker image locally (see above).
+> NOTE: please don't push to APAeval docker hub unless sanctioned by APAeval admins (ask us on Slack)
+
+### 8. Run the summary workflow
+One can use the following command to run the summary workflow from command line:
+```
+nextflow run main.nf -profile docker
+```
+This reads the parameters from the [nextflow.config](nextflow.config) file.
 
 ## Origin
 The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_workflow][tcga-wf] with the [corresponding docker declarations][tcga-docker]. The output structure is compatible with the [ELIXIR Benchmarking Data Model][elixir-data-model].
