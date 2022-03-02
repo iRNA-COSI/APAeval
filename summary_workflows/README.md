@@ -20,7 +20,8 @@ APAeval consists of **three benchmarking** events to evaluate the performance of
 
 Within a benchmarking event, one or more *challenges* will be performed. A **challenge is primarily defined by the input dataset used for performance assessment**. A challenge is evaluated within a *summary workflow*, which is run on the OEB infrastructure. The summary workflow will **compute all metrics relevant for the challenge**. Summary workflows can be re-used between challenges, however, depending on the input dataset, different metrics might be calculated, and summary workflows might thus be adapted to individual challenges (Example here: in challenge Ix, metrics I1 and I2 are computed, whereas in challenge Iy, an additional metric I5 is assessed. Apart from calculating metric I5 however, the summary workflows for the challenges Ix and Iy are the same.)    
 
-In order to compare the performance of participants within a challenge, the respective summary workflow will be run on output files from all eligible participant execution workflows. In a first step the provided files are **validated**. Subsequently, all required **metrics** (scripts In for Identification, Qn for quantification, Dn for differential usage) are computed, using the matched ground truth files, if applicable. Finally, the **results will be gathered in OEB** specific .json files per participant.
+In order to compare the performance of participants within a challenge, the respective summary workflow will be run on output files from all eligible participant execution workflows (For the participant execution workflows please refer to the [iRNA-COSI/APAeval/execution_workflows][apaeval-ewfs] repository!).   
+In a first step the provided files are **validated**. Subsequently, all required **metrics** (scripts In for Identification, Qn for quantification, Dn for differential usage) are computed, using the matched ground truth files, if applicable. Finally, the **results will be gathered in OEB** specific .json files per participant.
 Based on the created .json files, OEB will visualize all results per challenge, such that performance of participants can be compared for each metric.
 
 ## Summary workflow general description
@@ -64,7 +65,7 @@ Within the benchmarking event's directory resides a subdirectory `specification`
 3. Consolidation
 
 
-The "dockers" directories contain Dockerfiles, requirements, and OEB `.json` templates, as well as *python scripts* that do the actual lifting. **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
+The "dockers" directories contain Dockerfiles, requirements, and OEB `.json` templates. In order to create datasets that are compatible with the [Elixir Benchmarking Data Model][elixir-data-model], **the provided JSON templates have to be used**. The provided *python scripts* are where the action happens: **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
 
 
 ## HOW TO
@@ -94,7 +95,7 @@ Describe the type of validation and metric calculation you perform in the `READM
 After making the necessary changes for your specific challenge, you will have to build the docker images locally by either of the following two methods:
 
 1. Go to the `[Y]_dockers/` directory and run the following
-(note: the `tag_id` should match the one in ../`nextflow.config`)
+(note: the `tag_id` should match the one in `nextflow.config`)
 ```
 run `./build.sh <tag_id>`
 ```
@@ -117,18 +118,22 @@ One can use the following command to run the summary workflow from command line:
 ```
 nextflow run main.nf -profile docker
 ```
-This reads the parameters from the [nextflow.config](nextflow.config) file.
+This reads the parameters from the [nextflow.config][nextflow-config] file.
 
 ## Origin
 The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_workflow][tcga-wf] with the [corresponding docker declarations][tcga-docker]. The output structure is compatible with the [ELIXIR Benchmarking Data Model][elixir-data-model].
 
 [//]: # (References)
 [apaeval-swfs]: ../images/SWFs.png
+[apaeval-ewfs]: https://github.com/iRNA-COSI/APAeval/tree/main/execution_workflows
+[elixir-data-model]: https://github.com/inab/benchmarking-data-model
 [q-swf]: quantification/README.md
 [validation-py]:quantification/quantification_dockers/q_validation/validation.py
 [metrics-py]:quantification/quantification_dockers/q_metrics/compute_metrics.py
 [matchpas]: quantification/quantification_dockers/q_metrics/matchPAS
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
+[nextflow-config]: quantification/nextflow.config
 [tcga-wf]: https://github.com/inab/TCGA_benchmarking_workflow
 [tcga-docker]: https://github.com/inab/TCGA_benchmarking_dockers
-[elixir-data-model]: https://github.com/inab/benchmarking-data-model
+
+

@@ -1,8 +1,9 @@
 # APAeval Quantification
+
 *OpenEBench compatible Nextflow workflow for assessment of a bioinformatics tool's performance in **quantifying poly(A) site usage** from RNA-seq data*
 ___
 
-This README describes the APAeval **quantification** summary workflow. For a more general introduction to summary workflows see [the main summary workflow `README.md`][readme-swf]
+This README describes the APAeval **quantification** summary workflow. For a more general introduction to summary workflows see [the main summary workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
 
 - [Description of steps](#description-of-steps)
   - [1. Validation](#1-validation)
@@ -14,7 +15,7 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 ## Description of steps
 ### 1. Validation
 - `input_file`: output file from execution workflow in bed6 format
-- Validation checks performed in `quantification_dockers/q_validation/validation.py`:
+- Validation checks performed in [`quantification_dockers/q_validation/validation.py`][validation-py]:
    - input file has to be tab separated file with 6 columns
    - start and end coordinates (col 2,3) have to be int64
    - strand (col 6) has to be one of [+,-]
@@ -26,8 +27,8 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 - "input file" and "gold standard file" will be compared in order to calculate the metrics
 - `input_file`: output file from execution workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
->NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within `compute_metrics.py`
-- APAeval custom functions called in `quantification_dockers/q_metrics/compute_metrics.py` are defined in `quantification_dockers/q_metrics/matchPAS`
+>NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
+- APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `quantification_dockers/q_metrics/matchPAS`
 - The `Assessment_datasets.json` file is used in the following step
 
 ### 3. Results Consolidation
@@ -55,15 +56,19 @@ docker image ls #look for the IMAGE_ID of your docker image
 docker rmi [IMAGE_ID]
 ```
 Then, you can rebuild the docker image locally (see above).
-> NOTE: please don't push to APAeval docker hub unless sanctioned by APAeval admins (ask us on Slack)
+> NOTE: please don't push to APAeval docker hub unless you created a new version for production that was sanctioned by APAeval admins (ask us on Slack).
 
 ### Running the summary workflow
 One can use the following command to run the summary workflow from command line:
 ```
 nextflow run main.nf -profile docker
 ```
-This reads the parameters from the [nextflow.config](nextflow.config) file.
+This reads the parameters from the [nextflow.config][nextflow-config] file.
 
 
 [//]: # (References)
 [readme-swf]: ../README.md
+[q-spec]: ./specification/
+[validation-py]:./quantification_dockers/q_validation/validation.py
+[metrics-py]:./quantification_dockers/q_metrics/compute_metrics.py
+[nextflow-config]: ./nextflow.config
