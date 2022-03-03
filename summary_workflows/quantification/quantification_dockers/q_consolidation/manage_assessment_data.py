@@ -12,6 +12,8 @@ from assessment_chart import assessment_chart
 
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
 DEFAULT_eventMark_id = "OEBE0070000000"
+METRICS =  {"correlation":"OEBM0070000000"} ## is this needed?
+
 def main(args):
 
     # input parameters
@@ -26,9 +28,12 @@ def main(args):
         os.makedirs(output_dir)
     # read participant metrics
     participant_data = read_participant_data(participant_path)
+    
     if not offline:
+        logging.info("Querying OEB database...")
         response = query_OEB_DB(DEFAULT_eventMark_id)
         getOEBAggregations(response, data_dir)
+
     generate_manifest(data_dir, output_dir, participant_data,event_date)
 
 ## get existing aggregation datasets from OEB DB
@@ -67,10 +72,10 @@ def query_OEB_DB(bench_event_id):
         response = r.json()
         data = response.get("data")
         if data is None:
-            logging.fatal("For {} got response error from graphql query: {}".format(bench_event_id, r.text))
+            logging.error("For {} got response error from graphql query: {}".format(bench_event_id, r.text))
             sys.exit(6)
         if len(data["getChallenges"]) == 0:
-            logging.fatal("No challenges associated to benchmarking event " + bench_event_id +
+            logging.error("No challenges associated to benchmarking event " + bench_event_id +
                           " in OEB. Please contact OpenEBench support for information about how to open a new challenge")
             sys.exit()
         else:

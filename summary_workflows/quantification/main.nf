@@ -2,39 +2,38 @@
 
 if (params.help) {
 	
-	    log.info"""
+	log.info"""
 	    =====================================================
 	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
-		Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3), CJ Herrmann (*4)
-		*1 iRNA COSI
-		*2 Genomic Institute of Singapore, A*STAR, Singapore
-		*3 Barcelona Supercomputing Center, Barcelone, Spain
-		2021
-		*4 Biozentrum, University of Basel, Switzerland
+	    Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3), CJ Herrmann (*4)
+	    *1 iRNA COSI
+	    *2 Genomic Institute of Singapore, A*STAR, Singapore
+	    *3 Barcelona Supercomputing Center, Barcelone, Spain
+	    *4 Biozentrum, University of Basel, Switzerland
 	    =====================================================
 	    Usage:
 	    Run the pipeline with default parameters read from nextflow.config:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
- 	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
+	   nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
 	    Mandatory arguments:
-                --input					BED/TXT file with APA site information
-				--community_id			Name or OEB permanent ID for the benchmarking community
-                --participant_id  		Name of the tool used for prediction
-                --goldstandard_dir 		Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
-                --challenges_ids  		List of challenge ids selected by the user, separated by spaces
-                --assess_dir			Dir where the data for the benchmark are stored
+	        --input                 BED/TXT file with APA site information
+	        --community_id          Name or OEB permanent ID for the benchmarking community
+	        --participant_id        Name of the tool used for prediction
+	        --goldstandard_dir      Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
+	        --challenges_ids        List of challenge ids selected by the user, separated by spaces
+	        --assess_dir            Dir where the data for the benchmark are stored
 	    Other options:
-                --validation_result		The output directory where the results from validation step will be saved
-				--assessment_results	The output directory where the results from the computed metrics step will be saved
-				--outdir	The output directory where the consolidation of the benchmark will be saved
-				--statsdir	The output directory with nextflow statistics
-				--data_model_export_dir	The output dir where json file with benchmarking data model contents will be saved
-	  			--otherdir					The output directory where custom results will be saved (no directory inside)
-				--window				Window size for scanning for poly(A) sites (default: 15).
-				--offline				If set to 1, consolidation will be performed with local data in assess_dir only (omit to perform OEB DB query)
+	        --validation_result     The output directory where the results from validation step will be saved
+	        --assessment_results    The output directory where the results from the computed metrics step will be saved
+	        --outdir                The output directory where the consolidation of the benchmark will be saved
+	        --statsdir              The output directory with nextflow statistics
+	        --data_model_export_dir The output dir where json file with benchmarking data model contents will be saved
+	        --otherdir              The output directory where custom results will be saved (no directory inside)
+	        --window                Window size for scanning for poly(A) sites (default: 15).
+	        --offline               If set to 1, consolidation will be performed with local data in assess_dir only (omit to perform OEB DB query)
 	    Flags:
-                --help			Display this message
+	        --help                  Display this message
 	    """.stripIndent()
 
 	exit 1
@@ -42,26 +41,24 @@ if (params.help) {
 
 	log.info """\
 
-	     ==============================================
-	     APAeval QUANTIFICATION BENCHMARKING PIPELINE
-	     ==============================================
-	         Input file: ${params.input}
-	         Benchmarking community = ${params.community_id}
-	         Tool name : ${params.participant_id}
-	         Gold standard dataset directory: ${params.goldstandard_dir}
-	         Challenge ids: ${params.challenges_ids}
-	         Published benchmark data directory: ${params.assess_dir}
-	         Validation result JSON file: ${params.validation_result}
-	         Assessment result JSON file: ${params.assessment_results}
-	         Consolidated benchmark results directory: ${params.outdir}
-	         Nextflow statistics directory: ${params.statsdir}
-	         Benchmarking data model file location: ${params.data_model_export_dir}
-	         Directory with community-specific results: ${params.otherdir}
-			 Window size for scanning for poly(A) sites: ${params.window}
-			 Offline mode: ${params.offline}
-
-         """
-	.stripIndent()
+	    ==============================================
+	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
+	    ==============================================
+	        Input file: ${params.input}
+	        Benchmarking community = ${params.community_id}
+	        Tool name : ${params.participant_id}
+	        Gold standard dataset directory: ${params.goldstandard_dir}
+	        Challenge ids: ${params.challenges_ids}
+	        Published benchmark data directory: ${params.assess_dir}
+	        Validation result JSON file: ${params.validation_result}
+	        Assessment result JSON file: ${params.assessment_results}
+	        Consolidated benchmark results directory: ${params.outdir}
+	        Nextflow statistics directory: ${params.statsdir}
+	        Benchmarking data model file location: ${params.data_model_export_dir}
+	        Directory with community-specific results: ${params.otherdir}
+	        Window size for scanning for poly(A) sites: ${params.window}
+	        Offline mode: ${params.offline}
+		""".stripIndent()
 
 }
 
