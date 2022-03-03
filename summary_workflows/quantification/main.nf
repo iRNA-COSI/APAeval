@@ -32,6 +32,7 @@ if (params.help) {
 				--data_model_export_dir	The output dir where json file with benchmarking data model contents will be saved
 	  			--otherdir					The output directory where custom results will be saved (no directory inside)
 				--window				Window size for scanning for poly(A) sites (default: 15).
+				--offline				If set to 1, consolidation will be performed with local data in assess_dir only (omit to perform OEB DB query)
 	    Flags:
                 --help			Display this message
 	    """.stripIndent()
@@ -57,6 +58,7 @@ if (params.help) {
 	         Benchmarking data model file location: ${params.data_model_export_dir}
 	         Directory with community-specific results: ${params.otherdir}
 			 Window size for scanning for poly(A) sites: ${params.window}
+			 Offline mode: ${params.offline}
 
          """
 	.stripIndent()
@@ -74,6 +76,7 @@ benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 event_date = params.event_date
 window = params.window
+offline = params.offline
 
 // output 
 validation_file = file(params.validation_result)
@@ -145,13 +148,14 @@ process benchmark_consolidation {
 	file validation_out
 	val challenges_ids
     val event_date
+	val offline
 	
 	output:
 	path 'aggregation_dir', type: 'dir'
 	path 'data_model_export.json'
 
 	"""
-	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir -m $event_date
+	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir -m $event_date --offline $offline
 	python /app/merge_data_model_files.py -p $validation_out -m $assessment_out -c $challenges_ids -a aggregation_dir -o data_model_export.json
 	"""
 
