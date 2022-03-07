@@ -3,10 +3,6 @@
  */
 
 def modules = params.modules.clone()
-def files   = modules['files']
-def run_mode = modules['run_mode']
-
-include { PREPROCESS_GENOME   } from '../modules/preprocess_genome' addParams( options: [:] )
 
 workflow RUN_ISOSCM {
     take:
@@ -18,21 +14,8 @@ workflow RUN_ISOSCM {
     */
 //      CHECK_INPUT_PARAMS()
 
-    /*
-        Run STAR alignment on genome files
-    */
-    Channel
-        .fromPath("${files.gtf_genome_file}")
-        .set{ ch_gtf_genome_file }
 
-    Channel
-        .fromPath("${files.fasta_genome_file}")
-        .set{ ch_fasta_genome_file }
 
-    PREPROCESS_GENOME (
-            ch_gtf_genome_file,
-            ch_fasta_genome_file
-    )
 
 //     if (run_mode.differential) {
             /*
