@@ -2,13 +2,13 @@
  * Run IsoSCM
  */
 
-def modules = params.modules.clone()
-
-workflow RUN_ISOSCM {
-    take:
-    ch_sample
-    
-    main:
+// def modules = params.modules.clone()
+//
+// workflow RUN_ISOSCM {
+//     take:
+//     ch_sample
+//
+//     main:
     /*
         Check input parameters
     */
@@ -62,5 +62,5 @@ workflow RUN_ISOSCM {
     */
 //     POSTPROCESS_DIFFERENTIAL(ISOSCM_COMPARE.out.ch_isoscm_compare_out)
 //     }
-}
+// }
 
