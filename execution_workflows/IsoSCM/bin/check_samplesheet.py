@@ -42,8 +42,8 @@ def check_samplesheet(file_in, file_out):
     with open(file_in, "r") as fin:
 
         ## Check header
-        MIN_COLS = 2
-        HEADER = ['sample','bam']
+        MIN_COLS =3
+        HEADER = ['condition', 'sample','bam']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bam = lspl[:len(HEADER)]
+            condition, sample, bam = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -77,7 +77,7 @@ def check_samplesheet(file_in, file_out):
                     print_error("bam does not have extension 'bam'", 'Line', line)
 
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ sample, bam ]
+            sample_info = [ condition, sample, bam ]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -85,7 +85,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','bam']) + "\n")
+            fout.write(",".join(['condition','sample','bam']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")

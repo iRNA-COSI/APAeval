@@ -63,13 +63,14 @@ workflow EXECUTE_ISOSCM {
             ch_gtf_genome_file,
             ch_fasta_genome_file
         )
-
+/*
         if( run_identification ){
             RUN_IDENTIFICATION (
                 PREPROCESS_FILES.out.ch_convert_to_bedgraph_out,
                 PREPROCESS_FILES.out.ch_extracted_3utr_out
             )
         }
+
         if( run_differential ) {
             RUN_DIFFERENTIAL (
                 PREPROCESS_FILES.out.ch_convert_to_bedgraph_out,
@@ -77,6 +78,7 @@ workflow EXECUTE_ISOSCM {
             )
         }
 
+*/
 //          RUN_ISOSCM ( ch_sample )
     }
 

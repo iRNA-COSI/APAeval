@@ -2,6 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
+def modules = params.modules.clone()
 def options    = initOptions(params.options)
 
 
@@ -9,22 +10,27 @@ def options    = initOptions(params.options)
     Perform STAR alignment
 */
 process PREPROCESS_GENOME {
-    publishDir "${params.outdir}/isoscm/genome_index_file", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/isoscm", mode: params.publish_dir_mode
     container "docker.io/apaeval/isoscm:latest"
+    label 'process_high'
 
     input:
     path gtf_genome_file
     path fasta_genome_file
 
     output:
-    path genome_dir, emit: ch_genome_dir
+    path "*"
 
     script:
-    genome_dir = "star_index/"
+    star_index_dir = "star_index"
     """
-    STAR --runMode genomeGenerate --runThreadN 4 --genomeDir $genome_dir \
-     --genomeFastaFiles $fasta_genome_file \
-     --sjdbGTFfile $gtf_genome_file \
-     --sjdbOverhang 74
+    mkdir $star_index_dir
+
+    STAR \\
+      --runMode genomeGenerate \\
+      --runThreadN $task.cpus \\
+      --genomeDir $star_index_dir \\
+      --genomeFastaFiles $fasta_genome_file \\
+      --sjdbGTFfile $gtf_genome_file \\
     """
 }
