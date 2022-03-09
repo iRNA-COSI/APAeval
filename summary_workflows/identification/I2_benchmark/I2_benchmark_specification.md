@@ -6,20 +6,15 @@ Benchmarks to assess the performance of RNAseq-based poly(A) site (PAS) identifi
 
 ### Input data:
 
-**I2:** RNA-Seq data compared with 3'end sequencing data
+Comparison of PAS predicted from RNA-Seq data with 3'end sequencing data
 
 1. Poly(A) sites identified based on RNAseq data using the benchmarked tool
-2. Poly(A) sites identified based on orthogonal 3'end seq dataset
+2. Ground truth: Poly(A) sites identified based on orthogonal 3'end seq dataset
 
-**I3:** RNA-Seq data compared with PAS databases
-
-1. Poly(A) sites identified based on RNAseq data using the benchmarked tool
-2. Poly(A) sites identified in poly(A) site database (PolyASite, PolyA_DB)
-
-**I5:** Simulated RNA-Seq data
+Comparison of PAS predicted from simulated RNA-Seq data with dataset used for simulation
 
 1. Poly(A) sites identified based on simulated RNAseq data using the benchmarked tool
-2. Poly(A) sites of transcripts used to simulate RNAseq reads
+2. Ground truth: Poly(A) sites of transcripts used to simulate RNAseq reads
 
 ### Metrics:
 
@@ -82,32 +77,15 @@ The results of this benchmark will be visualised in OpenEBench using the followi
 **X axis** - benchmarked tool  
 **Y axis** - precision
 
-Input data:
+Input datasets:
 
-- I2: RNA-Seq data compared with 3'end sequencing data
-- I3: RNA-Seq data compared with PAS databases
-- I5: Simulated RNA-Seq data
+- RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
 
 
 Ranking: The best performing tool is the one with the highest precision value.
 
-2. **bar plot** visualizing **Sensitivity** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
-
-- 10 nt
-- 50 nt
-- 100 nt
-
-**X axis** - benchmarked tool  
-**Y axis** - sensitivity
-
-Input data: 
-
-- I2: RNA-Seq data compared with 3'end sequencing data
-
-
-Ranking: The best performing tool is the one with the highest sensitivity value.
-
-3. **2D scatter plot** visualizing **TPR and FPR** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
+2. **2D scatter plot** visualizing **TPR and FPR** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
 
 - 10 nt
 - 50 nt
@@ -117,37 +95,36 @@ Ranking: The best performing tool is the one with the highest sensitivity value.
 **Y axis** - TPR(d)  
 where _d - distance threshold_
 
-Input data:
+Input datasets:
 
-- I2: RNA-Seq data compared with 3'end sequencing data
-- I3: RNA-Seq data compared with PAS databases
-- I5: Simulated RNA-Seq data
+- RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
 
 Ranking: The best performing tool is the one with the highest TPR combined with lowest FPR (top left part of the plot) and the worst performing tool is the one with the lowest TPR combined with highest FPR (bottom left part of the plot. The plot should be divided into diagonal quartiles based on the distance from optimal performance. Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-left, top-right, bottom-left, bottom-right.
 
-4. **bar plot** visualizing **AUC** of ROC plot with single AUC value for each tool.
+3. **bar plot** visualizing **AUC** of ROC plot with single AUC value for each tool.
 
 **X axis** - benchmarked tool  
 **Y axis** - AUC
 
 Input data:
 
-- I2: RNA-Seq data compared with 3'end sequencing data
+- RNA-Seq data compared with 3'end sequencing data
 
 
 Ranking: The best performing tool is the one with the highest AUC value.
 
 Optional plots:
 
-5. **2D line plot** visualising **TPR and FPR** in the form of [ROC curve][roc-curve], i.e. TPR and FPR calculated for a range of distance thresholds are plotted together. 
+4. **2D line plot** visualising **TPR and FPR** in the form of [ROC curve][roc-curve], i.e. TPR and FPR calculated for a range of distance thresholds are plotted together. 
 
 **X axis** - FPR(d)  
 **Y axis** - TPR(d)  
 where _d - distance threshold_ in range 0-100 nt with 10 nt increments.
 
-Input data:
+Input datasets:
 
-- I2: RNA-Seq data compared with 3'end sequencing data
+- RNA-Seq data compared with 3'end sequencing data
 
 Ranking: For each tool, the area under the curve is calculated. The best performing tool is the one with the highest AUC.
 
@@ -157,8 +134,8 @@ Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, 
 ## Outputs
 
 Calculated metrics are saved in JSON file adhering to OpenEBench schema. 
-Assessment output contains values of calculated metrics for a given input dataset.
-Consolidation output contains summarized data in a format suitable for plotting, e.g. single values for barplot or X,Y value pairs for 2D scatter plot.
+Assessment output is generated for each tool separately and contains values of calculated metrics for a given input dataset.
+Consolidation output contains summarized data from all benchmarked tools within one challenge in a format suitable for plotting, e.g. single values for barplot or X,Y value pairs for 2D scatter plot.
 
 | # | Format | Link | Example data | Description |
 | :-- | :--- | :--- | :--- | :-------- |

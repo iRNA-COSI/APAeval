@@ -6,15 +6,15 @@ Benchmarks to assess the performance of RNA-Seq-based poly(A) site quantificatio
 
 ### Input data:
 
-**Q2:** RNA-Seq data
+Comparison of PAS predicted from RNA-Seq data with 3'end sequencing data
 
 1. Poly(A) sites quantification based on RNAseq data using the benchmarked tool  
 2. Ground truth: Poly(A) sites quantification based on orthogonal 3'end-seq dataset
 
-**Q3:** Simulated RNA-Seq data
+Comparison of PAS predicted from simulated RNA-Seq data with dataset used for simulation
   
 1. Poly(A) sites quantification based on simulated RNAseq data using the benchmarked tool  
-2. Poly(A) sites quantification based on abundances of transcripts used to simulate the RNAseq data
+2. Ground truth: Poly(A) sites quantification based on abundances of transcripts used to simulate the RNAseq data
 
 ### Metrics
 
@@ -81,10 +81,10 @@ The results of this benchmark will be visualised in OpenEBench using the followi
 **X axis** - benchmarked tool  
 **Y axis** - correlation
 
-Input data:
+Input datasets:
 
-- Q2: RNA-Seq data
-- Q3: Simulated RNA-Seq data
+- RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
 
 Ranking: The best performing tool is the one with the highest correlation value.
 
@@ -95,10 +95,10 @@ Optional plots:
 **X axis** - correlation(d)  
 **Y axis** - distance threshold _d_ 
 
-Input data:
+Input datasets:
 
-- Q2: RNA-Seq data
-- Q3: Simulated RNA-Seq data
+- RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
 
 Ranking: For each tool, the area under the curve (AUC) is calculated. The best performing tool is the one with the highest AUC.
 
@@ -107,8 +107,8 @@ Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, 
 ## Outputs
 
 Calculated metrics are saved in JSON file adhering to OpenEBench schema. 
-Assessment output contains values of calculated metrics for a given input dataset.
-Consolidation output contains summarized data in a format suitable for plotting, e.g. single values for barplot or X,Y value pairs for 2D scatter plot.
+Assessment output is generated for each tool separately and contains values of calculated metrics for a given input dataset.
+Consolidation output contains summarized data from all benchmarked tools within one challenge in a format suitable for plotting, e.g. single values for barplot or X,Y value pairs for 2D scatter plot.
 
 
 | # | Format | Link | Example data | Description |
