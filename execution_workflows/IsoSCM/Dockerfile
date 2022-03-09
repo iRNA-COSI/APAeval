@@ -2,7 +2,7 @@
 FROM ubuntu:20.04
 
 LABEL authors="Farica Zhuang and Chilam Poon" \
-      description="Docker image containing all software requirements for the DaPars execution_workflow pipeline"
+      description="Docker image containing all software requirements for IsoSCM execution_workflow pipeline"
 
 # set this to not get asked for geographic area when downloading R
 ENV DEBIAN_FRONTEND noninteractive
@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y \
     git \
     build-essential \
     unzip
+
+RUN pip install pandas
 
 # Setup JAVA_HOME & PATH -- in case the above commands not working..
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/

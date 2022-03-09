@@ -7,9 +7,9 @@ def options    = initOptions(params.options)
 
 
 /*
-    Perform STAR alignment
+    Perform STAR genome generate to get genome index for STAR alignment in the next step
 */
-process PREPROCESS_GENOME {
+process STAR_GENOME_GENERATE {
     publishDir "${params.outdir}/isoscm", mode: params.publish_dir_mode
     container "docker.io/apaeval/isoscm:latest"
     label 'process_high'
@@ -19,7 +19,8 @@ process PREPROCESS_GENOME {
     path fasta_genome_file
 
     output:
-    path "*"
+    path "*" 
+    val "done", emit: ch_star_genome_index
 
     script:
     star_index_dir = "star_index"
@@ -32,5 +33,6 @@ process PREPROCESS_GENOME {
       --genomeDir $star_index_dir \\
       --genomeFastaFiles $fasta_genome_file \\
       --sjdbGTFfile $gtf_genome_file \\
+      --sjdbOverhang 74
     """
 }

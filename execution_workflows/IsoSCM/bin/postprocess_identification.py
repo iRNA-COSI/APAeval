@@ -24,6 +24,7 @@ def reformat_bed(file_in, identification_out):
     identification_out = open(identification_out, "wt")
 
     df = pd.read_csv(file_in, sep='\t')
+    
     for index, row in df.iterrows():
         chrom = row[0]
         start = row[3]

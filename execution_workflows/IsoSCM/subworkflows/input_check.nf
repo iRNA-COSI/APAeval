@@ -7,6 +7,7 @@ params.options = [:]
 include { CHECK_SAMPLESHEET;
           get_sample_info } from '../modules/check_samplesheet' addParams( options: params.options )
 
+// TODO add check input params
 workflow INPUT_CHECK {
     take:
     samplesheet // file: /path/to/samplesheet.csv
@@ -18,5 +19,5 @@ workflow INPUT_CHECK {
         .set { ch_sample }
 
     emit:
-    ch_sample // [ sample, barcode, fasta, gtf, is_transcripts, annotation_str ]
+    ch_sample // [ condition, sample, bam ]
 }

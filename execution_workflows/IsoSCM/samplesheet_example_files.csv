@@ -1,3 +1,3 @@
-condition,sample,bam,
-srsf3,srsf3_r1,/home/fzhuang/apaeval/APAeval/execution_workflows/IsoSCM/../../test_data/siSrsf3_R1_2genes.bam
-contorl,control_r1,/home/fzhuang/apaeval/APAeval/execution_workflows/IsoSCM/../../test_data/siControl_R1_2genes.bam
+condition,sample,bam,strand
+srsf3,srsf3_r1,/home/fzhuang/apaeval/APAeval/execution_workflows/IsoSCM/../../tests/test_data/siSrsf3_R1_2genes_Chr_prefix.bam,unstranded
+control,control_r1,/home/fzhuang/apaeval/APAeval/execution_workflows/IsoSCM/../../tests/test_data/siControl_R1_2genes_Chr_prefix.bam,unstranded

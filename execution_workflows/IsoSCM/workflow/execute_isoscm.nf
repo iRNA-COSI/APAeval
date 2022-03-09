@@ -32,12 +32,10 @@ def isOffline() {
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 def files   = modules['files']
-def run_identification = modules['run_mode'].run_identification
-def run_differential = modules['run_mode'].run_differential
 
-include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
-include { PREPROCESS_GENOME   } from '../modules/preprocess_genome' addParams( options: [:] )
-include { RUN_ISOSCM    } from '../subworkflows/run_isoscm'   addParams( options: [:] )
+include { INPUT_CHECK          } from '../subworkflows/input_check' addParams( options: [:] )
+include { PREPROCESS_FILES } from '../subworkflows/preprocess_files' addParams( options: [:] )
+include { RUN_ISOSCM           } from '../subworkflows/run_isoscm'   addParams( options: [:] )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -45,42 +43,16 @@ include { RUN_ISOSCM    } from '../subworkflows/run_isoscm'   addParams( options
 
 workflow EXECUTE_ISOSCM {
 
-         INPUT_CHECK ( ch_input )
+        INPUT_CHECK ( ch_input )
                .set { ch_sample }
-
-         Channel
-            .fromPath("${files.gtf_genome_file}")
-            .set{ ch_gtf_genome_file }
-
-        Channel
-            .fromPath("${files.fasta_genome_file}")
-            .set{ ch_fasta_genome_file }
-
-        /*
-            Run STAR alignment on genome files
-        */
-        PREPROCESS_GENOME (
-            ch_gtf_genome_file,
-            ch_fasta_genome_file
-        )
-/*
-        if( run_identification ){
-            RUN_IDENTIFICATION (
-                PREPROCESS_FILES.out.ch_convert_to_bedgraph_out,
-                PREPROCESS_FILES.out.ch_extracted_3utr_out
-            )
-        }
-
-        if( run_differential ) {
-            RUN_DIFFERENTIAL (
-                PREPROCESS_FILES.out.ch_convert_to_bedgraph_out,
-                PREPROCESS_FILES.out.ch_extracted_3utr_out
-            )
-        }
-
-*/
-//          RUN_ISOSCM ( ch_sample )
-    }
+        
+        PREPROCESS_FILES( ch_sample )
+        
+        RUN_ISOSCM (
+            PREPROCESS_FILES.out.ch_star_genome_index, 
+            PREPROCESS_FILES.out.ch_aligned_bam_files_dir 
+        )        
+}
 
 ////////////////////////////////////////////////////
 /* --                  THE END                 -- */
