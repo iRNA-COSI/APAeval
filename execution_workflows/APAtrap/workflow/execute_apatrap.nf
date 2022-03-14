@@ -31,9 +31,14 @@ def isOffline() {
 
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
+def run_identification = modules['final_output'].run_identification
+def run_quantification = modules['final_output'].run_quantification
+def run_differential = modules['final_output'].run_differential
 
 include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
-include { RUN_APATRAP } from '../subworkflows/run_apatrap' addParams( options: [:] )
+include { PREPROCESS_FILES } from '../subworkflows/preprocess_files' addParams( options: [:] )
+include { RUN_IDENTIFICATION_QUANTIFICATION } from '../subworkflows/run_identification_quantification' addParams( options: [:] )
+include { RUN_DIFFERENTIAL } from '../subworkflows/run_differential' addParams( options: [:] )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -44,8 +49,20 @@ workflow EXECUTE_APATRAP{
     INPUT_CHECK ( ch_input )
         .set { ch_sample }
 
-    RUN_APATRAP (ch_sample)
+    PREPROCESS_FILES ( ch_sample )
 
+    if( run_identification || run_quantification ){
+        RUN_IDENTIFICATION_QUANTIFICATION (
+            PREPROCESS_FILES.out.ch_sample_bedgraph_files_dir,
+            PREPROCESS_FILES.out.ch_3utr_input )
+    }
+    if( run_differential ) {
+        RUN_DIFFERENTIAL (
+            PREPROCESS_FILES.out.ch_preprocessing_input,
+            PREPROCESS_FILES.out.ch_sample_bedgraph_files_dir,
+            PREPROCESS_FILES.out.ch_3utr_input
+        )
+    }
 }
 
 ////////////////////////////////////////////////////

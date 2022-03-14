@@ -13,12 +13,23 @@ process CHECK_INPUT_PARAMS {
     publishDir "${params.outdir}/apatrap/${options.output_dir}", mode: params.publish_dir_mode
     container "docker.io/apaeval/apatrap:latest"
 
+    input:
+    path samplesheet
+
     script:
-    mode = options.run_differential
+    run_identification = options.run_identification
+    run_quantification = options.run_quantification
+    run_differential = options.run_differential
     identification_out_suffix = options.identification_out_suffix
     quantification_out_suffix = options.quantification_out_suffix
     differential_out = options.differential_out
     """
-    check_input_params.py $identification_out_suffix $quantification_out_suffix $differential_out $mode
+    check_input_params.py $samplesheet \
+    $identification_out_suffix \
+    $quantification_out_suffix \
+    $differential_out \
+    $run_identification \
+    $run_quantification \
+    $run_differential
     """
 }
