@@ -1,11 +1,5 @@
 # IsoSCM
-IsoSCM is a Java application. IsoSCM can be used to estimate the relative usage of 3'UTR isoforms, and identify sites with differential usage between two conditions.
-is a python-based model that directly infers the dynamic alternative polyadenylation (APA)
-usage by comparing standard RNA-seq. Given the annotated gene model, DaPars can infer the de novo proximal APA sites 
-as well as the long and short 3’UTR expression levels. Finally, it identifies the dynamic APA usages between two 
-conditions. 
-
-Isoform Structural Change Model (IsoSCM) is a method for transcript assembly that incorporates change-point analysis to improve the 3' UTR annotation process.
+Isoform Structural Change Model (IsoSCM) is a Java application for transcript assembly that incorporates change-point analysis to improve the 3' UTR annotation process.
 
 The [paper](https://rnajournal.cshlp.org/content/21/1/14) is titled IsoSCM: improved and alternative 3′ UTR annotation 
 using multiple change-point inference

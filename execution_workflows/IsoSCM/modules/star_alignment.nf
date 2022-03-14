@@ -29,7 +29,7 @@ process STAR_ALIGNMENT {
     """
     samtools bam2fq $bam > $fastq_file
     
-    mkdir star_index 
+    [ -d star_index ] || mkdir star_index 
     
     STAR \\
       --runThreadN $task.cpus \\
