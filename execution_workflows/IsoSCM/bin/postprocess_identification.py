@@ -5,7 +5,7 @@ import argparse
 import csv
 
 def parse_args(args=None):
-    Description = "Reformat IsoSCM bed file into the output files of identification and quantification challenges"
+    Description = "Reformat IsoSCM bed file into the output file of identification challenge"
     Epilog = "Example usage: python postprcoess_identification.py <FILE_IN> <IDENTIFICATION_OUT>"
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
@@ -18,7 +18,7 @@ def reformat_bed(file_in, identification_out):
     """
     This function reformats IsoSCM output file to file for
     identification challenge
-    :param file_in: txt file to be reformatted
+    :param file_in: IsoSCM assemble output bed file to be reformatted to identification bed file
     :return: N/A
     """
     identification_out = open(identification_out, "wt")

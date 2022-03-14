@@ -13,11 +13,10 @@ process ISOSCM_ASSEMBLE {
         tuple val(sample), val(strand), path(aligned_bam), path(aligned_bai)
 
         output:
-        tuple val(sample), path(assemble_out_identification_rename), path(assemble_out_differential_rename), emit: ch_isoscm_assemble_out
+        tuple val(sample), path(assemble_out_identification_rename), emit: ch_isoscm_assemble_out
 
         script:
         assemble_out_identification_rename = "identification_out"
-        assemble_out_differential_rename = "differential_out"
         
       	assemble_out_identification = sample + ".cp.gtf"
         assemble_out_differential = sample + ".assembly_parameters.xml"
