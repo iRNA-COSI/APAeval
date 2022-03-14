@@ -30,21 +30,17 @@ workflow PREPROCESS_FILES {
                 ch_gtf_genome_file,
                 ch_fasta_genome_file
             )
-            ch_star_genome_indicator = STAR_GENOME_GENERATE.out.ch_star_genome_index
+            ch_star_genome_indicator = STAR_GENOME_GENERATE.out.ch_star_genome_indicator
+            ch_star_genome_index = Channel.fromPath("$PWD/${params.outdir}/isoscm/star_index")
         }
         
         if ( run_star_genome_generate == false ) {
             ch_star_genome_indicator = Channel.of("done")
-        }
-     
-        ch_sample
-            .map { it -> [ it[0], it[1], it[2], it[3] ] }
-            .unique()
-            .set { ch_sample }
         
-        Channel
-            .fromPath("${files.star_genome_index}")
-            .set{ ch_star_genome_index }
+            Channel
+                .fromPath("${files.star_genome_index}")
+                .set{ ch_star_genome_index }
+        }
         
         ch_sample
 	    .combine(ch_star_genome_index)
@@ -53,15 +49,14 @@ workflow PREPROCESS_FILES {
         ch_star_alignment_input
             .combine( ch_star_genome_indicator )
             .set{ ch_star_alignment_input }
-        
+        ch_star_alignment_input.view() 
         STAR_ALIGNMENT (
             ch_star_alignment_input
         )	
       
-       STAR_ALIGNMENT.out.ch_aligned_bam_files_dir
-           .set{ ch_aligned_bam_files_dir }
+       STAR_ALIGNMENT.out.ch_aligned_bam_files
+           .set{ ch_aligned_bam_files }
        
        emit:
-       ch_star_genome_index
-       ch_aligned_bam_files_dir
+       ch_aligned_bam_files
 }

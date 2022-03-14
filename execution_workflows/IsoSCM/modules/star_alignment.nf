@@ -17,11 +17,10 @@ process STAR_ALIGNMENT {
     label 'process_high'
 
     input:
-    tuple val(condition), val(sample), path(bam), val(strand), path(star_index_file), val(star_genome_index_indicator)
+    tuple val(sample), path(bam), val(strand), path(star_index_file), val(star_genome_index_indicator)
     
     output:
-    val "isoscm/aligned_bam_files", emit: ch_aligned_bam_files_dir
-    tuple path(star_out_bam), path(star_out_bai), emit: ch_aligned_bam_files
+    tuple val(sample), val(strand), path(star_out_bam), path(star_out_bai), emit: ch_aligned_bam_files
 
     script:
     fastq_file = sample + ".fastq"
@@ -30,7 +29,7 @@ process STAR_ALIGNMENT {
     """
     samtools bam2fq $bam > $fastq_file
     
-    mkdir bam_files 
+    mkdir star_index 
     
     STAR \\
       --runThreadN $task.cpus \\
@@ -42,7 +41,6 @@ process STAR_ALIGNMENT {
       --outFileNamePrefix bam_files/$sample. 
 
     cat bam_files/$star_out_bam > $star_out_bam
-
     samtools index $star_out_bam > $star_out_bai
     """
 }

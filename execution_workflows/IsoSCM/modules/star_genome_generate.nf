@@ -20,10 +20,11 @@ process STAR_GENOME_GENERATE {
 
     output:
     path "*" 
-    val "done", emit: ch_star_genome_index
+    val "done", emit: ch_star_genome_indicator
 
     script:
     star_index_dir = "star_index"
+
     """
     mkdir $star_index_dir
 

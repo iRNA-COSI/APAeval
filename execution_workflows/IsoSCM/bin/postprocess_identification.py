@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import sys
 import argparse
-import pandas as pd
+import csv
 
 def parse_args(args=None):
     Description = "Reformat IsoSCM bed file into the output files of identification and quantification challenges"
@@ -22,18 +22,17 @@ def reformat_bed(file_in, identification_out):
     :return: N/A
     """
     identification_out = open(identification_out, "wt")
-
-    df = pd.read_csv(file_in, sep='\t')
-    
-    for index, row in df.iterrows():
-        chrom = row[0]
-        start = row[3]
-        end = int(start) + 1
-        strand = row[6]
-        name = '|'.join([chrom, str(start)+":"+str(end), strand])
-        score = "."
-        output = (chrom, start, end, name, score, strand)
-        identification_out.write("\t".join(output) + "\n")
+    with open(file_in) as fd:
+        rd = csv.reader(fd, delimiter="\t", quotechar='"')
+        for row in rd:
+            chrom = row[0]
+            start = row[3]
+            end = int(start) + 1
+            strand = row[6]
+            name = '|'.join([chrom, str(start)+":"+str(end), strand])
+            score = "."
+            output = (chrom, start, str(end), name, score, strand)
+            identification_out.write("\t".join(output) + "\n")
 
     identification_out.close()
 

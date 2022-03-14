@@ -34,7 +34,7 @@ def print_error(error, context='Line', context_str=''):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    condition, sample, bam, strand
+    sample, bam, strand
     """
 
     input_extensions = []
@@ -42,8 +42,8 @@ def check_samplesheet(file_in, file_out):
     with open(file_in, "r") as fin:
 
         ## Check header
-        MIN_COLS =4
-        HEADER = ['condition', 'sample', 'bam', 'strand']
+        MIN_COLS = 3
+        HEADER = ['sample', 'bam', 'strand']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            condition, sample, bam, strand = lspl[:len(HEADER)]
+            sample, bam, strand = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -77,7 +77,7 @@ def check_samplesheet(file_in, file_out):
                     print_error("bam does not have extension 'bam'", 'Line', line)
 
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ condition, sample, bam, strand ]
+            sample_info = [ sample, bam, strand ]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -85,7 +85,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['condition','sample','bam', 'strand']) + "\n")
+            fout.write(",".join(['sample','bam', 'strand']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")

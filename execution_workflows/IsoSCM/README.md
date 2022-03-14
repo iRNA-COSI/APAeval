@@ -15,68 +15,63 @@ create the nextflow pipeline
 
 ## Running IsoSCM workflow
 
+
+### Download genome fasta file
+IsoSCM workflow runs STAR genome generate for STAR alignment. This step requires a genome fasta file. To run with test data, run the following to download GRCm38 genome fasta file:
+`wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M18/GRCm38.p6.genome.fa.gz`
+
 ### Input & pre-processing
 An example sample sheet is available at `samplesheet_example_files.csv`. Each row in the samplesheet has four
 columns:
 
-- sample: name of the sample for logs (e.g control_replicate1)
-- condition: name of the condition (e.g Control) 
+- sample: name of the sample (e.g control_replicate1)
 - bam: BAM input file for the sample 
-- bai: BAI index file for sample's bam input
+- strand: the strandedness of the data
 
-It is important to name samples of the same condition with the exact condition name under the condition
-column in the samplesheet since samples are grouped per condition to be processed in the differential step.
-To run DaPars with test data provided for APAeval, check the path to DaPars with `pwd` and replace 
-the `path_to` in samplesheet_example_files.csv or samplesheet_example_files_identification.csv with the path 
+Make sure each sample name is unique.
+
+To run IsoSCM with test data provided for APAeval, check the path to IsoSCM with `pwd` and replace 
+the `path_to` in samplesheet_example_files.csv with the path 
 from the `pwd` command. 
 
 When using your own data and input file instead of the provided test data and sample sheet, make sure to include in the 
-input file you are using the absolute paths to the four files, with the four column names following the column
-names above.
+input file you are using the absolute paths to the bam files.
 
 ### Running with Docker or Singularity
 ## Docker
 This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
 (e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
 Additionally, make sure that line 49 in IsoSCM/nextflow.config file `docker.enabled=true` is uncommented while line
-51 `singularity.enabled=true` is commented out
+52 `singularity.enabled=true` is commented out
 
 ## Singularity
 To run with singularity, comment out line 49 in IsoSCM/nextflow.config file `docker.enabled=true` and make sure that line
-51 `singularity.enabled=true` is uncommented
+52 `singularity.enabled=true` is uncommented
 
 ### Parameters
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
-- `mode` - whether to run to obtain identification ("identification") or differential ("differential") challenge output.
-   Specifying any other value will throw an error.
+- `run_star_genome_generate` - if true, the workflow will run STAR genome generate to obtain genome index. This process takes around 20-25 minutes and only needs to run once per genome. Set to false if the genome index folder already exists.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
-- `output_file` - name of the output file for the current run ending with .bed if running identification and .tsv if running differential
-- `genome_file` - absolute path from the DaPars folder to the input GTF annotation file can be obtained by replacing `path_to`
-   with the path to DaPars, and if using your own genome file, make sure to use the absolute path to your genome file
-
-### Running the differential workflow
-- Set the 'mode' parameter in conf/modules.config to "differential"
-- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.tsv'
-- Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file 
-  is samplesheet_example_files.csv
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- `identification_out_suffix` - suffix of the output file for the current run ending with .bed. This will be prefixed with the sample name specified in the sample column of the input sample sheet e.g. samplesheet_example_files.csv
+- `gtf_genome_file` - absolute path to the input GTF annotation file can be obtained by replacing `path_to` with the path to IsoSCM by doing `pwd`, and if using your own genome file, make sure to use the absolute path to your genome file
+- `fasta_genome_file` - absolute path to the input fasta annotation file. If running with APAeval test data, download the fasta genome file by running `wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M18/GRCm38.p6.genome.fa.gz` inside of tests/test_data/ folder.
+- `star_genome_index` - absolute path to the star genome index folder
 
 ### Running the identification workflow
-- Set the 'mode' parameter in conf/modules.config to "identification"
-- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.bed'
-- In the sample sheet, the same sample should be provided twice, but each row should have a distinct condition in 
-  the `condition` column. Exactly two rows must be present in the sample sheet. The workflow will then treat the 
-  two rows as two different conditions, a requirement for DaPars to run successfully. An example sample sheet is 
-  samplesheet_example_files_identification.csv.
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files_identification.csv
+- Change 'identification_out_suffix' parameter in conf/modules.config to the desired file name that ends with '.bed'
+- Change the 'output_dir' to the desired directory name under IsoSCM/results/isoscm the identification challenge output will be in  
+- An example sample sheet is samplesheet_example_files_identification.csv.
+- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ## Output & post-processing
-Each DaPars run results in differential challenge file located under DaPars/results/dapars/dapars_differential_output.tsv.
-Identification challenege file is located under DaPars/results/dapars/dapars_identification_output.tsv.
+By default, each IsoSCM run results in an identification challenge file located under IsoSCM/results/isoscm/challenges_outus/[sample]_identification_output.bed
 
 ## Notes
-- Running STAR requires docker to have 6GB allocated memory
+- Running STAR genome generate requires 30-40GB of memory
+- Running STAR genome generate takes 20-25 minutes and is only required once per genome
+- IsoSCM doesn't qualify for quantification challenge because IsoSCM assemble step outputs mean read density in the segments upstream and downstream of the polyA site but doesn't output the TPM value for each identified site that is required for quantification challengenge output  
+- IsoSCM doesn't qualify for differential challnege because the compare step provides a confidence score representing the likelihood that a change-point occurs at the given position, compared to a null model that no change-point at this position. However, this doesn't exactly equal to the significance of differential polyadenylation site usage, which is needed for differential challenge output
 
 ## Author contact
-If you have any question or comment about DaPars, please post on DaPars Google Groups (https://groups.google.com/u/1/g/DaPars) or the author, Dr. Zheng Xia (xiaz@ohsu.edu).
+If you have any question or comment about IsoSCM, contact the corresponding author, Dr. Eric Lai(laie@mskcc.org).

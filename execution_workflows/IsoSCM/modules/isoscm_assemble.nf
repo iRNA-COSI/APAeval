@@ -5,32 +5,27 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process ISOSCM_ASSEMBLE {
-        publishDir "${params.outdir}/isoscm/", mode: params.publish_dir_mode
+        publishDir "${params.outdir}/isoscm/isoscm_assemble_out_dir/${sample}", mode: params.publish_dir_mode
 	container "docker.io/apaeval/isoscm:latest"
         label 'process_high'
 
         input:
-        val aligned_bam_files_dir
+        tuple val(sample), val(strand), path(aligned_bam), path(aligned_bai)
 
         output:
-        val "isoscm/aligned_bam_files", emit: ch_isoscm_assemble_out
+        tuple val(sample), path(assemble_out_identification_rename), path(assemble_out_differential_rename), emit: ch_isoscm_assemble_out
 
         script:
-        pwd = "$PWD/${params.outdir}/$aligned_bam_files_dir"
-       
+        assemble_out_identification_rename = "identification_out"
+        assemble_out_differential_rename = "differential_out"
+        
+      	assemble_out_identification = sample + ".cp.gtf"
+        assemble_out_differential = sample + ".assembly_parameters.xml"
+        
         """
-        #!/bin/bash
-        for folder in "$pwd"/*
-        do
-            filename=\$(echo \$(basename \$folder))
-            sample=\$(echo "\$filename" | cut -d'.' -f1)
-            strand=\$(echo "\$filename" | cut -d'.' -f2)
-            bam=\$folder/\$sample.Aligned.sortedByCoord.out.bam
+        java -Xmx100G -jar /IsoSCM.jar assemble -bam $aligned_bam -base $sample -s $strand -dir isoscm
 
-            java -Xmx100G -jar /IsoSCM.jar assemble -bam \$bam -base \$sample -s \$strand -dir isoscm
-
-            mv isoscm/\$sample.assembly_parameters.xml \$folder/.
-            mv isoscm/tmp/\$sample.cp.filtered.gtf \$folder/.
-        done
+        mv isoscm/$assemble_out_differential $assemble_out_differential_rename
+        mv isoscm/tmp/$assemble_out_identification $assemble_out_identification_rename
         """
- }
+}
