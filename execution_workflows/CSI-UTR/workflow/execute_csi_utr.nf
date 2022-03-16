@@ -45,7 +45,7 @@ workflow EXECUTE_CSI_UTR {
                .set { ch_sample }
 
          RUN_CSI_UTR ( ch_input, ch_sample )
-    }
+}
 
 ////////////////////////////////////////////////////
 /* --                  THE END                 -- */

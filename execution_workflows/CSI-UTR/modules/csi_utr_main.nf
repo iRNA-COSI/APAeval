@@ -11,7 +11,8 @@ process CSI_UTR_MAIN {
 
         input:
         path sample_info
-        path genome_file
+//         path genome_file
+        tuple path(CSI_bed_file), path(CSI_annotation_file)
 
         output:
         path config_file, emit: ch_dapars_output
@@ -26,14 +27,19 @@ process CSI_UTR_MAIN {
         outdir = "$PWD/${params.outdir}/csi_utr/"
         bed_data_dir = "$PWD/${params.outdir}/csi_utr/input_files/"
         """
-        mkdir ./data/locations
+        mkdir data
+        mkdir data/locations
+        mv $CSI_bed_file ./data/locations/.
 
-        mv $genome_file ./data/locations/.
+        mkdirdata/annotations
+        mv $CSI_annotation_file ./data/annotations/.
 
         CSI-UTR \
         -genome=$genome \
         -r=$r \
         -sample_info=$sample_info \
+        -bed=$CSI_bed_file \
+        -annot=$CSI_annotation_file \
         -out=$outdir \
         -data_dir=$bed_data_dir \
         -coverage_cut=$coverage_cut \

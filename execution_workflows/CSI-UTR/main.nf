@@ -34,12 +34,12 @@ if (params.help) {
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
+include { EXECUTE_CSI_UTR } from './workflow/execute_csi_utr' addParams( [:] )
 
 workflow {
     /*
      * RUN CSI-UTR WORKFLOW
      */
-    include { EXECUTE_CSI_UTR } from './workflow/execute_csi_utr' addParams( [:] )
     EXECUTE_CSI_UTR ()
 }
 

@@ -30,10 +30,10 @@ workflow RUN_CSI_UTR {
     /*
         Convert gtf genome file to bed12
     */
-    Channel
-        .fromPath("${files.genome_file}")
-        .set{ ch_gtf_genome_file }
-    CONVERT_GTF_TO_BED ( ch_gtf_genome_file )
+//     Channel
+//         .fromPath("${files.genome_file}")
+//         .set{ ch_gtf_genome_file }
+//     CONVERT_GTF_TO_BED ( ch_gtf_genome_file )
 
     /*
         Move bam and bai files to an input directory
@@ -48,9 +48,25 @@ workflow RUN_CSI_UTR {
     /*
         Run CSI-UTR
     */
+//     CSI_UTR_MAIN (
+//         CREATE_SAMPLE_INFORMATION_FILE.out.ch_sample_information_file,
+//         CONVERT_GTF_TO_BED.out.ch_genome_file
+//     )
+    Channel
+        .fromPath("${files.CSI_bed_file}")
+        .set{ch_csi_bed_file}
+
+    Channel
+        .fromPath("${files.CSI_annotation_file}")
+        .set{ch_csi_annotation_file}
+
+    ch_csi_bed_file
+        .combine(ch_csi_annotation_file)
+        .set{ch_bed_files}
+
     CSI_UTR_MAIN (
         CREATE_SAMPLE_INFORMATION_FILE.out.ch_sample_information_file,
-        CONVERT_GTF_TO_BED.out.ch_genome_file
+        ch_bed_files
     )
 
 //     /*
