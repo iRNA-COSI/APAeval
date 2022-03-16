@@ -31,7 +31,7 @@ process CSI_UTR_MAIN {
         mkdir data/locations
         mv $CSI_bed_file ./data/locations/.
 
-        mkdirdata/annotations
+        mkdir data/annotations
         mv $CSI_annotation_file ./data/annotations/.
 
         CSI-UTR \
