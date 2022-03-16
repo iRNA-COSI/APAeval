@@ -19,21 +19,21 @@ process STAR_GENOME_GENERATE {
     path fasta_genome_file
 
     output:
-    path "*" 
+    path(star_index_dir), emit: ch_star_index_dir 
     val "done", emit: ch_star_genome_indicator
 
     script:
     star_index_dir = "star_index"
 
     """
-    mkdir $star_index_dir
+    [ -d $star_index_dir ] || mkdir $star_index_dir
 
-    STAR \\
-      --runMode genomeGenerate \\
-      --runThreadN $task.cpus \\
-      --genomeDir $star_index_dir \\
-      --genomeFastaFiles $fasta_genome_file \\
-      --sjdbGTFfile $gtf_genome_file \\
+    STAR \
+      --runMode genomeGenerate \
+      --runThreadN $task.cpus \
+      --genomeDir $star_index_dir \
+      --genomeFastaFiles $fasta_genome_file \
+      --sjdbGTFfile $gtf_genome_file \
       --sjdbOverhang 74
     """
 }

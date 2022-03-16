@@ -29,15 +29,13 @@ process STAR_ALIGNMENT {
     """
     samtools bam2fq $bam > $fastq_file
     
-    [ -d star_index ] || mkdir star_index 
-    
-    STAR \\
-      --runThreadN $task.cpus \\
-      --outSAMtype BAM SortedByCoordinate \\
-      --genomeDir $star_index_file \\
-      --outSAMstrandField intronMotif \\
-      --readFilesIn $fastq_file \\
-      --readFilesCommand cat \\
+    STAR \
+      --runThreadN $task.cpus \
+      --outSAMtype BAM SortedByCoordinate \
+      --genomeDir $star_index_file \
+      --outSAMstrandField intronMotif \
+      --readFilesIn $fastq_file \
+      --readFilesCommand cat \
       --outFileNamePrefix bam_files/$sample. 
 
     cat bam_files/$star_out_bam > $star_out_bam

@@ -19,12 +19,10 @@ process ISOSCM_ASSEMBLE {
         assemble_out_identification_rename = "identification_out"
         
       	assemble_out_identification = sample + ".cp.gtf"
-        assemble_out_differential = sample + ".assembly_parameters.xml"
         
         """
         java -Xmx100G -jar /IsoSCM.jar assemble -bam $aligned_bam -base $sample -s $strand -dir isoscm
 
-        mv isoscm/$assemble_out_differential $assemble_out_differential_rename
         mv isoscm/tmp/$assemble_out_identification $assemble_out_identification_rename
         """
 }

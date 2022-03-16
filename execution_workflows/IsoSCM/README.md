@@ -59,7 +59,7 @@ Parameters relevant to the workflow itself are:
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ## Output & post-processing
-By default, each IsoSCM run results in an identification challenge file located under IsoSCM/results/isoscm/challenges_outus/[sample]_identification_output.bed
+By default, each IsoSCM run results in an identification challenge file located under IsoSCM/results/isoscm/challenges_outputs/[sample]_identification_output.bed
 
 ## Notes
 - Running STAR genome generate requires 30-40GB of memory
