@@ -160,10 +160,12 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
                     break
             
             # Setting the defaults in case nothing was found
+            # TO DO ################ not sure, as we only have correlation
             if metric_X is None:
                 metric_X = "TPR"
             if metric_Y is None:
                 metric_Y = "precision"
+            #####################################################
             
             aggregation_file = {
                 "_id": "{}:{}_{}_Aggregation".format(metrics_file[0]["community_id"],event_date, challenge),
@@ -173,6 +175,12 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
                 "datalink": {
                     "inline_data": {
                         "challenge_participants": challenge_participants,
+                        ############## This is in TCGA
+                        # Probably delete? as I couldn't find "metric_x_id" in any of the schemas
+                        #"metrics":{
+                        #	"metric_x_id": METRICS['TPR'],
+                        #	"metric_y_id": METRICS['precision']
+                        #},
                         "visualization": {
                             "type": "2D-plot",
                             "x_axis": metric_X,
@@ -183,19 +191,23 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
                 "type": "aggregation"
             }
             
-            # Get the info from the files in the directory
+            ################### ?? What does this block do?? -->
+            # Get info from other (?) .json files, if there's a directory for the current challenge in the benchmarking directory ???
             if os.path.isdir(challenge_oeb_data_dir):
                 print("Reading {}".format(challenge_oeb_data_dir))
                 for entry in os.scandir(challenge_oeb_data_dir):
                     if entry.is_file() and entry.name.endswith(".json"):
                         with open(entry.path, mode="r", encoding="utf-8") as ep:
                             metrics_content = json.load(ep)
+
+                            # Don't know which file metrics_content is, as I can't find "challenge_type" key anywhere. Maybe something only present in the DB?
                             if metrics_content.get("challenge_type") == challenge:
                                 challenge_participants.append({
                                     "metric_x": metrics_content["x"],
                                     "metric_y": metrics_content["y"],
                                     "participant_id": metrics_content["toolname"]
                                 })
+            ############################################  <--
 
         # add new participant data to aggregation file
         new_participant_data = {}
@@ -210,14 +222,20 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
         new_participant_data["participant_id"] = participant_id
         aggregation_file["datalink"]["inline_data"]["challenge_participants"].append(new_participant_data)
         
-        # copy the assessment file of the current participant to output directory
+        ############# TCGA ???  # Probably delete, as I couldn't find "metric_x_id" in any of the schemas
+        #metrics = {"metric_x_id": METRICS['TPR'],"metric_y_id": METRICS['precision']}
+            
+        #aggregation_file["datalink"]["inline_data"]["metrics"] = metrics
+        
+
+        #################### Why did we introduce this? -->
+        # copy the assessment file of the current participant to output directory (the same file is  "assessment_out/Assessment_datasets.json")
         rel_new_location = participant_id + ".json"
         new_location = os.path.join(challenge_dir, rel_new_location)
         with open(new_location, mode='w', encoding="utf-8") as f:
             json.dump(metrics_file, f, sort_keys=True, indent=4, separators=(',', ': '))
+        ############### <--
 
-        new_participant_data["participant_id"] = participant_id
-        aggregation_file["datalink"]["inline_data"]["challenge_participants"].append(new_participant_data)
 
         # add the rest of participants to manifest
         for name in aggregation_file["datalink"]["inline_data"]["challenge_participants"]:

@@ -26,8 +26,12 @@ def main(args):
 
     data_model_file = []
 
+    # get the output files from previous steps and concatenate
+    # from validation ("participant_out")
     data_model_file = join_json_files(participant_dir, data_model_file, "*.json")
+    # from metrics ("assessment_out")
     data_model_file = join_json_files(metrics_dir, data_model_file, "*.json")
+    # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge.json"
     data_model_file = join_json_files(aggregation_dir, data_model_file, "*" + challenge + ".json")
 
     # write the merged data model file to json output
