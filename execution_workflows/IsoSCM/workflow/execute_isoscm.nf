@@ -32,7 +32,7 @@ def isOffline() {
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 def files   = modules['files']
-def run_differential = modules['run_mode'].run_differential
+def run_star_alignment = modules['run_mode'].run_star_alignment
 
 include { INPUT_CHECK      } from '../subworkflows/input_check' addParams( options: [:] )
 include { PREPROCESS_FILES } from '../subworkflows/preprocess_files' addParams( options: [:] )
@@ -47,8 +47,9 @@ workflow EXECUTE_ISOSCM {
         INPUT_CHECK ( ch_input )
                .set { ch_sample }
         
-        PREPROCESS_FILES( ch_sample )
-        
+        if( run_star_alignment ) { 
+            PREPROCESS_FILES( ch_sample )
+        }
         RUN_ISOSCM (
             PREPROCESS_FILES.out.ch_aligned_bam_files 
         )       
