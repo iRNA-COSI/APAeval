@@ -1,0 +1,29 @@
+{
+    "_id": "OEBid",
+    "challenge_ids": [
+        "datasetA_sensitivity_FPR_10nt"
+    ],
+    "datalink": {
+        "inline_data": {
+            "challenge_participants": [
+                {
+                    "metric_x": 0.5,
+                    "metric_y": 0.75,
+                    "participant_id": "QAPA"
+                },
+                {
+                    "metric_x": 0.3333333333333333,
+                    "metric_y": 1.0,
+                    "participant_id": "LABRAT"
+                }
+            ],
+            "visualization": {
+                "type": "2D-plot",
+                "x_axis": "Sensitivity_10nt",
+                "y_axis": "FPR_10nt"
+            }
+        }
+    },
+    "type": "aggregation"
+}
+

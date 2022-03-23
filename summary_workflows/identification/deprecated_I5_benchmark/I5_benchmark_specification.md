@@ -11,13 +11,14 @@ Input data:
 
 Based on the input data the following metrics are computed:
 
-1. Precision = (TP/(TP+FP))
+1. Precision = TP/(TP+FP)
+2. Sensitivity = TP/(TP+FN)
 
 TP - true positives - PAS identified by the tool and present within X nucleotides of PAS of transcripts from which the reads were simulated  
 FP - false positives - PAS identified by the tool and not present within X nucleotides of PAS of transcripts from which the reads were simulated
 
 The metrics should be computed for different distance thresholds between PAS identified by the tool from simulated RNAseq dataset and PAS of transcripts used to simulate RNAseq reads, i.e. the PAS identified by the tool should be within X nucleotides from the PAS of transcripts from which the reads were simulated for the prediction to be considered true.  
-Distance thresholds should be between 0 nt and 200 nt with 20 nt increments.
+Distance thresholds should be between 0 nt and 100 nt with 10 nt increments.
 
 ## General info
 
@@ -50,6 +51,32 @@ Fields:
 This BED file contains PAS of transcripts that were used to **simulate** RNA-seq reads.  
 Fields are the same as in Format 1.
 
+## Plots
+
+The results of this benchmark will be visualised in OpenEBench using the following plots:
+
+1. **bar plot** visualizing **Precision** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
+
+- 10 nt
+- 50 nt
+- 100 nt
+
+**X axis** - benchmarked tool  
+**Y axis** - precision
+
+Ranking: The best performing tool is the one with the highest precision value.
+
+2. **bar plot** visualizing **Sensitivity** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
+
+- 10 nt
+- 50 nt
+- 100 nt
+
+**X axis** - benchmarked tool  
+**Y axis** - sensitivity
+
+Ranking: The best performing tool is the one with the highest sensitivity value.
+
 ## Outputs
 
 | # | Format | Link | Example data |
@@ -65,14 +92,16 @@ description of each attribute-value pair:
   
 | Attribute | Type | Unit | Description |
 | --- | --- | --- | --- |
-| `Precision` | `vector` | N/A | A vector of length=11 containing precision values of PAS identification compared with the poly(A) sites of transcripts from which the RNAseq reads were simulated; Precision = (TP/(TP+FP)); calculated for distance between 0 nt and 200 nt with 20 nt intervals; Each value in the vector is of type `float` |
+| `Precision` | `vector` | N/A | A vector of length=11 containing precision values of PAS identification compared with the poly(A) sites of transcripts from which the RNAseq reads were simulated; Precision = (TP/(TP+FP)); calculated for distance between 0 nt and 100 nt with 10 nt intervals; Each value in the vector is of type `float` |
+| `Sensitivity` | `vector` | N/A | A vector of length=11 containing precision values of PAS identification compared with the poly(A) sites of transcripts from which the RNAseq reads were simulated; Sensitivity = TP/(TP+FN); calculated for distance between 0 nt and 100 nt with 10 nt intervals; Each value in the vector is of type `float` |
 
   
 ## Metrics
   
 | # | Description | Unit | Compute from | Transformations | Type after transformations | Additional comments |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Precision of PAS identification compared with ground truth, i.e. poly(A) sites of transcripts used to simulate the RNAseq data | N/A | Output 1 | Read file, parse JSON and extract attribute `Precision` that has type `vector` of `float`. The values should be plotted against a vector of distance cutoff values from 0 to 200 nt with 20 nt intervals. | `array` | N/A |
+| 1 | Precision of PAS identification compared with ground truth, i.e. poly(A) sites of transcripts used to simulate the RNAseq data | N/A | Output 1 | Read file, parse JSON and extract attribute `Precision` that has type `vector` of `float`. | `array` | N/A |
+| 2 | Sensitivity of PAS identification compared with ground truth, i.e. poly(A) sites of transcripts used to simulate the RNAseq data | N/A | Output 1 | Read file, parse JSON and extract attribute `Sensitivity` that has type `vector` of `float`. | `array` | N/A |
 
 ### Additional info metrics
   
