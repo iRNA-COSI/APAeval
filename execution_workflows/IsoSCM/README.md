@@ -13,6 +13,8 @@ create the nextflow pipeline
 ### Download genome fasta file
 IsoSCM workflow runs STAR genome generate for STAR alignment. This step requires a genome fasta file. To run with test data, run the following to download GRCm38 genome fasta file:
 `wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M18/GRCm38.p6.genome.fa.gz`
+And then uncompress the file using the following command:
+`gzip -d https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M18/GRCm38.p6.genome.fa.gz`
 
 ### Input & pre-processing
 An example sample sheet is available at `samplesheet_example_files.csv`. Each row in the samplesheet has four
@@ -43,7 +45,7 @@ To run with singularity, comment out line 49 in IsoSCM/nextflow.config file `doc
 52 `singularity.enabled=true` is uncommented
 
 ### Parameters
-Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
+Parameters used to run the two steps of IsoSCM are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
 - `run_star_genome_generate` - if true, the workflow will run STAR genome generate to obtain genome index. This process takes around 20-25 minutes and only needs to run once per genome. Set to false if the genome index folder already exists.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
