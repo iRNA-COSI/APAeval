@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def modules = params.modules.clone()
 def options    = initOptions(params.options)
-
+def genome_generate = modules['genome_generate']
 
 /*
     Perform STAR genome generate to get genome index for STAR alignment in the next step
@@ -24,7 +24,7 @@ process STAR_GENOME_GENERATE {
 
     script:
     star_index_dir = "star_index"
-
+    sjdbOverhang = genome_generate.readLength - 1
     """
     [ -d $star_index_dir ] || mkdir $star_index_dir
 
@@ -34,6 +34,6 @@ process STAR_GENOME_GENERATE {
       --genomeDir $star_index_dir \
       --genomeFastaFiles $fasta_genome_file \
       --sjdbGTFfile $gtf_genome_file \
-      --sjdbOverhang 74
+      --sjdbOverhang $sjdbOverhang
     """
 }
