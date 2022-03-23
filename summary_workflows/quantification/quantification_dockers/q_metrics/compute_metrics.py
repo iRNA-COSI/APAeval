@@ -11,9 +11,9 @@ from matchPAS import matchPAS
 def main(args):
 
     # input parameters
-    input_participant = args.participant_data
-    gold_standards_dir = args.metrics_ref
-    challenge_types = args.challenge_types
+    participant_input = args.participant_data
+    gold_standards_dir = args.gold_standards_dir
+    challenge_ids = args.challenge_ids
     participant = args.participant_name
     community = args.community_name
     out_path = args.output
@@ -28,29 +28,20 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path, window)
+    compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, window)
 
-def convertRunTimeToSec(runtime_str):
-    runtime_broken_down = runtime_str.split()
-    if len(runtime_broken_down) == 1:
-        runtime = int(runtime_broken_down[-1].strip('s'))
-    elif len(runtime_broken_down) == 2:
-        runtime = int(runtime_broken_down[-1].strip('s'))+int(runtime_broken_down[-2].strip('m'))*60
-    elif len(runtime_broken_down) == 3:
-        runtime = int(runtime_broken_down[-1].strip('s'))+int(runtime_broken_down[-2].strip('m'))*60+int(runtime_broken_down[-3].strip('h'))*60*60
-    return runtime
 
-def compute_metrics(input_participant, gold_standards_dir, challenge_types, participant, community, out_path, window):
+def compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, window):
 
     # define array that will hold the full set of assessment datasets
     ALL_ASSESSMENTS = []
 
-    for challenge in challenge_types:
+    for challenge in challenge_ids:
         
-        metrics_data=os.path.join(gold_standards_dir, challenge + ".bed")
+        gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
 
         # metric on the number of matched sites
-        match_with_gt_run = matchPAS.match_with_gt(input_participant,metrics_data,window)
+        match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
         merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
         percent_matched=n_matched_sites/(n_matched_sites+n_unmatched_sites)
 
@@ -80,8 +71,8 @@ if __name__ == '__main__':
     
     parser = ArgumentParser()
     parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
-    parser.add_argument("-c", "--challenge_types", nargs='+', help="list of types of challenge selected by the user, separated by spaces", required=True)
-    parser.add_argument("-m", "--metrics_ref", help="dir that contains metrics reference datasets for all challenge types", required=True)
+    parser.add_argument("-c", "---challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
+    parser.add_argument("-g", "--gold_standards_dir", help="dir that contains gold standard datasets for current challenge", required=True)
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)

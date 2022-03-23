@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 from assessment_chart import assessment_chart
 
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
-DEFAULT_eventMark_id = "OEBE0070000000"
+DEFAULT_bench_event_id = "OEBE0070000000"
 METRICS =  {"correlation":"OEBM0070000000"} ## is this needed?
 
 def main(args):
@@ -31,7 +31,7 @@ def main(args):
     
     if not offline:
         logging.info("Querying OEB database...")
-        response = query_OEB_DB(DEFAULT_eventMark_id)
+        response = query_OEB_DB(DEFAULT_bench_event_id)
         getOEBAggregations(response, data_dir)
 
     generate_manifest(data_dir, output_dir, participant_data,event_date)
@@ -267,7 +267,7 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
 if __name__ == '__main__':
 
     parser = ArgumentParser()
-    parser.add_argument("-p", "--participant_data", help="path where the data for the participant is stored", required=True)
+    parser.add_argument("-p", "--participant_data", help="path to participant assessment.json", required=True)
     parser.add_argument("-b", "--benchmark_data", help="dir where the data for the benchmark are stored", required=True)
     parser.add_argument("-o", "--output", help="output directory where the manifest and output JSON files will be written", required=True)
     parser.add_argument("-m", "--event_date", help="passes in the event_date defined in nextflow.config", required=True)

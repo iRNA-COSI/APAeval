@@ -11,7 +11,7 @@ from JSON_templates import JSON_templates
 parser = ArgumentParser()
 parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
 parser.add_argument("-com", "--community_name", help="name of benchmarking community", required=True)
-parser.add_argument("-c", "--challenge_types", nargs='+', help="list challenges selected by the user, separated by spaces", required=True)
+parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
 parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
 parser.add_argument("-o", "--output", help="output path where participant JSON file will be written",
                     required=True)
@@ -22,9 +22,9 @@ args = parser.parse_args()
 def main(args):
 
     # input parameters
-    input_participant = args.participant_data
+    participant_input = args.participant_data
     community = args.community_name
-    challenges = args.challenge_types
+    challenges = args.challenge_ids
     participant_name = args.participant_name
     out_path = args.output
 
@@ -37,17 +37,17 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(input_participant, community, challenges, participant_name, out_path)
+    validate_input_data(participant_input, community, challenges, participant_name, out_path)
 
 
 
-def  validate_input_data(input_participant, community, challenges, participant_name, out_path):
+def  validate_input_data(participant_input, community, challenges, participant_name, out_path):
     # get participant output (= input to be validated)
     try:
-        participant_data = pandas.read_csv(input_participant, sep='\t',
+        participant_data = pandas.read_csv(participant_input, sep='\t',
                                            comment="#", header=0)
     except:
-        sys.exit("ERROR: Submitted data file {} could not be read!".format(input_participant))
+        sys.exit("ERROR: Submitted data file {} could not be read!".format(participant_input))
     
     #---------------------------------------------------
     # INPUT FILE VALIDATION
