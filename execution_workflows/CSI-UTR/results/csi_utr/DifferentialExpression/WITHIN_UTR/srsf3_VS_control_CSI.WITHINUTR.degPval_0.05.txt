@@ -1,0 +1,1 @@
+CSI	ENSGENE	GENE_SYM	PSI1 (srsf3)	PSI2 (control)	deltaPSI (srsf3-control)	P-value	FDR

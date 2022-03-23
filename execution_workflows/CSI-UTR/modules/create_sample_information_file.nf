@@ -6,7 +6,7 @@ def options    = initOptions(params.options)
 
 
 /*
-    Move bam and bai files into a directory to be given as an input for CSI-UTR at a later step
+    Create sample information txt file  to be given as an input for CSI-UTR
 */
 process CREATE_SAMPLE_INFORMATION_FILE {
     publishDir "${params.outdir}/csi_utr", mode: params.publish_dir_mode

@@ -29,6 +29,7 @@ def write_to_sample_information_file(args):
     for index, row in df.iterrows():
         # bam file name of the sample
         bam_file_name = os.path.basename(row['bam'])
+        bam_file_name = os.path.splitext(bam_file_name)[0]
         # condition name of the sample
         condition = row['condition']
         # replicate number of the sample

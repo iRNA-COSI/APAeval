@@ -7,8 +7,29 @@ LABEL authors="Farica Zhuang" \
 # Set this to not get asked for geographic area when downloading R
 ENV DEBIAN_FRONTEND noninteractive
 
+# Install required R packages
+RUN apt-get update
+RUN apt-get install -y libxml2-dev \
+			r-cran-xml \
+			libcurl4-openssl-dev \
+			libssl-dev \
+			wget \
+			lsb-release \
+			software-properties-common
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+RUN apt-get update
+RUN apt install -y r-base=4.1.3-1.2004.0
+RUN Rscript -e 'install.packages("BiocManager",  repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'BiocManager::install(c("Rcpp"),  ask=FALSE, update = FALSE, dependencies=TRUE)'
+RUN Rscript -e 'BiocManager::install(c("locfit"), ask=FALSE, update = FALSE, dependencies=TRUE)'
+RUN Rscript -e 'BiocManager::install(c("biomaRt"), ask=FALSE, update = FALSE, dependencies=TRUE)'
+RUN Rscript -e 'BiocManager::install(c("GenomicFeatures"), ask=FALSE, update = FALSE, dependencies=TRUE)'
+RUN Rscript -e 'BiocManager::install(c("DESeq2"), ask=FALSE, update = FALSE, dependencies=TRUE)'
+RUN Rscript -e 'BiocManager::install(c("DEXSeq"), ask=FALSE, update = FALSE, dependencies=TRUE)'
+
 # Install required tools and modules for CSI-UTR
-RUN apt-get update && apt-get install -y curl unzip perl git bedtools r-base samtools liblist-moreutils-perl python3
+RUN apt-get update && apt-get install -y curl unzip perl git bedtools samtools liblist-moreutils-perl python3
 RUN curl -L http://cpanmin.us | perl - Statistics::TTest
 RUN curl -L http://cpanmin.us | perl - Statistics::Multtest
 RUN curl -L http://cpanmin.us | perl - File::Which
@@ -27,5 +48,4 @@ RUN chmod 755 gtfToGenePred genePredToBed
 RUN mv gtfToGenePred /usr/local/bin
 RUN mv genePredToBed /usr/local/bin
 
-# Moving data folder to have access to annotation and bed files from home
-RUN mv /CSI-UTR/CSI-UTR_v1.1.0/data .
+

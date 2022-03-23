@@ -63,7 +63,7 @@ workflow RUN_CSI_UTR {
     ch_csi_bed_file
         .combine(ch_csi_annotation_file)
         .set{ch_bed_files}
-
+    
     CSI_UTR_MAIN (
         CREATE_SAMPLE_INFORMATION_FILE.out.ch_sample_information_file,
         ch_bed_files
