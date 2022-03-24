@@ -33,9 +33,9 @@ An example sample sheet is available at `samplesheet_example_files.csv`. Each ro
 columns:
 
 - sample: name of the sample (e.g control_replicate1)
-- bam: BAM input file for the sample 
-- strand: the strandedness of the data
-
+- bam: absolute path to BAM input file for the sample 
+- strand: the strandedness of the data, can be 'reverse_forward' or 'unstranded'
+- read_type: whether the sample contains paired-end or single-end reads, can be 'paired' or 'single'
 Make sure each sample name is unique.
 
 To run IsoSCM with test data provided for APAeval, check the path to IsoSCM with `pwd` and replace 

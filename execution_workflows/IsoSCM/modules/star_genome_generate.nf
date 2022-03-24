@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def modules = params.modules.clone()
 def options    = initOptions(params.options)
-def genome_generate = modules['genome_generate']
+def genome_generate = modules['star_genome_generate']
 
 /*
     Perform STAR genome generate to get genome index for STAR alignment in the next step

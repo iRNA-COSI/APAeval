@@ -42,8 +42,8 @@ def check_samplesheet(file_in, file_out):
     with open(file_in, "r") as fin:
 
         ## Check header
-        MIN_COLS = 3
-        HEADER = ['sample', 'bam', 'strand']
+        MIN_COLS = 4
+        HEADER = ['sample', 'bam', 'strand', 'read_type']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bam, strand = lspl[:len(HEADER)]
+            sample, bam, strand, read_type = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -75,9 +75,18 @@ def check_samplesheet(file_in, file_out):
                     print_error("bam contains spaces!", 'Line', line)
                 if not bam.endswith(".bam"):
                     print_error("bam does not have extension 'bam'", 'Line', line)
+            ## Check the strand
+            if strand:
+                if strand != "reverse_forward" and strand != "unstranded":
+                    print_error("strand can only be either reverse_forward or unstranded, received " + strand, 'Line', line)
+
+            ## Check the read_type
+            if read_type:
+                if read_type != "single" and read_type != "paired":
+                    print_error("read_type can only be either single or paired, received " + read_type, 'Line', line)
 
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ sample, bam, strand ]
+            sample_info = [ sample, bam, strand, read_type]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -85,7 +94,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','bam', 'strand']) + "\n")
+            fout.write(",".join(['sample','bam', 'strand', 'read_type']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")
