@@ -32,7 +32,7 @@ process STAR_ALIGNMENT {
       	--outSAMtype BAM SortedByCoordinate \
      	--genomeDir $star_index_file \
       	--outSAMstrandField intronMotif \
-      	--readFilesIn $fastq_file \
+      	--readFilesIn $fastq1 \
         --readFilesCommand cat \
         --outFileNamePrefix bam_files/$sample. 
 
