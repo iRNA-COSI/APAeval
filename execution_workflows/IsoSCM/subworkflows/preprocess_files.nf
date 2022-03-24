@@ -45,8 +45,24 @@ workflow PREPROCESS_FILES {
                 .fromPath("${files.star_genome_index}")
                 .set{ ch_star_genome_index }
         }
-        
+               
         ch_sample
+            .map { it -> [ it[0], it[1], it[3] ] }
+            .unique()
+            .set { ch_bam_to_fastq_input }
+ 
+        BAM_TO_FASTQ( ch_bam_to_fastq_input )
+ 
+        ch_sample
+            .map { it -> [ it[0], it[2], it[3] ] }
+            .unique()
+            .set { ch_star_alignment_input }
+        
+        ch_star_alignment_input
+            .combine(BAM_TO_FASTQ.out.ch_fastq_files)
+            .set { ch_star_alignment_input }
+
+        ch_star_alignment_input
 	    .combine(ch_star_genome_index)
             .set{ ch_star_alignment_input }
 

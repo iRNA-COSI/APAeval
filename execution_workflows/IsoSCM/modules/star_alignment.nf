@@ -17,28 +17,42 @@ process STAR_ALIGNMENT {
     label 'process_high'
 
     input:
-    tuple val(sample), path(bam), val(strand), path(star_index_file), val(star_genome_index_indicator)
+    tuple val(sample), val(strand), val(read_type), path(fastq1), path(fastq2), path(star_index_file), val(star_genome_index_indicator)
     
     output:
     tuple val(sample), val(strand), path(star_out_bam), path(star_out_bai), emit: ch_aligned_bam_files
 
     script:
-    fastq_file = sample + ".fastq"
     star_out_bam = sample + ".Aligned.sortedByCoord.out.bam"
     star_out_bai = sample + ".Aligned.sortedByCoord.out.bam.bai"
-    """
-    samtools bam2fq $bam > $fastq_file
-    
-    STAR \
-      --runThreadN $task.cpus \
-      --outSAMtype BAM SortedByCoordinate \
-      --genomeDir $star_index_file \
-      --outSAMstrandField intronMotif \
-      --readFilesIn $fastq_file \
-      --readFilesCommand cat \
-      --outFileNamePrefix bam_files/$sample. 
+    if (read_type == "paired") {
+    	"""
+   	STAR \
+     	--runThreadN $task.cpus \
+      	--outSAMtype BAM SortedByCoordinate \
+     	--genomeDir $star_index_file \
+      	--outSAMstrandField intronMotif \
+      	--readFilesIn $fastq_file \
+        --readFilesCommand cat \
+        --outFileNamePrefix bam_files/$sample. 
 
-    cat bam_files/$star_out_bam > $star_out_bam
-    samtools index $star_out_bam > $star_out_bai
-    """
+        cat bam_files/$star_out_bam > $star_out_bam
+        samtools index $star_out_bam > $star_out_bai
+        """
+    }
+    else {
+	"""
+        STAR \
+        --runThreadN $task.cpus \
+        --outSAMtype BAM SortedByCoordinate \
+        --genomeDir $star_index_file \
+        --outSAMstrandField intronMotif \
+        --readFilesIn $fastq1 $fastq2 \
+        --readFilesCommand cat \
+        --outFileNamePrefix bam_files/$sample.
+
+        cat bam_files/$star_out_bam > $star_out_bam
+        samtools index $star_out_bam > $star_out_bai
+        """
+    }
 }
