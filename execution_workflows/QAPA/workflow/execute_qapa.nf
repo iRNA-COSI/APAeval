@@ -16,6 +16,7 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 if (params.gtf) { ch_gtf = file(params.gtf) } else { exit 1, 'GTF annotation not specified!' }
 if (params.polyabed) { ch_polyabed = file(params.polyabed) } else { exit 1, 'polyA BED not specified!' }
+if (params.gtf) { ch_fasta = file(params.fasta) } else { exit 1, 'FASTA reference sequences not specified!' }
 
 // Function to check if running offline
 def isOffline() {
@@ -49,7 +50,7 @@ workflow EXECUTE_QAPA{
          INPUT_CHECK ( ch_input )
                .set { ch_sample }
 
-         QAPA_SALMON ( ch_sample, ch_gtf, ch_polyabed )
+         QAPA_SALMON ( ch_sample, ch_gtf, ch_polyabed, ch_fasta )
     }
 
 ////////////////////////////////////////////////////

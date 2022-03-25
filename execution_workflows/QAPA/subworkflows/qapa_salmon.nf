@@ -18,29 +18,29 @@ workflow QAPA_SALMON {
     ch_sample
     ch_gtf
     ch_polyabed
-    
-    main:
-    GTFTOGENEPRED ( ch_gtf )
-    GTFTOMARTEXPORT ( ch_gtf )
-    genepred = GTFTOGENEPRED.out.genepred
-    martexport = GTFTOMARTEXPORT.out.mart_export
-    QAPA_BUILD_REF ( martexport, genepred, ch_polyabed )
+    ch_fasta
 
-    ch_sample
-       .map { it -> [ it[3], it[4] ] }
-       .unique()
-       .set { ch_pre_utr_lib }
+    main:
+     GTFTOMARTEXPORT ( ch_gtf )
+     martexport = GTFTOMARTEXPORT.out.mart_export
+     if(params.run_qapa_build){
+         GTFTOGENEPRED ( ch_gtf )
+         genepred = GTFTOGENEPRED.out.genepred
+         QAPA_BUILD_REF ( martexport, genepred, ch_polyabed )
+         QAPA_INDEX ( ch_fasta, QAPA_BUILD_REF.out.bed )
+     }else{
+         QAPA_INDEX ( ch_fasta, ch_polyabed )
+     }
 
     /*
      * Run QAPA & SALMON PREPARE UTRLIB
      */
-     QAPA_INDEX ( ch_pre_utr_lib )
      SALMON_INDEX( QAPA_INDEX.out.ch_indexed_fasta )
      ch_utr_library = SALMON_INDEX.out.ch_utr_library
 
      ch_utr_library
        .combine ( ch_sample )
-       .map { it -> [ it[0], it[1], it[2], it[3], it[6] ] }
+       .combine ( martexport )
        .set { ch_input_salmon_quant }
 
     /*
@@ -50,9 +50,5 @@ workflow QAPA_SALMON {
      QAPA_QUANT( SALMON_QUANT.out.ch_salmon_quant_outputs )
      ch_qapa_outputs= QAPA_QUANT.out.ch_qapa_outputs
      MAKE_QUANT_BED( ch_qapa_outputs )
-
-//    emit:
-//    ch_qapa_output
-
 }
 
