@@ -34,9 +34,10 @@ def modules = params.modules.clone()
 def files   = modules['files']
 def run_star_alignment = modules['run_mode'].run_star_alignment
 
-include { INPUT_CHECK      } from '../subworkflows/input_check' addParams( options: [:] )
-include { PREPROCESS_FILES } from '../subworkflows/preprocess_files' addParams( options: [:] )
-include { RUN_ISOSCM       } from '../subworkflows/run_isoscm'   addParams( options: [:] )
+include { INPUT_CHECK             } from '../subworkflows/input_check' addParams( options: [:] )
+include { PREPROCESS_FILES        } from '../subworkflows/preprocess_files' addParams( options: [:] )
+include { GENERATE_BAM_INDEX_FILE } from '../subworkflows/generate_bam_index_file' addParams( options: [:] )
+include { RUN_ISOSCM              } from '../subworkflows/run_isoscm'   addParams( options: [:] )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -49,9 +50,16 @@ workflow EXECUTE_ISOSCM {
         
         if( run_star_alignment ) { 
             PREPROCESS_FILES( ch_sample )
+            ch_run_isoscm_input = PREPROCESS_FILES.out.ch_aligned_bam_files
         }
+
+        else {
+            GENERATE_BAM_INDEX_FILE( ch_sample )
+            ch_run_isoscm_input = GENERATE_BAM_INDEX_FILE.out.ch_bam_files
+	}
+
         RUN_ISOSCM (
-            PREPROCESS_FILES.out.ch_aligned_bam_files 
+            ch_run_isoscm_input
         )       
 }
 

@@ -34,9 +34,8 @@ process STAR_ALIGNMENT {
       	--outSAMstrandField intronMotif \
       	--readFilesIn $fastq1 \
         --readFilesCommand cat \
-        --outFileNamePrefix bam_files/$sample. 
+        --outFileNamePrefix $sample. 
 
-        cat bam_files/$star_out_bam > $star_out_bam
         samtools index $star_out_bam > $star_out_bai
         """
     }
@@ -49,9 +48,8 @@ process STAR_ALIGNMENT {
         --outSAMstrandField intronMotif \
         --readFilesIn $fastq1 $fastq2 \
         --readFilesCommand cat \
-        --outFileNamePrefix bam_files/$sample.
+        --outFileNamePrefix $sample.
 
-        cat bam_files/$star_out_bam > $star_out_bam
         samtools index $star_out_bam > $star_out_bai
         """
     }

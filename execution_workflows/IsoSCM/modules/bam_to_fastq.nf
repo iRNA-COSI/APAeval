@@ -1,4 +1,4 @@
-/ Import generic module functions
+// Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
@@ -14,12 +14,12 @@ process BAM_TO_FASTQ {
     tuple val(sample), path(bam), val(read_type)
 
     output:
-    tuple path(fastq1), path(fastq2), emit: ch_fastq_files
+    tuple val(sample), path(fastq1), path(fastq2), emit: ch_fastq_files
 
     script:
-    sorted_bam = sample + "qsort.bam"
-    fastq1 = sample + "1.fastq"
-    fastq2 = sample + "2.fastq"
+    sorted_bam = sample + ".qsort.bam"
+    fastq1 = sample + ".fastq1.fastq"
+    fastq2 = sample + ".fastq2.fastq"
     if (read_type == "paired") {
     	"""
     	samtools sort -n -o $sorted_bam $bam
@@ -31,6 +31,7 @@ process BAM_TO_FASTQ {
     else {
         """
         bedtools bamtofastq -i $bam -fq $fastq1
+        cp $fastq1 $fastq2
         """
     }
 }
