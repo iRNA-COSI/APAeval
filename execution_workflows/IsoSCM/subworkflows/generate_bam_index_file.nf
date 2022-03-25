@@ -4,7 +4,7 @@
 
 include { GENERATE_BAI_FILE } from '../modules/generate_bai_file' addParams( options: [:] )
 
-workflow GENERATE_BAI_FILE {
+workflow GENERATE_BAM_INDEX_FILE {
 	take:
 	ch_sample
 
@@ -15,7 +15,7 @@ workflow GENERATE_BAI_FILE {
 
 	GENERATE_BAI_FILE (
 	    ch_generate_bai_file_input
-	}
+	)
 
 	GENERATE_BAI_FILE.out.ch_bam_files
 	    .set{ ch_bam_files }

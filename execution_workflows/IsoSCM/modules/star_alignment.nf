@@ -12,7 +12,6 @@ def options    = initOptions(params.options)
     3. Get the bai file of the new aligned bam file
 */
 process STAR_ALIGNMENT {
-    publishDir "${params.outdir}/isoscm/aligned_bam_files/${sample}.${strand}", mode: params.publish_dir_mode
     container "docker.io/apaeval/isoscm:latest"
     label 'process_high'
 
@@ -20,12 +19,11 @@ process STAR_ALIGNMENT {
     tuple val(sample), val(strand), val(read_type), path(fastq1), path(fastq2), path(star_index_file), val(star_genome_index_indicator)
     
     output:
-    tuple val(sample), val(strand), path(star_out_bam), path(star_out_bai), emit: ch_aligned_bam_files
+    tuple val(sample), val(strand), path(star_out_bam), emit: ch_aligned_bam_files
 
     script:
     star_out_bam = sample + ".Aligned.sortedByCoord.out.bam"
-    star_out_bai = sample + ".Aligned.sortedByCoord.out.bam.bai"
-    if (read_type == "paired") {
+    if (read_type == "single") {
     	"""
    	STAR \
      	--runThreadN $task.cpus \
@@ -35,8 +33,6 @@ process STAR_ALIGNMENT {
       	--readFilesIn $fastq1 \
         --readFilesCommand cat \
         --outFileNamePrefix $sample. 
-
-        samtools index $star_out_bam > $star_out_bai
         """
     }
     else {
@@ -49,8 +45,6 @@ process STAR_ALIGNMENT {
         --readFilesIn $fastq1 $fastq2 \
         --readFilesCommand cat \
         --outFileNamePrefix $sample.
-
-        samtools index $star_out_bam > $star_out_bai
         """
     }
 }

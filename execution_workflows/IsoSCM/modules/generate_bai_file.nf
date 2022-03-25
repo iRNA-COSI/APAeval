@@ -18,6 +18,7 @@ process GENERATE_BAI_FILE {
     tuple val(sample), val(strand), path(bam), path(bai), emit: ch_bam_files
 
     script:
+    bai = bam + ".bai"
     """
     samtools index $bam > $bai
     """

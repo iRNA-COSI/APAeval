@@ -79,7 +79,7 @@ workflow PREPROCESS_FILES {
       
        GENERATE_BAI_FILE(
            STAR_ALIGNMENT.out.ch_aligned_bam_files
-       }
+       )
 
          
        GENERATE_BAI_FILE.out.ch_bam_files
