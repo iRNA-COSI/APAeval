@@ -1,5 +1,5 @@
 /*
-	Preprocess files for IsoSCM
+	Preprocess files for IsoSCM by adding XS tag in BAM files to be compatible with IsoSCM
 */
 
 def modules = params.modules.clone()
@@ -15,7 +15,11 @@ workflow PREPROCESS_FILES {
         take:
         ch_sample
         
-        main: 
+        main:
+  
+        /*
+            Generate genome index with STAR if run_star_genome_generate is set to true
+        */
         if( run_star_genome_generate ) {
             Channel
                 .fromPath("${files.gtf_genome_file}")
@@ -40,6 +44,10 @@ workflow PREPROCESS_FILES {
                 .set{ ch_star_genome_index }
         }
         
+        /*
+            If run_star_genome_generate is set to false,
+            obtain genome index from the path provided by the user
+        */
         else {
             ch_star_genome_indicator = Channel.of("done")
         
@@ -47,7 +55,10 @@ workflow PREPROCESS_FILES {
                 .fromPath("${files.star_genome_index}")
                 .set{ ch_star_genome_index }
         }
-               
+          
+        /*
+            Convert input BAM file to FASTQ for STAR alignment
+        */
         ch_sample
             .map { it -> [ it[0], it[1], it[3] ] }
             .unique()
@@ -55,6 +66,9 @@ workflow PREPROCESS_FILES {
  
         BAM_TO_FASTQ( ch_bam_to_fastq_input )
  
+        /*
+            Prepare STAR ailgnment inputs
+        */
         ch_sample
             .map { it -> [ it[0], it[2], it[3] ] }
             .unique()
@@ -72,11 +86,16 @@ workflow PREPROCESS_FILES {
             .combine(ch_star_genome_indicator)
             .set { ch_star_alignment_input }
             
-        STAR_ALIGNMENT (
+       /*
+           Run STAR alignment to obtain BAM file with XS tag
+       */
+       STAR_ALIGNMENT (
             ch_star_alignment_input
-        )	
+       )	
       
-      
+       /*
+           Generate index file for the BAM file outputted by STAR alignment
+       */
        GENERATE_BAI_FILE(
            STAR_ALIGNMENT.out.ch_aligned_bam_files
        )
