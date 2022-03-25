@@ -34,7 +34,7 @@ def main(args):
         response = query_OEB_DB(DEFAULT_bench_event_id)
         getOEBAggregations(response, data_dir)
 
-    generate_manifest(data_dir, output_dir, participant_data,event_date)
+    generate_manifest(data_dir, output_dir, participant_data,event_date, offline)
 
 ## get existing aggregation datasets from OEB DB
 def query_OEB_DB(bench_event_id):
@@ -120,7 +120,7 @@ def read_participant_data(participant_path):
 
     return participant_data
 
-def generate_manifest(data_dir,output_dir,participant_data,event_date):
+def generate_manifest(data_dir,output_dir,participant_data,event_date, offline):
 
     info = []
 
@@ -229,7 +229,7 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
         
 
         #################### Why did we introduce this? -->
-        # copy the assessment file of the current participant to output directory (the same file is  "assessment_out/Assessment_datasets.json")
+        # copy the assessment file of the current participant to output directory (the same file is  "assessment_datasets.json")
         rel_new_location = participant_id + ".json"
         new_location = os.path.join(challenge_dir, rel_new_location)
         with open(new_location, mode='w', encoding="utf-8") as f:
@@ -241,10 +241,16 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date):
         for name in aggregation_file["datalink"]["inline_data"]["challenge_participants"]:
             participants.append(name["participant_id"])
 
-        #copy the updated aggregation file to output directory
+        # write the updated aggregation file to output directory
         summary_dir = os.path.join(challenge_dir,challenge + ".json")
         with open(summary_dir, 'w') as f:
             json.dump(aggregation_file, f, sort_keys=True, indent=4, separators=(',', ': '))
+
+        # write the updated aggregation file to assessment directory in case we are offline. Like this, we will have the most recent/comprehensive aggregation file in that directory
+        if offline:
+            aggregation_out = os.path.join(data_dir,challenge + ".json")
+            with open(aggregation_out, 'w') as f:
+                json.dump(aggregation_file, f, sort_keys=True, indent=4, separators=(',', ': '))
 
         # Let's draw the assessment charts!
         assessment_chart.print_chart(challenge_dir, summary_dir, challenge, "RAW")
