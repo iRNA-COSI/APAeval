@@ -15,15 +15,6 @@ columns:
 - sample: name of the sample for logs (e.g control_replicate1)
 - fastq1: FASTQ1 for both single-end and paired-end RNA-seq
 - fastq2: FASTQ2 for paired-end RNA-seq. If single-end, please leave this empty
-- bam: BAM input file for the sample 
-- bai: BAI index file for sample's bam input
-- gff: GFF annotation file
-- fasta: FASTA reference sequence file
-- bed: BED 3'UTR library 
-- mart export: Ensembl gene metadata table from Biomart. Please see [QAPA's GitHub page for more details](https://github.com/morrislab/qapa#prepare-annotation-files)
-
-To run QAPA with test data provided for APAeval, check the path to QAPA with `pwd` and replace 
-the `path_to` in samplesheet_example.csv.
 
 When using your own data and input file instead of the provided test data and sample sheet, make sure to include in the 
 input file you are using the absolute paths to the files, with the column names following the column
@@ -35,25 +26,29 @@ This workflow uses docker containers. To run with docker, make sure that docker 
 (e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
 To run with `docker`, please indicate `-profile docker`
 ```
-nextflow main.nf --input samplesheet_example_files.csv` -profile docker
+nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile docker
 ```
 
 ## Singularity
 To run with `singularity`, please indicate `-profile singularity`
 ```
-nextflow main.nf --input samplesheet_example_files.csv` -profile singlularity
+nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
 ```
 
 ### Parameters
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
 - `input` - path to the `samplesheet.csv`
-- `outdir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
+- `outdir` - name of the folder that the final output files are going to be in, located under QAPA/
+- `gtf`: GTF annotation file
+- `fasta`: FASTA reference sequence file
+- `polyabed`: BED 3'UTR library
+- `run_qapa_build`: run qapa built (default: false)
 
 ### Running the workflow
 The QAPA workflow only does quantification. Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
 ```
-nextflow main.nf --input samplesheet_example_files.csv` -profile [docker/singularity]
+nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile [docker/singularity]
 ```
 
 ## Output & post-processing
