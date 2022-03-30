@@ -1,2 +1,0 @@
-siControl_R1_2genes_Chr_prefix	control	1	0
-siSrsf3_R1_2genes_Chr_prefix	srsf3	1	0

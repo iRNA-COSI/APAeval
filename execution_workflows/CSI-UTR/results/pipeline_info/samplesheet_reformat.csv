@@ -1,3 +1,0 @@
-condition,replicate,bam,bai
-control,1,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siControl_R1_2genes_Chr_prefix.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siControl_R1_2genes_Chr_prefix.bam.bai
-srsf3,1,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siSrsf3_R1_2genes_Chr_prefix.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siSrsf3_R1_2genes_Chr_prefix.bam.bai
