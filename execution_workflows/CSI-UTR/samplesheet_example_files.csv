@@ -1,3 +1,5 @@
-condition,replicate,bam,bai
-control,1,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siControl_R1_2genes_Chr_prefix.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siControl_R1_2genes_Chr_prefix.bam.bai
-srsf3,1,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siSrsf3_R1_2genes_Chr_prefix.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/../../tests/test_data/siSrsf3_R1_2genes_Chr_prefix.bam.bai
+sample,condition,replicate,bam,bai
+control_r1,control,1,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siControl_R1_2genes.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siControl_R1_2genes.bam.bai
+control_r2,control,2,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siControl_R2_2genes.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siControl_R2_2genes.bam.bai
+srsf3_r1,srsf3,1,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siSrsf3_R1_2genes.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siSrsf3_R1_2genes.bam.bai
+srsf3_r2,srsf3,2,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siSrsf3_R2_2genes.bam,/home/fzhuang/apaeval/APAeval/execution_workflows/CSI-UTR/data/siSrsf3_R2_2genes.bam.bai

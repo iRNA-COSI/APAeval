@@ -12,7 +12,7 @@ process CREATE_INPUT_FILE {
     publishDir "${params.outdir}/csi_utr/input_files", mode: params.publish_dir_mode
 
     input:
-    tuple val(condition), val(replicate), path(bam_file), path(bai_file)
+    tuple val(sample), val(condition), val(replicate), path(bam_file), path(bai_file)
 
     output:
     tuple path(bam_file), path(bai_file) , emit: ch_input_files

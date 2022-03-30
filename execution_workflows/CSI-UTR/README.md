@@ -9,23 +9,29 @@ to create the nextflow pipeline flow of this module
 
 ## Running CSI-UTR workflow
 
+
+### Data download
+CSI-UTR requires provided in [CSI-UTR github repo](https://github.com/UofLBioinformatics/CSI-UTR/tree/master/CSI-UTR_v1.1.0/data)
+
+CSI-UTR also requires exactly two distinct conditions to be provided as inputs. Furthermore,  at least two replicates need to be provided per condition otherwise the tool errors out. The test data provided in APAeval only has one replciate per condition. As such, additional test datasets of two distinct conditions and two replicates per condition are provided [here]()
 ### Input & pre-processing
 An example sample sheet is available at `samplesheet_example_files.csv`. Each row in the samplesheet has four
 columns:
 
-- sample: name of the sample for logs (e.g control_replicate1)
-- condition: name of the condition (e.g Control) 
+- sample: name of the sample to be included as prefix in identification challenge output file name(e.g control_replicate1)
+- condition: name of the condition (e.g control) 
+- replicate: replicate number of this condition (e.g 1)
 - bam: BAM input file for the sample 
 - bai: BAI index file for sample's bam input
 
 It is important to name samples of the same condition with the exact condition name under the condition
 column in the samplesheet since samples are grouped per condition to be processed in the differential step.
-To run DaPars with test data provided for APAeval, check the path to DaPars with `pwd` and replace 
-the `path_to` in samplesheet_example_files.csv or samplesheet_example_files_identification.csv with the path 
+To run CSI-UTR with test data provided for APAeval, check the path to CSI-UTR with `pwd` and replace 
+the `path_to` in samplesheet_example_files.csv with the path
 from the `pwd` command. 
 
 When using your own data and input file instead of the provided test data and sample sheet, make sure to include in the 
-input file you are using the absolute paths to the four files, with the four column names following the column
+input file you are using the absolute paths to the files, with the column names following the column
 names above.
 
 ### Running with Docker or Singularity
@@ -50,19 +56,17 @@ Parameters relevant to the workflow itself are:
    with the path to DaPars, and if using your own genome file, make sure to use the absolute path to your genome file
 
 ### Running the differential workflow
-- Set the 'mode' parameter in conf/modules.config to "differential"
-- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.tsv'
-- Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file 
+- Set the 'run_differential' parameter in conf/modules.config to true
+- Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
+- Ensure the sample sheet contains exactly two distinct conditions in the condition column and at least two replicates per condition. An example input file 
   is samplesheet_example_files.csv
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ### Running the identification workflow
-- Set the 'mode' parameter in conf/modules.config to "identification"
-- Change 'output_file' parameter in conf/modules.config to the desired file name that ends with '.bed'
-- In the sample sheet, the same sample should be provided twice, but each row should have a distinct condition in 
-  the `condition` column. Exactly two rows must be present in the sample sheet. The workflow will then treat the 
-  two rows as two different conditions, a requirement for DaPars to run successfully. An example sample sheet is 
-  samplesheet_example_files_identification.csv.
+- Set the 'run_identification' parameter in conf/modules.config to true
+- Change 'identification_out_suffix' parameter in conf/modules.config to the desired file name that ends with '.bed'
+- Ensure the sample sheet contains exactly two distinct conditions in the condition column and at least two replicates per condition. An example input file
+  is samplesheet_example_files.csv
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files_identification.csv
 
 ## Output & post-processing
@@ -71,21 +75,9 @@ Identification challenege file is located under DaPars/results/dapars/dapars_ide
 
 ## Notes
 - It is not possible to obtain quantification challenge output data since the TPM value in the output file
-  is provided per transcript instead of per site. Hence, this tool is not compatible for quantification
+  is provided per CSI region and not per APA site. Hence, this tool is not compatible for quantification
   challenge. 
-- Make sure that the input bam files have leading 'chr' in the chromosome column. Otherwise, once 
-  converted to input bedgraph file for DaPars, the workflow will exit with an error
-![](chr_prefix_error_msg.png)
-   This is because DaPars checks for the leading 'chr' in the process and would error out otherwise.
-   Hence, we've added a step to check for this leading 'chr' early in the workflow to prevent having to
-   go through the entire workflow before erroring out for efficiency.
-- DaPars' [documentation](http://xiazlab.org/dapars_tutorial/html/DaPars.html) specifies that a gene symbol file
-  is required. The gene symbol file consists of a column of transcript id and another column of gene symbol. This
-  file is then used to include the gene symbol for each row in the output file under `Gene` column, for example looks
-  like `ENSMUST00000203335.1|Wnk1|chr6|-`. However, since the differential output file requires a gene id instead of a 
-  gene symbol, this workflow extracts a gene symbol file required by DaPars by populating it with transcript id and gene id,
-  such that the `Gene` column in Dapars' output file looks like `ENSMUST00000203335.1|ENSMUSG00000045962.16|chr6|-`.The gene
-  id for each row can then be easily extracted for differential output file by taking the second item from the output above.
+- CSI-UTR needs exactly two distinct conditions with at least 2 replicates per condition. If less than 2 replicates are provided per condition, the tool will error out.
 
 ## Author contact
-If you have any question or comment about DaPars, please post on DaPars Google Groups (https://groups.google.com/u/1/g/DaPars) or the author, Dr. Zheng Xia (xiaz@ohsu.edu).
+If you have any question or comment about CSI-UTR, please contact the corresponding author, Dr. Eric Rouchka (ecrouc01@louisville.edu).

@@ -10,11 +10,12 @@ process CSI_UTR_MAIN {
         container "docker.io/apaeval/csi-utr:latest"
 
         input:
+        tuple val(sample), val(bam)
         path sample_info
         tuple path(CSI_bed_file), path(CSI_annotation_file)
 
         output:
-        path outdir, emit: ch_csi_utr_output
+        path outdir, emit: ch_csi_utr_outdir
 
         script:
         genome = csi_params.genome
@@ -26,7 +27,7 @@ process CSI_UTR_MAIN {
         bed_data_dir = "$PWD/${params.outdir}/csi_utr/input_files/"
         bed_file="./data/locations/${genome}.CSIs.bed" 
         annot_file   = "./data/annotations/${genome}.CSIs.annot.bed"
-
+        outdir = "CSI_OUT/."
         """
         mkdir data
         mkdir data/locations
@@ -35,6 +36,7 @@ process CSI_UTR_MAIN {
         mkdir data/annotations
         mv $CSI_annotation_file ./data/annotations/.
 
+        mkdir CSI_OUT
 
         CSI-UTR \
         -genome=$genome \
@@ -42,6 +44,7 @@ process CSI_UTR_MAIN {
         -sample_info=$sample_info \
         -bed=$bed_file \
         -annot=$annot_file \
+        -out=$outdir \
         -data_dir=$bed_data_dir \
         -coverage_cut=$coverage_cut \
         -usage_cut=$usage_cut \
