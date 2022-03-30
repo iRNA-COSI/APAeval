@@ -31,7 +31,7 @@ process STAR_ALIGNMENT {
      	--genomeDir $star_index_file \
       	--outSAMstrandField intronMotif \
       	--readFilesIn $fastq1 \
-        --readFilesCommand cat \
+        --readFilesCommand gunzip -c \
         --outFileNamePrefix $sample. 
         """
     }
@@ -43,7 +43,7 @@ process STAR_ALIGNMENT {
         --genomeDir $star_index_file \
         --outSAMstrandField intronMotif \
         --readFilesIn $fastq1 $fastq2 \
-        --readFilesCommand cat \
+        --readFilesCommand gunzip -c \
         --outFileNamePrefix $sample.
         """
     }
