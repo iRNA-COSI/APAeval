@@ -11,9 +11,14 @@ to create the nextflow pipeline flow of this module
 
 
 ### Data download
-CSI-UTR requires provided in [CSI-UTR github repo](https://github.com/UofLBioinformatics/CSI-UTR/tree/master/CSI-UTR_v1.1.0/data)
+CSI-UTR requires exactly two distinct conditions to be provided as inputs. Furthermore,  at least two replicates need to be provided per condition otherwise the tool errors out. The test data provided in APAeval only has one replciate per condition. As such, additional test datasets of two distinct conditions and two replicates per condition are provided [here](https://drive.google.com/drive/folders/16BXeJIencg14K8XU5tiYh_XUQhneq-zg?usp=sharing). 
 
-CSI-UTR also requires exactly two distinct conditions to be provided as inputs. Furthermore,  at least two replicates need to be provided per condition otherwise the tool errors out. The test data provided in APAeval only has one replciate per condition. As such, additional test datasets of two distinct conditions and two replicates per condition are provided [here]()
+Additionally, CSI-UTR annotation and bed files have to be downloaded. In the same folder above, there are folders called annotations and locations that contain CSI annotation and bed files needed to run the tool for Mm10 genome, the genome used for APAeval test data.
+
+Hence, to run CSI-UTR with APAeval test data, download all the folders and files in the folder above and place them under a data/ folder in CSI-UTR working directory.
+
+CSI-UTR is compatible with the following genomes: Hg38, Mm10, Rn6, and Rn6_extended. For each genome, CSI annotation and bed files are required to be downloaded from [CSI-UTR github repo](https://github.com/UofLBioinformatics/CSI-UTR/tree/master/CSI-UTR_v1.1.0/data).
+
 ### Input & pre-processing
 An example sample sheet is available at `samplesheet_example_files.csv`. Each row in the samplesheet has four
 columns:
@@ -48,19 +53,23 @@ To run with singularity, comment out line 49 in Dapars/nextflow.config file `doc
 ### Parameters
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
-- `mode` - whether to run to obtain identification ("identification") or differential ("differential") challenge output.
-   Specifying any other value will throw an error.
-- `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
-- `output_file` - name of the output file for the current run ending with .bed if running identification and .tsv if running differential
-- `genome_file` - absolute path from the DaPars folder to the input GTF annotation file can be obtained by replacing `path_to`
-   with the path to DaPars, and if using your own genome file, make sure to use the absolute path to your genome file
-
-### Running the differential workflow
-- Set the 'run_differential' parameter in conf/modules.config to true
-- Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
-- Ensure the sample sheet contains exactly two distinct conditions in the condition column and at least two replicates per condition. An example input file 
-  is samplesheet_example_files.csv
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- `run_identification` - true/false, whether to run to obtain identification challenge output.
+- `run_differential` - true/false, whether to run to obtain differential challenge output.
+- `output_dir` - name of the folder that the final output files are going to be in, located under CSI-UTR/results/csi-utr/
+- `identification_out_suffx` - suffix of the output file for identification challenge ending with .bed, final output file name is prefixed with sample name obtained from the input sample sheet 
+- `differential_out` - name of differential challegen output file ending in .tsv 
+- `genome_file` - absolute path from the CSI-UTR folder to the input GTF annotation file can be obtained by replacing `path_to`
+   with the path to CSI-UTR, and if using your own genome file, make sure to use the absolute path to your genome file
+- `CSI_bed_file` - absolute path from the CSI-UTR folder to the downloaded CSI bed file can be obtained by replacing `path_to`
+   with the path to CSI-UTR
+- `CSI_annotation_file` - absolute path from the CSI-UTR folder to the downloaded CSI annotation file can be obtained by replacing `path_to`
+   with the path to CSI-UTR
+- `genome` - the genome of the samples, value could be Hg38, Mm10, Rn6, or Rn6_extended
+- `r` - read length
+- `coverage_cut` - coverage cutoff
+- `usage_cut` - usage cutoff
+- `p` - p-value significance cutoff
+- `q` - FDR significance cutoff
 
 ### Running the identification workflow
 - Set the 'run_identification' parameter in conf/modules.config to true
@@ -69,9 +78,16 @@ Parameters relevant to the workflow itself are:
   is samplesheet_example_files.csv
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files_identification.csv
 
+### Running the differential workflow
+- Set the 'run_differential' parameter in conf/modules.config to true
+- Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
+- Ensure the sample sheet contains exactly two distinct conditions in the condition column and at least two replicates per condition. An example input file 
+  is samplesheet_example_files.csv
+- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+
 ## Output & post-processing
-Each DaPars run results in differential challenge file located under DaPars/results/dapars/dapars_differential_output.tsv.
-Identification challenege file is located under DaPars/results/dapars/dapars_identification_output.tsv.
+CSI-UTR identification run results in a file located under CSi-UTR/results/csi_utr/[output_dir]/[sample_name]_[identification_out_suffix]
+CSI-UTR differential run results in a file located under CSi-UTR/results/csi_utr/[output_dir]/[differential_out]
 
 ## Notes
 - It is not possible to obtain quantification challenge output data since the TPM value in the output file
