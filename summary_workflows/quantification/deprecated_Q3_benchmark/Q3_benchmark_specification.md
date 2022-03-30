@@ -22,7 +22,6 @@ To compute the metrics, the poly(A) sites identified from the RNAseq data using 
   - weigths are added for the predicted sites based on distance to the ground truth site
   - expression can be calculated by `sum(weight_i*expression_i)` to get a single value matching the one ground truth site OR just summed without considering weight
 
-
 ## General info
 
 * **Challenge:** Quantification
@@ -52,6 +51,18 @@ This BED file contains genomic positions of unique cleavage/polyadenylation site
 
 This BED file contains genomic positions of unique unique cleavage/polyadenylation sites as well as TPM values for each identified site quantified from abundances of transcripts assumed when generating the RNAseq-data.
 Fields are the same as in format 1.
+
+## Plots
+
+The results of this benchmark will be visualised in OpenEBench using the following plots:
+
+1. **bar plot** visualizing **Correlation** of poly(A) site quantification. 
+
+**X axis** - benchmarked tool  
+**Y axis** - correlation
+
+Ranking: The best performing tool is the one with the highest correlation value.
+
 
 ## Outputs
 
