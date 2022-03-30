@@ -33,6 +33,5 @@ RUN mv IsoSCM-2.0.12.jar IsoSCM.jar
 
 # Download STAR
 RUN git clone https://github.com/alexdobin/STAR.git
-RUN cd STAR/source
-RUN make STAR
-ENV PATH=$PATH:/STAR/bin/Linux_x86_64/
+RUN cd STAR/source && make STAR
+RUN cp STAR/source/STAR /usr/local/bin
