@@ -8,8 +8,6 @@ def run_mode = modules['run_mode']
 def run_identification = run_mode.run_identification
 def run_differential = run_mode.run_differential
 
-// include { CHECK_INPUT_PARAMS      } from '../modules/check_input_params' addParams( options: [:] )
-include { CONVERT_GTF_TO_BED      } from '../modules/convert_gtf_to_bed' addParams( options: [:] )
 include { CREATE_INPUT_FILE } from '../modules/create_input_file'
 include { CREATE_SAMPLE_INFORMATION_FILE } from '../modules/create_sample_information_file' addParams( options: [:] )
 include { CSI_UTR_MAIN } from '../modules/csi_utr_main' addParams( options: [:] )
