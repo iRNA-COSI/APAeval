@@ -1,18 +1,19 @@
 ## Matching PA sites to ground truth
 
-The script `match_with_gt.py` uses bedtools window to assign ground truth PAS to the predictions. Each prediction is extended by `n` base pairs, depending on the parameter chosen for `window`.
+The script `matchPAS.py` contains the metric calculating functions that were in the following scripts [Leo Schärfen](https://github.com/lschaerfen) wrote: 
 
-The script `corr_with_gt.py` calculates the correlation coefficient between prediction and matched ground truth quantification values. The input must be a BED file containing the columns below. Usage: `python3 corr_with_gt.py <prediction_merged.bed>`
+- [`match_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/match_with_gt.py) uses bedtools window to assign ground truth PAS to the predictions. Each prediction is extended by `n` base pairs, depending on the parameter chosen for `window`.
+- [`corr_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/corr_with_gt.py) calculates the correlation coefficient between prediction and matched ground truth quantification values. The input must be a BED file containing the columns below. Usage: `python3 corr_with_gt.py <prediction_merged.bed>`
 
 Processing steps:
 - run bedtools window for prediction file with itself
 - if necessary, merge prediction sites that fall into the window, expression is summed
 - run bedtools window for merged predictions with ground truth file
 - find multiple ground truth sites overlapping one predicted site
-	- weigths are added for the predicted site based on distance to the ground truth site
+	- weights are added for the predicted site based on distance to the ground truth site
 	- expression can be calculated by weight_i*expression_i for all prediction sites having the same ground truth site assigned
 - find multiple predicted sites overlapping one ground truth site
-	- weigths are added for the predicted sites based on distance to the ground truth site
+	- weights are added for the predicted sites based on distance to the ground truth site
 	- expression can be calculated by sum(weight_i*expression_i) to get a single value matching the one ground truth site OR just summed without considering weight
 - write output file with the following columns:
 	1. chromosome prediction
@@ -31,10 +32,10 @@ Processing steps:
 ### Usage:
 
 ```bash
-python3 prediction.bed ground_truth.bed window
+python3 matchPAS.py prediction.bed ground_truth.bed window
 
 # example:
-python3 match_with_gt.py adultCortex.PAPERCLIP.mm10.bed siControl_R1.MACEseq.mm10.bed 15
+python3 matchPAS.py adultCortex.PAPERCLIP.mm10.bed siControl_R1.MACEseq.mm10.bed 15
 ```
 
 ### Output:

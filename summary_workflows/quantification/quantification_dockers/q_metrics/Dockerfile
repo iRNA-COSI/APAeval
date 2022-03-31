@@ -1,7 +1,6 @@
 # Use an official Python runtime as a parent image
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
-ENV TZ=Asia/Singapore
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set the working directory to /app
 WORKDIR /app
@@ -16,5 +15,3 @@ RUN apt-get update && apt-get -y install procps && rm -rf /var/lib/apt/lists/* &
 
 # Copy the current directory contents into the container at /app
 COPY . /app
-
-ENTRYPOINT ["python","compute_metrics.py"]

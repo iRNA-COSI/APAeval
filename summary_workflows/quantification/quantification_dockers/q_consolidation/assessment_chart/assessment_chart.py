@@ -213,19 +213,25 @@ def print_quartiles_table(tools_quartiles):
 
 
 
-def print_chart(cancer_dir, summary_dir, cancer_type, classification_type):
+def print_chart(challenge_dir, summary_dir, challenge_type, classification_type):
 
     tools = []
     x_values = []
     y_values = []
     with io.open(summary_dir, mode='r', encoding="utf-8") as f:
         aggregation_file = json.load(f)
+        # Challenge ID for plot title
+        challenge_id =  aggregation_file["_id"]
+        # participants and their metrics
         for participant_data in aggregation_file["datalink"]["inline_data"]["challenge_participants"]:
 
             tools.append(participant_data['participant_id'])
             x_values.append(participant_data['metric_x'])
             y_values.append(participant_data['metric_y'])
-
+        # metrics names for axes
+        x_metric = aggregation_file["datalink"]["inline_data"]["visualization"]["x_axis"]
+        y_metric = aggregation_file["datalink"]["inline_data"]["visualization"]["y_axis"]
+    
     ax = plt.subplot()
     for i, val in enumerate(tools, 0):
         markers = [".", "o", "v", "^", "<", ">", "1", "2", "3", "4", "8", "s", "p", "P", "*", "h", "H", "+",
@@ -242,12 +248,10 @@ def print_chart(cancer_dir, summary_dir, cancer_type, classification_type):
     # change plot style
     # set plot title
 
-    plt.title("Cancer Driver Genes prediction benchmarking - " + cancer_type, fontsize=18, fontweight='bold')
+    plt.title(challenge_id, fontsize=18, fontweight='bold')
 
-    # set plot title depending on the analysed tool
-
-    ax.set_xlabel("True Positive Rate - % driver genes correctly predicted", fontsize=12)
-    ax.set_ylabel("Precision - % true positives over total predicted", fontsize=12)
+    ax.set_xlabel(x_metric, fontsize=12)
+    ax.set_ylabel(y_metric, fontsize=12)
 
     # Shrink current axis's height  on the bottom
     box = ax.get_position()
@@ -314,7 +318,7 @@ def print_chart(cancer_dir, summary_dir, cancer_type, classification_type):
         tools_quartiles = plot_diagonal_quartiles(x_values, y_values, tools, better)
         print_quartiles_table(tools_quartiles)
 
-    outname = os.path.join(cancer_dir,cancer_type + "_benchmark_" + classification_type + ".svg")
+    outname = os.path.join(challenge_dir,challenge_type + "_benchmark_" + classification_type + ".svg")
     fig = plt.gcf()
     fig.set_size_inches(18.5, 10.5)
     fig.savefig(outname, dpi=100)

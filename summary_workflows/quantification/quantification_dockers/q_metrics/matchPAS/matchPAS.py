@@ -1,10 +1,10 @@
 import subprocess
+import os
 from io import StringIO
 import pandas as pd
 import numpy as np
 from scipy.stats import pearsonr
 from shutil import which
-import argparse
 
 def bedtools_window(bed1, bed2, window, reverse=False):
     """
@@ -46,8 +46,13 @@ def bedtools_window(bed1, bed2, window, reverse=False):
     return(out)
 
 
-def match_wtih_gt(f_PD, f_GT, window):
+def match_with_gt(f_PD, f_GT, window):
 
+    # check for presence of participant input data
+    assert os.path.exists(f_PD), "Participant file not found, please check input data."
+    # check for presence of ground truth
+    assert os.path.exists(f_GT), "Ground truth file not found, please check input data."
+    
     # bedtools window with specified parameter
     out = bedtools_window(f_PD, f_GT, window)
 
