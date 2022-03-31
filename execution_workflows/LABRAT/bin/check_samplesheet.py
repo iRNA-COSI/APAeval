@@ -34,7 +34,7 @@ def print_error(error, context='Line', context_str=''):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    sample,fastq1,fastq2,bam,bai,gff,fasta,bed,mart_export
+    sample,fastq1,fastq2,gff,fasta,condition
     """
 
     input_extensions = []

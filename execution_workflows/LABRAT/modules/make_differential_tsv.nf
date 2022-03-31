@@ -8,16 +8,18 @@ process MAKE_DIFFERENTIAL_TSV {
     tag "$samplesheet"
     publishDir "${params.outdir}/labrat", mode: params.publish_dir_mode
 
-    container "quay.io/biocontainers/python:3.8.3"
+    container "quay.io/biocontainers/python:3.8--1"
 
     input:
     path labrat_diff_results
-    
+    val  conditionA
+    val  conditionB
+
     output:
     path "*"
 
     script:
     """
-    make_differential_tsv.py $labrat_diff_results labrat_differential.tsv
+    make_differential_tsv.py $labrat_diff_results ${conditionA}_${conditionB}_labrat_differential.tsv
     """
 }

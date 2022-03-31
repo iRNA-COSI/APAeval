@@ -14,9 +14,11 @@ process CHECK_INPUT_PARAMS {
     container "docker.io/apaeval/dapars:latest"
 
     script:
-    mode = options.mode
-    output_file_name = options.output_file
+    run_identification = options.run_identification
+    run_differential = options.run_differential
+    identification_out_suffix = options.identification_out_suffix
+    differential_out = options.differential_out
     """
-    check_input_params.py $output_file_name $mode
+    check_input_params.py $identification_out_suffix $differential_out $run_identification $run_differential
     """
 }
