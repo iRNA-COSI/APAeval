@@ -11,7 +11,7 @@ rule get_TPAS_scripts:
     input:
         HTTP.remote("raw.githubusercontent.com/zavolanlab/tandem-pas/bd46f60ef77faa46caf511ac407824bade4236c6/scripts/{script}", keep_local=True)
     output:
-        os.path.join(config["scriptsdir"], "{script}")
+        os.path.join(config["tpas"]["scriptsdir"], "{script}")
     shell:
         "mv {input} {output}"
 
@@ -19,7 +19,7 @@ rule get_TPAS_scripts:
 # Import the TPAS module
 module tandem_pas:
     snakefile: github("zavolanlab/tandem-pas", path="Snakefile", commit="98478da")
-    config: config
+    config: config["tpas"]
 
 use rule * from tandem_pas as TPAS_*
 

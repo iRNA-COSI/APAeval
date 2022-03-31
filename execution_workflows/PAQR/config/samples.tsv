@@ -1,0 +1,3 @@
+ID	bam	condition
+siCtrl	../../tests/test_data/siControl_R1_2genes.bam	control
+siRNA	../../tests/test_data/siSrsf3_R1_2genes.bam	KO

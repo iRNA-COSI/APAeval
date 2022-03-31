@@ -7,7 +7,7 @@ import os
 import sys
        
 
-samples = pd.read_table(config["PAQ_samples_table"], header=0, index_col=0)
+samples = pd.read_table(config["paqr"]["PAQ_samples_table"], header=0, index_col=0)
 
 
 include: "rules/create_tandem_pas.smk"
@@ -22,7 +22,7 @@ rule finish:
     """
     input:
         BED_quantification = expand(os.path.join(
-                config["PAQ_outdir"],
+                config["out_dir"],
                 "{sample}" + config["challenge_code"] + config["method"] + config["outcode"] + ".bed"),
                 sample = samples.index)
 

@@ -3,12 +3,12 @@ import os
 rule paqr_tsv_to_apaeval_bed:
     input:
         TSV_filtered_expression = os.path.join(
-                config["PAQ_outdir"],
+                config["paqr"]["PAQ_outdir"],
                 "filtered_pas_expression.tsv")
 
     output:
         BED_quantification = os.path.join(
-                config["PAQ_outdir"],
+                config["out_dir"],
                 "{sample}" + config["challenge_code"] + config["method"] + config["outcode"] + ".bed")
 
     params:
