@@ -9,7 +9,7 @@ rule paqr_tsv_to_apaeval_bed:
     output:
         BED_quantification = os.path.join(
                 config["out_dir"],
-                "{sample}" + config["challenge_code"] + config["method"] + config["outcode"] + ".bed")
+                "{sample}_" + config["challenge_code"] + "_" + config["method"] + "_" + config["outcode"] + ".bed")
 
     params:
         sample = "{sample}"

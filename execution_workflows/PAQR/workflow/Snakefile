@@ -23,7 +23,7 @@ rule finish:
     input:
         BED_quantification = expand(os.path.join(
                 config["out_dir"],
-                "{sample}" + config["challenge_code"] + config["method"] + config["outcode"] + ".bed"),
+                "{sample}_" + config["challenge_code"] + "_" + config["method"] + "_" + config["outcode"] + ".bed"),
                 sample = samples.index)
 
 
