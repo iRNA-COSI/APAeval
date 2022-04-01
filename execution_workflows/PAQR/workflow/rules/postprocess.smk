@@ -16,17 +16,12 @@ rule paqr_tsv_to_apaeval_bed:
     
     run:
         with open(input.TSV_filtered_expression, "r") as infile, open(output.BED_quantification, "wt") as outfile:
-            print(params.sample)
             # Getting sample column from header line
             header = infile.readline()
-            print(header)
             header = [h.strip() for h in header.split("\t")]
-            print(header)
             sample_column = header.index(params.sample)
-            print(sample_column)
 
             for line in infile:
-                print(line)
                 F = line.split("\t")
                 # Getting all values for bed columns
                 chromosome = F[0].strip()
