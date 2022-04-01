@@ -45,13 +45,16 @@ A table specifying all samples to be analyzed has to be provided in `.tsv` forma
 | siRNA1 | path/to/bamfile1 | KO |
 | siRNA2 | path/to/bamfile2 | KO |
 | control1 | path/to/bamfile3 | CTRL |
+ 
+See [here][sample-table] for an example. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples.
 
 3. reference poly(A) site file   
 This file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].
 ## Params
 
-{Describe parameters needed by your METHOD.}
-All parameters are specified (and explained) in `config/config.yaml`. Most of the parameters don't have to be changed for a run with default behaviour, but do make sure the following ones are appropriate for your setup:
+All parameters are specified (and explained) in `config/config.yaml`. Most of the parameters don't have to be changed for a run with default behaviour, but do make sure the following ones are appropriate for your setup.
+
+> NOTE: some parameters have to be specified more than once, with only slightly different names. Unfortunately, this cannot be avoided, as the workflow imports different individual modules, that all require to use the exact parameter names that are present in their respective published repositories.
 ### Paths to input files
 - `samples`
 - `polyasite`
@@ -70,12 +73,19 @@ All parameters are specified (and explained) in `config/config.yaml`. Most of th
 
 ## Output & post-processing
 
-{Describe output files and postprocessing steps if necessary.}
+APAeval relevant output: `filtered_pas_expression.tsv`, which contains tpm for each sample from the samples table. This file is converted into the APAeval compatible bed format in a postprocessing rule.   
+
+The final output files are named `[SAMPLE]_[CHALLENGE_CODE]_[PARTICIPANT]_[OUTCODE].bed`, as specified in the ["execution workflow README"][ewf-readme-filenames].
 
 ## Notes
 
-{Notes about the METHOD. 
-e.g. Did you have to adjust the method's soure code?
-}
+The modules inside this workflow are loaded from the following repositories:
+
+- [https://github.com/zavolanlab/tandem-pas](https://github.com/zavolanlab/tandem-pas)
+- [https://github.com/zavolanlab/PAQR2](https://github.com/zavolanlab/PAQR2)
+
+
 
 [polyasite-web]: <https://polyasite.unibas.ch/atlas>
+[sample-table]: config/samples.tsv
+[ewf-readme-filenames]: ../README.md#output
