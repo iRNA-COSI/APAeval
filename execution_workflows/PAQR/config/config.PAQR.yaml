@@ -132,11 +132,11 @@ paqr:
 
   # upstream extension added to the poly(A) cluster's end
   # during the check for global break points 
-  PAQ_upstream_cluster_extension: "400"
+  PAQ_upstream_cluster_extension: "200"
 
   # upper limit on the ratio of coverage mean squared error values
   # after and before including a new break point 
-  PAQ_coverage_mse_ratio_limit: "0.9"
+  PAQ_coverage_mse_ratio_limit: "0.5"
 
   ############################################
   # Mock params needed for DAG, don't change
