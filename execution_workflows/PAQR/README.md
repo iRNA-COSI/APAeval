@@ -12,15 +12,20 @@ PAQR requires samples, annotations and reference poly(A) sites files to all use 
 `.bam` files of all samples have to be provided alongside their respective `.bai` index files (**in the same directory, with the same basename**)
 
 2. Sample table  
-A table specifying all samples to be analyzed has to be provided in `.tsv` format (not `.csv`) and contain the following columns:   
+A table specifying all samples to be analyzed has to be provided in `.tsv` format (NOT `.csv`) and contain the following columns:   
 
 | ID | bam | condition |
 | - | - | - |
 | siRNA1 | path/to/bamfile1 | KO |
 | siRNA2 | path/to/bamfile2 | KO |
 | control1 | path/to/bamfile3 | CTRL |
+
+>NOTE: If you already have a `.csv` file with the appropriate fields, you can convert it to `.tsv` BEFORE running the workflow with 
+```
+python ../../utils/csv2tsv/csv2tsv.py --csv config/samples.csv --tsv config/samples.tsv
+```
  
-See [here][sample-table] for an example. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples.
+See [here][sample-table] for an example input `samples.tsv` file. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples.
 
 3. reference poly(A) site file   
 This file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].
