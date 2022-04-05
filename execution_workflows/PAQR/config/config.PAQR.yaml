@@ -19,25 +19,25 @@ outcode: "02"
 ##################################
 # Create Tandem poly(A)-sites
 ##################################
-# Import https://github.com/zavolanlab/tandem-pas as module,
-# thus config keys have to match the published pipeline
+# Import https://github.com/zavolanlab/tandem-pas as module;
+# config keys have to match those in the published pipeline!
 tpas:
   # directory that contains the scripts
-  scriptsdir: workflow/scripts
+  scriptsdir: workflow/scripts_tpas
 
   # genome annotation
   gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 
   # directory for results
-  outdir: results
+  outdir: results/tpas
 
   # directory for log files
   logdir: results/logs
 
   # Caculate TPAS for stranded or unstranded data, or both?
   # specify as list of strings (e.g. ["unstranded", "stranded"])
+  # Note that you have to set the parameter "PAQ_coverage_unstranded" below accordingly
   strandedness: ["stranded"]
-
 
   # minimum support that a site in the atlas needs to be considered
   # This is bed column 5 of the atlas 
@@ -74,11 +74,11 @@ tpas:
 # PAQR
 ##################################
 # Import https://github.com/zavolanlab/PAQR2 as module,
-# thus config keys have to match the published pipeline
+# config keys have to match those in the published pipeline!
 paqr:
   # path to the directory with all the scripts for this pipeline
   # (relative to the 'execution' directory)
-  PAQ_scripts_dir: "workflow/scripts"
+  PAQ_scripts_dir: "workflow/scripts_paqr"
 
   # path to tab separated file containing samples info
   # NOTE: alignment files (bam) and their repective indices (bam.bai) must be located in the same directory! 
@@ -86,7 +86,7 @@ paqr:
 
   # path for the output directory
   # (relative to the 'execution' directory)
-  PAQ_outdir: "results"
+  PAQ_outdir: "results/paqr"
 
   # path for log directory
   PAQ_logdir: "results/logs"

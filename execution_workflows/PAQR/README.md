@@ -1,4 +1,5 @@
 # PAQR
+PAQR computes poly(A) site usage from RNA-seq data and a given reference poly(A) site set and is therefore only eligible for the **Quantification** benchmarking challenge.
 ## Rulegraph
 
 ![rulegraph](rulegraph.PAQR.png)
@@ -25,7 +26,7 @@ A table specifying all samples to be analyzed has to be provided in `.tsv` forma
 python ../../utils/csv2tsv/csv2tsv.py --csv config/samples.csv --tsv config/samples.tsv
 ```
  
-See [here][sample-table] for an example input `samples.tsv` file. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples.
+See [here][sample-table] for an example input `samples.tsv` file. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples. PAQR does not support single-end data in reverse orientation.
 
 3. reference poly(A) site file   
 Will be downloaded in the first step of the pipeline; download URL has to be set in `config/config.PAQR.yaml` "ref_PAS_URL".   
@@ -33,9 +34,9 @@ This reference file has to be provided in `.bed` format with one poly(A) site pe
 
 ## Params
 
-All parameters are specified (and explained) in `config/config.yaml`. Most of the parameters don't have to be changed for a run with default behaviour, but do make sure the following ones are appropriate for your setup.
+All parameters are specified (and explained) in `config/config.PAQR.yaml`. Most of the parameters don't have to be changed for a run with default behaviour, but do make sure the following ones are appropriate for your setup.
 
-> NOTE: some parameters have to be specified more than once, with only slightly different names. Unfortunately, this cannot be avoided, as the workflow imports different individual modules, that all require to use the exact parameter names that are present in their respective published repositories.
+> NOTE: some parameters have to be specified more than once, with only slightly different names. Unfortunately, this cannot be avoided, as the workflow imports different individual modules, that all require to use the exact parameter names that are present in their respective published repositories. Re-wiring in order to decrease the overhead for the user has been performed as good as possible.
 ### Paths to input files
 - `samples`
 - `gtf`

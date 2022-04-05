@@ -66,3 +66,17 @@ use rule PAQ_infer_relative_usage from paqr as PAQR_PAQ_infer_relative_usage wit
             "infer-pas-expression.py"
         )
 
+use rule PAQ_filter_on_expression from paqr as PAQR_PAQ_filter_on_expression with:
+    output:
+        TSV_filtered_expression = os.path.join(
+            config["out_dir"],
+            "filtered_pas_expression.tsv"
+        ),
+        TSV_filtered_pas_positions = os.path.join(
+            config["paqr"]["PAQ_outdir"],
+            "filtered_pas_positions.tsv"
+        ),
+        TSV_filtered_usage = os.path.join(
+            config["paqr"]["PAQ_outdir"],
+            "filtered_pas_usage.tsv"
+        )
