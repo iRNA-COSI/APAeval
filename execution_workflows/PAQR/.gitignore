@@ -1,3 +1,5 @@
 results*/
 *log*
 .snakemake/
+workflow/scripts_paqr
+workflow/scripts_tpas
