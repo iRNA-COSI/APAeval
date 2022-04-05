@@ -23,3 +23,15 @@ module tandem_pas:
 
 use rule * from tandem_pas as TPAS_*
 
+use rule select_tandem_pas from tandem_pas as TPAS_select_tandem_pas with:
+    input:
+        BED_pas_atlas = config["ref_PAS_file"],
+        GTF_annotation = config["tpas"]["gtf"],
+        SCRIPT_ = os.path.join(
+            config["tpas"]['scriptsdir'],
+            "mz-select-pas-subset.pl")
+
+use rule filter_on_ambiguous_annotation from tandem_pas as TPAS_filter_on_ambiguous_annotation with:
+    output:
+        BED_tandem_pas_terminal_exons_clean = os.path.join(config["out_dir"],
+                str(config["atlas_version"]) + ".tpas.{strandedness}.bed")

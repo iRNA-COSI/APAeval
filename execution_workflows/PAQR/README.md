@@ -28,7 +28,9 @@ python ../../utils/csv2tsv/csv2tsv.py --csv config/samples.csv --tsv config/samp
 See [here][sample-table] for an example input `samples.tsv` file. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples.
 
 3. reference poly(A) site file   
-This file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].
+Will be downloaded in the first step of the pipeline; download URL has to be set in `config/config.PAQR.yaml` "ref_PAS_URL".   
+This reference file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].
+
 ## Params
 
 All parameters are specified (and explained) in `config/config.yaml`. Most of the parameters don't have to be changed for a run with default behaviour, but do make sure the following ones are appropriate for your setup.
@@ -36,10 +38,9 @@ All parameters are specified (and explained) in `config/config.yaml`. Most of th
 > NOTE: some parameters have to be specified more than once, with only slightly different names. Unfortunately, this cannot be avoided, as the workflow imports different individual modules, that all require to use the exact parameter names that are present in their respective published repositories.
 ### Paths to input files
 - `samples`
-- `polyasite`
 - `gtf`
 - `PAQ_samples_table`
-- `PAQ_tandem_pas`: This file is created as output of the tandem PAS module and its location and name follows the format `[outdir]/[atlas_version]_tandem_pas.terminal_exons.[strandedness].bed`, where expressions in brackets correspond to the respective values in `config/config.yaml`.
+
 
 ### Data dependent
 - `strandedness`: Specify whether the tandem PAS file should be created for use with stranded or unstranded data

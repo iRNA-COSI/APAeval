@@ -1,7 +1,13 @@
 # Configuration file for snakemake pipeline
 
-# Dataset samples
-samples: "config/samples.csv"
+# Reference PAS file: must have the same format as PolyASite bed
+# see https://polyasite.unibas.ch/atlas
+# reference PAS DB url
+ref_PAS_URL: "https://polyasite.unibas.ch/download/atlas/2.0/GRCm38.96/atlas.clusters.2.0.GRCm38.96.bed.gz"
+# reference PAS filename
+ref_PAS_file: "../../tests/test_data/atlas.clusters.2.0.GRCm38.96.bed.gz"
+atlas_version: "m38"
+
 
 # For development purposes, you can freely choose out_dir.
 # Note that final outputs need to be copied to a global APAeval output directory in the form of "PATH/TO/s3-BUCKET/PARAMCODE/METHOD/"
@@ -19,9 +25,7 @@ tpas:
   # directory that contains the scripts
   scriptsdir: workflow/scripts
 
-  # annotations (files can be zipped or unzipped)
-  polyasites: "config/pas_ID_clusters.bed"
-  atlas_version: 2.0 #For naming output tandem PAS file
+  # genome annotation
   gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 
   # directory for results
@@ -58,6 +62,12 @@ tpas:
   # other annotated feature
   downstream_extend: 200
 
+  ############################################
+  # Mock params needed for DAG, don't change
+  polyasites: ""
+  atlas_version: "" 
+
+
 
 
 ##################################
@@ -80,10 +90,6 @@ paqr:
 
   # path for log directory
   PAQ_logdir: "results/logs"
-
-  # path to the poly(A) site set
-  # (sites located on terminal exons with at least two poly(A) sites on the exon
-  PAQ_tandem_pas: "results/2.0.tandem_pas.terminal_exons.stranded.bed"
 
   # number of nucleotides for which the coverage profile is extended
   # and obtained downstream of each annotated exon end
@@ -132,9 +138,6 @@ paqr:
   # after and before including a new break point 
   PAQ_coverage_mse_ratio_limit: "0.9"
 
-
-# Settings
-envs: "workflow/envs"
-logs_subdir: "logs"
-# local_log: "logs/local_log"
-# cluster_log: "logs/cluster_log"
+  ############################################
+  # Mock params needed for DAG, don't change
+  PAQ_tandem_pas: ""

@@ -23,3 +23,46 @@ module paqr:
     config: config["paqr"]
 
 use rule * from paqr as PAQR_*
+
+use rule PAQ_create_coverages from paqr as PAQR_PAQ_create_coverages with:
+    input:
+        TEMP_ = os.path.join(
+            config["paqr"]["PAQ_outdir"],
+            "PAQ_outdir"
+        ),
+        BAM_alignment = lambda wildcards:
+                samples.loc[wildcards.sample_ID,"bam"],
+        BAI_alignment_index = lambda wildcards:
+                ".".join([samples.loc[wildcards.sample_ID,"bam"],"bai"]),
+        BED_pas = os.path.join(config["out_dir"],
+                str(config["atlas_version"]) + ".tpas." + config["tpas"]["strandedness"][0] + ".bed"),
+        SCRIPT_ = os.path.join(
+            config["paqr"]["PAQ_scripts_dir"],
+            "create-pas-coverages.py"
+        )
+
+use rule PAQ_infer_relative_usage from paqr as PAQR_PAQ_infer_relative_usage with:
+    input:
+        BED_pas = os.path.join(config["out_dir"],
+                str(config["atlas_version"]) + ".tpas." + config["tpas"]["strandedness"][0] + ".bed"),
+        PKL_pas_coverage = expand(
+            os.path.join(
+                config["paqr"]["PAQ_outdir"],
+                "pas_coverages",
+                "{sample_ID}.pkl"
+            ),
+            sample_ID = samples.index
+        ),
+        TSV_extensions = expand(
+            os.path.join(
+                config["paqr"]["PAQ_outdir"],
+                "pas_coverages",
+                "{sample_ID}.extensions.tsv"
+            ),
+            sample_ID = samples.index
+        ),
+        SCRIPT_ = os.path.join(
+            config["paqr"]["PAQ_scripts_dir"],
+            "infer-pas-expression.py"
+        )
+
