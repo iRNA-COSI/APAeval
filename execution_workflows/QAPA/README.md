@@ -20,21 +20,6 @@ When using your own data and input file instead of the provided test data and sa
 input file you are using the absolute paths to the files, with the column names following the column
 names above.
 
-### Running with Docker or Singularity
-## Docker
-This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
-(e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
-To run with `docker`, please indicate `-profile docker`
-```
-nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile docker
-```
-
-## Singularity
-To run with `singularity`, please indicate `-profile singularity`
-```
-nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
-```
-
 ### Parameters
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
@@ -45,15 +30,34 @@ Parameters relevant to the workflow itself are:
 - `polyabed`: BED 3'UTR library
 - `run_qapa_build`: run qapa built (default: false)
 
+Notes on `--polyabed` and `--run_qapa_build`:
+1. If building annotations from scratch with `qapa build`, please pass the `--run_qapa_build` flag and provide both GTF (`--gtf`) and poly(A) BED file (`--polyabed`)
+2. If providing pre-generated QAPA annotations, please pass both GTF (`--gtf`) and poly(A) BED file (`--polyabed`) only (DON"T pass the `--run_qapa_build` flag)
+
 ### Running the workflow
 The QAPA workflow only does quantification. Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
 ```
 nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile [docker/singularity]
 ```
+#### Running with Docker or Singularity
+##### Docker
+This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
+(e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
+To run with `docker`, please indicate `-profile docker`
+```
+nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile docker
+```
+
+##### Singularity
+To run with `singularity`, please indicate `-profile singularity`
+```
+nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
+```
+
 
 ## Output & post-processing
 When using the default output_dir parameter value in conf/modules.config, QAPA store results under
-`QAPA/results/` folder.
+`results/qapa` folder.
 
 ## Author contact
 If you have any question or comment about QAPA, please submit an issue on [QAPA's GitHub repository](https://github.com/morrislab/qapa/issues)
