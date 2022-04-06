@@ -26,12 +26,13 @@ def reformat_bed(file_in, identification_out):
         rd = csv.reader(fd, delimiter="\t", quotechar='"')
         for row in rd:
             chrom = row[0]
-            start = row[3]
-            end = int(start) + 1
+            # need to do -1 to convert from 1-based gtf file coordinate to 0-based bed file coordinate
+            start = int(row[3]) - 1
+            end = row[3]
             strand = row[6]
-            name = '|'.join([chrom, str(start)+":"+str(end), strand])
+            name = '|'.join([chrom, str(start) + ":" + str(end), strand])
             score = "."
-            output = (chrom, start, str(end), name, score, strand)
+            output = (chrom, str(start), str(end), name, score, strand)
             identification_out.write("\t".join(output) + "\n")
 
     identification_out.close()
