@@ -40,7 +40,14 @@ def main(args):
         json.dump(data_model_file, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 def join_json_files(data_directory, data_model_file, file_extension):
-
+    '''Add contents of specified file(s) to given json file
+    Input:
+    data_directory: Directory containing the file(s) to be added
+    data_model_file: list to be extended with json objects (dicts)
+    file_extension: filename or pattern to be matched, of the file(s) to be added
+    Returns:
+    data_model_file: data_model_file (which is a list) from input, extended by the json objects from the input file(s)
+    '''
 
     # add minimal datasets to data model file
     if os.path.isfile(data_directory):
@@ -51,7 +58,7 @@ def join_json_files(data_directory, data_model_file, file_extension):
             else:
                 data_model_file.extend(content)
 
-    elif os.path.isdir(data_directory):  # if it is a directory loop over all files and search for all json
+    elif os.path.isdir(data_directory):  # if it is a directory loop over all files and search for the file with the given "extension" (=pattern, can be name)
 
         for subdir, dirs, files in os.walk(data_directory):
             for file in files:

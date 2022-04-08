@@ -26,12 +26,16 @@ def main(args):
     # Assuring the output directory does exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    # read participant metrics
+    # read participant metrics from assessment_datasets.json
+    # into a dict; keys: challenge IDs, values: list of metrics objects
     participant_data = read_participant_data(participant_path)
+    
     
     if not offline:
         logging.info("Querying OEB database...")
+        # Load data from OEB DB
         response = query_OEB_DB(DEFAULT_bench_event_id)
+        # from the loaded data, create an aggregation file and write it to data_dir
         getOEBAggregations(response, data_dir)
 
     generate_manifest(data_dir, output_dir, participant_data,event_date, offline)
@@ -115,7 +119,9 @@ def read_participant_data(participant_path):
 
     with open(participant_path, mode='r', encoding="utf-8") as f:
         result = json.load(f)
+        # each item is a metric object
         for item in result:
+            # the metric object is appended to a list in participant_data dict, key is the callenge_id
             participant_data.setdefault(item['challenge_id'], []).append (item)
 
     return participant_data
@@ -124,14 +130,14 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date, offline):
 
     info = []
 
+    # for challenge ID, metrics object list
     for challenge, metrics_file in participant_data.items():
 
         challenge_dir = os.path.join(output_dir,challenge)
         if not os.path.exists(challenge_dir):
             os.makedirs(challenge_dir)
-        participants = []
-        
-        
+      
+        # Getting data from the assess_dir, which stores aggregation files from previous wf runs (all previously assessed participants for the current challenge)
         challenge_oeb_data_dir = os.path.join(data_dir, challenge)
         challenge_oeb_data = challenge_oeb_data_dir + ".json"
 
@@ -151,6 +157,8 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date, offline):
             # get default id for metrics in x and y axis
             metric_X = None
             metric_Y = None
+            # loop over objects in assessment file
+            # One object contains one metric
             for metrics_data in metrics_file:
                 if metric_X is None:
                     metric_X = metrics_data["metrics"]["metric_id"]
@@ -236,7 +244,7 @@ def generate_manifest(data_dir,output_dir,participant_data,event_date, offline):
             json.dump(metrics_file, f, sort_keys=True, indent=4, separators=(',', ': '))
         ############### <--
 
-
+        participants = []
         # add the rest of participants to manifest
         for name in aggregation_file["datalink"]["inline_data"]["challenge_participants"]:
             participants.append(name["participant_id"])

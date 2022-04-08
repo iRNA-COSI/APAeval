@@ -1,0 +1,48 @@
+[
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0,
+                        "metric_y": 0,
+                        "participant_id": "tool"
+                    }
+                ],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "my_x_metric",
+                    "y_axis": "my_y_metric"
+                }
+            }
+        },
+        "type": "aggregation"
+    },
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0,
+                        "metric_y": 0,
+                        "participant_id": "tool"
+                    }
+                ],
+                "visualization": {
+                    "type": "barplot",
+                    "x_axis": "[tools]",
+                    "y_axis": "my_y_metric"
+                }
+            }
+        },
+        "type": "aggregation"
+    }
+]
