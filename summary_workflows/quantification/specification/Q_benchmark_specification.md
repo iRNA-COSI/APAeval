@@ -44,12 +44,12 @@ The correlation is calculated based on ground truth and identified PAS that over
 
 2. Total expression of non-matched sites
 
-The expression values of all predicted sites that were not mapped to any ground truth site are summed together.
+The expression values of all predicted sites that were not mapped to any ground truth site are summed together. As the PAS expression levels are provided as TPM, these values are relative to the expression of all identified PAS.
   
 3. Mean Squared Error (MSE) of relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data
 
 The poly(A) sites identified by the benchmarked tool are mapped to ground-truth PAS in the orthogonal dataset as in point 1.
-The identified PAS are then assigned to genes based on genome annotation and relative PAS usage is calculated separately for each gene.
+The identified PAS are then assigned to genes based on genome annotation, and relative PAS usage is calculated separately for each gene.
 PAS that do cannot be assigned to any genes are discarded.
 The MSE is then calculated globally for all poly(A) sites assigned to genes.
 
@@ -128,23 +128,7 @@ Ranking: The best performing tool is the one with the lowest MSE value.
 
 Optional plots:
 
-1. **Bar plot** visualizing **Correlation** of poly(A) site quantification. Separate plots should be prepared for different values of distance threshold:
-
-- 10 nt
-- 50 nt
-- 100 nt
-
-**X axis** - benchmarked tool  
-**Y axis** - correlation
-
-Input datasets:
-
-- RNA-Seq data compared with 3'end sequencing data
-- Simulated RNA-Seq data compared with dataset used for simulation
-
-Ranking: The best performing tool is the one with the highest correlation value.
-
-2.  **2D line plot** visualising **correlation** as a function of distance threshold.
+1.  **2D line plot** visualising **correlation** as a function of distance threshold.
 
 **X axis** - correlation(d)  
 **Y axis** - distance threshold _d_ 
@@ -154,9 +138,9 @@ Input datasets:
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: For each tool, the area under the curve (AUC) is calculated. The best performing tool is the one with the highest AUC.
+Ranking: None
 
-Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, the data should be visualised outside of OpenEBench.
+Note: 2D line plot is not supported in OpenEBench yet. The metrics should be visualised only outside of OpenEBench.
 
 ## Outputs
 
@@ -168,6 +152,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 | # | Format | Link | Example data | Description |
 | :-- | :--- | :--- | :--- | :-------- |
 | 1 | JSON | [Specification][spec-json] | [Link][assessment_out] | Assessment output JSON |
+| 2 | JSON | [Specification][spec-json] | [Link][aggregation_out] | Aggregation output JSON |
 | 2 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
 
 ### Additional info
@@ -198,14 +183,21 @@ The following tables list the metric names, value types and units, and a descrip
 
 #### Output 2
 
-The OpenEBench consolidation file specifies visualization types (2D scatter plot, barplot), descriptions of metrics used for X and Y axis and (X,Y) value pairs for each challenge.
+The OpenEBench aggregation file contains information required to produce one plot.
+
+#### Output 3
+
+The OpenEBench consolidation file contains all the information about the new benchmarking run and specifies visualization types (2D scatter plot, barplot), descriptions of metrics used for X and Y axis and (X,Y) value pairs for each challenge and challenge participants.
 
 
 [//]: # (References)
  
 [in1]: ./example_files/input1.bed
 [in2]: ./example_files/input2.bed
+[in3]: ./example_files/input3.gtf
 [assessment_out]: ./example_files/assessment_out.json
+[aggregation_out]: ./exampe_files/aggregation_out.json
+[consolidation_out]: ./example_files/consolidation_out.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
