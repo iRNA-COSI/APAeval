@@ -16,6 +16,11 @@ Comparison of PAS predicted from simulated RNA-Seq data with dataset used for si
 1. Poly(A) sites identified based on simulated RNAseq data using the benchmarked tool
 2. Ground truth: Poly(A) sites of transcripts used to simulate RNAseq reads
 
+Calculating proportion of identified PAS assigned to different genomic features:
+
+1. Poly(A) sites identified based on RNAseq data using the benchmarked tool
+2. GTF file with genome annotation
+
 ### Metrics:
 
 Based on the input data the following metrics are computed:
@@ -24,6 +29,9 @@ Based on the input data the following metrics are computed:
 2. FPR (False Positive Rate) = FP/(FP+TN)
 3. Precision = TP/(TP+FP)
 4. Area under the curve (AUC) of receiver operating characteristic (ROC) calculated from TPR and FPR values for a range of distance thresholds
+5. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
+6. Poly(A) sites assigned to 3'-UTRs as proportion of all identified sites
+7. Poly(A) sites assigned to different genomic features (3'-UTRs, 5'-UTRs, introns, CDS, terminal exons, intergenic regions) as proportion of all identified sites (optional)
 
 TP - true positives - PAS identified by the tool and present in the orthogonal dataset  
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
@@ -44,7 +52,8 @@ All identification challenges belong to the same benchmarking event.
 | :-- | :--- | :--- | :--- | :----------|
 | 1 | BED | [Specification][spec-bed] | [Link][in1] | BED file with PAS identification by the benchmarked tool |
 | 2 | BED | [Specification][spec-bed] | [Link][in2] | BED file with PAS identification from ground truth dataset |
-
+| 3 | GFF | [Specification][spec-gtf] | [Link][in3] | GTF file with genome annotation including 3' UTRs |
+  
 ### Additional info
   
 #### Input 1
@@ -63,6 +72,10 @@ Fields:
 
 This BED file contains single-nucleotide position of poly(A) sites identified from the orthogonal 3'end-seq dataset.  
 Fields are the same as in Input 1.
+
+#### Input 3
+
+This GTF file contains reference genome annotation for the RNAseq dataset including untranslated regions.
 	
 ## Plots
 
@@ -110,13 +123,40 @@ Ranking: The best performing tool is the one with the highest TPR combined with 
 Input data:
 
 - RNA-Seq data compared with 3'end sequencing data
-
+- Simulated RNA-Seq data compared with dataset used for simulation
 
 Ranking: The best performing tool is the one with the highest AUC value.
 
-Optional plots:
+4. **bar plot** visualizing **proportion of PAS assigned to 3'-UTRs**.
 
-4. **2D line plot** visualising **TPR and FPR** in the form of [ROC curve][roc-curve], i.e. TPR and FPR calculated for a range of distance thresholds are plotted together. 
+**X axis** - benchmarked tool  
+**Y axis** - proportion of PAS assigned to 3'-UTRs
+
+Input data:
+
+- RNA-Seq data compared with 3'end sequencing data
+
+Ranking: The best performing tool is the one with the highest proportion of PAS assigned to 3'-UTRs
+
+5. **bar plot** visualizing **proportion of PAS matched to multiple ground truth sites**.  Separate plots should be prepared for different values of distance threshold:
+
+- 10 nt
+- 50 nt
+- 100 nt
+
+**X axis** - benchmarked tool  
+**Y axis** - proportion of PAS matched to multiple ground truth sites
+
+Input data:
+
+- RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
+
+Ranking: The best performing tool is the one with the lowest proportion of PAS matched to multiple ground truth sites
+
+Optional plots - can be generated outside of OpenEBench:
+
+1. **2D line plot** visualising **TPR and FPR** in the form of [ROC curve][roc-curve], i.e. TPR and FPR calculated for a range of distance thresholds are plotted together. 
 
 **X axis** - FPR(d)  
 **Y axis** - TPR(d)  
@@ -130,6 +170,18 @@ Ranking: For each tool, the area under the curve is calculated. The best perform
 
 Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, the data should be visualised outside of OpenEBench.
 
+2. Grouped **bar plot** visualizing **proportions of PAS assigned to different genomic features** in one plot.
+
+**X axis** - benchmarked tool  
+**Y axis** - proportions of PAS assigned to different genomic features. Multiple bars corresponding to multiple featues are plotted using different colors.
+
+Input datasets:
+
+- RNA-Seq data compared with 3'end sequencing data
+
+Ranking: None
+
+Note: Grouped bar plot is not supported on OEB. Metrics should be visualized only outside of OpenEBench.
 
 ## Outputs
 
@@ -140,7 +192,8 @@ Consolidation output contains summarized data from all benchmarked tools within 
 | # | Format | Link | Example data | Description |
 | :-- | :--- | :--- | :--- | :-------- |
 | 1 | JSON | [Specification][spec-json] | [Link][assessment_out] | Assessment output JSON |
-| 2 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
+| 2 | JSON | [Specification][spec-json] | [Link][aggregation_out] | Aggregation output JSON
+| 3 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
   
 ### Additional info
  
@@ -168,19 +221,30 @@ The following tables list the metric names, value types and units, and a descrip
 | `FPR_10nt` | `float` | N/A | False Positive Rate of PAS identification compared with orthogonal dataset; FPR = FP/(FP+TN); calculated for 10 nt distance threshold |
 | `FPR_50nt` | `float` | N/A | False Positive Rate of PAS identification compared with orthogonal dataset; FPR = FP/(FP+TN); calculated for 50 nt distance threshold |
 | `FPR_100nt` | `float` | N/A | False Positive Rate of PAS identification compared with orthogonal dataset; FPR = FP/(FP+TN); calculated for 100 nt distance threshold |
-| `AUC` | `float` | N/A | Area under the curve (AUC) of receiver operating characteristic (ROC) calculated from TPR and FPR values for all distance thresholds between 0 nt and 100 nt with 10 nt intervals. |
+| `AUC` | `float` | N/A | Area under the curve (AUC) of receiver operating characteristic (ROC) calculated from TPR and FPR values for all a range of distance thresholds |
+| `Proportion_in_3UTR` | `float` | % | Proportion of PAS identified from RNA-seq that were assigned to 3'-UTRs |
+| `Multi-matched_10nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 10 nt distance threshold |
+| `Multi-matched_50nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 50 nt distance threshold |
+| `Multi-matched_100nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 100 nt distance threshold |
 
 #### Output 2
 
-The OpenEBench consolidation file specifies visualization types (2D scatter plot, barplot), descriptions of metrics used for X and Y axis and (X,Y) value pairs for each challenge.
+The OpenEBench aggregation file contains information required to produce one plot.
+
+#### Output 3
+
+The OpenEBench consolidation file contains all the information about the new benchmarking run and specifies visualization types (2D scatter plot, barplot), descriptions of metrics used for X and Y axis and (X,Y) value pairs for each challenge and challenge participants.
 
 [//]: # (References)
   
 [in1]: ./example_files/input1.bed
 [in2]: ./example_files/input2.bed
+[in3]: ./example_files/input3.gtf
 [assessment_out]: ./example_files/assessment_out.json
+[aggregation_out]: ./example_files/aggregation_out.json
 [consolidation_out]: ./example_files/consolidation_out.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
+[spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
 [roc-curve]: <https://en.wikipedia.org/wiki/Receiver_operating_characteristic#ROC_curves_beyond_binary_classification>
   
