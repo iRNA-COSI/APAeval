@@ -204,13 +204,13 @@ The OpenEBench assessment file contains the following attributes:
 - **\_id** - follows the format: community:challenge\_metric\_tool
 - **challenge_id** - describing the combination of input dataset with indication whether it is based on real or simulated data and any parameters used for metric calculation; e.g. datasetA\_simulated\_10nt
 - **participant_id** - benchmarked tool
-- **stderr** - standard error, set to zero
-- **value** - metric value
-- **metric_id** - metric name; metric names used in this benchmark are specified in the table below
+- **metrics**:
+	- **value** - metric value
+	- **metric_id** - metric name; metric names used in this benchmark are specified in the table below
  
-The following tables list the metric names, value types and units, and a description of each attribute-value pair:
+The following tables list the metric names, value types and units, and a description:
 
-| Attribute | Type | Unit | Description |
+| Metric_id | Type | Unit | Description |
 | :--- | :--- | :--- | :----------------- |
 | `Precision_10nt` | `float` | N/A | Precision of PAS identification compared with orthogonal dataset; Precision = TP/(TP+FP); calculated for 10 nt distance threshold |
 | `Precision_50nt` | `float` | N/A | Precision of PAS identification compared with orthogonal dataset; Precision = TP/(TP+FP); calculated for 50 nt distance threshold |

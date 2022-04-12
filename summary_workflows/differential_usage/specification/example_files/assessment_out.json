@@ -1,0 +1,24 @@
+[
+    {
+        "_id": "APAeval:datasetA_TPR_toolA",
+        "challenge_id": "datasetA",
+        "community_id": "APAeval",
+        "metrics": {
+            "metric_id": "TPR",
+            "value": 0.54
+        },
+        "participant_id": "toolA",
+        "type": "assessment"
+    },
+    {
+        "_id": "APAeval:datasetA_FPR_toolA",
+        "challenge_id": "datasetA",
+        "community_id": "APAeval",
+        "metrics": {
+            "metric_id": "FPR",
+            "value": 0.85
+        },
+        "participant_id": "toolA",
+        "type": "assessment"
+    }
+]

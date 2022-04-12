@@ -165,11 +165,11 @@ The OpenEBench assessment file contains the following attributes:
 - **challenge_id** - describing the combination of input dataset with indication whether it is based on real or simulated data and any parameters used for metric calculation such as distance threshold (window size); e.g. datasetA\_simulated\_10nt
 - **
 - **participant_id** - benchmarked tool
-- **stderr** - standard error, set to zero
-- **value** - metric value
-- **metric_id** - metric name; metric names used in this benchmark are specified in the table below
+- **metrics**:
+	- **value** - metric value
+	- **metric_id** - metric name; metric names used in this benchmark are specified in the table below
  
-The following tables list the metric names, value types and units, and a description of each attribute-value pair:
+The following tables list the metric names, value types and units, and a description:
 
 | Metric_id | Type | Unit | Description |
 | :--- | :--- | :--- | :----------------- |
@@ -196,7 +196,7 @@ The OpenEBench consolidation file contains all the information about the new ben
 [in2]: ./example_files/input2.bed
 [in3]: ./example_files/input3.gtf
 [assessment_out]: ./example_files/assessment_out.json
-[aggregation_out]: ./exampe_files/aggregation_out.json
+[aggregation_out]: ./example_files/aggregation_out.json
 [consolidation_out]: ./example_files/consolidation_out.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>

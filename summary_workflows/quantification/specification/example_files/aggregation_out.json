@@ -9,18 +9,23 @@
                 {
                     "metric_x": 0.5,
                     "metric_y": 0.75,
-                    "participant_id": "QAPA"
+                    "participant_id": "toolA"
                 },
                 {
                     "metric_x": 0.3333333333333333,
                     "metric_y": 1.0,
-                    "participant_id": "LABRAT"
+                    "participant_id": "toolB"
+                },
+                {
+                    "metric_x": 0.8333333333333334,
+                    "metric_y": 0.38461538461538464,
+                    "participant_id": "toolC"
                 }
             ],
             "visualization": {
                 "type": "2D-plot",
-                "x_axis": "Sensitivity_10nt",
-                "y_axis": "FPR_10nt"
+                "x_axis": "Expression_non-matched-PAS_10nt",
+                "y_axis": "Correlation_coefficient_10nt"
             }
         }
     },
