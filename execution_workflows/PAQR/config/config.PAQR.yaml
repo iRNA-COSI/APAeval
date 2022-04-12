@@ -13,7 +13,7 @@ atlas_version: "m38"
 out_dir: "results"
 challenge_code : "AA" # find at https://github.com/iRNA-COSI/APAeval/blob/main/summary_workflows/challenge_codes.md
 method: "PAQR" # same as the name of the directory
-outcode: "02"
+outcode: "02" # for quantification challenge
 
 ##################################
 # Create Tandem poly(A)-sites
@@ -59,6 +59,9 @@ tpas:
   # Mock params needed for DAG, don't change
   polyasites: ""
   atlas_version: "" 
+  # out- and logdir are set in Snakefile to be subdirectories of the result directory specified at param `out_dir`
+  outdir: ""
+  logdir: ""
 
 
 
@@ -76,13 +79,6 @@ paqr:
   # path to tab separated file containing samples info
   # NOTE: alignment files (bam) and their repective indices (bam.bai) must be located in the same directory! 
   PAQ_samples_table: "config/samples.tsv"
-
-  # path for the output directory
-  # (relative to the 'execution' directory)
-  PAQ_outdir: "results/paqr"
-
-  # path for log directory
-  PAQ_logdir: "results/logs"
 
   # number of nucleotides for which the coverage profile is extended
   # and obtained downstream of each annotated exon end
@@ -134,3 +130,7 @@ paqr:
   ############################################
   # Mock params needed for DAG, don't change
   PAQ_tandem_pas: ""
+  # out- and logdir are set in Snakefile to be subdirectories of the result directory specified at param `out_dir`
+  PAQ_outdir: "results4/paqr"
+  # path for log directory
+  PAQ_logdir: "results4/logs"

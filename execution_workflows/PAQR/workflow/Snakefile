@@ -5,8 +5,15 @@ For help see: https://snakemake.readthedocs.io/en/stable/index.html.
 import pandas as pd
 import os
 import sys
-       
 
+
+# Set/overwrite redundant config params for the subworkflows and modules       
+config["tpas"]["outdir"] = os.path.join(config["out_dir"], "tpas")
+config["tpas"]["logdir"] = os.path.join(config["out_dir"], "logs")
+config["paqr"]["PAQ_outdir"] = os.path.join(config["out_dir"], "paqr")
+config["tpas"]["PAQ_logdir"] = os.path.join(config["out_dir"], "logs")
+
+# Read samples table
 samples = pd.read_table(config["paqr"]["PAQ_samples_table"], header=0, index_col=0)
 
 # Include subworkflows
