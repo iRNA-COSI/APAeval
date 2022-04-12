@@ -28,9 +28,8 @@ python ../../utils/csv2tsv/csv2tsv.py --csv config/samples.csv --tsv config/samp
  
 See [here][sample-table] for an example input `samples.tsv` file. PAQR can be run on one or more samples, and one or more conditions. Conditions are only considered internally (for threshold calculations), the output is given for individual samples. PAQR does not support single-end data in reverse orientation.
 
-3. reference poly(A) site file   
-Will be downloaded in the first step of the pipeline; download URL has to be set in `config/config.PAQR.yaml` "ref_PAS_URL".   
-This reference file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].
+This reference file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].    
+Suitable reference poly(A) site files can be downloaded from [PolyASite][polyasite-web] for [human][human-pas], [mouse][mouse-pas] and [*C.elegans*][worm-pas]. The corresponding filename has to be specified in `config/config.PAQR.yaml` (see below).   
 
 ## Params
 
@@ -38,6 +37,7 @@ All parameters are specified (and explained) in `config/config.PAQR.yaml`. Most 
 
 > NOTE: some parameters have to be specified more than once, with only slightly different names. Unfortunately, this cannot be avoided, as the workflow imports different individual modules, that all require to use the exact parameter names that are present in their respective published repositories. Re-wiring in order to decrease the overhead for the user has been performed as good as possible.
 ### Paths to input files
+- `ref_PAS_file`
 - `samples`
 - `gtf`
 - `PAQ_samples_table`
@@ -68,5 +68,8 @@ The modules inside this workflow are loaded from the following repositories:
 
 
 [polyasite-web]: <https://polyasite.unibas.ch/atlas>
+[human-pas]: <https://polyasite.unibas.ch/download/atlas/2.0/GRCh38.96/atlas.clusters.2.0.GRCh38.96.bed.gz>
+[mouse-pas]: <(https://polyasite.unibas.ch/download/atlas/2.0/GRCm38.96/atlas.clusters.2.0.GRCm38.96.bed.gz)>
+[worm-pas]: <https://polyasite.unibas.ch/download/atlas/2.0/WBcel235/atlas.clusters.2.0.WBcel235.bed.gz>
 [sample-table]: config/samples.tsv
 [ewf-readme-filenames]: ../README.md#output

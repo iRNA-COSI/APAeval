@@ -2,10 +2,9 @@
 
 # Reference PAS file: must have the same format as PolyASite bed
 # see https://polyasite.unibas.ch/atlas
-# reference PAS DB url
-ref_PAS_URL: "https://polyasite.unibas.ch/download/atlas/2.0/GRCm38.96/atlas.clusters.2.0.GRCm38.96.bed.gz"
+
 # reference PAS filename
-ref_PAS_file: "../../tests/test_data/atlas.clusters.2.0.GRCm38.96.bed.gz"
+ref_PAS_file: "../../tests/test_data/atlas.clusters.2.0.GRCm38.96.Chr_prefix.bed.gz"
 atlas_version: "m38"
 
 
