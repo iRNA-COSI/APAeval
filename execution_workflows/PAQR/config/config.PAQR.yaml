@@ -25,13 +25,7 @@ tpas:
   scriptsdir: workflow/scripts_tpas
 
   # genome annotation
-  gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
-
-  # directory for results
-  outdir: results/tpas
-
-  # directory for log files
-  logdir: results/logs
+  gtf: "../../tests/test_data/gencode_2genes_Chr_prefix.vM18.annotation.gtf"
 
   # Caculate TPAS for stranded or unstranded data, or both?
   # specify as list of strings (e.g. ["unstranded", "stranded"])

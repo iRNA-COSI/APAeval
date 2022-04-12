@@ -5,8 +5,8 @@ PAQR computes poly(A) site usage from RNA-seq data and a given reference poly(A)
 ![rulegraph](rulegraph.PAQR.png)
 
 ## Input & pre-processing
-> IMPORTANT:   
-PAQR requires samples, annotations and reference poly(A) sites files to all use the same chromosome naming scheme ("chr1" in gencode, "1" in ensembl) or else will fail.
+> **IMPORTANT:**   
+PAQR requires samples, annotations and reference poly(A) sites files to all use the same chromosome naming scheme ("chr1" in gencode, "1" in ensembl) or else will fail **silently**!
 
 
 1. Sample files  
@@ -30,6 +30,32 @@ See [here][sample-table] for an example input `samples.tsv` file. PAQR can be ru
 
 This reference file has to be provided in `.bed` format with one poly(A) site per row. The site ID (column 4) has to be of the form `chr:site:strand` (e.g. "1:123456:+"), where "chr" is the chromosome, "site" is the representative site of the poly(A) site cluster, or the start coordinate in case of individual poly(A) sites, and "strand" is the strand on which the site is located. This format is based on [PolyASite][polyasite-web].    
 Suitable reference poly(A) site files can be downloaded from [PolyASite][polyasite-web] for [human][human-pas], [mouse][mouse-pas] and [*C.elegans*][worm-pas]. The corresponding filename has to be specified in `config/config.PAQR.yaml` (see below).   
+> **Note that PolyASite uses ensembl chromosome naming. For use with Gencode annotations, chromosome names have thus to be adjusted!**
+```
+# Terribly ugly but functional example for mouse
+
+zcat atlas.clusters.2.0.GRCm38.96.bed.gz \
+| awk 'BEGIN{OFS="\t"} {
+    gsub(/^([0-9]+|[XY])/,"chr"$1,$1);
+    gsub(/^MT/,"chrM",$1);
+    split($4, id_fields, ":"); 
+    gsub(/^([0-9]+|[XY])/,"chr"id_fields[1], id_fields[1]);
+    gsub(/^MT/,"chrM", id_fields[1]);
+    $4=id_fields[1]":"id_fields[2]":"id_fields[3];
+    print}'\
+| gzip -c > atlas.clusters.2.0.GRCm38.96.wchr.bed.gz
+
+# Terribly ugly but functional example for human
+
+zcat atlas.clusters.2.0.GRCh38.96.bed.gz \
+| awk 'BEGIN{OFS="\t"} {
+    gsub(/^([0-9]+|[XYM])/,"chr"$1,$1);
+    split($4, id_fields, ":"); 
+    gsub(/^([0-9]+|[XYM])/,"chr"id_fields[1], id_fields[1]);
+    $4=id_fields[1]":"id_fields[2]":"id_fields[3];
+    print}'\
+| gzip -c > atlas.clusters.2.0.GRCh38.96.wchr.bed.gz
+```
 
 ## Params
 
