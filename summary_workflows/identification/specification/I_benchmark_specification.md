@@ -26,10 +26,10 @@ Calculating proportion of identified PAS assigned to different genomic features:
 Based on the input data the following metrics are computed:
 
 1. Sensitivity (TPR, True Positive Rate) = TP/(TP+FN)
-2. FPR (False Positive Rate) = FP/(FP+TN)
-3. Precision = TP/(TP+FP)
-4. Area under the curve (AUC) of receiver operating characteristic (ROC) calculated from TPR and FPR values for a range of distance thresholds
-5. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
+2. Precision = TP/(TP+FP)
+3. Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Sensitivity (Recall) values for a range of distance thresholds
+4. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
+5. Percentage of genes with correctly identified number of PAS
 6. Poly(A) sites assigned to 3'-UTRs as proportion of all identified sites
 7. Poly(A) sites assigned to different genomic features (3'-UTRs, 5'-UTRs, introns, CDS, terminal exons, intergenic regions) as proportion of all identified sites (optional)
 
@@ -81,31 +81,14 @@ This GTF file contains reference genome annotation for the RNAseq dataset includ
 
 The results of this benchmark will be visualised in OpenEBench using the following plots:
 
-1. **bar plot** visualizing **Precision** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
+1. **2D scatter plot** visualizing **Sensitivity and Precision** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
 
 - 10 nt
 - 50 nt
 - 100 nt
 
-**X axis** - benchmarked tool  
-**Y axis** - precision
-
-Input datasets:
-
-- RNA-Seq data compared with 3'end sequencing data
-- Simulated RNA-Seq data compared with dataset used for simulation
-
-
-Ranking: The best performing tool is the one with the highest precision value.
-
-2. **2D scatter plot** visualizing **TPR and FPR** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
-
-- 10 nt
-- 50 nt
-- 100 nt
-
-**X axis** - FPR(d)  
-**Y axis** - TPR(d)  
+**X axis** - Sensitivity(d)  
+**Y axis** - Precision(d)  
 where _d - distance threshold_
 
 Input datasets:
@@ -113,9 +96,11 @@ Input datasets:
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the highest TPR combined with lowest FPR (top left part of the plot) and the worst performing tool is the one with the lowest TPR combined with highest FPR (bottom left part of the plot. The plot should be divided into diagonal quartiles based on the distance from optimal performance. Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-left, top-right, bottom-left, bottom-right.
+Ranking: The best performing tool is the one with the highest Sensitivity combined with highest Precision (top right part of the plot) and the worst performing tool is the one with the lowest Sensitivity combined with lowest Precision (bottom left part of the plot).
+The plot should be divided into diagonal quartiles based on the distance from optimal performance.
+Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-right, bottom-right, top-left, bottom-left.
 
-3. **bar plot** visualizing **AUC** of ROC plot with single AUC value for each tool.
+2. **bar plot** visualizing **AUC** of Precision-Recall curve with single AUC value for each tool.
 
 **X axis** - benchmarked tool  
 **Y axis** - AUC
@@ -127,7 +112,7 @@ Input data:
 
 Ranking: The best performing tool is the one with the highest AUC value.
 
-4. **bar plot** visualizing **proportion of PAS assigned to 3'-UTRs**.
+3. **bar plot** visualizing **proportion of PAS assigned to 3'-UTRs**.
 
 **X axis** - benchmarked tool  
 **Y axis** - proportion of PAS assigned to 3'-UTRs
@@ -138,21 +123,16 @@ Input data:
 
 Ranking: The best performing tool is the one with the highest proportion of PAS assigned to 3'-UTRs
 
-5. **bar plot** visualizing **proportion of PAS matched to multiple ground truth sites**.  Separate plots should be prepared for different values of distance threshold:
-
-- 10 nt
-- 50 nt
-- 100 nt
+4. **bar plot** visualizing **percentage of genes with correctly identified number of PAS**
 
 **X axis** - benchmarked tool  
-**Y axis** - proportion of PAS matched to multiple ground truth sites
+**Y axis** - percentage of genes with correctly identified number of PAS
 
 Input data:
 
 - RNA-Seq data compared with 3'end sequencing data
-- Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the lowest proportion of PAS matched to multiple ground truth sites
+Ranking: The best performing tool is the one with the highest ercentage of genes with correctly identified number of PAS.
 
 Optional plots - can be generated outside of OpenEBench:
 
@@ -182,6 +162,22 @@ Input datasets:
 Ranking: None
 
 Note: Grouped bar plot is not supported on OEB. Metrics should be visualized only outside of OpenEBench.
+
+3. **bar plot** visualizing **proportion of PAS matched to multiple ground truth sites**.  Separate plots should be prepared for different values of distance threshold:
+
+- 10 nt
+- 50 nt
+- 100 nt
+
+**X axis** - benchmarked tool  
+**Y axis** - proportion of PAS matched to multiple ground truth sites
+
+Input data:
+
+- RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
+
+Ranking: The best performing tool is the one with the lowest proportion of PAS matched to multiple ground truth sites
 
 ## Outputs
 
@@ -218,14 +214,12 @@ The following tables list the metric names, value types and units, and a descrip
 | `Sensitivity_10nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 10 nt distance threshold |
 | `Sensitivity_50nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 50 nt distance threshold |
 | `Sensitivity_100nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 100 nt distance threshold |
-| `FPR_10nt` | `float` | N/A | False Positive Rate of PAS identification compared with orthogonal dataset; FPR = FP/(FP+TN); calculated for 10 nt distance threshold |
-| `FPR_50nt` | `float` | N/A | False Positive Rate of PAS identification compared with orthogonal dataset; FPR = FP/(FP+TN); calculated for 50 nt distance threshold |
-| `FPR_100nt` | `float` | N/A | False Positive Rate of PAS identification compared with orthogonal dataset; FPR = FP/(FP+TN); calculated for 100 nt distance threshold |
-| `AUC` | `float` | N/A | Area under the curve (AUC) of receiver operating characteristic (ROC) calculated from TPR and FPR values for all a range of distance thresholds |
+| `AUC` | `float` | N/A | Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Recall (Sensitivity) values for all a range of distance thresholds |
 | `Proportion_in_3UTR` | `float` | % | Proportion of PAS identified from RNA-seq that were assigned to 3'-UTRs |
 | `Multi-matched_10nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 10 nt distance threshold |
 | `Multi-matched_50nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 50 nt distance threshold |
 | `Multi-matched_100nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 100 nt distance threshold |
+| `Genes_correct_PAS` | `float` | % | Percentage of genes with correctly identified number of PAS |
 
 #### Output 2
 
