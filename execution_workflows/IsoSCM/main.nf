@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 /*
 ========================================================================================
-                         PILOT BENCHMARK PIPELINE RUNNING DAPARS
+                         BENCHMARK PIPELINE RUNNING ISOSCM
 ========================================================================================
 */
 
@@ -35,13 +35,12 @@ if (params.help) {
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
 
-include { EXECUTE_DAPARS } from './workflow/execute_dapars' addParams( [:] )
-
 workflow {
     /*
-     * RUN DAPARS WORKFLOW
+     * RUN ISOSCM WORKFLOW
      */
-    EXECUTE_DAPARS ()
+    include { EXECUTE_ISOSCM } from './workflow/execute_isoscm' addParams( [:] )
+    EXECUTE_ISOSCM ()
 }
 
 ////////////////////////////////////////////////////

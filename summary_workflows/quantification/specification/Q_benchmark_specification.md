@@ -57,6 +57,7 @@ The MSE is then calculated globally for all poly(A) sites assigned to genes.
 The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified from the ground truth dataset, i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified from the orthogonal dataset for the prediction to be considered true.
 The exact values of distance thresholds are specified in _Plots_ section.
 
+
 ### OpenEBench challenges
 
 The metrics are visualised using 2D scatter plots and barplots, as described in _Plots_ section, which are then used for ranking the participating tools.
@@ -73,6 +74,7 @@ All quantification challenges belong to the same benchmarking event.
 | 1 | BED | [Specification][spec-bed] | [Link][in1] | BED file with PAS quantification by the benchmarked tool |
 | 2 | BED | [Specification][spec-bed] | [Link][in2] | BED file with PAS quantification from ground truth dataset |
 | 3 | GTF | [Specification][spec-gtf] | [Link][in3] | GTF file with genome annotation |
+
 
 ### Additional info
 
@@ -153,7 +155,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 | :-- | :--- | :--- | :--- | :-------- |
 | 1 | JSON | [Specification][spec-json] | [Link][assessment_out] | Assessment output JSON |
 | 2 | JSON | [Specification][spec-json] | [Link][aggregation_out] | Aggregation output JSON |
-| 2 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
+| 3 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
 
 ### Additional info
  
@@ -163,7 +165,6 @@ The OpenEBench assessment file contains the following attributes:
 
 - **\_id** - follows the format: community:challenge\_metric\_tool
 - **challenge_id** - describing the combination of input dataset with indication whether it is based on real or simulated data and any parameters used for metric calculation such as distance threshold (window size); e.g. datasetA\_simulated\_10nt
-- **
 - **participant_id** - benchmarked tool
 - **metrics**:
 	- **value** - metric value

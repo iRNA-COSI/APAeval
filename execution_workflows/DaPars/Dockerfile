@@ -10,8 +10,10 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y curl unzip python python-dev python3 python3-pip r-base bedtools wget
 
 # Install DaPars
-RUN curl -LJO gitreleases.dev/gh/ZhengXia/dapars/latest/dapars_0.9.1.zip
-RUN unzip -q "dapars_0.9.1.zip"
+RUN wget https://github.com/ZhengXia/dapars/archive/546bdd4d809b097fd7a946d42b56e0efa0228472.zip
+RUN mv *zip dapars.zip
+RUN unzip -q "dapars.zip"
+RUN mv dapars-* dapars
 RUN chmod +x /dapars/src/*
 ENV PATH=$PATH:/dapars/src/
 
@@ -23,7 +25,7 @@ RUN mv gtfToGenePred /usr/local/bin
 RUN mv genePredToBed /usr/local/bin
 
 # Install python packages
-RUN wget wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
 RUN pip3 install pandas
 RUN python2.7 get-pip.py
 RUN pip2.7 install numpy
