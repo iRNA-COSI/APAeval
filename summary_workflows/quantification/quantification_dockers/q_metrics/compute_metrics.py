@@ -34,36 +34,56 @@ def main(args):
 def compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, window):
 
     # define array that will hold the full set of assessment datasets
-    ALL_ASSESSMENTS = []
+    all_assessments = []
 
     for challenge in challenge_ids:
         
+        # ID prefix for assessment objects
+        base_id = f"{community}:{challenge}_{participant}_"
+        # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
+        metrics = {}
+        # ground truth file
         gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
 
-        # metric on the number of matched sites
+        # METRIC: Matched sites
+        ########################
         match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
         merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
         percent_matched=n_matched_sites/(n_matched_sites+n_unmatched_sites)
+        # Key: exact name of metric as it appears in specification
+        # Value: List of [variable_holding_metric, std_err]
+        metrics["percent_matched"] = [percent_matched, 0]
 
-        # metric on correlation coffecient
+
+        # METRIC: correlation coffecient
+        #################################
         correlation= matchPAS.corr_with_gt(merged_bed_df)
+        # Key: exact name of metric as it appears in specification
+        # Value: List of [variable_holding_metric, std_err]
+        metrics["correlation"] = [correlation, 0]
+                
 
-        # get json assessment file for both metrics
-        data_id_1 = community + ":" + challenge + "_percent_matched_" + participant
-        std_error= 0
-        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "percent_matched", percent_matched, std_error)
+        # METRIC: MSE
+        ####################
+        # Placeholder:
+        mse = 0.5
+        
+        # Key: exact name of metric as it appears in specification
+        # Value: List of [variable_holding_metric, std_err]
+        metrics["MSE"] = [mse, 0]
 
-        data_id_2 = community + ":" + challenge + "_correlation_" + participant
-        std_error= 0
-        assessment_correlation = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "correlation", correlation, std_error)
 
-        # push the two assessment datasets to the main dataset array
-        ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_correlation])
+        # create all assessment json objects and append them to all_assessments
+        for key, value in metrics.items():
+            object_id = base_id + key 
+            assessment_object = JSON_templates.write_assessment_dataset(object_id, community, challenge, participant, key, value[0], value[1])
+            all_assessments.append(assessment_object)
+        
 
     # once all assessments have been added, print to json file
     with io.open(out_path,
                  mode='w', encoding="utf-8") as f:
-        jdata = json.dumps(ALL_ASSESSMENTS, sort_keys=True, indent=4, separators=(',', ': '))
+        jdata = json.dumps(all_assessments, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(jdata)
 
 
