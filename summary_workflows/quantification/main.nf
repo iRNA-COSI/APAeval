@@ -151,7 +151,7 @@ process benchmark_consolidation {
 	path 'consolidated_result.json'
 
 	"""
-	python /app/manage_assessment_data.py -b $benchmark_data -p $assessment_out -o aggregation_dir -m $event_date --offline $offline
+	python /app/aggregation.py -b $benchmark_data -a $assessment_out -o aggregation_dir -d $event_date --offline $offline
 	python /app/merge_data_model_files.py -v $validation_out -m $assessment_out -c $challenge_ids -a aggregation_dir -o consolidated_result.json
 	"""
 
