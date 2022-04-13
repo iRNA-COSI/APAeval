@@ -242,14 +242,12 @@ def add_to_aggregation(aggregation, participant_id, challenge):
                 logging.exception(str(e))
                 raise e
         
-        ## TO DO: barplot ##############################
-        # elif plot["type"] == "barplot":
-        #     try:
-        #         participant["metric_y"] = metrics[plot["y_axis"]]
-        #     except Exception as e:
-        #         logging.exception(str(e))
-        #         raise e
-        #################################################
+        elif plot["type"] == "bar-plot":
+            try:
+                participant["metric_value"] = challenge[plot["metric"]]
+            except KeyError as e:
+                logging.exception(f"The assessment file does not contain data for metric {plot['metric']}.")
+                raise e
 
         # Append current participant to the list of participant objects
         item["datalink"]["inline_data"]["challenge_participants"].append(participant)

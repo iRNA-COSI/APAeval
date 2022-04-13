@@ -25,9 +25,8 @@
             "inline_data": {
                 "challenge_participants": [],
                 "visualization": {
-                    "type": "barplot",
-                    "x_axis": "[tools]",
-                    "y_axis": "my_y_metric"
+                    "type": "bar-plot",
+                    "metric": "MSE"
                 }
             }
         },
