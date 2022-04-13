@@ -4,6 +4,7 @@ import json
 import logging
 import datetime
 from argparse import ArgumentParser, RawTextHelpFormatter
+from assessment_chart import assessment_chart
 
 
 def parse_arguments():
@@ -115,9 +116,14 @@ def main():
 
                 with open(aggregation_template, mode='r', encoding="utf-8") as t:
                     aggregation = json.load(t)
-                # We still need to fill the template with ID and challenge ID, data will be appended later
+                # We still need to fill the template with ID and challenge ID; data will be appended later
+                # Prefix for aggregation object ids
+                base_id = f"{community_id}:{event_date}_{challenge_id}_aggregation_"
+                # For numbering of aggregation objects
+                i = 1
                 for item in aggregation:
-                    item["_id"] = f"{community_id}:{event_date}_{challenge_id}_aggregation"
+                    item["_id"] = base_id + str(i)
+                    i+=1
                     item["challenge_ids"] = [challenge_id]
                
         # if something else than the file missing went wrong
@@ -157,6 +163,18 @@ def main():
 
         manifest.append(mani_obj)
 
+        # Create plots for current challenge
+        for aggr_object in new_aggregation:
+            # 2D-plots
+            if aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "2D-plot":
+                assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "RAW")
+                assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "SQR")
+                assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "DIAG")
+            # To Do ########################
+            # barplots
+            # elif aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "bar-plot":
+            #     assessment_chart.barplot(challenge_dir, aggr_object, challenge_id)
+            ################################
 
     # After we have updated all aggregation files for all challenges, save the summary manifest
     with open(os.path.join(output_dir, "Manifest.json"), mode='w', encoding="utf-8") as f:
