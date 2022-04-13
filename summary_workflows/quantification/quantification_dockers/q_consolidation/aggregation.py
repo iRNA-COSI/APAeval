@@ -62,7 +62,7 @@ def main():
     ########################################################
 
     # Load assessment file into dict of challenges with dicts of metric IDs
-    participant_id, challenges = get_metrics_per_challenge(assessment_data)
+    community_id, participant_id, challenges = get_metrics_per_challenge(assessment_data)
     # Get a list of challenge ids
     challenge_ids = list(challenges.keys())
 
@@ -95,22 +95,30 @@ def main():
         # 2.b) If aggregation file in benchmark_dir
         # Load aggregation file from there
         aggregation_old = os.path.join(benchmark_dir,challenge_id + ".json")
+        # Or if necessary template from here
+        aggregation_template= os.path.join(os.path.dirname(os.path.realpath(__file__)), "aggregation_template_Q.json")
         
         try:
-            with open(aggregation_old, mode='r', encoding="utf-8") as f:
-                aggregation = json.load(f)
-        except Exception as e:
-            logging.info(str(e))
-            pass
+            # First try to open an existing aggregation file
+            try:
+                with open(aggregation_old, mode='r', encoding="utf-8") as f:
+                    aggregation = json.load(f)
+            # 2.c) If there's none, open the aggregation template instead        
+            except FileNotFoundError as e:
+                logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
 
-        logging.debug(f"aggregation {aggregation}")
-
-        # 2.c) TO DO ###################################### No aggregation file found, start a new one from the template. do we want to use e.g. https://pypi.org/project/jsontemplates/ ?
-        ####################################################
-
-        # Load aggregation file template
-        # with open("aggregation_template_Q.json", mode='r', encoding="utf-8") as t:
-        #     aggregation = json.load(t)
+                with open(aggregation_template, mode='r', encoding="utf-8") as t:
+                    aggregation = json.load(t)
+                # We still need to fill the template with ID and challenge ID, data will be appended later
+                for item in aggregation:
+                    item["_id"] = f"{community_id}:{event_date}_{challenge_id}_aggregation"
+                    item["challenge_ids"] = [challenge_id]
+               
+        # if something else than the file missing went wrong
+        except Exception:
+            raise
+            
+        logging.debug(f"aggregation on load: {aggregation}")
 
         # 2.d) Get a list of participants from aggregation (needed for manifest)
         participants = []
@@ -126,6 +134,8 @@ def main():
 
         # 2.e) Add the current participant's metrics to the aggregation for the current challenge_id
         new_aggregation = add_to_aggregation(aggregation, participant_id, challenges[challenge_id])
+
+        logging.debug(f"aggregation after update: {aggregation}")
 
         # 2.f) Write aggregation file to benchmark_dir (and TO DO local results dir)
         aggregation_file = os.path.join(benchmark_dir, challenge_id + ".json")
@@ -176,6 +186,7 @@ def get_metrics_per_challenge(assessment_data):
     # initialize
     challenges = {}
     participant_id = assessments[0]["participant_id"]
+    community_id = assessments[0]["community_id"]
 
     # go through all assessment objects
     for item in assessments:
@@ -192,7 +203,7 @@ def get_metrics_per_challenge(assessment_data):
         if item["participant_id"] != participant_id:
             raise ValueError(f"Something went wrong, not all metrics in the assessment file belong to the same participant.")
     
-    return participant_id, challenges
+    return community_id, participant_id, challenges
 
 
 def assert_object_type(json_obj, curr_type):

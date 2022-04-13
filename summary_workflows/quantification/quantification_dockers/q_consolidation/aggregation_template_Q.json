@@ -6,17 +6,11 @@
         ],
         "datalink": {
             "inline_data": {
-                "challenge_participants": [
-                    {
-                        "metric_x": 0,
-                        "metric_y": 0,
-                        "participant_id": "tool"
-                    }
-                ],
+                "challenge_participants": [],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "my_x_metric",
-                    "y_axis": "my_y_metric"
+                    "x_axis": "percent_matched",
+                    "y_axis": "correlation"
                 }
             }
         },
@@ -29,13 +23,7 @@
         ],
         "datalink": {
             "inline_data": {
-                "challenge_participants": [
-                    {
-                        "metric_x": 0,
-                        "metric_y": 0,
-                        "participant_id": "tool"
-                    }
-                ],
+                "challenge_participants": [],
                 "visualization": {
                     "type": "barplot",
                     "x_axis": "[tools]",
