@@ -21,7 +21,7 @@ input file you are using the absolute paths to the files, with the column names 
 names above.
 
 ### Parameters
-Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
+Parameters used to run QAPA are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
 - `input` - path to the `samplesheet.csv`
 - `outdir` - name of the folder that the final output files are going to be in, located under QAPA/
@@ -51,13 +51,13 @@ nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --po
 ##### Singularity
 To run with `singularity`, please indicate `-profile singularity`
 ```
-nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
+nextflow main.nf --input samplesheet_example_files.csv --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
 ```
 
 
 ## Output & post-processing
 When using the default output_dir parameter value in conf/modules.config, QAPA store results under
-`results/qapa` folder.
+`results/qapa` folder, and the quantification output BED files will be stored in `results/qapa/<sample_name>/qapa_quant.bed`.
 
 ## Author contact
 If you have any question or comment about QAPA, please submit an issue on [QAPA's GitHub repository](https://github.com/morrislab/qapa/issues)
