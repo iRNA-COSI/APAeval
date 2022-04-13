@@ -10,11 +10,13 @@ Processing steps:
 - if necessary, merge prediction sites that fall into the window, expression is summed
 - run bedtools window for merged predictions with ground truth file
 - find multiple ground truth sites overlapping one predicted site
-	- weights are added for the predicted site based on distance to the ground truth site
+	- weights are added for the predicted site based on distance to the ground truth site if the predicted site is between two ground truth sites; if the predicted site matches one of the ground truth sites perfectly, the weight for this site is equal to 1 and for other sites it is equal to 0
 	- expression can be calculated by weight_i*expression_i for all prediction sites having the same ground truth site assigned
 - find multiple predicted sites overlapping one ground truth site
 	- weights are added for the predicted sites based on distance to the ground truth site
 	- expression can be calculated by sum(weight_i*expression_i) to get a single value matching the one ground truth site OR just summed without considering weight
+- ground truth sites that do not have any matching predicted sites have expression for the predicted site set to 0 and are used for correlation calculations
+- predicted sites that do not have any matching ground truth sites are handled separately
 - write output file with the following columns:
 	1. chromosome prediction
 	2. start prediction
