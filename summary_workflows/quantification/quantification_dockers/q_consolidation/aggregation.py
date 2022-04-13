@@ -84,6 +84,12 @@ def main():
     manifest = []
 
     for challenge_id in challenge_ids:
+
+        challenge_dir = os.path.join(output_dir,challenge_id)
+        if not os.path.exists(challenge_dir):
+            os.makedirs(challenge_dir)
+
+
         # 2.a) TO DO ###########################
         # If not offline:
         # Load aggregation file from OEB, convert, and write to benchmark_dir
@@ -137,8 +143,8 @@ def main():
 
         logging.debug(f"aggregation after update: {aggregation}")
 
-        # 2.f) Write aggregation file to benchmark_dir (and TO DO local results dir)
-        aggregation_file = os.path.join(benchmark_dir, challenge_id + ".json")
+        # 2.f) Write aggregation file to local results dir
+        aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
         with open(aggregation_file, mode='w', encoding="utf-8") as f:
             json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))
         
