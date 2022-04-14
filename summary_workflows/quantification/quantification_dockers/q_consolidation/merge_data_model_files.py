@@ -12,7 +12,7 @@ def main(args):
     metrics_data = args.metrics_data
     validation_data = args.validation_data
     aggregation_data = args.aggregation_data
-    challenge = args.challenge_id
+    challenges = args.challenge_ids
     out_path = args.output
 
     # Assuring the output path does exist
@@ -32,8 +32,11 @@ def main(args):
     data_model_file = join_json_files(validation_data, data_model_file, "*.json")
     # from metrics ("assessment_out")
     data_model_file = join_json_files(metrics_data, data_model_file, "*.json")
-    # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge.json"
-    data_model_file = join_json_files(aggregation_data, data_model_file, "*" + challenge + ".json")
+    # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge/challenge.json"
+    # we have to do that for all challenges in the list
+    for challenge in challenges:
+        c_aggregation_data = os.path.join(aggregation_data, challenge)
+        data_model_file = join_json_files(c_aggregation_data, data_model_file, "*" + challenge + ".json")
 
     # write the merged data model file to json output
     with open(out_path, mode='w', encoding="utf-8") as f:
@@ -82,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument("-m", "--metrics_data", help="path to assessment_datasets.json", required=True)
     parser.add_argument("-a", "--aggregation_data", help="dir where the data for benchmark summary/aggregation are stored",
                         required=True)
-    parser.add_argument("-c", "--challenge_id", help="Id of the challenge", required=True)
+    parser.add_argument("-c", "--challenge_ids", help="Ids of the challenges, separated by space", nargs='+', required=True)
     parser.add_argument("-o", "--output", help="output path where the minimal dataset JSON file will be written", required=True)
 
     args = parser.parse_args()
