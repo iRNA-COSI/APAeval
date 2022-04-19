@@ -181,11 +181,9 @@ def main():
                 assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "RAW")
                 assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "SQR")
                 assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "DIAG")
-            # To Do ########################
             # barplots
-            # elif aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "bar-plot":
-            #     assessment_chart.barplot(challenge_dir, aggr_object, challenge_id)
-            ################################
+            elif aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "bar-plot":
+                assessment_chart.print_barplot(challenge_dir, aggr_object, challenge_id)
 
     # After we have updated all aggregation files for all challenges, save the summary manifest
     with open(os.path.join(output_dir, "Manifest.json"), mode='w', encoding="utf-8") as f:

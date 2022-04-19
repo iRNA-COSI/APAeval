@@ -329,3 +329,42 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
     fig.savefig(outname, dpi=100)
 
     plt.close("all")
+
+def print_barplot(challenge_dir, aggregation, challenge_acronym):
+    """
+    Print bar plots when there is only a single metric in the aggregation
+    """
+
+    tools = []
+    values = []
+    orange_hex = "#f47c21" #Bar plots in orange like on the OEB website
+
+    # participants and their metrics
+    for participant_data in aggregation["datalink"]["inline_data"]["challenge_participants"]:
+        tools.append(participant_data['participant_id'])
+        values.append(participant_data['metric_value'])
+
+    # metrics names for axes
+    metric_name = aggregation["datalink"]["inline_data"]["visualization"][
+        "metric"]
+
+    ax = plt.subplot()
+    ax.bar(tools, values, color = orange_hex, edgecolor = orange_hex)
+
+    ax.set_xlabel("Tools", fontsize=12)
+    ax.set_ylabel(f"{metric_name.capitalize()}", fontsize=12)
+    ax.set_title(f"{metric_name.capitalize()} bar-plot in challenge {challenge_acronym}")
+    ax.legend()
+
+    # Extract the challenge name and "Aggregation" from the id for the file name
+    out_id = aggregation["_id"].split("_")
+    del out_id[0]
+    out_id = "_".join(out_id)
+
+    outname = os.path.join(challenge_dir,
+                           out_id + "_benchmark_" + metric_name + "_barplot.svg")
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    fig.savefig(outname, dpi=100)
+
+    plt.close("all")
