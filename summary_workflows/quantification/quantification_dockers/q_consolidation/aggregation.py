@@ -75,11 +75,10 @@ def main():
     # a) download results of previous benchmark from OEB
     # b) or get it from local data directory
     # c) or start fresh with the provided template
-    # d) Get list of participants
-    # e) add participant's metrics to aggregation
-    # f) write aggregation file
-    # g) split up assessments into challenge dirs
-    # h) store info for summary file (manifest) 
+    # d) add current participant's metrics to aggregation
+    # e) write aggregation file
+    # f) split up assessments into challenge dirs
+    # g) store info for summary file (manifest) 
     ########################################################
     
     # Store info for summary file
@@ -122,29 +121,18 @@ def main():
             
         logging.debug(f"aggregation on load: {aggregation}")
 
-        # 2.d) Get a list of participants from aggregation (needed for manifest)
-        participants = []
         
-        # Already recorded participants
-        # Dirty: we're only looking at the first aggregation object, assuming the participants are the same for all objects (=plots)
-        for item in aggregation[0]["datalink"]["inline_data"]["challenge_participants"]:
-            participants.append(item["participant_id"])
-        # Current participant
-        participants.append(participant_id)
-
-        logging.debug(f"participants: {participants}")
-
-        # 2.e) Add the current participant's metrics to the aggregation for the current challenge_id
+        # 2.d) Add the current participant's metrics to the aggregation for the current challenge_id
         new_aggregation = add_to_aggregation(aggregation, participant_id, challenges[challenge_id])
 
         logging.debug(f"aggregation after update: {aggregation}")
 
-        # 2.f) Write aggregation file per challenge to local results dir
+        # 2.e) Write aggregation file per challenge to local results dir
         aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
         with open(aggregation_file, mode='w', encoding="utf-8") as f:
             json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))
         
-        # 2.g) Write assessments per challenge to local results dir
+        # 2.f) Write assessments per challenge to local results dir
         # We have stored the assessment json objects for each challenge in the challenges dict
         challenge_assessments = []
         for metric, ass_json in challenges[challenge_id].items():
@@ -154,7 +142,17 @@ def main():
         with open(assessment_file, mode='w', encoding="utf-8") as f:
             json.dump(challenge_assessments, f, sort_keys=True, indent=4, separators=(',', ': '))
         
-        # 2.h) store manifest object for current challenge
+        # 2.g) store manifest object for current challenge
+        # For that, get a list of participants from aggregation
+        participants = []
+        
+        # Already recorded participants
+        # Dirty: we're only looking at the first aggregation object, assuming the participants are the same for all objects (=plots)
+        for item in new_aggregation[0]["datalink"]["inline_data"]["challenge_participants"]:
+            participants.append(item["participant_id"])
+
+        logging.debug(f"participants: {participants}")
+
         mani_obj = {
             "id" : challenge_id,
             "participants": participants,
