@@ -9,14 +9,12 @@ control_condition_key: "control"
 # path to main output directory storing output files for run
 out_dir: "roar_results"
 
-# Path to GTF file containing reference transcript models
-reference_gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+# Path to Roar-compliant GTF file containing polyA site and exon annoations
+roar_gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
 
-# Path to BED file containing reference polyA site coordinates
-polya_sites: "../../tests/test_data/siControl_R1_2genes.MACEseq.mm10.bed"
-
-
-# Parameters
+# Specify the annotation type to which GTF provided to 'roar_gtf' corresponds
+# must be one of 'single' or 'multiple'
+annotation_type: 'single'
 
 # Are input data stranded? 'True'/'False' (no quotes)
 is_stranded: False
