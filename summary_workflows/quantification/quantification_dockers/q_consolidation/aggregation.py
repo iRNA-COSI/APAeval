@@ -62,7 +62,7 @@ def main():
     # 1. Get assesment (=metrics) for current participant
     ########################################################
 
-    # Load assessment file into dict of challenges with dicts of metric IDs
+    # Load info from assessment file into dict of challenges with dicts of metric IDs
     community_id, participant_id, challenges = get_metrics_per_challenge(assessment_data)
     # Get a list of challenge ids
     challenge_ids = list(challenges.keys())
@@ -78,7 +78,8 @@ def main():
     # d) Get list of participants
     # e) add participant's metrics to aggregation
     # f) write aggregation file
-    # g) store info for summary file (manifest) 
+    # g) split up assessments into challenge dirs
+    # h) store info for summary file (manifest) 
     ########################################################
     
     # Store info for summary file
@@ -149,12 +150,22 @@ def main():
 
         logging.debug(f"aggregation after update: {aggregation}")
 
-        # 2.f) Write aggregation file to local results dir
+        # 2.f) Write aggregation file per challenge to local results dir
         aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
         with open(aggregation_file, mode='w', encoding="utf-8") as f:
             json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))
         
-        # 2.g) store manifest object for current challenge
+        # 2.g) Write assessments per challenge to local results dir
+        # We have stored the assessment json objects for each challenge in the challenges dict
+        challenge_assessments = []
+        for metric, ass_json in challenges[challenge_id].items():
+            challenge_assessments.append(ass_json)
+        
+        assessment_file = os.path.join(challenge_dir, participant_id + ".json")
+        with open(assessment_file, mode='w', encoding="utf-8") as f:
+            json.dump(challenge_assessments, f, sort_keys=True, indent=4, separators=(',', ': '))
+        
+        # 2.h) store manifest object for current challenge
         mani_obj = {
             "id" : challenge_id,
             "participants": participants,
@@ -184,24 +195,21 @@ def main():
 # Function definitions
 def get_metrics_per_challenge(assessment_data):
     '''
-    From the assessment file collect all challenges and all metrics per challenge
+    From the assessment file collect all challenges and all metrics/assessments per challenge
     Returns:
     participant ID
     dict of challenges, per challenge dict of metric IDs
 
     challenges = {
         "Qa": {
-            "correlation": 1,
-            "percent_matched": 1
+            "correlation": {ASSESSMENT OBJECT},
+            "percent_matched": {ASSESSMENT OBJECT}
         },
         "Qb": {
-            "correlation": 0.9,
-            "percent_matched": 0.5
+            "correlation": {ASSESSMENT OBJECT},
+            "percent_matched": {ASSESSMENT OBJECT}
         }
     }
-
-    QUESTION: should we rather load the total content of the json files, instead of picking only what we need. Because what we need might change later on and then we'd have to make bigger changes to the code
-
     '''
     # read assessment file
     with open(assessment_data, mode='r', encoding="utf-8") as f:
@@ -219,9 +227,9 @@ def get_metrics_per_challenge(assessment_data):
         assert_object_type(item, "assessment")
         # get metric
         metric_id = item["metrics"]["metric_id"]
-        metric_val = item["metrics"]["value"]
-        # add metric to dict of its challenge
-        challenges.setdefault(item['challenge_id'], {})[metric_id] = metric_val
+        challenge_id = item["challenge_id"]
+        # add metric assessment object to dict of its challenge
+        challenges.setdefault(challenge_id, {})[metric_id] = item
 
         # make sure all objects belong to same participant
         if item["participant_id"] != participant_id:
@@ -260,15 +268,15 @@ def add_to_aggregation(aggregation, participant_id, challenge):
         participant["participant_id"] = participant_id
         if plot["type"] == "2D-plot":
             try:
-                participant["metric_x"] = challenge[plot["x_axis"]]
-                participant["metric_y"] = challenge[plot["y_axis"]]
+                participant["metric_x"] = challenge[plot["x_axis"]]["metrics"]["value"]
+                participant["metric_y"] = challenge[plot["y_axis"]]["metrics"]["value"]
             except Exception as e:
                 logging.exception(str(e))
                 raise e
         
         elif plot["type"] == "bar-plot":
             try:
-                participant["metric_value"] = challenge[plot["metric"]]
+                participant["metric_value"] = challenge[plot["metric"]]["metrics"]["value"]
             except KeyError as e:
                 logging.exception(f"The assessment file does not contain data for metric {plot['metric']}.")
                 raise e
