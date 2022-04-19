@@ -10,7 +10,7 @@ control_condition_key: "control"
 out_dir: "roar_results"
 
 # Path to Roar-compliant GTF file containing polyA site and exon annoations
-roar_gtf: "../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+roar_gtf: "mm.gtf"
 
 # Specify the annotation type to which GTF provided to 'roar_gtf' corresponds
 # must be one of 'single' or 'multiple'

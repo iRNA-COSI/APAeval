@@ -9,12 +9,18 @@ import os
 # ------------------------------------------------------------------------------
 # Config/Metadata
 
-# Read in config file
-# configfile: "config/config.Roar.yaml"
 
 # Convert config to dataframe
-samples = pd.read_csv(os.path.abspath(config["samples"]),sep=",")
+samples = pd.read_csv(os.path.abspath(config["samples"]), sep=",")
 
+# check sample table has expected column names (in expected order)
+assert samples.columns.tolist() == ["sample_name", "bam", "condition"], f"Sample table must only contain the following columns (in this order) - 'sample_name', 'bam', 'condition' - {', '.join(samples.columns)}"
+
+# check 'condition' column only contains 2 unique values
+assert samples['condition'].nunique() == 2, f"'condition' column must contain exactly 2 unique conditions, {samples['condition'].nunique()} found"
+
+# Check that 'control_condition_key' can be found in condition column
+assert (samples['condition'] == config['control_condition_key']).any(), f"'control_condition_key' - {config['control_condition_key']} - was not found in 'condition' column of sample table"
 
 #-------------------------------------------------------------------------------
 # Parameters, filenames & sample data
@@ -24,6 +30,16 @@ THREADS = config["threads"]
 SCRIPTS = config["scripts"]
 OUTDIR = config["out_dir"]
 
+# Check value of 'annotation_type' parameter
+assert config["annotation_type"] in ['single', 'multiple'], f"'annotation_type' must be one of 'single' or 'multiple', {config['annotation_type']} was provided"
+
+# Check 'is_stranded' has been passed as a Boolean
+assert isinstance(config["is_stranded"], bool), f"'is_stranded' must be True/False boolean, {config['is_stranded']} (type {type(config['is_stranded'])}) was provided"
+
+# Strand-aware counting with 'multiple' APA annotation types is not currently supported
+# Check that this combination has not been passed
+if config["is_stranded"] and config["annotation_type"] == "multiple":
+    raise Exception("Strand-aware counting for 'multiple' annotation types is not supported by Roar - set 'is_stranded' to False to use 'multiple' annotations")
 
 # Checking challenge flag values
 assert isinstance(config["run_identification"], bool), f"'run_identification' must be True/False boolean, {config['run_identification']} (type {type(config['run_identification'])}) was provided"
@@ -70,38 +86,10 @@ rule finish:
 
 #-------------------------------------------------------------------------------
 
-rule generate_roar_gtf:
-    '''
-    Generate 'single APA' type Roar annotations (i.e. single prox site per gene)
-    '''
-    input:
-        gtf = config["reference_gtf"],
-        polya = config["polya_sites"]
-
-    output:
-        os.path.join(OUTDIR, "roar_annotations.gtf")
-
-    params:
-        script = os.path.join(SCRIPTS, "make_roar_annotations.py")
-
-    log:
-        os.path.join(OUTDIR, config["local_log"], "generate_roar_gtf.log")
-
-    container:
-        "docker://quay.io/biocontainers/pyranges:0.0.115--pyh5e36f6f_0"
-
-    shell:
-        """
-        (python {params.script} \
-        --gtf {input.gtf} \
-        --polya {input.polya} \
-        -o {output}) &> {log}
-        """
-
 
 rule run_roar:
     input:
-        gtf = os.path.join(OUTDIR, "roar_annotations.gtf"),
+        gtf = config["roar_gtf"],
         sample_tbl = config["samples"]
 
     output:
@@ -110,9 +98,8 @@ rule run_roar:
     params:
         script = os.path.join(SCRIPTS, "Roar.R"),
         base_condition = config["control_condition_key"],
+        annot_type = config["annotation_type"],
         stranded = "--stranded" if config["is_stranded"] else ""
-
-    threads: THREADS
 
     container:
         "docker://quay.io/biocontainers/bioconductor-roar:1.28.0--r41hdfd78af_0"
@@ -125,6 +112,7 @@ rule run_roar:
         (Rscript {params.script} \
         {input.gtf} \
         {input.sample_tbl} \
+        {params.annot_type} \
         {params.base_condition} \
         {output} \
         {params.stranded}) &> {log}
@@ -149,7 +137,7 @@ rule get_differential_tsv:
 
     # PyRanges is built on top of pandas - re-using image to avoid extra images
     container:
-        "docker://quay.io/biocontainers/pyranges:0.0.115--pyh5e36f6f_0"
+        "docker://amancevice/pandas:1.4.2-slim"
 
     log:
         os.path.join(OUTDIR, config["local_log"], "get_differential_tsv.log")
