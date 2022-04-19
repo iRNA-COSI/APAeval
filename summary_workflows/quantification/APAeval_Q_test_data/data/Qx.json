@@ -55,7 +55,7 @@
                 ],
                 "visualization": {
                     "type": "bar-plot",
-                    "metric": "correlation"
+                    "metric": "MSE"
                 }
             }
         },
