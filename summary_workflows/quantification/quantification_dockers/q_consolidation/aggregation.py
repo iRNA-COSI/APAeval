@@ -114,18 +114,7 @@ def main():
             # 2.c) If there's none, open the aggregation template instead        
             except FileNotFoundError as e:
                 logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
-
-                with open(aggregation_template, mode='r', encoding="utf-8") as t:
-                    aggregation = json.load(t)
-                # We still need to fill the template with ID and challenge ID; data will be appended later
-                # Prefix for aggregation object ids
-                base_id = f"{community_id}:{event_date}_{challenge_id}_aggregation_"
-                # For numbering of aggregation objects
-                i = 1
-                for item in aggregation:
-                    item["_id"] = base_id + str(i)
-                    i+=1
-                    item["challenge_ids"] = [challenge_id]
+                aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id)
                
         # if something else than the file missing went wrong
         except Exception:
@@ -251,6 +240,38 @@ def assert_object_type(json_obj, curr_type):
     if type_field != curr_type:
         raise TypeError(f"json object is of type {type_field}, should be {curr_type}")
 
+
+def load_aggregation_template(aggregation_template, community_id, event_date, challenge_id):
+    '''
+    Load the aggregation template from the provided json file and set _id and challenge_id
+    '''
+
+    with open(aggregation_template, mode='r', encoding="utf-8") as t:
+        aggregation = json.load(t)
+
+    # We still need to fill the template with ID and challenge ID; data will be appended later
+    # Prefix for aggregation object ids
+    base_id = f"{community_id}:{event_date}_{challenge_id}_Aggregation_"
+
+    for item in aggregation:
+        viz = item["datalink"]["inline_data"]["visualization"]
+        # 2D-plot
+        if viz["type"] == "2D-plot":
+            x = viz["x_axis"]
+            y = viz["y_axis"]
+            metrics = f"{x}_vs_{y}" 
+        # bar-plot
+        elif viz["type"] == "bar-plot":
+            y = viz["metric"]
+            metrics = f"{y}"
+        # someting wrong
+        else:
+            raise KeyError("Unknown plot type")
+
+        item["_id"] = base_id + metrics
+        item["challenge_ids"] = [challenge_id]
+
+    return aggregation
 
 
 def add_to_aggregation(aggregation, participant_id, challenge):
