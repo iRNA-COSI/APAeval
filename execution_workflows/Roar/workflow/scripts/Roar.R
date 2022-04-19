@@ -1,8 +1,9 @@
 # Command line script to run Roar on a set of BAM files
 
-help <- c("Usage: Roar.R GTF SAMPLE_TABLE BASE_KEY OUTPUT_TSV [--stranded] [--help] [-h]",
+help <- c("Usage: Roar.R GTF SAMPLE_TABLE ANNOTATION_TYPE BASE_KEY OUTPUT_TSV [--stranded] [--help] [-h]",
           "GTF - Path to Roar annotation GTF file",
-          "SAMPLE_TABLE - Path to sample table CSV file used as input to the Roar execution workflow. The CSV should contain 'sample_name', 'bam' and 'condition' columns.",
+          "SAMPLE_TABLE - Path to sample table CSV file used as input to the Roar execution workflow. The CSV must contain 'sample_name', 'bam' and 'condition' columns",
+          "ANNOTATION_TYPE" - whether input annotations contain 1 alternative polyA site per gene ('single') or all alternative polyA sites ('multiple')",
           "BASE_KEY - Name of 'base' or 'control' condition in the 'condition' column of the sample table",
           "OUTPUT_TSV - Name of/path to output TSV file to write Roar results table",
           "--stranded - (Optional) whether input RNA-seq data were generated with a stranded protocol",
@@ -19,13 +20,21 @@ library(roar)
 
 gtf_path <- cl_args[1]
 sample_tbl_path <- cl_args[2]
-base_key <- cl_args[3]
-output_tsv <- cl_args[4]
+annotation_type <- cl_args[3]
+base_key <- cl_args[4]
+output_tsv <- cl_args[5]
 
 if ("--stranded" %in% cl_args) {
   stranded <- TRUE
 } else {
   stranded <- FALSE
+}
+
+# Strand-aware counting is not yet implemented for 'multiple' APA annotations
+if (isTRUE(stranded) & annotation_type == "multiple") {
+
+  stop("Strand-aware counting is not yet supported for 'multiple' type annotations - do not pass '--stranded' flag to avoid this message")
+
 }
 
 #1. Extract lists of bams per condition from sample table
@@ -68,18 +77,47 @@ names(treat_bams) <- treat$sample_name
 
 # 2. Run Roar
 
-rds <- RoarDatasetFromFiles(treatmentBams = treat_bams,
-                            controlBams = base_bams,
-                            gtf = gtf_path
-)
+if (!(annotation_type %in% c("single", "multiple"))) {
+  stop(paste("'annotation_type' -",
+             annotation_type,
+             "- is not one of 'single' or 'multiple'",
+             sep = " ")
+       )
+}
 
-rds <- countPrePost(rds, stranded = stranded)
+if (annotation_type == "single") {
 
-rds <- computeRoars(rds)
+  rds <- RoarDatasetFromFiles(treatmentBams = treat_bams,
+                              controlBams = base_bams,
+                              gtf = gtf_path
+                              )
 
-rds <- computePvals(rds)
+  rds <- countPrePost(rds, stranded = stranded)
 
-results <- totalResults(rds)
+  rds <- computeRoars(rds)
+
+  rds <- computePvals(rds)
+
+  results <- totalResults(rds)
+
+} else if (annotation_type == "multiple") {
+
+  rds <- RoarDatasetMultipleAPAFromFiles(treatmentBams = treat_bams,
+                                         controlBams = base_bams,
+                                         gtf = gtf_path
+                                         )
+
+  rds <- countPrePost(rds)
+
+  rds <- computeRoars(rds)
+
+  rds <- computePvals(rds)
+
+  results <- totalResults(rds)
+
+}
+
+
 
 # Gene IDs are stored as rownames so add as 1st column
 results <- cbind(gene_id = rownames(results), results)
