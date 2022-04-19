@@ -5,7 +5,12 @@ import logging
 import datetime
 from argparse import ArgumentParser, RawTextHelpFormatter
 from assessment_chart import assessment_chart
+from OEB_aggr_query import OEB_aggr_query
 
+# set to production link when ready
+DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
+# Make sure to adapt accordingly in other event workflows; Here is APAeval:Quantification
+DEFAULT_bench_event_id = "OEBE0070000000"
 
 def parse_arguments():
     '''
@@ -91,17 +96,21 @@ def main():
             os.makedirs(challenge_dir)
 
 
-        # 2.a) TO DO ###########################
-        # If not offline:
+        # 2.a) If not offline:
         # Load aggregation file from OEB, convert, and write to benchmark_dir
-        # Does this have to be performed on every run of the summary workflow? Only makes sense if we're synchronized with the OEB DB?
-        # see manage_assessment_data.py for functions to query OEB, and to convert the result to aggregation file format
-        ####################################
+        
+        if not offline:
+            # Load data from OEB DB
+            response = OEB_aggr_query.query_OEB_DB(DEFAULT_bench_event_id, challenge_id)
+
+            # from the loaded data, create an aggregation file and write it to benchmark_dir
+            OEB_aggr_query.getOEBAggregations(response, benchmark_dir)
 
 
         # 2.b) If aggregation file in benchmark_dir
         # Load aggregation file from there
         aggregation_old = os.path.join(benchmark_dir,challenge_id + ".json")
+
         # Or if necessary template from here
         aggregation_template= os.path.join(os.path.dirname(os.path.realpath(__file__)), "aggregation_template_Q.json")
         
@@ -110,6 +119,7 @@ def main():
             try:
                 with open(aggregation_old, mode='r', encoding="utf-8") as f:
                     aggregation = json.load(f)
+
             # 2.c) If there's none, open the aggregation template instead        
             except FileNotFoundError as e:
                 logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
