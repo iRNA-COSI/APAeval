@@ -3,7 +3,7 @@
 help <- c("Usage: Roar.R GTF SAMPLE_TABLE ANNOTATION_TYPE BASE_KEY OUTPUT_TSV [--stranded] [--help] [-h]",
           "GTF - Path to Roar annotation GTF file",
           "SAMPLE_TABLE - Path to sample table CSV file used as input to the Roar execution workflow. The CSV must contain 'sample_name', 'bam' and 'condition' columns",
-          "ANNOTATION_TYPE" - whether input annotations contain 1 alternative polyA site per gene ('single') or all alternative polyA sites ('multiple')",
+          "ANNOTATION_TYPE - whether input annotations contain 1 alternative polyA site per gene ('single') or all alternative polyA sites ('multiple')",
           "BASE_KEY - Name of 'base' or 'control' condition in the 'condition' column of the sample table",
           "OUTPUT_TSV - Name of/path to output TSV file to write Roar results table",
           "--stranded - (Optional) whether input RNA-seq data were generated with a stranded protocol",
