@@ -31,5 +31,6 @@ rule paqr_tsv_to_apaeval_bed:
                 tpm = F[sample_column].strip()
                 strand = F[5].strip()
                 # Write bed
-                outfile.write("\t".join([chromosome, start, stop, ID, tpm, strand]))
-                outfile.write("\n")
+                if float(tpm) != float(-1.0):
+                    outfile.write("\t".join([chromosome, start, stop, ID, tpm, strand]))
+                    outfile.write("\n")
