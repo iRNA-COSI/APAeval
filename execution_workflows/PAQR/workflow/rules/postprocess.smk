@@ -4,7 +4,7 @@ rule paqr_tsv_to_apaeval_bed:
     input:
         TSV_filtered_expression = os.path.join(
                 config["out_dir"],
-                "filtered_pas_expression.tsv")
+                "concat_pas_expression.tsv")
 
     output:
         BED_quantification = os.path.join(
