@@ -3,12 +3,15 @@
 This directory provides Dockerfiles and corresponding 'recipes' for scripting/processing tasks that are common across workflows.
 
 Contents:
-- [Available utilities](#Available-utilities)
-- [Contributing instructions](#Contributing-instructions)
+- [Available utilities](#available-utilities)
+  - [Convert GTF to BED12 (aka 'gene model') file](#convert-gtf-to-bed12-aka-gene-model-file)
+  - [Convert .csv to .tsv (NO Docker)](#convert-csv-to-tsv-no-docker)
+- [Contributing instructions](#contributing-instructions)
 
-# Available utilities
 
-## Convert GTF to BED12 (aka 'gene model') file
+## Available utilities
+
+### Convert GTF to BED12 (aka 'gene model') file
 
 **Description:** Convert a [GTF](https://genome.ucsc.edu/FAQ/FAQformat.html#format4) annotation file to [BED12](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) (also known as a 'gene model' file) format.
 
@@ -23,8 +26,21 @@ Contents:
 /gtfTobed.py --gtf <path to GTF file> --out_bed <name of the output BED file>
 ```
 
+### Convert .csv to .tsv (NO Docker)
 
-# Contributing instructions
+**Description:** Convert a `.csv` to a `.tsv` file using `pandas`. Useful for conversion BEFORE running an execution workflow (see "Compatibility" below).
+
+**Subdirectory name**: `csv2tsv`
+
+**Compatibility:**
+Currently no Docker image available, but the script can be run inside the `apaeval_execution_workflow` conda environment. 
+
+**Usage:**
+```
+python csv2tsv.py --csv samples.csv --tsv samples.tsv
+```
+
+## Contributing instructions
 
 Have code for a pre-processing / file wrangling task that you think may be general to other tools? To add a tool to the directory, we need you to create a pull request with the following tasks completed:
 
