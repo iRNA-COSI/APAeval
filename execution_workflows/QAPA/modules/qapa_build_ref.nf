@@ -4,21 +4,22 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-process QAPA_INDEX {
+process QAPA_BUILD_REF {
 
         publishDir "${params.outdir}/qapa", mode: params.publish_dir_mode
         container  "docker.io/apaeval/qapa:1.3.1"
 
         input:
-        path fasta
-        path bed
+        path mart_export
+        path genepred
+        path polyabed
 
         output:
-        path "$indexed_fasta", emit: ch_indexed_fasta
+        path "*.bed", emit: bed
 
         script:
-        indexed_fasta  = "output_sequences.fa"
+        output_utrs_bed  = "output_utrs.bed"
         """
-        qapa fasta -f $fasta $bed $indexed_fasta
+        qapa build --db $mart_export -o $polyabed $genepred > $output_utrs_bed
         """
 }

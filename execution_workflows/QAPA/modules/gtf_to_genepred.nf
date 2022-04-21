@@ -4,23 +4,19 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-process CHECK_SAMPLESHEET {
-    tag "$samplesheet"
+process GTFTOGENEPRED {
     publishDir "${params.outdir}/pipeline_info", mode: params.publish_dir_mode
-    container "quay.io/biocontainers/python:3.8.3"
+    container "docker.io/apaeval/gtftobed:1.0"
 
     input:
-    path samplesheet
+    path gtf
     
     output:
-    path "*reformat.csv"
+    path "*.genePred", emit: genepred
     
     script:
+    genepred= 'reference.genePred'
     """
-    check_samplesheet.py $samplesheet samplesheet_reformat.csv
+    /gtfToGenePred -genePredExt $gtf $genepred
     """
-}
-
-def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.fastq1, sample.fastq2 ]
 }
