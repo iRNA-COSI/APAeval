@@ -3,7 +3,7 @@
 # Reference PAS file: must have the same format as PolyASite bed
 # see https://polyasite.unibas.ch/atlas
 
-# reference PAS filename
+# reference PAS filename (format: `.bed` or `.bed.gz`)
 ref_PAS_file: "../../tests/test_data/atlas.clusters.2.0.GRCm38.96.wchr.bed.gz"
 atlas_version: "m38"
 
@@ -24,7 +24,7 @@ tpas:
   # directory that contains the scripts
   scriptsdir: workflow/scripts_tpas
 
-  # genome annotation
+  # genome annotation (format: `.gtf` or `.gtf.gz`)
   gtf: "../../tests/test_data/gencode_2genes_Chr_prefix.vM18.annotation.gtf"
 
   # Caculate TPAS for stranded or unstranded data, or both?
@@ -131,6 +131,5 @@ paqr:
   # Mock params needed for DAG, don't change
   PAQ_tandem_pas: ""
   # out- and logdir are set in Snakefile to be subdirectories of the result directory specified at param `out_dir`
-  PAQ_outdir: "results4/paqr"
-  # path for log directory
-  PAQ_logdir: "results4/logs"
+  PAQ_outdir: ""
+  PAQ_logdir: ""
