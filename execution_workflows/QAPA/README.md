@@ -25,9 +25,9 @@ Parameters used to run QAPA are specified in conf/modules.config file.
 Parameters relevant to the workflow itself are:
 - `input` - path to the `samplesheet.csv`
 - `outdir` - name of the folder that the final output files are going to be in, located under QAPA/
-- `gtf`: GTF annotation file
+- `gtf`: GTF annotation file (has to be uncompressed (not zip or gz))
 - `fasta`: FASTA reference sequence file
-- `polyabed`: BED 3'UTR library
+- `polyabed`: BED 3'UTR library (has to be uncompressed (not zip or gz))
 - `run_qapa_build`: run qapa built (default: false)
 
 Notes on `--polyabed` and `--run_qapa_build`:
@@ -40,18 +40,19 @@ The QAPA workflow only does quantification. Once parameters have been set in con
 nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile [docker/singularity]
 ```
 #### Running with Docker or Singularity
+One can find the corresponding gtf and fastq files from `../../test/test_data`
 ##### Docker
 This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
 (e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
 To run with `docker`, please indicate `-profile docker`
 ```
-nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile docker
+nextflow main.nf --input samplesheet_example.csv --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile docker
 ```
 
 ##### Singularity
 To run with `singularity`, please indicate `-profile singularity`
 ```
-nextflow main.nf --input samplesheet_example_files.csv --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
+nextflow main.nf --input samplesheet_example.csv --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile singlularity
 ```
 
 
