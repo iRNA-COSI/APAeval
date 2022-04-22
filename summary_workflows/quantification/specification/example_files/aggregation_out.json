@@ -1,34 +1,69 @@
-{
-    "_id": "OEBid",
-    "challenge_ids": [
-        "datasetA"
-    ],
-    "datalink": {
-        "inline_data": {
-            "challenge_participants": [
-                {
-                    "metric_x": 0.5,
-                    "metric_y": 0.75,
-                    "participant_id": "toolA"
-                },
-                {
-                    "metric_x": 0.3333333333333333,
-                    "metric_y": 1.0,
-                    "participant_id": "toolB"
-                },
-                {
-                    "metric_x": 0.8333333333333334,
-                    "metric_y": 0.38461538461538464,
-                    "participant_id": "toolC"
+[
+    {
+        "_id": "OEBid",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0.5,
+                        "metric_y": 0.75,
+                        "participant_id": "toolA"
+                    },
+                    {
+                        "metric_x": 0.3333333333333333,
+                        "metric_y": 1.0,
+                        "participant_id": "toolB"
+                    },
+                    {
+                        "metric_x": 0.8333333333333334,
+                        "metric_y": 0.38461538461538464,
+                        "participant_id": "toolC"
+                    }
+                ],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Expression_non-matched-PAS_10nt",
+                    "y_axis": "Correlation_coefficient_10nt"
                 }
-            ],
-            "visualization": {
-                "type": "2D-plot",
-                "x_axis": "Expression_non-matched-PAS_10nt",
-                "y_axis": "Correlation_coefficient_10nt"
             }
-        }
+        },
+        "type": "aggregation"
     },
-    "type": "aggregation"
-}
+    {
+        "_id": "OEBid",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0.55,
+                        "metric_y": 0.75,
+                        "participant_id": "toolA"
+                    },
+                    {
+                        "metric_x": 0.3,
+                        "metric_y": 1.0,
+                        "participant_id": "toolB"
+                    },
+                    {
+                        "metric_x": 0.7,
+                        "metric_y": 0.6
+                        "participant_id": "toolC"
+                    }
+                ],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Expression_non-matched-PAS_50nt",
+                    "y_axis": "Correlation_coefficient_50nt"
+                }
+            }
+        },
+        "type": "aggregation"
+    }
+]
 

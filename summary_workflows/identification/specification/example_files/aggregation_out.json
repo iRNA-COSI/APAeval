@@ -1,29 +1,58 @@
-{
-    "_id": "OEBid",
-    "challenge_ids": [
-        "datasetA"
-    ],
-    "datalink": {
-        "inline_data": {
-            "challenge_participants": [
-                {
-                    "metric_x": 0.5,
-                    "metric_y": 0.75,
-                    "participant_id": "QAPA"
-                },
-                {
-                    "metric_x": 0.3333333333333333,
-                    "metric_y": 1.0,
-                    "participant_id": "LABRAT"
+[
+    {
+        "_id": "OEBid",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0.5,
+                        "metric_y": 0.75,
+                        "participant_id": "QAPA"
+                    },
+                    {
+                        "metric_x": 0.3333333333333333,
+                        "metric_y": 1.0,
+                        "participant_id": "LABRAT"
+                    }
+                ],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Sensitivity_10nt",
+                    "y_axis": "Precision_10nt"
                 }
-            ],
-            "visualization": {
-                "type": "2D-plot",
-                "x_axis": "Sensitivity_10nt",
-                "y_axis": "FPR_10nt"
             }
-        }
+        },
+        "type": "aggregation"
     },
-    "type": "aggregation"
-}
-
+    {
+        "_id": "OEBid",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0.55,
+                        "metric_y": 0.85,
+                        "participant_id": "QAPA"
+                    },
+                    {
+                        "metric_x": 0.4,
+                        "metric_y": 1.0,
+                        "participant_id": "LABRAT"
+                    }
+                ],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Sensitivity_50nt",
+                    "y_axis": "Precision_50nt"
+                }
+            }
+        },
+        "type": "aggregation"
+    }
+]

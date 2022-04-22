@@ -52,7 +52,7 @@ All identification challenges belong to the same benchmarking event.
 | :-- | :--- | :--- | :--- | :----------|
 | 1 | BED | [Specification][spec-bed] | [Link][in1] | BED file with PAS identification by the benchmarked tool |
 | 2 | BED | [Specification][spec-bed] | [Link][in2] | BED file with PAS identification from ground truth dataset |
-| 3 | GFF | [Specification][spec-gtf] | [Link][in3] | GTF file with genome annotation including 3' UTRs |
+| 3 | GTF | [Specification][spec-gtf] | [Link][in3] | GTF file with genome annotation including 3' UTRs |
   
 ### Additional info
   
@@ -102,8 +102,7 @@ Alternatively, if the plot is divided into square quartiles, the following ranki
 
 2. **bar plot** visualizing **AUC** of Precision-Recall curve with single AUC value for each tool.
 
-**X axis** - benchmarked tool  
-**Y axis** - AUC
+**metric** - AUC
 
 Input data:
 
@@ -114,8 +113,7 @@ Ranking: The best performing tool is the one with the highest AUC value.
 
 3. **bar plot** visualizing **proportion of PAS assigned to 3'-UTRs**.
 
-**X axis** - benchmarked tool  
-**Y axis** - proportion of PAS assigned to 3'-UTRs
+**metric** - proportion of PAS assigned to 3'-UTRs
 
 Input data:
 
@@ -125,8 +123,7 @@ Ranking: The best performing tool is the one with the highest proportion of PAS 
 
 4. **bar plot** visualizing **percentage of genes with correctly identified number of PAS**
 
-**X axis** - benchmarked tool  
-**Y axis** - percentage of genes with correctly identified number of PAS
+**metric** - percentage of genes with correctly identified number of PAS
 
 Input data:
 
@@ -136,11 +133,11 @@ Ranking: The best performing tool is the one with the highest ercentage of genes
 
 Optional plots - can be generated outside of OpenEBench:
 
-1. **2D line plot** visualising **TPR and FPR** in the form of [ROC curve][roc-curve], i.e. TPR and FPR calculated for a range of distance thresholds are plotted together. 
+1. **2D line plot** visualising **Sensitivity(Recall) and Precision** in the form of Precision-Recall curve, i.e. Sensitivity and Precision calculated for a range of distance thresholds are plotted together. 
 
-**X axis** - FPR(d)  
-**Y axis** - TPR(d)  
-where _d - distance threshold_ in range 0-100 nt with 10 nt increments.
+**X axis** - Recall(d)  
+**Y axis** - Precision(d)  
+where _d - distance threshold_ in range 0-200 nt with 10 nt increments.
 
 Input datasets:
 
@@ -152,8 +149,7 @@ Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, 
 
 2. Grouped **bar plot** visualizing **proportions of PAS assigned to different genomic features** in one plot.
 
-**X axis** - benchmarked tool  
-**Y axis** - proportions of PAS assigned to different genomic features. Multiple bars corresponding to multiple featues are plotted using different colors.
+**metric** - proportions of PAS assigned to different genomic features. Multiple bars corresponding to multiple featues are plotted using different colors.
 
 Input datasets:
 
@@ -169,8 +165,7 @@ Note: Grouped bar plot is not supported on OEB. Metrics should be visualized onl
 - 50 nt
 - 100 nt
 
-**X axis** - benchmarked tool  
-**Y axis** - proportion of PAS matched to multiple ground truth sites
+**metric** - proportion of PAS matched to multiple ground truth sites
 
 Input data:
 
@@ -189,7 +184,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 | :-- | :--- | :--- | :--- | :-------- |
 | 1 | JSON | [Specification][spec-json] | [Link][assessment_out] | Assessment output JSON |
 | 2 | JSON | [Specification][spec-json] | [Link][aggregation_out] | Aggregation output JSON
-| 3 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
+| 3 | JSON | [Specification][spec-json] | N/A | Consolidation output JSON |
   
 ### Additional info
  
@@ -236,7 +231,6 @@ The OpenEBench consolidation file contains all the information about the new ben
 [in3]: ./example_files/input3.gtf
 [assessment_out]: ./example_files/assessment_out.json
 [aggregation_out]: ./example_files/aggregation_out.json
-[consolidation_out]: ./example_files/consolidation_out.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>

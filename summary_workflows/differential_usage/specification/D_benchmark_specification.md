@@ -30,7 +30,8 @@ Based on the input data the following metrics are computed:
 
 TP - true positives - genes identified by the tool and present in the orthogonal dataset  
 FP - false positives - genes identified by the tool and not present in the orthogonal dataset  
-FN - false negatives - genes not identified by the tool but present in the orthogonal dataset
+FN - false negatives - genes not identified by the tool but present in the orthogonal dataset  
+TN - true negatives - genes not identified by the tool and not present in the orthogonal dataset
 
 ### OpenEBench challenges
 
@@ -90,7 +91,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 | :-- | :--- | :--- | :--- | :-------- |
 | 1 | JSON | [Specification][spec-json] | [Link][assessment_out] | Assessment output JSON |
 | 2 | JSON | [Specification][spec-json] | [Link][aggregation_out] | Aggregation output JSON
-| 3 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
+| 3 | JSON | [Specification][spec-json] | N/A | Consolidation output JSON |
 
 ### Additional info
  
@@ -127,7 +128,6 @@ The OpenEBench consolidation file contains all the information about the new ben
 [in2]: ./example_files/input2.tsv
 [assessment_out]: ./example_files/assessment_out.json
 [aggregation_out]: ./example_files/aggregation_out.json
-[consolidation_out]: ./example_files/consolidation_out.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [wiki-tsv]: <https://en.wikipedia.org/wiki/Tab-separated_values>
   

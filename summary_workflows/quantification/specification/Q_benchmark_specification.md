@@ -123,8 +123,11 @@ Ranking: The best performing tool is the one with the highest correlation value 
 
 - 100 nt
 
-**X axis** - benchmarked tool  
-**Y axis** - MSE
+**metric** - MSE
+
+Input datasets:
+
+- RNA-Seq data compared with 3'end sequencing data
 
 Ranking: The best performing tool is the one with the lowest MSE value.
 
@@ -155,7 +158,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 | :-- | :--- | :--- | :--- | :-------- |
 | 1 | JSON | [Specification][spec-json] | [Link][assessment_out] | Assessment output JSON |
 | 2 | JSON | [Specification][spec-json] | [Link][aggregation_out] | Aggregation output JSON |
-| 3 | JSON | [Specification][spec-json] | [Link][consolidation_out] | Consolidation output JSON |
+| 3 | JSON | [Specification][spec-json] | N/A | Consolidation output JSON |
 
 ### Additional info
  
@@ -198,7 +201,6 @@ The OpenEBench consolidation file contains all the information about the new ben
 [in3]: ./example_files/input3.gtf
 [assessment_out]: ./example_files/assessment_out.json
 [aggregation_out]: ./example_files/aggregation_out.json
-[consolidation_out]: ./example_files/consolidation_out.json
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
