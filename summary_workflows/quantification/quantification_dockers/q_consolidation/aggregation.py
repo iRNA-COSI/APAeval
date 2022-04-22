@@ -3,6 +3,7 @@ import os
 import json
 import logging
 import datetime
+from enum import Enum
 from argparse import ArgumentParser, RawTextHelpFormatter
 from assessment_chart import assessment_chart
 from OEB_aggr_query import OEB_aggr_query
@@ -11,6 +12,12 @@ from OEB_aggr_query import OEB_aggr_query
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
 # Make sure to adapt accordingly in other event workflows; Here is APAeval:Quantification
 DEFAULT_bench_event_id = "OEBE0070000000"
+
+class Visualisations(Enum):
+    """Visualisations supported for plotting.
+    """
+    BARPLOT = "bar-plot"
+    TWODPLOT = "2D-plot"
 
 def parse_arguments():
     '''
@@ -174,12 +181,12 @@ def main():
         # Create plots for current challenge
         for aggr_object in new_aggregation:
             # 2D-plots
-            if aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "2D-plot":
+            if aggr_object["datalink"]["inline_data"]["visualization"]["type"] == Visualisations.TWODPLOT.value:
                 assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "RAW")
                 assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "SQR")
                 assessment_chart.print_chart(challenge_dir, aggr_object, challenge_id, "DIAG")
             # barplots
-            elif aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "bar-plot":
+            elif aggr_object["datalink"]["inline_data"]["visualization"]["type"] == Visualisations.BARPLOT.value:
                 assessment_chart.print_barplot(challenge_dir, aggr_object, challenge_id)
 
     # After we have updated all aggregation files for all challenges, save the summary manifest
@@ -262,12 +269,12 @@ def load_aggregation_template(aggregation_template, community_id, event_date, ch
     for item in aggregation:
         viz = item["datalink"]["inline_data"]["visualization"]
         # 2D-plot
-        if viz["type"] == "2D-plot":
+        if viz["type"] == Visualisations.TWODPLOT.value:
             x = viz["x_axis"]
             y = viz["y_axis"]
             metrics = f"{x}_vs_{y}" 
         # bar-plot
-        elif viz["type"] == "bar-plot":
+        elif viz["type"] == Visualisations.BARPLOT.value:
             y = viz["metric"]
             metrics = f"{y}"
         # someting wrong
@@ -293,7 +300,7 @@ def add_to_aggregation(aggregation, participant_id, challenge):
         # Depending on the type of plot we'll need to create different participant objects
         participant = {}
         participant["participant_id"] = participant_id
-        if plot["type"] == "2D-plot":
+        if plot["type"] == Visualisations.TWODPLOT.value:
             try:
                 participant["metric_x"] = challenge[plot["x_axis"]]["metrics"]["value"]
                 participant["metric_y"] = challenge[plot["y_axis"]]["metrics"]["value"]
@@ -301,7 +308,7 @@ def add_to_aggregation(aggregation, participant_id, challenge):
                 logging.exception(str(e))
                 raise e
         
-        elif plot["type"] == "bar-plot":
+        elif plot["type"] == Visualisations.BARPLOT.value:
             try:
                 participant["metric_value"] = challenge[plot["metric"]]["metrics"]["value"]
             except KeyError as e:
