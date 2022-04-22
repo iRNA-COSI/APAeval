@@ -10,7 +10,7 @@ def final_output = modules['final_output']
     Generate file for differential challenge
 */
 process POSTPROCESS_DIFFERENTIAL {
-    container "docker.io/apaeval/csi-utr:latest"
+    container "docker.io/amancevice/pandas:1.4.2"
 
     input:
     val indicator
@@ -20,11 +20,13 @@ process POSTPROCESS_DIFFERENTIAL {
 
     script:
     differential_out = final_output.differential_out
-    csi_utr_differential_out = "$PWD/${params.outdir}/csi_utr/CSI_OUT/DifferentialExpression/WITHIN_UTR"
-    
+    differential_type = final_output.differential_type
+    csi_utr_differential_out = "$PWD/${params.outdir}/csi_utr/CSI_OUT/DifferentialExpression/${final_output.differential_type}"
+
     """
     postprocess_differential.py \
     $csi_utr_differential_out \
-    $differential_out 
+    $differential_type \
+    $differential_out
     """
 }
