@@ -121,16 +121,16 @@ def main():
         # Or if necessary template from here
         aggregation_template= os.path.join(os.path.dirname(os.path.realpath(__file__)), "aggregation_template_Q.json")
         
+        
+        # First try to open an existing aggregation file
         try:
-            # First try to open an existing aggregation file
-            try:
-                with open(aggregation_old, mode='r', encoding="utf-8") as f:
-                    aggregation = json.load(f)
+            with open(aggregation_old, mode='r', encoding="utf-8") as f:
+                aggregation = json.load(f)
 
-            # 2.c) If there's none, open the aggregation template instead        
-            except FileNotFoundError as e:
-                logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
-                aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id)
+        # 2.c) If there's none, open the aggregation template instead        
+        except FileNotFoundError as e:
+            logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
+            aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id)
                
         # if something else than the file missing went wrong
         except Exception:
@@ -142,7 +142,7 @@ def main():
         # 2.d) Add the current participant's metrics to the aggregation for the current challenge_id
         new_aggregation = add_to_aggregation(aggregation, participant_id, challenges[challenge_id])
 
-        logging.debug(f"aggregation after update: {aggregation}")
+        logging.debug(f"aggregation after update: {new_aggregation}")
 
         # 2.e) Write aggregation file per challenge to local results dir
         aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
