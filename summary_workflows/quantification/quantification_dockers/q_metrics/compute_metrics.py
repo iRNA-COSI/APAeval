@@ -42,16 +42,15 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
         # metric on the number of matched sites
         match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
-        merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
-        percent_matched=n_matched_sites/(n_matched_sites+n_unmatched_sites)
+        merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
 
         # metric on correlation coffecient
         correlation= matchPAS.corr_with_gt(merged_bed_df)
 
         # get json assessment file for both metrics
-        data_id_1 = community + ":" + challenge + "_percent_matched_" + participant
+        data_id_1 = community + ":" + challenge + "_expression_unmatched_" + participant
         std_error= 0
-        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "percent_matched", percent_matched, std_error)
+        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "expression_unmatched", expression_unmatched, std_error)
 
         data_id_2 = community + ":" + challenge + "_correlation_" + participant
         std_error= 0
