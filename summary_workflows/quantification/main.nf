@@ -21,7 +21,7 @@ if (params.help) {
 	        --community_id          Name or OEB permanent ID for the benchmarking community
 	        --participant_id        Name of the tool used for prediction
 	        --goldstandard_dir      Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
-	        --challenge_ids        Challenge ids selected by the user, separated by spaces
+	        --challenges_ids        Challenge ids selected by the user, separated by spaces
 	        --assess_dir            Dir where the data for the benchmark are stored
 	    Other options:
 	        --validation_result     .json output from validation step
@@ -48,7 +48,7 @@ if (params.help) {
 	        Benchmarking community = ${params.community_id}
 	        Tool name : ${params.participant_id}
 	        Gold standard dataset directory: ${params.goldstandard_dir}
-	        Challenge ids: ${params.challenge_ids}
+	        Challenge ids: ${params.challenges_ids}
 	        Published benchmark data directory: ${params.assess_dir}
 	        Validation result JSON file: ${params.validation_result}
 	        Assessment result JSON file: ${params.assessment_results}
@@ -68,7 +68,7 @@ if (params.help) {
 input_file = file(params.input)
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
-challenge_ids = params.challenge_ids
+challenge_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 event_date = params.event_date
