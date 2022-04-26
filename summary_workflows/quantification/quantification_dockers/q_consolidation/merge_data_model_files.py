@@ -36,7 +36,7 @@ def main(args):
     # we have to do that for all challenges in the list
     for challenge in challenges:
         c_aggregation_data = os.path.join(aggregation_data, challenge)
-        data_model_file = join_json_files(c_aggregation_data, data_model_file, "*" + challenge + ".json")
+        data_model_file = join_json_files(c_aggregation_data, data_model_file, "*" + challenge + "*.json")
 
     # write the merged data model file to json output
     with open(out_path, mode='w', encoding="utf-8") as f:
@@ -66,7 +66,7 @@ def join_json_files(data_directory, data_model_file, file_extension):
         for subdir, dirs, files in os.walk(data_directory):
             for file in files:
                 abs_result_file = os.path.join(subdir, file)
-                if fnmatch.fnmatch(abs_result_file, file_extension) and os.path.isfile(abs_result_file):
+                if fnmatch.fnmatch(file, file_extension) and os.path.isfile(abs_result_file):
                     with io.open(abs_result_file, mode='r', encoding="utf-8") as f:
                         content = json.load(f)
                         if isinstance(content, dict):
