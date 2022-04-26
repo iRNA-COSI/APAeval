@@ -1,0 +1,5 @@
+sample,condition,replicate,bam,bai
+control_r1,control,1,[path_to]/data/siControl_R1_2genes.bam,[path_to]/data/siControl_R1_2genes.bam.bai
+control_r2,control,2,[path_to]/data/siControl_R2_2genes.bam,[path_to]/data/siControl_R2_2genes.bam.bai
+srsf3_r1,srsf3,1,[path_to]/data/siSrsf3_R1_2genes.bam,[path_to]/data/siSrsf3_R1_2genes.bam.bai
+srsf3_r2,srsf3,2,[path_to]/data/siSrsf3_R2_2genes.bam,[path_to]/data/siSrsf3_R2_2genes.bam.bai
