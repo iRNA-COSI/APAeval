@@ -69,9 +69,9 @@ def query_OEB_DB(bench_event_id, challenge_name):
             logging.error("For {} got response error from graphql query: {}".format(bench_event_id, r.text))
             sys.exit(6)
         if len(data["getChallenges"]) == 0:
-            logging.error("No challenges associated to benchmarking event " + bench_event_id +
+            logging.warning("No challenges associated to benchmarking event " + bench_event_id +
                           " in OEB. Please contact OpenEBench support for information about how to open a new challenge")
-            sys.exit()
+            return
         else:
             return data.get('getChallenges')
     except Exception as e:

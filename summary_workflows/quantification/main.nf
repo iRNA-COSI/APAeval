@@ -15,7 +15,7 @@ if (params.help) {
 	    Run the pipeline with default parameters read from nextflow.config:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
-	   nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenge_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
+	   nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
 	    Mandatory arguments:
 	        --input                 BED/TXT file with APA site information
 	        --community_id          Name or OEB permanent ID for the benchmarking community
@@ -30,7 +30,7 @@ if (params.help) {
 	        --outdir                The output directory where results for VRE will be saved
 	        --statsdir              The output directory with nextflow statistics
 	        --otherdir              The output directory where custom results will be saved (no directory inside)
-	        --window                Window size for scanning for poly(A) sites (default: 15).
+	        --windows                Window sizes for scanning for poly(A) sites (List of int).
 	        --offline               If set to 1, consolidation will be performed with local data in assess_dir only (omit to perform OEB DB query)
 	    Flags:
 	        --help                  Display this message
@@ -56,7 +56,7 @@ if (params.help) {
 	        Consolidated benchmark results directory: ${params.outdir}
 	        Nextflow statistics directory: ${params.statsdir}
 	        Directory with community-specific results: ${params.otherdir}
-	        Window size for scanning for poly(A) sites: ${params.window}
+	        Window size for scanning for poly(A) sites: ${params.windows}
 	        Offline mode: ${params.offline}
 		""".stripIndent()
 
@@ -72,7 +72,7 @@ challenge_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 event_date = params.event_date
-window = params.window
+windows = params.windows
 offline = params.offline
 
 // output 
@@ -119,7 +119,7 @@ process compute_metrics {
 	path gold_standards_dir
 	val tool_name
 	val community_id
-    val window
+    val windows
 
 	output:
 	file 'assessment.json' into assessment_out
@@ -128,7 +128,7 @@ process compute_metrics {
 	file_validated == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $window
+	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $windows
 	"""
 }
 
