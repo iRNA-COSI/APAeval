@@ -3,6 +3,7 @@ import os
 import json
 import logging
 import datetime
+from copy import deepcopy
 from enum import Enum
 from argparse import ArgumentParser, RawTextHelpFormatter
 from assessment_chart import assessment_chart
@@ -78,8 +79,10 @@ def main():
     community_id, participant_id, challenges = get_metrics_per_challenge(assessment_data)
     # Get a list of challenge ids
     challenge_ids = list(challenges.keys())
+    # Get a list of metrics ids, as those change depending on the window sizes specified for compute_metrics.py
+    metrics_ids = list(challenges[challenge_ids[0]].keys())
 
-    logging.debug(f"Participant {participant_id}, challenges {challenges}, challenge_ids {challenge_ids}")
+    logging.debug(f"Participant {participant_id}, challenges {challenges}, challenge_ids {challenge_ids}, metrics_ids {metrics_ids}")
 
     ########################################################
     # 2. Handle aggregation file(s)
@@ -131,7 +134,7 @@ def main():
         # 2.c) If there's none, open the aggregation template instead        
         except FileNotFoundError as e:
             logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
-            aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id)
+            aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids)
                
         # if something else than the file missing went wrong
         except Exception:
@@ -205,12 +208,16 @@ def get_metrics_per_challenge(assessment_data):
 
     challenges = {
         "Qa": {
-            "correlation": {ASSESSMENT OBJECT},
-            "percent_matched": {ASSESSMENT OBJECT}
+            "correlation_10nt": {ASSESSMENT OBJECT},
+            "percent_matched_10nt": {ASSESSMENT OBJECT},
+            "correlation_50nt": {ASSESSMENT OBJECT},
+            ...
         },
         "Qb": {
-            "correlation": {ASSESSMENT OBJECT},
-            "percent_matched": {ASSESSMENT OBJECT}
+            "correlation_10nt": {ASSESSMENT OBJECT},
+            "percent_matched_10nt": {ASSESSMENT OBJECT},
+            "correlation_50nt": {ASSESSMENT OBJECT},
+            ...
         }
     }
     '''
@@ -255,35 +262,62 @@ def assert_object_type(json_obj, curr_type):
         raise TypeError(f"json object is of type {type_field}, should be {curr_type}")
 
 
-def load_aggregation_template(aggregation_template, community_id, event_date, challenge_id):
+def load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids):
     '''
-    Load the aggregation template from the provided json file and set _id and challenge_id
+    Load the aggregation template from the provided json file and set _id and challenge_id; create objects for all window sizes
     '''
 
     with open(aggregation_template, mode='r', encoding="utf-8") as t:
-        aggregation = json.load(t)
+        template = json.load(t)
 
-    # We still need to fill the template with ID and challenge ID; data will be appended later
+    aggregation = []
+
+    # Create aggregation objects for all plots specified in the template, and for all metrics (different window sizes!) detected in the assessment. Fill objects with ID and challenge ID; data will be appended later
+
     # Prefix for aggregation object ids
     base_id = f"{community_id}:{event_date}_{challenge_id}_Aggregation_"
 
-    for item in aggregation:
+    # For all different plots
+    for item in template:
         viz = item["datalink"]["inline_data"]["visualization"]
+
         # 2D-plot
         if viz["type"] == Visualisations.TWODPLOT.value:
             x = viz["x_axis"]
             y = viz["y_axis"]
-            metrics = f"{x}_vs_{y}" 
+
+            # one plot (=aggregation object) per window size
+            for x_win in [m for m in metrics_ids if x in m]:
+                # new aggregation object
+                win_item = deepcopy(item)
+
+                win_size = x_win.split("_")[-1]
+                y_win = "_".join([y, win_size])
+                win_metrics = f"{x_win}_vs_{y_win}" 
+                win_item["_id"] = base_id + win_metrics
+                win_item["challenge_ids"] = [challenge_id]
+                win_item["datalink"]["inline_data"]["visualization"]["x_axis"] = x_win
+                win_item["datalink"]["inline_data"]["visualization"]["y_axis"] = y_win
+                aggregation.append(win_item)
+
         # bar-plot
         elif viz["type"] == Visualisations.BARPLOT.value:
             y = viz["metric"]
-            metrics = f"{y}"
+
+            # one plot (=aggregation object) per window size
+            for y_win in [m for m in metrics_ids if y in m]:
+                # new aggregation object
+                win_item = deepcopy(item)
+                
+                win_metrics = f"{y_win}" 
+                win_item["_id"] = base_id + win_metrics
+                win_item["challenge_ids"] = [challenge_id]
+                win_item["datalink"]["inline_data"]["visualization"]["metric"] = y_win
+                aggregation.append(win_item)
+
         # someting wrong
         else:
             raise KeyError("Unknown plot type")
-
-        item["_id"] = base_id + metrics
-        item["challenge_ids"] = [challenge_id]
 
     return aggregation
 
