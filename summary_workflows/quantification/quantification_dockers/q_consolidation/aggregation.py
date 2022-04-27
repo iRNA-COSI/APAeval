@@ -110,9 +110,10 @@ def main():
             # Load data from OEB DB
             response = OEB_aggr_query.query_OEB_DB(DEFAULT_bench_event_id, challenge_id)
 
-            # from the loaded data, create an aggregation file and write it to benchmark_dir
-            OEB_aggr_query.getOEBAggregations(response, benchmark_dir)
-
+            # If there was data in the DB, create an aggregation file and write it to benchmark_dir
+            if response:
+                OEB_aggr_query.getOEBAggregations(response, benchmark_dir)
+            # else an aggregation file will be created from template below.
 
         # 2.b) If aggregation file in benchmark_dir
         # Load aggregation file from there
