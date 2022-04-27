@@ -12,7 +12,7 @@ from OEB_aggr_query import OEB_aggr_query
 # set to production link when ready
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
 # Make sure to adapt accordingly in other event workflows; Here is APAeval:Quantification
-DEFAULT_bench_event_id = "OEBE0070000002" #  identification: "OEBE0070000001", differential usage: "OEBE0070000003
+DEFAULT_bench_event_id = "OEBE0070000000" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
 
 class Visualisations(Enum):
     """Visualisations supported for plotting.
@@ -148,10 +148,17 @@ def main():
 
         logging.debug(f"aggregation after update: {new_aggregation}")
 
-        # 2.e) Write aggregation file per challenge to local results dir
-        aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
-        with open(aggregation_file, mode='w', encoding="utf-8") as f:
-            json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))
+        # 2.e) Write each aggregation object to a separe file per challenge to local results dir
+        for count, aggr_object in enumerate(new_aggregation):
+            if count == 0:
+                # The first aggregation will be stored in a file name {challenge_id}.json.
+                # This will be visualised in the VRE
+                aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
+            else:
+                # The following aggregation objects will be stored in files that include the count in the name
+                aggregation_file = os.path.join(challenge_dir, challenge_id + "-" + str(count) + ".json")
+            with open(aggregation_file, mode='w', encoding="utf-8") as f:
+                json.dump(aggr_object, f, sort_keys=True, indent=4, separators=(',', ': '))
         
         # 2.f) Write assessments per challenge to local results dir
         # We have stored the assessment json objects for each challenge in the challenges dict
