@@ -28,6 +28,7 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 - `input_file`: output file from execution workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
 >NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
+- `genome_file`: genome annotation in gtf format with 9 fields as specified [here](https://www.ensembl.org/info/website/upload/gff.html). The gtf is used for the relative PAS usage metric computation.
 - APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `quantification_dockers/q_metrics/matchPAS`
 - The `Assessment_datasets.json` file is used in the following step
 

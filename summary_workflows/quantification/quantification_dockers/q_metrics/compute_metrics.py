@@ -18,6 +18,7 @@ def main(args):
     community = args.community_name
     out_path = args.output
     windows = args.windows
+    genome_path = args.genome_file
 
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
@@ -28,13 +29,15 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, windows)
+    compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, windows, genome_path)
 
 
-def compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, windows):
+def compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, windows, genome_path):
 
     # define array that will hold the full set of assessment datasets
     all_assessments = []
+
+    genome = matchPAS.load_genome(genome_path)
 
     for challenge in challenge_ids:
         
@@ -69,8 +72,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
             # METRIC: MSE
             ####################
-            # Placeholder:
-            mse = 0.5
+            mse = matchPAS.relative_pas_usage(merged_bed_df, genome)
             
             # Key: exact name of metric as it appears in specification
             metric_name = f"MSE_{window}nt"
@@ -101,7 +103,8 @@ if __name__ == '__main__':
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
     parser.add_argument("-w", "--windows", nargs='+', help="windows (nt) for scanning for poly(A) sites; several window sizes separated by spaces", required=True, type=int)
-    
+    parser.add_argument("-gtf", "--genome_file", help="genome annotation file. Used for relative PAS usage calculation.", required=True)
+
     args = parser.parse_args()
 
     

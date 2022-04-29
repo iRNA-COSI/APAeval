@@ -134,4 +134,95 @@ def corr_with_gt(out):
 
     return(r)
 
+def relative_pas_usage(merged_bed_df, genome):
+    """Compute MSE for relative PAS usage.
 
+    1. find all PAS for a given gene, i.e. all ground truth PAS for a given gene or 
+        all predicted PAS that are matched to ground truth for a given gene.
+    2. sum TPM values of all PAS
+    3. calculate fraction for each PAS by dividing TPM_PAS by TPM_sum. 
+    4. Compute MSE or correlation for vector of gene-normalised PAS.
+
+    Args:
+        merged_bed_df (pandas.df): Table of matched prediction and ground truth PAS. From match_with_gt().
+        genome (pandas.df): Table with gene positions. 
+    
+    Returns:
+        float: Metric of relative PAS usage over all genes.
+    """
+    df = merged_bed_df.copy()
+    # get list of PAS per gene
+    pas_per_gene = [find_pas_genes(gene, df) for i, gene in genome.iterrows()]
+    # remove PAS not covered by gene
+    pas_per_gene = [pas for pas in pas_per_gene if len(np.where(pas)[0]) != 0]
+    # compute fraction of PAS per gene
+    normalised_dfs = [fraction_pas(gene_pas, df) for gene_pas in pas_per_gene]
+    # concatenate list of pandas.df
+    normalised_df = pd.concat(normalised_dfs, axis=0)
+    # compute correlation
+    metric = pearsonr(normalised_df['score_g'], normalised_df['score_p'])[0]
+    return metric
+
+def fraction_pas(gene_pas, df):
+    """Compute fraction for each PAS.
+    Each PAS in the given gene is normalised by the sum of TPM values (column 'score'),
+    separately for prediction and ground truth.
+
+    Args:
+        gene_pas (pandas.Series): bool vector indicating PAS for given gene.
+        df (pandas.df): Table of matched prediction and ground truth PAS. From match_with_gt().
+                        Columns 'score_p' and 'score_g' are used.
+    
+    Returns:
+        pandas.df: 'df' for rows 'gene_pas' with 'score' columns as fractions.
+    """
+    pred_sum = df.loc[gene_pas, 'score_p'].sum()
+    if pred_sum == 0:
+        df.loc[gene_pas,'score_p'] = 0
+    else:
+        df.loc[gene_pas,'score_p'] = df.loc[gene_pas, 'score_p'] / pred_sum
+    ground_sum = df.loc[gene_pas, 'score_g'].sum()
+    if ground_sum == 0:
+        df.loc[gene_pas,'score_g'] = 0
+    else:
+        df.loc[gene_pas,'score_g'] = df.loc[gene_pas,'score_g'] / ground_sum
+    return df.loc[gene_pas,:]
+
+def find_pas_genes(gene, df):
+    """Find all PAS in given gene.
+    
+    Args:
+        gene (dict): dict with keys 'seqname', 'start', 'end' and 'strand'.
+        df (pandas.df): df with columns 'chrom_g' (str), 'chromStart_g' (int),
+            'chromEnd_g' (int) and 'strand_g'.
+    
+    Returns:
+        pd.Series: Array of indices indicating PAS for gene 'gene'.
+    """
+    subset = (df['chrom_g'] == gene['seqname']) & (df['strand_g'] == gene['strand'])
+    subset = subset & (df['chromStart_g'] > gene['start']) & (df['chromEnd_g'] < gene['end'])
+    return subset
+
+def load_genome(genome_path):
+    """Load genome annotation in gtf format.
+    
+    Requires feature 'gene', which is available in gencode.
+    
+    Args:
+        genome_path: file path for gtf.
+    
+    Returns:
+        pandas.df with genes.
+    """
+    assert os.path.exists(genome_path), f"Genome annotation not found: {genome_path}"
+    # load gtf according to specifications (https://www.ensembl.org/info/website/upload/gff.html)
+    genome = pd.read_csv(genome_path, sep="\t", header=None,
+            comment="#",
+            names=['seqname','source', 'feature','start','end','score','strand','frame','attribute'],
+            usecols=['seqname','start','end','strand','feature'],
+            dtype={'seqname': str, 'start': np.int64, 'end': np.int64, 'strand': str, 'feature': str})
+    # Subset genome to only features gene
+    subset = genome['feature'] == "gene"
+    assert not subset.sum() == 0, f"No feature: 'gene' found in {genome_path}"
+    genome.drop('feature', 1, inplace=True)
+    return genome[subset]
