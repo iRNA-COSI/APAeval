@@ -1,15 +1,44 @@
-# APAeval nextflow pilot run
+ {nextflow pipeline template}
 
-### Steps to run this:
- - To run this first download the required reference files from [here](https://drive.google.com/drive/folders/1MUMilzaqef9u0sjScxzgi0JPTKAFQq_T?usp=sharing)
- - replace "path_to" in samplesheet_example_files.csv with the path to the reference files downloaded from the Google Drive link
- - check the path to this directory with `pwd` and replace the `[pwd]` in samplesheet_example_files.csv with the path from the `pwd` command
- - Before running `QAPA`, you have to install `QAPA`, and the guide to install is [here](https://github.com/morrislab/qapa). Make sure that QAPA is on your $PATH
- - Then, you are good to run the pilot benchmark nextflow pipeline with `QAPA`
-```
-nextflow main.nf --input samplesheet_example_files.csv --skip_miso
-```
+## How to create your nextflow pipeline for APAeval
+Read this section, but do NOT include it your final README.
+> * Copy the whole directory `nextflow` with its' subfolders to suitable location.
+> * Rename `nextflow` to `[METHOD]_nextflow`, [METHOD] being the name of the tool you're building a workflow for.
+> * Adjust names and contents of files that appear in this [NOTATION].
+> * Place any scripts or subworkflows you're going to use into the directories `workflow/scripts` and `workflow/rules`, respectively.
+> * Write your workflow in `main.nf`.
+> * Here are the [nextflow docs](https://www.nextflow.io/docs/latest/getstarted.html)
+> * General good practices:
+>     * Test your code with [nextflow main.nf --input <input_file> --other_parameters].
+>     * Initiate your parameters in `nextflow.config`.
+>     * Create a samplesheet.csv file so that all input files and reference files are organized and can be checked whether each file inputted is valid for running downstream process(es).
+>     * If samples differ in a meaningful way (e.g. single end and paired end samples), it will be great to adjust part of the command for running a software (see example [here](https://github.com/yuukiiwa/APAeval/blob/856b8a9455f8352037e5b9a202e52b0c980d90f8/tests/pilot_benchmark/nextflow/main.nf#L156)). 
+>     * If applicable, software has it's own docker container.
+>     * Add flags for running differnt benchmarking events `--run_identification/--run_quantification/--run_differential_analysis`
+>     * Adjust this `README.md`: Delete this description section and populate the sections below with your awesome experience ;)
 
-### Docker containers
- - check whether your tool is on [BioContainers Registry](https://biocontainers.pro/registry)
- - if your tool is not on Biocontinaers please see the `environment.yml` in the `docs/templates/nextflow_dsl1` directory
+# [METHOD]
+
+{Description of method, with link to publication and source code.}
+
+## Input & pre-processing
+
+{Describe input files and how they will be processed in order for the method to work. Describe how sample tables have to look like, and any other input that is needed (e.g. genome).}
+
+## Params
+
+{Describe parameters needed by your METHOD.}
+{Describe the parameters for running different modes `--run_idendification/--run_quantification/--run_differential_analysis`}
+
+## Output & post-processing
+
+{Describe method output and postprocessing steps if necessary.}
+
+> Naming convention for output files:
+> [IDENTIFIER]_[METHOD].[OUTFORMAT]
+
+## Notes
+
+{Notes about the METHOD. 
+e.g. Did you have to adjust the method's soure code?
+}

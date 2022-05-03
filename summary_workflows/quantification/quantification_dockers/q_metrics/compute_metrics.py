@@ -17,7 +17,7 @@ def main(args):
     participant = args.participant_name
     community = args.community_name
     out_path = args.output
-    window = args.window
+    windows = args.windows
 
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
@@ -28,41 +28,68 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, window)
+    compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, windows)
 
 
-def compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, window):
+def compute_metrics(participant_input, gold_standards_dir, challenge_ids, participant, community, out_path, windows):
 
     # define array that will hold the full set of assessment datasets
-    ALL_ASSESSMENTS = []
+    all_assessments = []
 
     for challenge in challenge_ids:
         
+        # ID prefix for assessment objects
+        base_id = f"{community}:{challenge}_{participant}_"
+        # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
+        metrics = {}
+        # ground truth file
         gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
 
-        # metric on the number of matched sites
-        match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
-        merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
+        for window in windows:
 
-        # metric on correlation coffecient
-        correlation= matchPAS.corr_with_gt(merged_bed_df)
+        # METRIC: Matched sites
+        ########################
+            # metric on the number of matched sites
+            match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
+            merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
 
-        # get json assessment file for both metrics
-        data_id_1 = community + ":" + challenge + "_expression_unmatched_" + participant
-        std_error= 0
-        assessment_matched_sites = JSON_templates.write_assessment_dataset(data_id_1, community, challenge, participant, "expression_unmatched", expression_unmatched, std_error)
+            # Key: exact name of metric as it appears in specification
+            metric_name = f"expression_umatched_{window}nt"
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [expression_unmatched, 0]
 
-        data_id_2 = community + ":" + challenge + "_correlation_" + participant
-        std_error= 0
-        assessment_correlation = JSON_templates.write_assessment_dataset(data_id_2, community, challenge, participant, "correlation", correlation, std_error)
 
-        # push the two assessment datasets to the main dataset array
-        ALL_ASSESSMENTS.extend([assessment_matched_sites, assessment_correlation])
+            # METRIC: correlation coffecient
+            #################################
+            # metric on correlation coffecient
+            correlation= matchPAS.corr_with_gt(merged_bed_df)
+            # Key: exact name of metric as it appears in specification
+            metric_name = f"correlation_{window}nt"
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [correlation, 0]
+                    
+
+            # METRIC: MSE
+            ####################
+            # Placeholder:
+            mse = 0.5
+            
+            # Key: exact name of metric as it appears in specification
+            metric_name = f"MSE_{window}nt"
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [mse, 0]
+
+        # for each challenge, create all assessment json objects and append them to all_assessments
+        for key, value in metrics.items():
+            object_id = base_id + key 
+            assessment_object = JSON_templates.write_assessment_dataset(object_id, community, challenge, participant, key, value[0], value[1])
+            all_assessments.append(assessment_object)
+
 
     # once all assessments have been added, print to json file
     with io.open(out_path,
                  mode='w', encoding="utf-8") as f:
-        jdata = json.dumps(ALL_ASSESSMENTS, sort_keys=True, indent=4, separators=(',', ': '))
+        jdata = json.dumps(all_assessments, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(jdata)
 
 
@@ -70,12 +97,12 @@ if __name__ == '__main__':
     
     parser = ArgumentParser()
     parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
-    parser.add_argument("-c", "---challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
+    parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
     parser.add_argument("-g", "--gold_standards_dir", help="dir that contains gold standard datasets for current challenge", required=True)
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
-    parser.add_argument("-w", "--window", help="window (nt) for scanning for poly(A) sites", required=True, type=int)
+    parser.add_argument("-w", "--windows", nargs='+', help="windows (nt) for scanning for poly(A) sites; several window sizes separated by spaces", required=True, type=int)
     
     args = parser.parse_args()
 

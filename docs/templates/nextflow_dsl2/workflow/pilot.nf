@@ -46,8 +46,9 @@ workflow PILOT{
 
          INPUT_CHECK ( ch_input )
                .set { ch_sample }
-
-         RUN_QAPA ( ch_sample )
+         if (params.run_benchmarking_event1){ 
+             RUN_QAPA ( ch_sample )
+         }
     }
 
 ////////////////////////////////////////////////////

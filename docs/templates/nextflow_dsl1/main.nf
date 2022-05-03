@@ -60,7 +60,7 @@ ch_samplesheet_reformat
 // - The --skip_process[1/2] parameter to add flexibility to run specific processes indicated by the user.
 //      Here is an example for running process1 only: nextflow main.nf --input samplesheet.csv --skip_process2
 
-if (!params.skip_process1){
+if (params.run_benchmarking_event1){
 
     // if the process requires a reference preprocessing step (ex. index_gff required by MISO)
     // you want to make sure that all samples in one samplesheet uses the same reference files (fasta, gff, mart_export.txt, and etc.)
@@ -118,7 +118,7 @@ if (!params.skip_process1){
 }
 
 // for some processes one process is enough
-if (!params.skip_process2){
+if (params.run_benchmarking_event2){
     // map the inputs required for the processes
     ch_input_for_process2_1
        .map{ it -> [ it[0], it[1], it[2] ] }

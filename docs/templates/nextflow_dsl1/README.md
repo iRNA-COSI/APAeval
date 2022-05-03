@@ -14,6 +14,7 @@ Read this section, but do NOT include it your final README.
 >     * Create a samplesheet.csv file so that all input files and reference files are organized and can be checked whether each file inputted is valid for running downstream process(es).
 >     * If samples differ in a meaningful way (e.g. single end and paired end samples), it will be great to adjust part of the command for running a software (see example [here](https://github.com/yuukiiwa/APAeval/blob/856b8a9455f8352037e5b9a202e52b0c980d90f8/tests/pilot_benchmark/nextflow/main.nf#L156)). 
 >     * If applicable, software has it's own docker container.
+>     * Add flags for running differnt benchmarking events `--run_identification/--run_quantification/--run_differential_analysis`
 >     * Adjust this `README.md`: Delete this description section and populate the sections below with your awesome experience ;)
 
 # [METHOD]
@@ -27,6 +28,7 @@ Read this section, but do NOT include it your final README.
 ## Params
 
 {Describe parameters needed by your METHOD.}
+{Describe the parameters for running different modes `--run_idendification/--run_quantification/--run_differential_analysis`}
 
 ## Output & post-processing
 
