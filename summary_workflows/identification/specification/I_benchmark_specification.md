@@ -234,5 +234,4 @@ The OpenEBench consolidation file contains all the information about the new ben
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
-[roc-curve]: <https://en.wikipedia.org/wiki/Receiver_operating_characteristic#ROC_curves_beyond_binary_classification>
   

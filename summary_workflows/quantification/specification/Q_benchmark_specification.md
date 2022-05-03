@@ -46,12 +46,12 @@ The correlation is calculated based on ground truth and identified PAS that over
 
 The expression values of all predicted sites that were not mapped to any ground truth site are summed together. As the PAS expression levels are provided as TPM, these values are relative to the expression of all identified PAS.
   
-3. Mean Squared Error (MSE) of relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data
+3. Correlation of relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data
 
 The poly(A) sites identified by the benchmarked tool are mapped to ground-truth PAS in the orthogonal dataset as in point 1.
 The identified PAS are then assigned to genes based on genome annotation, and relative PAS usage is calculated separately for each gene.
 PAS that do cannot be assigned to any genes are discarded.
-The MSE is then calculated globally for all poly(A) sites assigned to genes.
+Correlation is then calculated globally for all poly(A) sites assigned to genes.
 
   
 The metrics should be computed for different distance thresholds between PAS identified by the tool from RNAseq dataset and PAS identified from the ground truth dataset, i.e. the PAS identified by the tool should be within X nucleotides from the PAS identified from the orthogonal dataset for the prediction to be considered true.
@@ -119,17 +119,18 @@ Input datasets:
 
 Ranking: The best performing tool is the one with the highest correlation value and lowest total expression of non-matched sites (top-left part of the plot) and the worst performing tool is the one with the lowest correlation combined with the highest total expression of non-matched sites (bottom-right part of the plot). The plot should be divided into diagonal quartiles based on the distance from optimal performance. Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-left, top-right, bottom-left, bottom-right.
 
-2. **Bar plot** visualizing **Mean Squared Error** of relative PAS usage. Separate plots should be prepared for different values of distance threshold:
+2. **Bar plot** visualizing **Correlation** of relative PAS usage. Separate plots should be prepared for different values of distance threshold:
 
 - 100 nt
 
-**metric** - MSE
+**metric** - correlation of relative PAS usage
 
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the lowest MSE value.
+Ranking: The best performing tool is the one with the highest correlation value value.
 
 Optional plots:
 
@@ -183,7 +184,7 @@ The following tables list the metric names, value types and units, and a descrip
 | `Expression_non-matched-PAS_10nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 10 nt distance threshold (window) |
 | `Expression_non-matched-PAS_50nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 50 nt distance threshold (window) |
 | `Expression_non-matched-PAS_100nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 100 nt distance threshold (window) |
-| `MSE_100nt` | `float` | N/A | Mean Squared Error (MSE) of relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
+| `Correlation_coefficient_relative_100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
 
 #### Output 2
 
