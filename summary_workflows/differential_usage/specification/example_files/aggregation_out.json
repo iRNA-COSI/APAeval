@@ -1,6 +1,6 @@
 [
     {
-        "_id": "OEBid",
+        "_id": "2022-04-27_datasetA_Aggregation_Sensitivity_vs_FPR",
         "challenge_ids": [
             "datasetA"
         ],
@@ -26,7 +26,7 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "FPR",
-                    "y_axis": "TPR"
+                    "y_axis": "Sensitivity"
                 }
             }
         },

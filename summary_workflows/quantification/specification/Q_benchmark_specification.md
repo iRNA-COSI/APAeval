@@ -61,7 +61,7 @@ The exact values of distance thresholds are specified in _Plots_ section.
 ### OpenEBench challenges
 
 The metrics are visualised using 2D scatter plots and barplots, as described in _Plots_ section, which are then used for ranking the participating tools.
-A plot for any given input dataset constitutes a benchmarking challenge as understood in the OpenEBench schema.
+The plots for a given input dataset belong to one benchmarking challenge as understood in the OpenEBench schema.
 Not all plots have to be prepared for each dataset, as described in _Plots_ section.
 All quantification challenges belong to the same benchmarking event.
 

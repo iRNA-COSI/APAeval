@@ -1,6 +1,6 @@
 [
     {
-        "_id": "OEBid",
+        "_id": "2022-04-27_datasetA_Aggregation_Precision_10nt_vs_Sensitivity_10nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -10,12 +10,12 @@
                     {
                         "metric_x": 0.5,
                         "metric_y": 0.75,
-                        "participant_id": "QAPA"
+                        "participant_id": "toolA"
                     },
                     {
                         "metric_x": 0.3333333333333333,
                         "metric_y": 1.0,
-                        "participant_id": "LABRAT"
+                        "participant_id": "toolB"
                     }
                 ],
                 "visualization": {
@@ -28,7 +28,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "OEBid",
+        "_id": "2022-04-27_datasetA_Aggregation_Precision_50nt_vs_Sensitivity_50nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -38,12 +38,12 @@
                     {
                         "metric_x": 0.55,
                         "metric_y": 0.85,
-                        "participant_id": "QAPA"
+                        "participant_id": "toolA"
                     },
                     {
                         "metric_x": 0.4,
                         "metric_y": 1.0,
-                        "participant_id": "LABRAT"
+                        "participant_id": "toolB"
                     }
                 ],
                 "visualization": {
@@ -54,5 +54,31 @@
             }
         },
         "type": "aggregation"
+    },
+        {
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Proportion_in_3UTR",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_value": 0.5,
+                        "participant_id": "toolA"
+                    },
+                    {
+                        "metric_value": 0.6,
+                        "participant_id": "toolB"
+                    }
+                ],
+                "visualization": {
+                    "metric": "Proportion_in_3UTR",
+                    "type": "bar-plot"
+                }
+            }
+        },
+        "type": "aggregation"
     }
+
 ]

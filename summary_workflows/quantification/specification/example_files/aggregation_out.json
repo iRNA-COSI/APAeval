@@ -1,6 +1,6 @@
 [
     {
-        "_id": "OEBid",
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_10nt_vs_Expression_non-matched-PAS_10nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -33,7 +33,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "OEBid",
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_50nt_vs_Expression_non-matched-PAS_50nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -52,7 +52,7 @@
                     },
                     {
                         "metric_x": 0.7,
-                        "metric_y": 0.6
+                        "metric_y": 0.6,
                         "participant_id": "toolC"
                     }
                 ],
@@ -60,6 +60,35 @@
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_50nt",
                     "y_axis": "Correlation_coefficient_50nt"
+                }
+            }
+        },
+        "type": "aggregation"
+    },
+    {
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_relative_50nt",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_value": 0.5,
+                        "participant_id": "toolA"
+                    },
+                    {
+                        "metric_value": 0.6,
+                        "participant_id": "toolB"
+                    },
+                    {
+                        "metric_value": 0.7,
+                        "participant_id": "toolC"
+                    }
+                ],
+                "visualization": {
+                    "metric": "Correlation_coefficient_relative_50nt",
+                    "type": "bar-plot"
                 }
             }
         },

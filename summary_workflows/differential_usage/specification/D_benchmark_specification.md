@@ -36,7 +36,7 @@ TN - true negatives - genes not identified by the tool and not present in the or
 ### OpenEBench challenges
 
 The metrics are visualised using 2D scatter plots and barplots, as described in _Plots_ section, which are then used for ranking the participating tools.
-A plot for any given input dataset constitutes a benchmarking challenge as understood in OpenEBench schema.
+The plots for a given input dataset belong to one benchmarking challenge as understood in OpenEBench schema.
 Not all plots have to be prepared for each dataset, as described in _Plots_ section.
 All differential usage challenges belong to the same benchmarking event.
 

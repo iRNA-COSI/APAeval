@@ -1,6 +1,6 @@
 [
     {
-        "_id": "APAeval:datasetA_TPR_toolA",
+        "_id": "APAeval:datasetA_toolA_TPR_10nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
@@ -11,7 +11,7 @@
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_FPR_toolA",
+        "_id": "APAeval:datasetA_toolA_FPR_10nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
