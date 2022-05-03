@@ -218,19 +218,20 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
     tools = []
     x_values = []
     y_values = []
-    with io.open(summary_dir, mode='r', encoding="utf-8") as f:
-        aggregation_file = json.load(f)
-        # Challenge ID for plot title
-        challenge_id =  aggregation_file["_id"]
-        # participants and their metrics
-        for participant_data in aggregation_file["datalink"]["inline_data"]["challenge_participants"]:
+    # with io.open(summary_dir, mode='r', encoding="utf-8") as f:
+    #     aggregation_file = json.load(f)
 
-            tools.append(participant_data['participant_id'])
-            x_values.append(participant_data['metric_x'])
-            y_values.append(participant_data['metric_y'])
-        # metrics names for axes
-        x_metric = aggregation_file["datalink"]["inline_data"]["visualization"]["x_axis"]
-        y_metric = aggregation_file["datalink"]["inline_data"]["visualization"]["y_axis"]
+    aggregation_file = summary_dir
+
+    # participants and their metrics
+    for participant_data in aggregation_file["datalink"]["inline_data"]["challenge_participants"]:
+
+        tools.append(participant_data['participant_id'])
+        x_values.append(participant_data['metric_x'])
+        y_values.append(participant_data['metric_y'])
+    # metrics names for axes
+    x_metric = aggregation_file["datalink"]["inline_data"]["visualization"]["x_axis"]
+    y_metric = aggregation_file["datalink"]["inline_data"]["visualization"]["y_axis"]
     
     ax = plt.subplot()
     for i, val in enumerate(tools, 0):
@@ -248,7 +249,7 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
     # change plot style
     # set plot title
 
-    plt.title(challenge_id, fontsize=18, fontweight='bold')
+    plt.title(challenge_type, fontsize=18, fontweight='bold')
 
     ax.set_xlabel(x_metric, fontsize=12)
     ax.set_ylabel(y_metric, fontsize=12)
@@ -318,7 +319,50 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
         tools_quartiles = plot_diagonal_quartiles(x_values, y_values, tools, better)
         print_quartiles_table(tools_quartiles)
 
-    outname = os.path.join(challenge_dir,challenge_type + "_benchmark_" + classification_type + ".svg")
+    out_id = aggregation_file["_id"].split("_")
+    del out_id[0]
+    out_id = "_".join(out_id)
+
+    outname = os.path.join(challenge_dir, out_id + "_benchmark_" + classification_type + ".svg")
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    fig.savefig(outname, dpi=100)
+
+    plt.close("all")
+
+def print_barplot(challenge_dir, aggregation, challenge_acronym):
+    """
+    Print bar plots when there is only a single metric in the aggregation
+    """
+
+    tools = []
+    values = []
+    orange_hex = "#f47c21" #Bar plots in orange like on the OEB website
+
+    # participants and their metrics
+    for participant_data in aggregation["datalink"]["inline_data"]["challenge_participants"]:
+        tools.append(participant_data['participant_id'])
+        values.append(participant_data['metric_value'])
+
+    # metrics names for axes
+    metric_name = aggregation["datalink"]["inline_data"]["visualization"][
+        "metric"]
+
+    ax = plt.subplot()
+    ax.bar(tools, values, color = orange_hex, edgecolor = orange_hex)
+
+    ax.set_xlabel("Tools", fontsize=12)
+    ax.set_ylabel(f"{metric_name.capitalize()}", fontsize=12)
+    ax.set_title(f"{metric_name.capitalize()} bar-plot in challenge {challenge_acronym}")
+    ax.legend()
+
+    # Extract the challenge name and "Aggregation" from the id for the file name
+    out_id = aggregation["_id"].split("_")
+    del out_id[0]
+    out_id = "_".join(out_id)
+
+    outname = os.path.join(challenge_dir,
+                           out_id + "_benchmark_" + metric_name + "_barplot.svg")
     fig = plt.gcf()
     fig.set_size_inches(18.5, 10.5)
     fig.savefig(outname, dpi=100)
