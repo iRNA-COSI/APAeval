@@ -54,7 +54,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
 
             # Key: exact name of metric as it appears in specification
-            metric_name = f"expression_umatched_{window}nt"
+            metric_name = f"expression_unmatched_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [expression_unmatched, 0]
 
