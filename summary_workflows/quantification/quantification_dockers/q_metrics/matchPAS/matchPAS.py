@@ -202,7 +202,7 @@ def relative_pas_usage(merged_bed_df, genome):
     # concatenate list of pandas.df
     normalised_df = pd.concat(normalised_dfs, axis=0)
     # compute correlation
-    metric = pearsonr(normalised_df['score_g'], normalised_df['score_p'])[0]
+    metric = corr_with_gt(normalised_df)
     return metric
 
 def fraction_pas(gene_pas, df):
