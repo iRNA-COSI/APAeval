@@ -1,6 +1,6 @@
 [
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_percent_matched_10nt_vs_correlation_10nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_expression_unmatched_10nt_vs_correlation_10nt",
         "challenge_ids": [
             "Qx"
         ],
@@ -20,7 +20,7 @@
                 ],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "percent_matched_10nt",
+                    "x_axis": "expression_unmatched_10nt",
                     "y_axis": "correlation_10nt"
                 }
             }
@@ -28,7 +28,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_percent_matched_50nt_vs_correlation_50nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_expression_unmatched_50nt_vs_correlation_50nt",
         "challenge_ids": [
             "Qx"
         ],
@@ -48,7 +48,7 @@
                 ],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "percent_matched_50nt",
+                    "x_axis": "expression_unmatched_50nt",
                     "y_axis": "correlation_50nt"
                 }
             }

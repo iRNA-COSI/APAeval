@@ -25,7 +25,7 @@ def bedtools_window(bed1, bed2, window, reverse=False):
     else:
         out = subprocess.run(['bedtools', 'window', '-sm', '-v',
                               '-w', str(window), 
-                              '-a', bed1, 
+                              '-a', bed1,
                               '-b', bed2], 
                              capture_output=True, shell=False)
 
@@ -45,6 +45,86 @@ def bedtools_window(bed1, bed2, window, reverse=False):
    
     return(out)
 
+def find_weights(matched_sites, pd_pos):
+    """
+    Calculate score weights for PD sites matched to multiple GT sites.
+    If PD and GT sites are a perfect match, the weights are not split.
+    If PD site between two GT sites, weights calculated based on distance.
+    """
+    matched_sites.sort_values(by=["dist"], inplace=True)
+    matched_sites = matched_sites.reset_index(drop=True)
+    matched_sites["weight"] = 0.0
+
+    # if the PD is not between GT sites, assume the closest GT is a perfect match
+    if pd_pos < matched_sites["chromEnd_g"].min() or pd_pos > matched_sites["chromEnd_g"].max():
+        matched_sites["dist"][matched_sites["dist"].idxmin()] = 0.0
+
+    # calculate weight based on distance; a perfect match will have weight set to 1.0
+    matched_sites["weight"][0:2] = 1 - (matched_sites["dist"][0:2] / np.sum(matched_sites["dist"][0:2])) # weight is equal to distance proportion
+            
+    return matched_sites
+
+def split_pd_by_dist(matched_sites):
+    """
+    Identify PD sites matched to multiple GT sites and split the score between 2 sites based on distance
+    """
+    # find rows in sample that are not unique 
+    # -> extended predicted site overlaps multiple ground truth sites
+    
+    unique_pd_cols = ['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p']
+    not_unq_mask = matched_sites.duplicated(unique_pd_cols, keep=False)
+    
+
+    if np.sum(not_unq_mask) > 0: # otherwise there was no overlap
+            
+        not_unq = matched_sites[not_unq_mask].copy()
+       
+        # remove non-unique sites
+        matched_sites.drop(matched_sites.index[not_unq_mask], inplace=True, axis=0)
+        
+        # calculate distances between PD and GT sites
+        not_unq["dist"] = abs(not_unq["chromEnd_p"] - not_unq["chromEnd_g"])
+
+         # calculate weights based on the distance to two nearest GT sites
+        not_unq = not_unq.groupby(unique_pd_cols).apply(lambda x: find_weights(x, x.name[2])).reset_index(drop=True)
+        # apply weights to PD score
+        not_unq["score_p"] = not_unq["score_p"] * not_unq["weight"]
+        # rename sites that have been split
+        not_unq["name_p"] = not_unq["name_p"] + "_" + not_unq["name_g"]
+
+        # merge back to main df
+        not_unq.drop(["dist", "weight"], axis=1, inplace=True)
+        matched_sites = pd.concat([matched_sites, not_unq])
+
+    return matched_sites
+
+def merge_pd_by_gt(matched_sites):
+    """
+    Identify multiple PD sites matched to single GT site, merge and sum the scores.
+    """
+    
+    # find GT rows in sample that are not unique - multiple PD matched to one GT
+    # -> extended predicted site overlaps multiple ground truth sites
+    unique_gt_cols = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g']
+    not_unq_GT_mask = matched_sites.duplicated(unique_gt_cols, keep=False)
+
+    if np.sum(not_unq_GT_mask) > 0: # otherwise there was no overlap
+        
+        not_unq_GT = matched_sites[not_unq_GT_mask].copy()
+        # remove non-unique sites
+        matched_sites.drop(matched_sites.index[not_unq_GT_mask], inplace=True, axis=0)
+        
+        # sum scores for all PD sites matched to the same GT
+        not_unq_GT["score_p"] = not_unq_GT.groupby(unique_gt_cols)["score_p"].transform("sum")
+        # use only GT location for merged PD sites
+        not_unq_GT[["chrom_p", "chromStart_p", "chromEnd_p"]] = not_unq_GT[["chrom_g", "chromStart_g", "chromEnd_g"]]
+        not_unq_GT["name_p"] = not_unq_GT["name_g"] + "_merged"
+
+        # drop duplicates and merge back to main df
+        not_unq_GT.drop_duplicates(subset=["name_g"], keep="first", inplace=True)
+        matched_sites = pd.concat([matched_sites, not_unq_GT])
+    return matched_sites
+
 
 def match_with_gt(f_PD, f_GT, window):
 
@@ -56,78 +136,40 @@ def match_with_gt(f_PD, f_GT, window):
     # bedtools window with specified parameter
     out = bedtools_window(f_PD, f_GT, window)
 
+    # splid PD sites that matched with multiple GT
+    out = split_pd_by_dist(out)
 
-    # initialize weight column with default 1 for a perfect match
-    out['weight'] = [1]*len(out)
+    # find PD sites with no GT overlap given the window
+    out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
 
-    # counter for logging
-    weights_counter = 0
-
-    # find rows in sample that are not unique 
-    # -> extended predicted site overlaps multiple ground truth sites
-    not_unq_mask = out.duplicated(['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p'], keep=False)
-
-    if np.sum(not_unq_mask) > 0: # otherwise there was no overlap
-            
-        not_unq = out[not_unq_mask]
-        
-        # remove non-unique sites
-        out.drop(out.index[not_unq_mask], inplace=True, axis=0)
-            
-        # get the names of non-unique columns
-        unq = np.unique([(i, j, k, l) for i, j, k, l in zip(not_unq['chrom_p'], not_unq['chromStart_p'], not_unq['chromEnd_p'], not_unq['strand_p'])], axis=0)
-
-        for i in unq:
-            ###### not implemented yet #######
-
-            # split expression between ground truth sites, according to vicinity
-
-            # re-name sites that have been split
-
-            pass
-
-
-    # find sites with no overlap given the window
-    out_rev = bedtools_window(f_PD, f_GT, window, reverse=True)
-
-    # for non-overlap sites, assign score 0 to ground truth and set other columns to values from prediction
-    if not out_rev.empty:
-        out_rev['chrom_g'], out_rev['chromStart_g'], out_rev['chromEnd_g'], out_rev['name_g'], out_rev['score_g'], out_rev['strand_g'], out_rev['weight'] = [out_rev['chrom_p'], out_rev['chromStart_p'], out_rev['chromEnd_p'], out_rev['name_p'], [0.0]*len(out_rev), out_rev['strand_p'], [1.0]*len(out_rev)]
-
-    # add non-matched sites and matched sites together
-    out = pd.concat([out, out_rev])
-
+    # find GT sites with no PD overlap given the window, assign score 0 to ground truth and set other columns to values from prediction
+    out_rev_GT = bedtools_window(f_GT, f_PD, window, reverse=True)
+    if not out_rev_GT.empty:
+        out_rev_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+        out_rev_GT['score_p'] = [0.0]*len(out_rev_GT)
+ 
     # sort
     out.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
-    # number of matched sites:
-    n_matched_sites = len(out)-len(out_rev)
-    # number of sites not matched:
-    n_unmatched_sites = len(out_rev)
-    
-    return(out, n_matched_sites, n_unmatched_sites)
+    # merge PD sites that matched with the same GT by summing their expression
+    out = merge_pd_by_gt(out)
 
-def corr_with_gt(out):
+    # add GT sites with no PD match
+    out_with_unmatched_GT = pd.concat([out, out_rev_GT])
+    out_with_unmatched_GT.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
-    # initialize vectors for ground truth sites and prediction
-    vec_true = []
-    vec_pred = []
+    # calculate total expression of non-matched PD sites
+    if not out_rev_PD.empty:
+        nonmatched_expression = (out_rev_PD["score_p"]).sum()
+    else:
+        nonmatched_expression = 0.0   
+        
+    return(out_with_unmatched_GT, nonmatched_expression)
 
-    # multiple predicted sites for one ground truth?
-    multiple_predicted_sites = out.duplicated(['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g'], keep=False)
+def corr_with_gt(matched_sites):
 
-    # iterate over matched sites
-    for (idx, row), is_mult in zip(out.iterrows(), multiple_predicted_sites):
-        if is_mult:
-            # sum up all prediction sites that were assigned to this ground truth site
-            # needs to be implemented or can be skipped for now since these are usually only a few
-            pass
-        elif row['score_g'] == 0: # if there was no ground truth match, expression was set to 0 and the site is excluded
-            pass
-        else:
-            vec_true.append(row['score_g'])
-            # weighted expression in case there are multiple ground truth sites for one predicted site
-            vec_pred.append(row['score_p']*row['weight'])
+    vec_true = matched_sites["score_g"]
+    vec_pred = matched_sites["score_p"]
 
     # correlation coefficient
     r = pearsonr(vec_true, vec_pred)[0]

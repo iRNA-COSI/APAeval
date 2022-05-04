@@ -52,17 +52,19 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
         # METRIC: Matched sites
         ########################
-            match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard, window)
-            merged_bed_df, n_matched_sites, n_unmatched_sites = match_with_gt_run[0], match_with_gt_run[1], match_with_gt_run[2]
-            percent_matched=n_matched_sites/(n_matched_sites+n_unmatched_sites)
+            # metric on the number of matched sites
+            match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
+            merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
+
             # Key: exact name of metric as it appears in specification
-            metric_name = f"percent_matched_{window}nt"
+            metric_name = f"expression_unmatched_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [percent_matched, 0]
+            metrics[metric_name] = [expression_unmatched, 0]
 
 
             # METRIC: correlation coffecient
             #################################
+            # metric on correlation coffecient
             correlation= matchPAS.corr_with_gt(merged_bed_df)
             # Key: exact name of metric as it appears in specification
             metric_name = f"correlation_{window}nt"
@@ -84,7 +86,6 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             object_id = base_id + key 
             assessment_object = JSON_templates.write_assessment_dataset(object_id, community, challenge, participant, key, value[0], value[1])
             all_assessments.append(assessment_object)
-        
 
     # once all assessments have been added, print to json file
     with io.open(out_path,
