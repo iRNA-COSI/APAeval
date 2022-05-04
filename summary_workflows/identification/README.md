@@ -3,7 +3,7 @@
 *OpenEBench compatible Nextflow workflow for assessment of a bioinformatics tool's performance in **identifying poly(A) sites** from RNA-seq data*
 ___
 
-This README describes the APAeval **quantification** summary workflow. For a more general introduction to summary workflows see [the main summary workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
+This README describes the APAeval **identification** summary workflow. For a more general introduction to summary workflows see [the main summary workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the identification benchmarks specification][i-spec].
 
 - [Description of steps](#description-of-steps)
   - [1. Validation](#1-validation)
@@ -15,7 +15,7 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 ## Description of steps
 ### 1. Validation
 - `input_file`: output file from execution workflow in bed6 format
-- Validation checks performed in [`quantification_dockers/q_validation/validation.py`][validation-py]:
+- Validation checks performed in [`quantification_dockers/i_validation/validation.py`][validation-py]:
    - input file has to be tab separated file with 6 columns
    - start and end coordinates (col 2,3) have to be int64
    - strand (col 6) has to be one of [+,-]
@@ -28,12 +28,12 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 - `input_file`: output file from execution workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
 >NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
-- APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `quantification_dockers/q_metrics/matchPAS`
+- APAeval custom functions called in [`identification_dockers/i_metrics/compute_metrics.py`][metrics-py] are defined in `identification_dockers/i_metrics/`
 - The `Assessment_datasets.json` file is used in the following step
 
 ### 3. Results Consolidation
 - Gathers the `Assessment_datasets.json` file from the metrics computation step and existing assessment data (currently imported from the `data/` directory; in `nextflow.config`: `assess_dir`)
-- Python scripts have been copied from https://github.com/inab/TCGA_benchmarking_dockers, and only support 2D plots with x and y axes
+- Python scripts have been copied from https://github.com/inab/TCGA_benchmarking_dockers, and support 2D plots with x and y axes, as well as barplots.
 
 ## Usage
 ### Building docker images
@@ -68,7 +68,7 @@ This reads the parameters from the [nextflow.config][nextflow-config] file.
 
 [//]: # (References)
 [readme-swf]: ../README.md
-[q-spec]: ./specification/
-[validation-py]:./quantification_dockers/q_validation/validation.py
-[metrics-py]:./quantification_dockers/q_metrics/compute_metrics.py
+[i-spec]: ./specification/
+[validation-py]:./identification_dockers/i_validation/validation.py
+[metrics-py]:./identification_dockers/i_metrics/compute_metrics.py
 [nextflow-config]: ./nextflow.config
