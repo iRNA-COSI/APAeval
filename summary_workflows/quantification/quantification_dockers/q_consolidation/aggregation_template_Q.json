@@ -9,7 +9,7 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "percent_matched",
+                    "x_axis": "expression_unmatched",
                     "y_axis": "correlation"
                 }
             }
