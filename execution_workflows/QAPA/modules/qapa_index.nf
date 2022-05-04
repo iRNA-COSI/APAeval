@@ -10,7 +10,8 @@ process QAPA_INDEX {
         container  "docker.io/apaeval/qapa:1.3.1"
 
         input:
-        tuple path(fasta), path(bed)
+        path fasta
+        path bed
 
         output:
         path "$indexed_fasta", emit: ch_indexed_fasta

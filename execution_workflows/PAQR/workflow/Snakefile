@@ -1,0 +1,47 @@
+"""Snakemake pipeline for PAQR.
+For help see: https://snakemake.readthedocs.io/en/stable/index.html.
+"""
+
+import pandas as pd
+import os
+import sys
+
+
+# Set/overwrite redundant config params for the subworkflows and modules       
+config["tpas"]["outdir"] = os.path.join(config["out_dir"], "tpas")
+config["tpas"]["logdir"] = os.path.join(config["out_dir"], "logs")
+config["paqr"]["PAQ_outdir"] = os.path.join(config["out_dir"], "paqr")
+config["paqr"]["PAQ_logdir"] = os.path.join(config["out_dir"], "logs")
+
+# Read samples table
+samples = pd.read_table(config["paqr"]["PAQ_samples_table"], header=0, index_col=0)
+
+# Include subworkflows
+include: "rules/create_tandem_pas.smk"
+include: "rules/paqr.smk"
+include: "rules/paqr_extension_singular_PAS.smk"
+include: "rules/postprocess.smk"
+
+
+localrules: create_log_dir, get_TPAS_scripts, get_PAQR_scripts, finish
+
+rule finish:
+    """Rule that specifies the final output. 
+    """
+    input:
+        BED_quantification = expand(os.path.join(
+                config["out_dir"],
+                "{sample}_" + config["challenge_code"] + "_" + config["method"] + "_" + config["outcode"] + ".bed"),
+                sample = samples.index)
+
+
+
+
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred, check log at %s." % {log})

@@ -22,5 +22,5 @@ process CHECK_SAMPLESHEET {
 }
 
 def get_sample_info(LinkedHashMap sample) {
-    return [ sample.sample, sample.fastq1, sample.fastq2, sample.bam, sample.bai, sample.gff, sample.fasta, sample.bed, sample.mart_export ]
+    return [ sample.sample, sample.fastq1, sample.fastq2 ]
 }
