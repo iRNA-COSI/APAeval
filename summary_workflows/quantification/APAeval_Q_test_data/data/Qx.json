@@ -56,7 +56,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_MSE_10nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_expression_unmatched_100nt_vs_correlation_100nt",
         "challenge_ids": [
             "Qx"
         ],
@@ -64,24 +64,27 @@
             "inline_data": {
                 "challenge_participants": [
                     {
-                        "metric_value": 0.5,
+                        "metric_x": 0.60,
+                        "metric_y": 0.13,
                         "participant_id": "tool1"
                     },
                     {
-                        "metric_value": 0.5,
+                        "metric_x": 0.595,
+                        "metric_y": 0.125,
                         "participant_id": "tool2"
                     }
                 ],
                 "visualization": {
-                    "metric": "MSE_10nt",
-                    "type": "bar-plot"
+                    "type": "2D-plot",
+                    "x_axis": "expression_unmatched_100nt",
+                    "y_axis": "correlation_100nt"
                 }
             }
         },
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_MSE_50nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_MSE_100nt",
         "challenge_ids": [
             "Qx"
         ],
@@ -98,7 +101,7 @@
                     }
                 ],
                 "visualization": {
-                    "metric": "MSE_50nt",
+                    "metric": "MSE_100nt",
                     "type": "bar-plot"
                 }
             }

@@ -74,12 +74,13 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
             # METRIC: MSE
             ####################
-            mse = matchPAS.relative_pas_usage(merged_bed_df, genome)
-            
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"MSE_{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [mse, 0]
+            # Only calculate metric for first window size.
+            if window == windows[0]:
+                mse = matchPAS.relative_pas_usage(merged_bed_df, genome)
+                # Key: exact name of metric as it appears in specification
+                metric_name = f"MSE_{window}nt"
+                # Value: List of [variable_holding_metric, std_err]
+                metrics[metric_name] = [mse, 0]
 
         # for each challenge, create all assessment json objects and append them to all_assessments
         for key, value in metrics.items():
@@ -103,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
-    parser.add_argument("-w", "--windows", nargs='+', help="windows (nt) for scanning for poly(A) sites; several window sizes separated by spaces", required=True, type=int)
+    parser.add_argument("-w", "--windows", nargs='+', help="windows (nt) for scanning for poly(A) sites; several window sizes separated by spaces. The first entry is used for MSE calculation.", required=True, type=int)
     parser.add_argument("-gtf", "--genome_file", help="genome annotation file. Used for relative PAS usage calculation.", required=True)
 
     args = parser.parse_args()
