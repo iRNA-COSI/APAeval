@@ -18,7 +18,7 @@ def main(args):
     community = args.community_name
     out_path = args.output
     windows = args.windows
-    genome_path = args.genome_file
+    genome_path = args.genome_dir
 
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
@@ -37,8 +37,6 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
     # define array that will hold the full set of assessment datasets
     all_assessments = []
 
-    genome = matchPAS.load_genome(genome_path)
-
     for challenge in challenge_ids:
         
         # ID prefix for assessment objects
@@ -47,6 +45,11 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
         metrics = {}
         # ground truth file
         gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
+        # genome annotation file
+        genome_file = select_genome_file(challenge, genome_path)
+        # log to stdout
+        print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
+        genome = matchPAS.load_genome(genome_file)
 
         for window in windows:
 
@@ -94,6 +97,44 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
         jdata = json.dumps(all_assessments, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(jdata)
 
+def select_genome_file(file_name, genome_path):
+    """Select the genome file according to the organism.
+
+    Requires that the file_name contains an expression containing organism
+    information, which will be matched against the genome_path directory.
+    The format should be: name.mm10.ext or name.hg38extension.ext, with
+    matching genome annotations: gencode.mm10.gtf and gencode.hg38extension.gtf.
+    Note: no check for the extension (e.g. gtf) is done.
+
+    Args:
+        file_name (str): Name containing organism information. Supported: mm* and hg*.
+        genome_path (str): directory containing genome annotations in gtf format.
+
+    Returns:
+        str with genome file path.
+    """
+    GENOME_STRINGS = ["mm", "hg"]
+    SPLITSTRING = "."
+    assert os.path.exists(genome_path), f"Genome annotation directory not found: {genome_path}"
+    file_components =  file_name.split(SPLITSTRING)
+    # search for genome
+    for genome_string in GENOME_STRINGS:
+        match = [comp for comp in file_components if genome_string in comp]
+        if len(match) != 0:
+            break
+    if len(match) == 0:
+        raise ValueError(f"No genome string: {GENOME_STRINGS} in file_name: {file_name} found.")
+    # find all genome files in genome_path
+    for f in os.listdir(genome_path):
+        # find exact match in file
+        genome_match = [f for comp in f.split(SPLITSTRING) if match[0] == comp]
+        if len(genome_match) != 0:
+            break
+    if len(genome_match) == 0:
+        raise ValueError(f"No genome string: {GENOME_STRINGS} in genome_path: {genome_path} found.")
+    # return file
+    return os.path.join(genome_path, genome_match[0])
+
 
 if __name__ == '__main__':
     
@@ -105,7 +146,7 @@ if __name__ == '__main__':
     parser.add_argument("-com", "--community_name", help="name/id of benchmarking community", required=True)
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
     parser.add_argument("-w", "--windows", nargs='+', help="windows (nt) for scanning for poly(A) sites; several window sizes separated by spaces. The first entry is used for MSE calculation.", required=True, type=int)
-    parser.add_argument("-gtf", "--genome_file", help="genome annotation file. Used for relative PAS usage calculation.", required=True)
+    parser.add_argument("-gtf", "--genome_dir", help="genome annotation directory. Used for relative PAS usage calculation. Directory needs to contain genome files with matching organism name from challenge.", required=True)
 
     args = parser.parse_args()
 
