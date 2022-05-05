@@ -2,7 +2,7 @@
     {
         "_id": "APAeval:2022-04-27_Qx_Aggregation_expression_unmatched_10nt_vs_correlation_10nt",
         "challenge_ids": [
-            "Qx"
+            "Qx.mm10"
         ],
         "datalink": {
             "inline_data": {
@@ -30,7 +30,7 @@
     {
         "_id": "APAeval:2022-04-27_Qx_Aggregation_expression_unmatched_50nt_vs_correlation_50nt",
         "challenge_ids": [
-            "Qx"
+            "Qx.mm10"
         ],
         "datalink": {
             "inline_data": {
@@ -58,7 +58,7 @@
     {
         "_id": "APAeval:2022-04-27_Qx_Aggregation_expression_unmatched_100nt_vs_correlation_100nt",
         "challenge_ids": [
-            "Qx"
+            "Qx.mm10"
         ],
         "datalink": {
             "inline_data": {
@@ -86,7 +86,7 @@
     {
         "_id": "APAeval:2022-04-27_Qx_Aggregation_MSE_100nt",
         "challenge_ids": [
-            "Qx"
+            "Qx.mm10"
         ],
         "datalink": {
             "inline_data": {
