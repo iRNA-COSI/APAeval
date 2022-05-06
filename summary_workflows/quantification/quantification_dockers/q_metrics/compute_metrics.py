@@ -38,7 +38,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
     all_assessments = []
 
     for challenge in challenge_ids:
-        
+
         # ID prefix for assessment objects
         base_id = f"{community}:{challenge}_{participant}_"
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
@@ -53,8 +53,8 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
         for window in windows:
 
-        # METRIC: Matched sites
-        ########################
+            # METRIC: Matched sites
+            ########################
             # metric on the number of matched sites
             match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
             merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
@@ -65,29 +65,29 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             metrics[metric_name] = [expression_unmatched, 0]
 
 
-            # METRIC: correlation coffecient
+            # METRIC: correlation coefficient
             #################################
-            # metric on correlation coffecient
-            correlation= matchPAS.corr_with_gt(merged_bed_df)
+            # metric on correlation coefficient
+            correlation = matchPAS.corr_with_gt(merged_bed_df)
             # Key: exact name of metric as it appears in specification
             metric_name = f"correlation_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [correlation, 0]
-                    
 
-            # METRIC: MSE
+
+            # METRIC: correlation coefficient of relative pas usage
             ####################
             # Only calculate metric for first window size.
             if window == windows[0]:
-                mse = matchPAS.relative_pas_usage(merged_bed_df, genome)
+                correlation_rel_use = matchPAS.relative_pas_usage(merged_bed_df, genome)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"MSE_{window}nt"
+                metric_name = f"Correlation_coefficient_relative_{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [mse, 0]
+                metrics[metric_name] = [correlation_rel_use, 0]
 
         # for each challenge, create all assessment json objects and append them to all_assessments
         for key, value in metrics.items():
-            object_id = base_id + key 
+            object_id = base_id + key
             assessment_object = JSON_templates.write_assessment_dataset(object_id, community, challenge, participant, key, value[0], value[1])
             all_assessments.append(assessment_object)
 
@@ -137,7 +137,7 @@ def select_genome_file(file_name, genome_path):
 
 
 if __name__ == '__main__':
-    
+
     parser = ArgumentParser()
     parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
     parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
@@ -150,9 +150,5 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    
+
     main(args)
-
-
-
-
