@@ -32,15 +32,15 @@ def main(args=None):
     args = parse_args(args)
 
     # check that output file names are valid
-    if args.RUN_IDENTIFICATION:
+    if eval(args.RUN_IDENTIFICATION.title()):
         if not args.IDENTIFICATION_OUT_SUFFIX.endswith(".bed"):
             msg = "The identification output file name should end with '.bed'"
             sys.exit(msg)
-    if args.RUN_QUANTIFICATION:
+    if eval(args.RUN_QUANTIFICATION.title()):
         if not args.QUANTIFICATION_OUT_SUFFIX.endswith(".bed"):
             msg = "The quantification output file name should end with '.bed'"
             sys.exit(msg)
-    if args.RUN_DIFFERENTIAL:
+    if eval(args.RUN_DIFFERENTIAL.title()):
         if not args.DIFFERENTIAL_OUT.endswith(".tsv"):
             msg = "The differential output file name should end with '.tsv'"
             sys.exit(msg)
