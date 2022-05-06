@@ -9,7 +9,7 @@ import sys
 from argparse import ArgumentParser
 
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
-DEFAULT_bench_event_id = "OEBE0070000000"
+DEFAULT_bench_event_id = "OEBE0070000001"
 
 
 def main(args):

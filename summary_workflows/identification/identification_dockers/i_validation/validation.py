@@ -51,7 +51,7 @@ def  validate_input_data(participant_input, community, challenges, participant_n
     
     #---------------------------------------------------
     # INPUT FILE VALIDATION
-    # FOR APAeval QUANTIFICATION:
+    # FOR APAeval IDENTIFICATION:
     # Check for valid bed6 format
 
     ## check number of columns

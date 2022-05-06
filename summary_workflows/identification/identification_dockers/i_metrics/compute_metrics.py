@@ -6,7 +6,7 @@ import os
 import json
 from argparse import ArgumentParser
 from JSON_templates import JSON_templates
-from matchPAS import matchPAS
+from identification_metrics import identification_metrics as im
 
 def main(args):
 
@@ -47,37 +47,69 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
         for window in windows:
 
-        # METRIC: Matched sites
-        ########################
-            # metric on the number of matched sites
-            match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
-            merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
+            # METRIC: Precision
+            ########################
+
+            precision = im.precision(participant_input,gold_standard,window)
 
             # Key: exact name of metric as it appears in specification
-            metric_name = f"expression_unmatched_{window}nt"
+            metric_name = f"Precision_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [expression_unmatched, 0]
+            metrics[metric_name] = [precision, 0]
 
 
-            # METRIC: correlation coffecient
+            # METRIC: Sensitivity
             #################################
-            # metric on correlation coffecient
-            correlation= matchPAS.corr_with_gt(merged_bed_df)
+
+            sensitivity = im.sensitivity(participant_input,gold_standard,window)
+
             # Key: exact name of metric as it appears in specification
-            metric_name = f"correlation_{window}nt"
+            metric_name = f"Sensitivity_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [correlation, 0]
+            metrics[metric_name] = [sensitivity, 0]
                     
 
-            # METRIC: MSE
+            # METRIC: Multi-matched
             ####################
-            # Placeholder:
-            mse = 0.5
+
+            multi = im.multi_matched(participant_input,gold_standard,window)
             
             # Key: exact name of metric as it appears in specification
-            metric_name = f"MSE_{window}nt"
+            metric_name = f"Multi-matched_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [mse, 0]
+            metrics[metric_name] = [multi, 0]
+
+        # Outside of window loop:
+
+        # METRIC: AUC
+        ######################
+
+        auc = im.auc(metrics)
+            
+        # Key: exact name of metric as it appears in specification
+        metric_name = f"AUC"
+        # Value: List of [variable_holding_metric, std_err]
+        metrics[metric_name] = [auc, 0]
+
+        # METRIC: Proportion in 3UTR
+        #############################
+
+        prop_utr = im.proportion_3UTR(participant_input, gtf)
+            
+        # Key: exact name of metric as it appears in specification
+        metric_name = f"Proportion_in_3UTR"
+        # Value: List of [variable_holding_metric, std_err]
+        metrics[metric_name] = [prop_utr, 0]
+
+        # METRIC: Genes correct PAS
+        ################################
+
+        correct_PAS = im.genes_correct_PAS(participant_input, gtf)
+            
+        # Key: exact name of metric as it appears in specification
+        metric_name = f"Genes_correct_PAS"
+        # Value: List of [variable_holding_metric, std_err]
+        metrics[metric_name] = [correct_PAS, 0]
 
         # for each challenge, create all assessment json objects and append them to all_assessments
         for key, value in metrics.items():
