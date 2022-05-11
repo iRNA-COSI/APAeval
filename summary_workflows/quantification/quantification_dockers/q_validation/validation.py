@@ -66,7 +66,7 @@ def  validate_input_data(participant_input, community, challenges, participant_n
     accepted_chr.append('X')
     accepted_chr.append('Y')
     data_chr = list(set(participant_data.iloc[:, 0].values))
-    chr_check = [chr in accepted_chr for chr in data_chr].count(False) == 0
+    chr_check = [str(chr) in accepted_chr for chr in data_chr].count(False) == 0
     
     ## All checks true?
     validated = False

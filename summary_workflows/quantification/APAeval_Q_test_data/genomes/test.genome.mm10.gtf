@@ -1,0 +1,10 @@
+1	HAVANA	gene	2199000	2199740	.	+	.	gene_id "ENSG00000142611.17"; gene_type "protein_coding"; gene_name "PRDM16"; level 1; hgnc_id "HGNC:14000"; tag "ncRNA_host"; tag "overlapping_locus"; havana_gene "OTTHUMG00000000581.10";
+1	HAVANA	gene	4654609	4846735	.	+	.	gene_id "ENSG00000196581.11"; gene_type "protein_coding"; gene_name "AJAP1"; level 2; hgnc_id "HGNC:30801"; havana_gene "OTTHUMG00000000645.7";
+1	HAVANA	gene	6264269	6393767	.	+	.	gene_id "ENSG00000097021.20"; gene_type "protein_coding"; gene_name "ACOT7"; level 2; hgnc_id "HGNC:24157"; havana_gene "OTTHUMG00000001295.8";
+1	HAVANA	gene	6264269	6393767	.	-	.	gene_id "ENSG00000097021.20"; gene_type "protein_coding"; gene_name "ACOT7"; level 2; hgnc_id "HGNC:24157"; havana_gene "OTTHUMG00000001295.8";
+1	HAVANA	gene	6264269	6393767	.	-	.	gene_id "ENSG00000097021.20"; gene_type "protein_coding"; gene_name "ACOT7"; level 2; hgnc_id "HGNC:24157"; havana_gene "OTTHUMG00000001295.8";
+1	HAVANA	gene	6264269	6393767	.	-	.	gene_id "ENSG00000097021.20"; gene_type "protein_coding"; gene_name "ACOT7"; level 2; hgnc_id "HGNC:24157"; havana_gene "OTTHUMG00000001295.8";
+1	HAVANA	gene	6264269	6393767	.	-	.	gene_id "ENSG00000097021.20"; gene_type "protein_coding"; gene_name "ACOT7"; level 2; hgnc_id "HGNC:24157"; havana_gene "OTTHUMG00000001295.8";
+1	HAVANA	gene	6785454	7769706	.	+	.	gene_id "ENSG00000171735.19"; gene_type "protein_coding"; gene_name "CAMTA1"; level 1; hgnc_id "HGNC:18806"; tag "ncRNA_host"; tag "overlapping_locus"; havana_gene "OTTHUMG00000001212.7";
+1	HAVANA	gene	6785454	7769706	.	+	.	gene_id "ENSG00000171735.19"; gene_type "protein_coding"; gene_name "CAMTA1"; level 1; hgnc_id "HGNC:18806"; tag "ncRNA_host"; tag "overlapping_locus"; havana_gene "OTTHUMG00000001212.7";
+1	HAVANA	gene	8352397	8848921	.	-	.	gene_id "ENSG00000142599.19"; gene_type "protein_coding"; gene_name "RERE"; level 1; hgnc_id "HGNC:9965"; tag "ncRNA_host"; tag "overlapping_locus"; havana_gene "OTTHUMG00000001765.9";
