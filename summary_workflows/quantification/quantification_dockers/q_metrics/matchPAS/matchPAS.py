@@ -177,18 +177,18 @@ def corr_with_gt(matched_sites):
     return(r)
 
 def relative_pas_usage(merged_bed_df, genome):
-    """Compute MSE for relative PAS usage.
+    """Compute correlation of relative PAS usage.
 
-    1. find all PAS for a given gene, i.e. all ground truth PAS for a given gene or 
+    1. find all PAS for a given gene, i.e. all ground truth PAS for a given gene or
         all predicted PAS that are matched to ground truth for a given gene.
     2. sum TPM values of all PAS
-    3. calculate fraction for each PAS by dividing TPM_PAS by TPM_sum. 
-    4. Compute MSE or correlation for vector of gene-normalised PAS.
+    3. calculate fraction for each PAS by dividing TPM_PAS by TPM_sum.
+    4. Compute correlation for vector of gene-normalised PAS.
 
     Args:
         merged_bed_df (pandas.df): Table of matched prediction and ground truth PAS. From match_with_gt().
-        genome (pandas.df): Table with gene positions. 
-    
+        genome (pandas.df): Table with gene positions.
+
     Returns:
         float: Metric of relative PAS usage over all genes.
     """
