@@ -1,8 +1,8 @@
-# D2 benchmark specification
+# Differential usage benchmark specification
 
 ## Synopsis
 
-Benchmark to test sensitivity and False Discovery Rate (FDR) of RNAseq-based identification of genes with differentially used poly(A) sites compared with ground truth (genes identified from orthogonal 3'end seq data).
+Benchmark to test True Positive Rate (TPR) and False Positive Rate (FPR) of RNAseq-based identification of genes with differentially used poly(A) sites compared with ground truth (genes identified from orthogonal 3'end seq data).
 
 The metrics are computed for two types of datasets:
 
@@ -25,7 +25,7 @@ Comparison of differential PAS usage predicted from simulated RNA-Seq data with 
 
 Based on the input data the following metrics are computed:
 
-1. Sensitivity (TPR, True Positive Rate) = TP/(TP+FN)
+1. TPR (True Positive Rate) = TP/(TP+FN)
 2. FPR (False Positive Rate) = FP/(FP+TN)
 
 TP - true positives - genes identified by the tool and present in the orthogonal dataset  
@@ -85,7 +85,8 @@ Ranking: The best performing tool is the one with the highest TPR combined with 
 
 Calculated metrics are saved in JSON file adhering to OpenEBench schema. 
 Assessment output is generated for each tool separately and contains values of calculated metrics for a given input dataset.
-Consolidation output contains summarized data from all benchmarked tools within one challenge in a format suitable for plotting, e.g. single values for barplot or X,Y value pairs for 2D scatter plot.
+Aggregation output contains summarized metrics values from all benchmarked tools for all plots of the given challenge.
+Consolidation output combines assessment data for the participant currently benchmarked with aggregation of previously benchmarked participants and will be uploaded to the OEB DB.
 
 | # | Format | Link | Example data | Description |
 | :-- | :--- | :--- | :--- | :-------- |
@@ -99,8 +100,8 @@ Consolidation output contains summarized data from all benchmarked tools within 
 
 The OpenEBench assessment file contains the following attributes:
 
-- **\_id** - follows the format: community:challenge\_metric\_tool
-- **challenge_id** - describing the combination of input dataset with indication whether it is based on real or simulated data and any parameters used for metric calculation; e.g. datasetA\_simulated\_10nt
+- **\_id** - follows the format: [COMMUNITY_ID]:[CHALLENGE_ID]\_[PARTICIPANT_ID]\_[METRIC_ID]
+- **challenge_id** - challenge name
 - **participant_id** - benchmarked tool
 - **metrics**
 	- **value** - metric value
@@ -110,12 +111,12 @@ The following tables list the metric names, value types and units, and a descrip
 
 | Metric_id | Type | Unit | Description |
 | :--- | :--- | :--- | :----------------- |
-| `Sensitivity` | `float` | N/A | Sensitivity of detection of genes with differential PAS usage compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)) |
+| `TPR` | `float` | N/A | True Positive Rate (TPR) of detection of genes with differential PAS usage compared with orthogonal dataset; TPR = (TP/(TP+FN)) |
 | `FPR` | `float` | N/A | False Positive Rate of detection of genes with differential PAS usage compared with orthogonal dataset; FPR = FP/(FP+TN) |
  
 #### Output 2
 
-The OpenEBench aggregation file contains information required to produce one plot.
+The OpenEBench aggregation file contains information required to produce the plots.
 
 #### Output 3
 

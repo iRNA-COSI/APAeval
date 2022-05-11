@@ -30,8 +30,7 @@ Based on the input data the following metrics are computed:
 3. Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Sensitivity (Recall) values for a range of distance thresholds
 4. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
 5. Percentage of genes with correctly identified number of PAS
-6. Poly(A) sites assigned to 3'-UTRs as proportion of all identified sites
-7. Poly(A) sites assigned to different genomic features (3'-UTRs, 5'-UTRs, introns, CDS, terminal exons, intergenic regions) as proportion of all identified sites (optional)
+6. Poly(A) sites assigned to different genomic features (3'-UTRs, 5'-UTRs, introns, CDS, terminal exons, intergenic regions) as proportion of all identified sites (optional)
 
 TP - true positives - PAS identified by the tool and present in the orthogonal dataset  
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
@@ -98,7 +97,6 @@ Input datasets:
 
 Ranking: The best performing tool is the one with the highest Sensitivity combined with highest Precision (top right part of the plot) and the worst performing tool is the one with the lowest Sensitivity combined with lowest Precision (bottom left part of the plot).
 The plot should be divided into diagonal quartiles based on the distance from optimal performance.
-Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-right, bottom-right, top-left, bottom-left.
 
 2. **bar plot** visualizing **AUC** of Precision-Recall curve with single AUC value for each tool.
 
@@ -111,17 +109,7 @@ Input data:
 
 Ranking: The best performing tool is the one with the highest AUC value.
 
-3. **bar plot** visualizing **proportion of PAS assigned to 3'-UTRs**.
-
-**metric** - proportion of PAS assigned to 3'-UTRs
-
-Input data:
-
-- RNA-Seq data compared with 3'end sequencing data
-
-Ranking: The best performing tool is the one with the highest proportion of PAS assigned to 3'-UTRs
-
-4. **bar plot** visualizing **percentage of genes with correctly identified number of PAS**
+3. **bar plot** visualizing **percentage of genes with correctly identified number of PAS**
 
 **metric** - percentage of genes with correctly identified number of PAS
 
@@ -133,9 +121,9 @@ Ranking: The best performing tool is the one with the highest ercentage of genes
 
 Optional plots - can be generated outside of OpenEBench:
 
-1. **2D line plot** visualising **Sensitivity(Recall) and Precision** in the form of Precision-Recall curve, i.e. Sensitivity and Precision calculated for a range of distance thresholds are plotted together. 
+1. **2D line plot** visualising **Sensitivity (Recall) and Precision** in the form of Precision-Recall curve, i.e. Sensitivity and Precision calculated for a range of distance thresholds are plotted together. 
 
-**X axis** - Recall(d)  
+**X axis** - Sensitivity(d)  
 **Y axis** - Precision(d)  
 where _d - distance threshold_ in range 0-200 nt with 10 nt increments.
 
@@ -192,8 +180,8 @@ Consolidation output contains summarized data from all benchmarked tools within 
 
 The OpenEBench assessment file contains the following attributes:
 
-- **\_id** - follows the format: community:challenge\_metric\_tool
-- **challenge_id** - describing the combination of input dataset with indication whether it is based on real or simulated data and any parameters used for metric calculation; e.g. datasetA\_simulated\_10nt
+- **\_id** - follows the format: [COMMUNITY_ID]:[CHALLENGE_ID]\_[PARTICIPANT_ID]\_[METRIC_ID]\_[WINDOW_SIZE]nt
+- **challenge_id** - name of the challenge
 - **participant_id** - benchmarked tool
 - **metrics**:
 	- **value** - metric value
@@ -209,8 +197,7 @@ The following tables list the metric names, value types and units, and a descrip
 | `Sensitivity_10nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 10 nt distance threshold |
 | `Sensitivity_50nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 50 nt distance threshold |
 | `Sensitivity_100nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 100 nt distance threshold |
-| `AUC` | `float` | N/A | Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Recall (Sensitivity) values for all a range of distance thresholds |
-| `Proportion_in_3UTR` | `float` | % | Proportion of PAS identified from RNA-seq that were assigned to 3'-UTRs |
+| `AUC` | `float` | N/A | Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Recall (Sensitivity) values for a range of distance thresholds |
 | `Multi-matched_10nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 10 nt distance threshold |
 | `Multi-matched_50nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 50 nt distance threshold |
 | `Multi-matched_100nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 100 nt distance threshold |

@@ -1,10 +1,10 @@
 [
     {
-        "_id": "APAeval:datasetA_toolA_Sensitivity",
+        "_id": "APAeval:datasetA_toolA_TPR",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Sensitivity",
+            "metric_id": "TPR",
             "value": 0.54
         },
         "participant_id": "toolA",
