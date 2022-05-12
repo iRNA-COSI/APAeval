@@ -98,13 +98,14 @@ process validation {
 	val challenge_ids
 	val tool_name
 	val community_id
+        path genome_dir
 
 	output:
 	val task.exitStatus into EXIT_STAT
 	file 'validation.json' into validation_out
 	
 	"""
-	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json
+	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json --genome_dir $genome_dir
 	"""
 
 }
