@@ -76,6 +76,10 @@ community_id = params.community_id
 event_date = params.event_date
 windows = params.windows
 genome_dir = Channel.fromPath(params.genome_dir, type: 'dir' )
+genome_dir.into{
+	genome_dir_val
+	genome_dir_comp
+}
 offline = params.offline
 
 // output 
@@ -98,14 +102,14 @@ process validation {
 	val challenge_ids
 	val tool_name
 	val community_id
-        path genome_dir
+	path genome_dir_val
 
 	output:
 	val task.exitStatus into EXIT_STAT
 	file 'validation.json' into validation_out
 	
 	"""
-	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json --genome_dir $genome_dir
+	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json --genome_dir $genome_dir_val
 	"""
 
 }
@@ -124,7 +128,7 @@ process compute_metrics {
 	val tool_name
 	val community_id
 	val windows
-	path genome_dir
+	path genome_dir_comp
 
 	output:
 	file 'assessment.json' into assessment_out
@@ -133,7 +137,7 @@ process compute_metrics {
 	file_validated == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $windows --genome_dir $genome_dir
+	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $windows --genome_dir $genome_dir_comp
 	"""
 }
 

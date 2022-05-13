@@ -62,7 +62,7 @@ def main(args):
     participant_name = args.participant_name
     out_path = args.output
     genome_path = args.genome_dir
-    gtf = select_genome_file(file_name, genome_path)
+    gtf = select_genome_file(challenges[0], genome_path)
     gtf, with_chr = open(gtf,'r'), []
     for i in range(50):
         ln=gtf.readline()
@@ -82,7 +82,7 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(participant_input, community, challenges, participant_name, out_path)
+    validate_input_data(participant_input, community, challenges, participant_name, out_path, with_chr)
 
 
 
@@ -108,7 +108,7 @@ def  validate_input_data(participant_input, community, challenges, participant_n
     strand_check = len(strands) == 2 and strands.count('-')+strands.count('+') == 2
     ## check ref seq format of chromosomes
     if with_chr[0] == True:
-        accepted_chr = [chr+str(i) for i in range(1,23)]
+        accepted_chr = ["chr"+str(i) for i in range(1,23)]
         accepted_chr.append('chrX')
         accepted_chr.append('chrY')
     else:
