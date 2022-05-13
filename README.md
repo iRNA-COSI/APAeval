@@ -1,6 +1,6 @@
 # APAeval
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Welcome to the [APAeval][apa-eval] GitHub repository.
@@ -439,6 +439,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/SamBryce-Smith"><img src="https://avatars.githubusercontent.com/u/49978382?v=4?s=100" width="100px;" alt=""/><br /><sub><b>SamBryce-Smith</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/commits?author=SamBryce-Smith" title="Code">💻</a> <a href="#ideas-SamBryce-Smith" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/iRNA-COSI/APAeval/issues?q=author%3ASamBryce-Smith" title="Bug reports">🐛</a> <a href="https://github.com/iRNA-COSI/APAeval/commits?author=SamBryce-Smith" title="Documentation">📖</a> <a href="#maintenance-SamBryce-Smith" title="Maintenance">🚧</a> <a href="#mentoring-SamBryce-Smith" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-SamBryce-Smith" title="Project Management">📆</a> <a href="#question-SamBryce-Smith" title="Answering Questions">💬</a> <a href="https://github.com/iRNA-COSI/APAeval/pulls?q=is%3Apr+reviewed-by%3ASamBryce-Smith" title="Reviewed Pull Requests">👀</a> <a href="#tutorial-SamBryce-Smith" title="Tutorials">✅</a> <a href="#talk-SamBryce-Smith" title="Talks">📢</a></td>
     <td align="center"><a href="https://github.com/pinjouwu9325"><img src="https://avatars.githubusercontent.com/u/41280353?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pin-Jou Wu</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/commits?author=pinjouwu9325" title="Code">💻</a> <a href="#ideas-pinjouwu9325" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/yoseopyoon"><img src="https://avatars.githubusercontent.com/u/84806078?v=4?s=100" width="100px;" alt=""/><br /><sub><b>yoseopyoon</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/commits?author=yoseopyoon" title="Code">💻</a> <a href="#ideas-yoseopyoon" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/faricazjj"><img src="https://avatars.githubusercontent.com/u/25573986?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Farica Zhuang</b></sub></a><br /><a href="https://github.com/iRNA-COSI/APAeval/issues?q=author%3Afaricazjj" title="Bug reports">🐛</a> <a href="https://github.com/iRNA-COSI/APAeval/commits?author=faricazjj" title="Code">💻</a> <a href="https://github.com/iRNA-COSI/APAeval/commits?author=faricazjj" title="Documentation">📖</a> <a href="#ideas-faricazjj" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-faricazjj" title="Maintenance">🚧</a> <a href="#projectManagement-faricazjj" title="Project Management">📆</a> <a href="#question-faricazjj" title="Answering Questions">💬</a> <a href="https://github.com/iRNA-COSI/APAeval/pulls?q=is%3Apr+reviewed-by%3Afaricazjj" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
