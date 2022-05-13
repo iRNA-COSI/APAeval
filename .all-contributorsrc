@@ -277,7 +277,16 @@
       "profile": "https://github.com/SamBryce-Smith",
       "contributions": [
         "code",
-        "ideas"
+        "ideas",
+        "bug",
+        "doc",
+        "maintenance",
+        "mentoring",
+        "projectManagement",
+        "question",
+        "review",
+        "tutorial",
+        "talk"
       ]
     },
     {
