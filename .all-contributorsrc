@@ -35,7 +35,9 @@
         "question",
         "review",
         "talk",
-        "ideas"
+        "ideas",
+        "bug",
+        "tutorial"
       ]
     },
     {
