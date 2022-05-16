@@ -79,7 +79,9 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             ####################
             # Only calculate metric for first window size.
             if window == windows[0]:
-                correlation_rel_use = matchPAS.relative_pas_usage(merged_bed_df, genome)
+                match_with_gt_and_pd = matchPAS.match_with_gt(participant_input,gold_standard,window, "with_unmatched_GT_and_PD")
+                merged_bed_df_wpd, _ = match_with_gt_and_pd[0], match_with_gt_and_pd[1]
+                correlation_rel_use = matchPAS.relative_pas_usage(merged_bed_df_wpd, genome)
                 # Key: exact name of metric as it appears in specification
                 metric_name = f"Correlation_coefficient_relative_{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
