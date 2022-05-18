@@ -326,6 +326,22 @@
         "question",
         "review"
       ]
+    },
+    {
+      "login": "AsierGonzalez",
+      "name": "Asier Gonzalez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11410715?v=4",
+      "profile": "https://github.com/AsierGonzalez",
+      "contributions": [
+        "bug",
+        "code",
+        "example",
+        "ideas",
+        "infra",
+        "mentoring",
+        "projectManagement",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7,
