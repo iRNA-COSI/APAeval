@@ -1,50 +1,50 @@
 [
     {
-        "_id": "APAeval:datasetA_correlation_10nt_QAPA",
+        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_10nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "correlation_coefficient_10nt",
+            "metric_id": "Correlation_coefficient_10nt",
             "stderr": 0,
             "value": 0.54
         },
-        "participant_id": "my_tool",
+        "participant_id": "toolA",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_correlation_50nt_QAPA",
+        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_50nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "correlation_coefficient_50nt",
+            "metric_id": "Correlation_coefficient_50nt",
             "stderr": 0,
             "value": 0.85
         },
-        "participant_id": "my_tool",
+        "participant_id": "toolA",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetB_correlation_10nt_QAPA",
+        "_id": "APAeval:datasetB_toolA_Correlation_coefficient_10nt",
         "challenge_id": "datasetB",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "correlation_coefficient_10nt",
+            "metric_id": "Correlation_coefficient_10nt",
             "stderr": 0,
             "value": 0.76
         },
-        "participant_id": "QAPA",
+        "participant_id": "toolA",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetB_correlation_50nt_QAPA",
+        "_id": "APAeval:datasetB_toolA_Correlation_coefficient_50nt",
         "challenge_id": "datasetB",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "correlation_coefficient_50nt",
+            "metric_id": "Correlation_coefficient_50nt",
             "stderr": 0,
             "value": 0.81
         },
-        "participant_id": "QAPA",
+        "participant_id": "toolA",
         "type": "assessment"
     }
 
