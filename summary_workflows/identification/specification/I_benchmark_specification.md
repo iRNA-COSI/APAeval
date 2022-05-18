@@ -30,7 +30,7 @@ Based on the input data the following metrics are computed:
 3. Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Sensitivity (Recall) values for a range of distance thresholds
 4. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
 5. Percentage of genes with correctly identified number of PAS
-6. Poly(A) sites assigned to different genomic features (3'-UTRs, 5'-UTRs, introns, CDS, terminal exons, intergenic regions) as proportion of all identified sites (optional)
+6. Poly(A) sites assigned to different genomic features: terminal exons, exons (excluding terminal exons), introns, intergenic regions.
 
 TP - true positives - PAS identified by the tool and present in the orthogonal dataset  
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
@@ -80,87 +80,113 @@ This GTF file contains reference genome annotation for the RNAseq dataset includ
 
 The results of this benchmark will be visualised in OpenEBench using the following plots:
 
-1. **2D scatter plot** visualizing **Sensitivity and Precision** of poly(A) site identification. Separate plots should be prepared for different values of distance threshold:
+### 1. 2D scatter plot visualizing Sensitivity and Precision of poly(A) site identification. 
+
+**Plot type**: 2D scatter plot
+
+**Metric X**: Sensitivity(d)  
+**Metric Y**: Precision(d)  
+where _d - distance threshold_
+
+**Ranking**: The best performing tool is the one with the highest Sensitivity combined with highest Precision (top right part of the plot) and the worst performing tool is the one with the lowest Sensitivity combined with lowest Precision (bottom left part of the plot).
+The plot should be divided into diagonal quartiles based on the distance from optimal performance.
+
+Separate plots should be prepared for different values of distance threshold:
 
 - 10 nt
 - 50 nt
 - 100 nt
 
-**X axis** - Sensitivity(d)  
-**Y axis** - Precision(d)  
-where _d - distance threshold_
-
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the highest Sensitivity combined with highest Precision (top right part of the plot) and the worst performing tool is the one with the lowest Sensitivity combined with lowest Precision (bottom left part of the plot).
-The plot should be divided into diagonal quartiles based on the distance from optimal performance.
+### 2. Bar plot visualizing AUC of Precision-Recall curve with single AUC value for each tool.
 
-2. **bar plot** visualizing **AUC** of Precision-Recall curve with single AUC value for each tool.
+**Plot type**: Bar plot
 
-**metric** - AUC
+**Metric**: AUC
+
+**Ranking**: The best performing tool is the one with the highest AUC value.
 
 Input data:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the highest AUC value.
+### 3. Bar plot visualizing percentage of genes with correctly identified number of PAS
 
-3. **bar plot** visualizing **percentage of genes with correctly identified number of PAS**
+**Plot type**: Bar plot
 
-**metric** - percentage of genes with correctly identified number of PAS
+**Metric**: Percentage of genes with correctly identified number of PAS
+
+**Ranking**: The best performing tool is the one with the highest ercentage of genes with correctly identified number of PAS.
 
 Input data:
 
 - RNA-Seq data compared with 3'end sequencing data
+- Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the highest ercentage of genes with correctly identified number of PAS.
+### Optional plots
 
-Optional plots - can be generated outside of OpenEBench:
+This section includes plots that can be visualised outside of OpenEBench.
 
-1. **2D line plot** visualising **Sensitivity (Recall) and Precision** in the form of Precision-Recall curve, i.e. Sensitivity and Precision calculated for a range of distance thresholds are plotted together. 
+### 1. **2D line plot** visualising Sensitivity (Recall) and Precision in the form of Precision-Recall curve. 
 
-**X axis** - Sensitivity(d)  
-**Y axis** - Precision(d)  
+**Plot type**: 2D line plot in which Sensitivity and Precision calculated for a range of distance thresholds and plotted together.
+
+**Metric X**: Sensitivity(d)  
+**Metric Y**: Precision(d)  
 where _d - distance threshold_ in range 0-200 nt with 10 nt increments.
 
+**Ranking**: For each tool, the area under the curve is calculated. The best performing tool is the one with the highest AUC.
+
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
-
-Ranking: For each tool, the area under the curve is calculated. The best performing tool is the one with the highest AUC.
 
 Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, the data should be visualised outside of OpenEBench.
 
-2. Grouped **bar plot** visualizing **proportions of PAS assigned to different genomic features** in one plot.
+### 2. Grouped bar plot visualizing proportions of PAS assigned to different genomic features in one plot.
 
-**metric** - proportions of PAS assigned to different genomic features. Multiple bars corresponding to multiple featues are plotted using different colors.
+**Plot type**: Grouped bar plot ([example][barplot_example]) in which bars corresponding to multiple featues are plotted using different colors and grouped by benchmarked tool.
+
+**Metric**: Proportions of PAS assigned to different genomic features
+
+**Ranking**: None
+
+Features included in the plot:
+
+- terminal exons
+- exons (excluding terminal exons)
+- introns
+- intergenic regions
 
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
 
-Ranking: None
-
 Note: Grouped bar plot is not supported on OEB. Metrics should be visualized only outside of OpenEBench.
 
-3. **bar plot** visualizing **proportion of PAS matched to multiple ground truth sites**.  Separate plots should be prepared for different values of distance threshold:
+### 3. Bar plot visualizing proportion of PAS matched to multiple ground truth sites.
+
+**Plot type**: Bar plot
+
+**Metric**: Proportion of PAS matched to multiple ground truth sites
+
+**Ranking**: The best performing tool is the one with the lowest proportion of PAS matched to multiple ground truth sites
+
+Separate plots should be prepared for different values of distance threshold:
 
 - 10 nt
 - 50 nt
 - 100 nt
 
-**metric** - proportion of PAS matched to multiple ground truth sites
-
 Input data:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
-
-Ranking: The best performing tool is the one with the lowest proportion of PAS matched to multiple ground truth sites
 
 ## Outputs
 
@@ -221,4 +247,5 @@ The OpenEBench consolidation file contains all the information about the new ben
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
+[barplot_example]: <https://r-graph-gallery.com/48-grouped-barplot-with-ggplot2_files/figure-html/thecode-1.png>
   

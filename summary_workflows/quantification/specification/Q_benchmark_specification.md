@@ -103,48 +103,60 @@ The GTF file is a standard genome annotation file.
 
 The results of this benchmark will be visualised in OpenEBench using the following plots:
 
-1. **2D scatter plot** visualizing **Correlation** of poly(A) site quantification and **total expression of non-matched sites**. Separate plots should be prepared for different values of distance threshold:
+### 1. 2D scatter plot visualizing Correlation of poly(A) site quantification and total expression of non-matched sites. 
+
+**Plot type**: 2D scatter plot
+
+**Metric X**: Total expression of non-matched sites  
+**Metric Y**: Correlation
+
+**Ranking**: The best performing tool is the one with the highest correlation value and lowest total expression of non-matched sites (top-left part of the plot) and the worst performing tool is the one with the lowest correlation combined with the highest total expression of non-matched sites (bottom-right part of the plot). The plot should be divided into diagonal quartiles based on the distance from optimal performance.
+
+Separate plots should be prepared for different values of distance threshold:
 
 - 10 nt
 - 50 nt
 - 100 nt
 
-**X axis** - total expression of non-matched sites  
-**Y axis** - correlation
-
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the highest correlation value and lowest total expression of non-matched sites (top-left part of the plot) and the worst performing tool is the one with the lowest correlation combined with the highest total expression of non-matched sites (bottom-right part of the plot). The plot should be divided into diagonal quartiles based on the distance from optimal performance. Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-left, top-right, bottom-left, bottom-right.
+### 2. Bar plot visualizing Correlation of relative PAS usage. 
 
-2. **Bar plot** visualizing **Correlation** of relative PAS usage. Separate plots should be prepared for different values of distance threshold:
+**Plot type**: Bar plot
+
+**Metric**: Correlation of relative PAS usage
+
+**Ranking**: The best performing tool is the one with the highest correlation value value.
+
+Separate plots should be prepared for different values of distance threshold:
 
 - 100 nt
 
-**metric** - correlation of relative PAS usage
-
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-Ranking: The best performing tool is the one with the highest correlation value value.
+### Optional plots
 
-Optional plots:
+This section includes plots that can be visualised outside of OpenEBench.
 
-1.  **2D line plot** visualising **correlation** as a function of distance threshold.
+### 1. **2D line plot** visualising **correlation** as a function of distance threshold.
 
-**X axis** - correlation(d)  
-**Y axis** - distance threshold _d_ 
+**Plot type**: 2D line plot
+
+**Metric X**: Correlation(d)  
+**Metric Y**: Distance threshold _d_ 
+
+**Ranking**: None
 
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
-
-Ranking: None
 
 Note: 2D line plot is not supported in OpenEBench yet. The metrics should be visualised only outside of OpenEBench.
 

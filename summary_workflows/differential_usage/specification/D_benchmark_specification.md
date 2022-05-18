@@ -68,18 +68,19 @@ Fields are the same as in Input 1.
 
 The results of this benchmark will be visualised in OpenEBench using the following plots:
 
-1. **2D scatter plot** visualizing **TPR and FPR** of identification of genes with differentially used PAS.
+### 1. **2D scatter plot** visualizing **TPR and FPR** of identification of genes with differentially used PAS.
 
-**X axis** - FPR  
-**Y axis** - TPR
+**Plot type**: 2D scatter plot
+
+**Metric X**: FPR  
+**Metric Y**: TPR
+
+**Ranking**: The best performing tool is the one with the highest TPR combined with lowest FPR (top left part of the plot) and the worst performing tool is the one with the lowest TPR combined with highest FPR (bottom right part of the plot). The plot should be divided into diagonal quartiles based on the distance from optimal performance.
 
 Input datasets:
 
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
-
-Ranking: The best performing tool is the one with the highest TPR combined with lowest FPR (top left part of the plot) and the worst performing tool is the one with the lowest TPR combined with highest FPR (bottom left part of the plot. The plot should be divided into diagonal quartiles based on the distance from optimal performance. Alternatively, if the plot is divided into square quartiles, the following ranking order should be applied: top-left, top-right, bottom-left, bottom-right.
-
 
 ## Outputs
 
