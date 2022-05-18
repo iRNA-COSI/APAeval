@@ -30,7 +30,7 @@ Based on the input data the following metrics are computed:
 3. Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Sensitivity (Recall) values for a range of distance thresholds
 4. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
 5. Percentage of genes with correctly identified number of PAS
-6. Poly(A) sites assigned to different genomic features: terminal exons, exons (excluding terminal exons), introns, intergenic regions.
+6. Poly(A) sites assigned to different genomic features: terminal exons, exons (excluding terminal exons), introns, intergenic regions (less and more than 1kb downstream of 3'-terminal exon)
 
 TP - true positives - PAS identified by the tool and present in the orthogonal dataset  
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
@@ -158,10 +158,11 @@ Note: 2D line plot is not supported in OpenEBench yet. If it's not implemented, 
 
 Features included in the plot:
 
-- terminal exons
+- 3'-terminal exons
 - exons (excluding terminal exons)
 - introns
-- intergenic regions
+- intergenic region within 1 kb downstream of 3'-terminal exon
+- intergenic region more than 1kb downstream of 3'-terminal exon
 
 Input datasets:
 
