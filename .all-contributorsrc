@@ -342,6 +342,20 @@
         "projectManagement",
         "question"
       ]
+    },
+    {
+      "login": "txellferret",
+      "name": "txellferret",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63742994?v=4",
+      "profile": "https://github.com/txellferret",
+      "contributions": [
+        "code",
+        "example",
+        "ideas",
+        "infra",
+        "mentoring",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7,
