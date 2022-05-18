@@ -169,6 +169,7 @@ Input datasets:
 - RNA-Seq data compared with 3'end sequencing data
 
 Note: Grouped bar plot is not supported on OEB. Metrics should be visualized only outside of OpenEBench.
+This plot should include results for benchmarked tools as well as for ground truth.
 
 ### 3. Bar plot visualizing proportion of PAS matched to multiple ground truth sites.
 
