@@ -66,12 +66,16 @@ def main(args):
     gtf, with_chr = open(gtf,'r'), []
     for i in range(50):
         ln=gtf.readline()
+        if ln == '':
+            # if gtf contains < 50 rows.
+            break
         if not ln.startswith('#'):
             if ln.startswith('chr'):
                 with_chr.append(True)
             else:
                 with_chr.append(False)
     with_chr=list(set(with_chr)) ##should be only 1
+    assert len(with_chr) == 1, f"WARNING: {genome_path} has a mix of chromosome name formats!"
 
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
@@ -90,7 +94,7 @@ def  validate_input_data(participant_input, community, challenges, participant_n
     # get participant output (= input to be validated)
     try:
         participant_data = pandas.read_csv(participant_input, sep='\t',
-                                           comment="#", header=0)
+                                           comment="#", header=None)
     except:
         sys.exit("ERROR: Submitted data file {} could not be read!".format(participant_input))
     

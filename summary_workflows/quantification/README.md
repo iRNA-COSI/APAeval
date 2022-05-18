@@ -30,9 +30,9 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 >NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
 - `windows` parameter is used to compute metrics for a list of window sizes.
     - For running on OEB: the parameter is read from `nextflow.config`.
-- `genome_dir`: Directory to genome annotation in gtf format with 9 fields as specified [here](https://www.ensembl.org/info/website/upload/gff.html). The gtf is used for the relative PAS usage metric computation.
+- `genome_dir`: Directory to genome annotation in gtf format with 9 fields as specified [here](https://www.gencodegenes.org/pages/data_format.html). The gtf is used for the relative PAS usage metric computation.
   - For running on OEB: The genome directory is specified in `nextflow.config`. 
-  - For the test data, challenge `Qx.mm10` will use genome file `gencode.mm10.annotation.genes.subset.gtf`, because both contain `mm10` within two dots in the string.
+  - For the test data, challenge `test.mm10_test.gt` will use genome file `test.genome.mm10_test.gtf`, because both contain `mm10_test` within two dots in the string.
 > NOTE: the genome file needs to contain the same substring as the challenge. That is, challenge `[partone].[organism].[partwo].bed` requires a genome annotation file like `[partone].[organism].[partwo].gtf`, where `[organism]` starts with *mm* or *hg* (only these two currently supported). And `[partone]` and `[parttwo]` can be an aribitrary string (or empty string).
 - APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `quantification_dockers/q_metrics/matchPAS`
 - The `Assessment_datasets.json` file is used in the following step
