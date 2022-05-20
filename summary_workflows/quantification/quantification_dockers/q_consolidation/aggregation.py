@@ -151,7 +151,7 @@ def main():
 
         logging.debug(f"aggregation after update: {new_aggregation}")
 
-        # 2.e) Write aggregation in a file. Separete one for barplot
+        # 2.e) Write aggregation in a file. 
         aggregation_file = os.path.join(challenge_dir, challenge_id_results + ".json")
 		# Create others aggregations in one file		
         with open(aggregation_file, mode='w', encoding="utf-8") as f:
