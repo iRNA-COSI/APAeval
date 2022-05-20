@@ -153,15 +153,6 @@ def main():
 
         # 2.e) Write aggregation in a file. Separete one for barplot
         aggregation_file = os.path.join(challenge_dir, challenge_id_results + ".json")
-        
-        for count, aggr_object in enumerate(new_aggregation):
-            if (aggr_object["datalink"]["inline_data"]["visualization"]["type"] == "bar-plot"):
-				# Create a separarete file for barplots
-                barplot_file = os.path.join(challenge_dir, challenge_id_results + str(count)+"_barplot.json")
-                with open(barplot_file, mode='w', encoding="utf-8") as f:
-                    json.dump(new_aggregation[count], f, sort_keys=True, indent=4, separators=(',', ': '))
-                new_aggregation.pop(count)
-				
 		# Create others aggregations in one file		
         with open(aggregation_file, mode='w', encoding="utf-8") as f:
             json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))		
