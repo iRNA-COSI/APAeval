@@ -5,7 +5,6 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process TAPAS_QUANT{
-  echo true
   publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process)) }
@@ -21,7 +20,7 @@ process TAPAS_QUANT{
   script:
   tapas_quant_out="tapas_quant_"+"$read_coverage"
   """
-  /APA_sites_detection -ref $tapas_ref -cov $read_coverage -o $tapas_quant_out
+  /APA_sites_detection -ref $tapas_ref -cov $read_coverage -o $tapas_quant_out -l 76
   """
 }
 
