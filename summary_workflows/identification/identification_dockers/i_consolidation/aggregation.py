@@ -13,6 +13,8 @@ from OEB_aggr_query import OEB_aggr_query
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
 # Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification
 DEFAULT_bench_event_id = "OEBE0070000001" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
+# For template, set one letter code of event (I, Q, D)
+bench_letter = "I"
 
 class Visualisations(Enum):
     """Visualisations supported for plotting.
@@ -125,7 +127,7 @@ def main():
         aggregation_old = os.path.join(benchmark_dir,challenge_id + ".json")
 
         # Or if necessary template from here
-        aggregation_template= os.path.join(os.path.dirname(os.path.realpath(__file__)), "aggregation_template_Q.json")
+        aggregation_template= os.path.join(os.path.dirname(os.path.realpath(__file__)), "aggregation_template_" + bench_letter + ".json")
         
         
         # First try to open an existing aggregation file
