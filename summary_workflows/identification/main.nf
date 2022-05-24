@@ -26,7 +26,8 @@ if (params.help) {
 	        --outdir                The output directory where results for VRE will be saved
 	        --statsdir              The output directory with nextflow statistics
 	        --otherdir              The output directory where custom results will be saved (no directory inside)
-	        --windows                Window sizes for scanning for poly(A) sites (List of int).
+	        --windows               Window sizes for scanning for poly(A) sites (List of int).
+			--genome_dir            Dir where genome files for computing relative PAS usage metrics.
 	        --offline               If set to 1, consolidation will be performed with local data in assess_dir only (omit to perform OEB DB query)
 	    Flags:
 	        --help                  Display this message
@@ -53,6 +54,7 @@ if (params.help) {
 	        Nextflow statistics directory: ${params.statsdir}
 	        Directory with community-specific results: ${params.otherdir}
 	        Window size for scanning for poly(A) sites: ${params.windows}
+			Genome dir for computing relative PAS usage metrics: ${params.genome_dir}
 	        Offline mode: ${params.offline}
 		""".stripIndent()
 
@@ -69,6 +71,11 @@ benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
 community_id = params.community_id
 event_date = params.event_date
 windows = params.windows
+genome_dir = Channel.fromPath(params.genome_dir, type: 'dir' )
+genome_dir.into{
+	genome_dir_val
+	genome_dir_comp
+}
 offline = params.offline
 
 // output 
@@ -91,13 +98,14 @@ process validation {
 	val challenge_ids
 	val tool_name
 	val community_id
+	path genome_dir_val
 
 	output:
 	val task.exitStatus into EXIT_STAT
 	file 'validation.json' into validation_out
 	
 	"""
-	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json
+	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json --genome_dir $genome_dir_val
 	"""
 
 }
@@ -115,7 +123,8 @@ process compute_metrics {
 	path gold_standards_dir
 	val tool_name
 	val community_id
-    val windows
+	val windows
+	path genome_dir_comp
 
 	output:
 	file 'assessment.json' into assessment_out
@@ -124,7 +133,7 @@ process compute_metrics {
 	file_validated == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $windows
+	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $windows --genome_dir $genome_dir_comp
 	"""
 }
 

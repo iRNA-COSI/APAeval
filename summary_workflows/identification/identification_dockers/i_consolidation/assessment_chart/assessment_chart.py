@@ -93,8 +93,14 @@ def normalize_data(x_values, means):
     # minY = ax.get_ylim()[0]
     # x_norm = [(x - minX) / (maxX - minX) for x in x_values]
     # means_norm = [(y - minY) / (maxY - minY) for y in means]
-    x_norm = [x / maxX for x in x_values]
-    means_norm = [y / maxY for y in means]
+    if maxX == 0.0:
+        x_norm = x_values
+    else:
+        x_norm = [x / maxX for x in x_values]
+    if maxY == 0.0:
+        means_norm = means
+    else:
+        means_norm = [y / maxY for y in means]
     return x_norm, means_norm
 
 

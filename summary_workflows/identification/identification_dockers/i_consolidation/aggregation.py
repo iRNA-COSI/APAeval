@@ -101,7 +101,9 @@ def main():
 
     for challenge_id in challenge_ids:
 
-        challenge_dir = os.path.join(output_dir,challenge_id)
+        challenge_id_results = challenge_id.replace('.', '_')
+        challenge_dir = os.path.join(output_dir,challenge_id_results)
+
         if not os.path.exists(challenge_dir):
             os.makedirs(challenge_dir)
 
@@ -148,17 +150,12 @@ def main():
 
         logging.debug(f"aggregation after update: {new_aggregation}")
 
-        # 2.e) Write each aggregation object to a separe file per challenge to local results dir
-        for count, aggr_object in enumerate(new_aggregation):
-            if count == 0:
-                # The first aggregation will be stored in a file name {challenge_id}.json.
-                # This will be visualised in the VRE
-                aggregation_file = os.path.join(challenge_dir, challenge_id + ".json")
-            else:
-                # The following aggregation objects will be stored in files that include the count in the name
-                aggregation_file = os.path.join(challenge_dir, challenge_id + "-" + str(count) + ".json")
-            with open(aggregation_file, mode='w', encoding="utf-8") as f:
-                json.dump(aggr_object, f, sort_keys=True, indent=4, separators=(',', ': '))
+        # 2.e) Write aggregation in a file. 
+        aggregation_file = os.path.join(challenge_dir, challenge_id_results + ".json")
+
+        with open(aggregation_file, mode='w', encoding="utf-8") as f:
+            json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))		
+                
         
         # 2.f) Write assessments per challenge to local results dir
         # We have stored the assessment json objects for each challenge in the challenges dict
@@ -182,7 +179,7 @@ def main():
         logging.debug(f"participants: {participants}")
 
         mani_obj = {
-            "id" : challenge_id,
+            "id" : challenge_id_results,
             "participants": participants,
             'timestamp': datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
         }
