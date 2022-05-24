@@ -12,7 +12,7 @@ from OEB_aggr_query import OEB_aggr_query
 # set to production link when ready
 DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
 # Make sure to adapt accordingly in other event workflows; Here is APAeval:Quantification
-DEFAULT_bench_event_id = "OEBE0070000000" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
+DEFAULT_bench_event_id = "OEBE0070000002" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
 
 class Visualisations(Enum):
     """Visualisations supported for plotting.
@@ -100,11 +100,10 @@ def main():
     manifest = []
 
     for challenge_id in challenge_ids:
-        
-        
+
         challenge_id_results = challenge_id.replace('.', '_')
         challenge_dir = os.path.join(output_dir,challenge_id_results)
-        
+
         if not os.path.exists(challenge_dir):
             os.makedirs(challenge_dir)
 
@@ -153,7 +152,7 @@ def main():
 
         # 2.e) Write aggregation in a file. 
         aggregation_file = os.path.join(challenge_dir, challenge_id_results + ".json")
-		# Create others aggregations in one file		
+
         with open(aggregation_file, mode='w', encoding="utf-8") as f:
             json.dump(new_aggregation, f, sort_keys=True, indent=4, separators=(',', ': '))		
                 
@@ -379,4 +378,3 @@ if __name__ == '__main__':
     except Exception as e:
         logging.exception(str(e))
         raise e
-
