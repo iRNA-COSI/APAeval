@@ -4,12 +4,8 @@ if (params.help) {
 	
 	log.info"""
 	    =====================================================
-	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
-	    Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3), CJ Herrmann (*4)
-	    *1 iRNA COSI
-	    *2 Genomic Institute of Singapore, A*STAR, Singapore
-	    *3 Barcelona Supercomputing Center, Barcelone, Spain
-	    *4 Biozentrum, University of Basel, Switzerland
+	    APAeval IDENTIFICATION BENCHMARKING PIPELINE
+	    Author(s): CJ Herrmann, W Danecka
 	    =====================================================
 	    Usage:
 	    Run the pipeline with default parameters read from nextflow.config:
@@ -43,7 +39,7 @@ if (params.help) {
 	log.info """\
 
 	    ==============================================
-	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
+	    APAeval IDENTIFICATION BENCHMARKING PIPELINE
 	    ==============================================
 	        Input file: ${params.input}
 	        Benchmarking community = ${params.community_id}

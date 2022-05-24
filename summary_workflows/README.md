@@ -83,7 +83,7 @@ Adapt [`compute_metrics.py`][metrics-py] to compare the participant output to th
 
 Update the corresponding `requirements.txt`, `constraints.txt` and `Dockerfile` for installation of additional packages, if applicable.
 ### 4. Consolidation
-You can set visualization types in [`manage_assessment_data.py`][assess-py]. The current python scripts have been copied from https://github.com/inab/TCGA_benchmarking_dockers, and only support 2D plots with x and y axes.
+You can set visualization types in [`manage_assessment_data.py`][assess-py]. The current python scripts have been copied from https://github.com/inab/TCGA_benchmarking_dockers, and only support 2D plots with x and y axes, as well as barplots.
 
 ### 5. Adapt `nextflow.config`
 Here you'll adjust the docker container names, as well as input, participant and challenge names for *each tool and each challenge*.
