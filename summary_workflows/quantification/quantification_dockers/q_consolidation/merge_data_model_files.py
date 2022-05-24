@@ -35,6 +35,7 @@ def main(args):
     # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge/challenge.json"
     # we have to do that for all challenges in the list
     for challenge in challenges:
+        challenge = challenge.replace('.', '_')
         c_aggregation_data = os.path.join(aggregation_data, challenge)
         data_model_file = join_json_files(c_aggregation_data, data_model_file, "*" + challenge + "*.json")
 

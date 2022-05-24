@@ -1,6 +1,6 @@
 [
     {
-        "_id": "APAeval:datasetA_precision_10nt_QAPA",
+        "_id": "APAeval:datasetA_toolA_Precision_10nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
@@ -8,11 +8,11 @@
             "stderr": 0,
             "value": 0.54
         },
-        "participant_id": "my_tool",
+        "participant_id": "toolA",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_precision_50nt_QAPA",
+        "_id": "APAeval:datasetA_toolA_Precision_50nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
@@ -20,11 +20,11 @@
             "stderr": 0,
             "value": 0.85
         },
-        "participant_id": "my_tool",
+        "participant_id": "toolA",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_sensitivity_10nt_QAPA",
+        "_id": "APAeval:datasetA_toolA_Sensitivity_10nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
@@ -32,11 +32,11 @@
             "stderr": 0,
             "value": 0.76
         },
-        "participant_id": "QAPA",
+        "participant_id": "toolA",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_sensitivity_50nt_QAPA",
+        "_id": "APAeval:datasetA_toolA_Sensitivity_50nt",
         "challenge_id": "datasetB",
         "community_id": "APAeval",
         "metrics": {
@@ -44,7 +44,7 @@
             "stderr": 0,
             "value": 0.81
         },
-        "participant_id": "QAPA",
+        "participant_id": "toolA",
         "type": "assessment"
     }
 
