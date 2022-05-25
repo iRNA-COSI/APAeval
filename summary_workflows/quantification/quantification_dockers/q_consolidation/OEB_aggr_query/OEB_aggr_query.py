@@ -8,8 +8,9 @@ import logging
 import sys
 from argparse import ArgumentParser
 
-DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
-DEFAULT_bench_event_id = "OEBE0070000000"
+DEFAULT_OEB_API = "https://openebench.bsc.es/api/scientific/graphql"
+# This is QUANTIFICATION
+DEFAULT_bench_event_id = "OEBE0070000002"
 
 
 def main(args):
