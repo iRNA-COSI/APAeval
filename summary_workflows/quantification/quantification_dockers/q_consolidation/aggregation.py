@@ -10,7 +10,7 @@ from assessment_chart import assessment_chart
 from OEB_aggr_query import OEB_aggr_query
 
 # set to production link when ready
-DEFAULT_OEB_API = "https://dev-openebench.bsc.es/api/scientific/graphql"
+DEFAULT_OEB_API = "https://openebench.bsc.es/api/scientific/graphql"
 # Make sure to adapt accordingly in other event workflows; Here is APAeval:Quantification
 DEFAULT_bench_event_id = "OEBE0070000002" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
 
