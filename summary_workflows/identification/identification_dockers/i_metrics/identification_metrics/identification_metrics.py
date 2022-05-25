@@ -11,16 +11,112 @@ from shutil import which
 # functions needed for IDENTIFICATION
 ######################################
 
-def precision(participant_input,gold_standard,window):
-    return
+def bedtools_window(f_GT, f_PD, window):
+    """
+    Python wrapper for bedtools window.
+    """
+    
+    # make sure bedtools can be called in current env
+    assert which('bedtools') is not None, "bedtools not installed or not in PATH"
 
-def sensitivity(participant_input,gold_standard,window):
-    return
+    # run bedtools window, capture output
+    out = subprocess.run(['bedtools', 'window', '-sm',
+                          '-w', str(window), 
+                          '-a', f_GT, 
+                          '-b', f_PD], 
+                         capture_output=True, shell=False)
+    assert out.returncode==0, "bedtools window run failed, check input files"
+
+    # memory file-handle to pass output to pandas without writing to disk
+    out_handle = StringIO(out.stdout.decode())
+    
+    # in case there were no sites returned (no overlap)
+    if not out.stdout.decode():
+        out_df = pd.DataFrame()
+    else:
+        out_df = pd.read_csv(out_handle, delimiter='\t', header=None, dtype={0: str, 6: str})
+        
+    # TODO: change type esp of chrom cols to explicitly str
+    out_df.rename({0: 'chrom_gt', 1: 'chromStart_gt', 2: 'chromEnd_gt', 3: 'name_gt', 4: 'score_gt', 5: 'strand_gt', 6: 'chrom_pd', 7: 'chromStart_pd', 8: 'chromEnd_pd', 9: 'name_pd', 10: 'score_pd', 11: 'strand_pd'}, axis=1, inplace=True)
+   
+    return out_df
+
+def find_overlapping_sites(participant_input, gold_standard, window):
+    """
+    Returns a list of all PAS overlapping between participant_input and gold standard.
+    """
+    bt_window_out = bedtools_window(gold_standard, participant_input, window)
+
+    overlapping_gold_standard = list(bt_window_out[["chrom_gt", "chromStart_gt", "chromEnd_gt", "strand_gt"]].itertuples(index=False, name=None))
+    overlapping_participant = list(bt_window_out[["chrom_pd", "chromStart_pd", "chromEnd_pd", "strand_pd"]].itertuples(index=False, name=None))
+
+    return overlapping_gold_standard, overlapping_participant
+
+def find_all_sites(bedfile):
+    bed_df = pd.read_csv(bedfile, delimiter='\t', header=None, dtype={0: str})
+    bed_df.rename({0: 'chrom', 1: 'chromStart', 2: 'chromEnd', 3: 'name', 4: 'score', 5: 'strand'}, axis=1, inplace=True)
+    all_sites = list(bed_df[["chrom", "chromStart", "chromEnd", "strand"]].itertuples(index=False, name=None))
+
+    return all_sites
+
+
+def calculate_base_metrics(participant_input, gold_standard, window):
+    """
+    Returns numbers of:
+    - TP (True Positives), 
+    - FP (False Positives)
+    - FN (False Negatives) 
+    for a given window size.
+    """
+
+    true_sites_gold_standard, true_sites_participant = find_overlapping_sites(participant_input, gold_standard, window)
+
+    all_sites_gold_standard = find_all_sites(gold_standard)
+    all_sites_participant = find_all_sites(participant_input)
+
+    false_sites_gold_standard = [x for x in all_sites_gold_standard if x not in true_sites_gold_standard]
+    false_sites_participant = [x for x in all_sites_participant if x not in true_sites_participant]
+
+    tp = len(true_sites_participant)
+    fp = len(false_sites_participant)
+    fn = len(false_sites_gold_standard)
+
+    return tp, fp, fn
+
+def precision(tp, fp):
+    """
+    Returns precision of prediction.
+    """
+    return tp / (tp + fp)
+
+def sensitivity(tp, fn):
+    """
+    Returns sensitivity/TPR/recall of prediction.
+    """
+    return tp / (tp + fn)
+
+def fdr(tp, fp):
+    """
+    Returns False Discovery Rate of prediction.
+    """
+    return fp / (tp + fp)
+
+
+def precision_and_sensitivity(participant_input, gold_standard, window):
+    """
+    Calculates TP, FP and FN, and returns precision and sensitivity for given window size.
+    """
+    tp, fp, fn = calculate_base_metrics(participant_input, gold_standard, window)
+    return precision(tp, fp), sensitivity(tp, fn)
 
 def multi_matched(participant_input,gold_standard,window):
     return
 
 def auc(metrics):
+    """
+    Calculate AUC from precision and sensitivity for a range of windows.
+    """
+
     return
 
 def proportion_3UTR(participant_input, gtf):
@@ -34,44 +130,6 @@ def genes_correct_PAS(participant_input, gtf):
 # Adapt or remove
 ####################################
 
-def bedtools_window(bed1, bed2, window, reverse=False):
-    """
-    Python wrapper for bedtools window.
-    reverse: return only sites that have no match in the ground truth.
-    """
-    
-    # make sure bedtools can be called in current env
-    assert which('bedtools') is not None, "bedtools not installed or not in PATH"
-
-    # run bedtools window, capture output
-    if not reverse:
-        out = subprocess.run(['bedtools', 'window', '-sm',
-                              '-w', str(window), 
-                              '-a', bed1, 
-                              '-b', bed2], 
-                             capture_output=True, shell=False)
-    else:
-        out = subprocess.run(['bedtools', 'window', '-sm', '-v',
-                              '-w', str(window), 
-                              '-a', bed1,
-                              '-b', bed2], 
-                             capture_output=True, shell=False)
-
-    assert out.returncode==0, "bedtools window run failed, check input files"
-
-    # memory file-handle to pass output to pandas without writing to disk
-    out_handle = StringIO(out.stdout.decode())
-    
-    # incase there were no sites returned (no overlap / all overlap in case of reverse=True)
-    if not out.stdout.decode():
-        out = pd.DataFrame()
-    else:
-        out = pd.read_csv(out_handle, delimiter='\t', header=None, dtype={0: str,6: str})
-        
-    # label columns
-    out.rename({0: 'chrom_p', 1: 'chromStart_p', 2: 'chromEnd_p', 3: 'name_p', 4: 'score_p', 5: 'strand_p', 6: 'chrom_g', 7: 'chromStart_g', 8: 'chromEnd_g', 9: 'name_g', 10: 'score_g', 11: 'strand_g'}, axis=1, inplace=True)
-   
-    return(out)
 
 def find_weights(matched_sites, pd_pos):
     """
