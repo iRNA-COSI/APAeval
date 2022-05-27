@@ -19,7 +19,7 @@ This README describes the APAeval **quantification** summary workflow. For a mor
    - input file has to be tab separated file with 6 columns
    - start and end coordinates (col 2,3) have to be int64
    - strand (col 6) has to be one of [+,-]
-   - chromosome (col 1) has to be one of [1..22,X,Y]   
+   - chromosome (col 1) has to match the ones from the genome annotation (see below `genome_dir`)
   
 - The `validated-participant-data.json` file is not used in the subsequent steps, but the workflow exits if the input file doesn't comply to the specifications of the current benchmarking event
   

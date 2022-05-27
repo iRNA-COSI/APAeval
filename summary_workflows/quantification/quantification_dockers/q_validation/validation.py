@@ -63,19 +63,17 @@ def main(args):
     out_path = args.output
     genome_path = args.genome_dir
     gtf = select_genome_file(challenges[0], genome_path)
-    gtf, with_chr = open(gtf,'r'), []
-    for i in range(50):
-        ln=gtf.readline()
-        if ln == '':
-            # if gtf contains < 50 rows.
-            break
-        if not ln.startswith('#'):
-            if ln.startswith('chr'):
-                with_chr.append(True)
-            else:
-                with_chr.append(False)
-    with_chr=list(set(with_chr)) ##should be only 1
-    assert len(with_chr) == 1, f"WARNING: {genome_path} has a mix of chromosome name formats!"
+    chr_names = list()
+    with open(gtf, 'r') as f:
+        for row in f:
+            if not row.startswith('#'):
+                # gtf is always tab-separated and first column is always seqname.
+                seqname = row.split('\t')[0]
+                if seqname not in chr_names:
+                    chr_names.append(seqname)
+    seqnames_wchr = [s for s in chr_names if 'chr' in s]
+    assert len(seqnames_wchr) == len(chr_names) or len(seqnames_wchr) == 0, \
+        f"WARNING: {genome_path} has a mix of chromosome name formats!"
 
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
@@ -86,11 +84,11 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(participant_input, community, challenges, participant_name, out_path, with_chr)
+    validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names)
 
 
 
-def  validate_input_data(participant_input, community, challenges, participant_name, out_path, with_chr):
+def  validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names):
     # get participant output (= input to be validated)
     try:
         participant_data = pandas.read_csv(participant_input, sep='\t',
@@ -111,14 +109,7 @@ def  validate_input_data(participant_input, community, challenges, participant_n
     strands = list(set(participant_data.iloc[:, 5].values))
     strand_check = len(strands) == 2 and strands.count('-')+strands.count('+') == 2
     ## check ref seq format of chromosomes
-    if with_chr[0] == True:
-        accepted_chr = ["chr"+str(i) for i in range(1,23)]
-        accepted_chr.append('chrX')
-        accepted_chr.append('chrY')
-    else:
-        accepted_chr = [str(i) for i in range(1,23)]
-        accepted_chr.append('X')
-        accepted_chr.append('Y')
+    accepted_chr = chr_names
     data_chr = list(set(participant_data.iloc[:, 0].values))
     chr_check = [str(chr) in accepted_chr for chr in data_chr].count(False) == 0
     
