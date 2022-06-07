@@ -138,6 +138,8 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
 
     # splid PD sites that matched with multiple GT
     out = split_pd_by_dist(out)
+    if out.empty:
+        raise RuntimeError(f"No overlap found between participant: {f_PD} and ground truth: {f_GT}")
 
     # find PD sites with no GT overlap given the window
     out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
@@ -163,8 +165,11 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
     elif return_df_type == "with_unmatched_GT_and_PD":
         # add GT sites with no PD match AND PD sites with no GT match
         out_df = pd.concat([out, out_rev_GT, out_rev_PD])
+    elif return_df_type == "without_unmatched":
+        # do not consider any unmatched sites
+        out_df = out
     else:
-        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: with_unmatched_GT or with_umatched_GT_and_PD.")
+        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: with_unmatched_GT, with_umatched_GT_and_PD or without_unmatched.")
     
     out_df.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
     
@@ -193,14 +198,13 @@ def relative_pas_usage(merged_bed_df, genome):
         all predicted PAS that are matched to ground truth for a given gene.
     2. sum TPM values of all PAS
     3. calculate fraction for each PAS by dividing TPM_PAS by TPM_sum.
-    4. Compute correlation for vector of gene-normalised PAS.
 
     Args:
         merged_bed_df (pandas.df): Table of matched prediction and ground truth PAS. From match_with_gt().
         genome (pandas.df): Table with gene positions.
 
     Returns:
-        float: Metric of relative PAS usage over all genes.
+        float: df of normalised and relative PAS values.
     """
     df = merged_bed_df.copy()
     # get list of PAS per gene
@@ -211,9 +215,7 @@ def relative_pas_usage(merged_bed_df, genome):
     normalised_dfs = [fraction_pas(gene_pas, df) for gene_pas in pas_per_gene]
     # concatenate list of pandas.df
     normalised_df = pd.concat(normalised_dfs, axis=0)
-    # compute correlation
-    metric = corr_with_gt(normalised_df)
-    return metric
+    return normalised_df
 
 def fraction_pas(gene_pas, df):
     """Compute fraction for each PAS.
