@@ -21,7 +21,8 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_10nt",
-                    "y_axis": "Correlation_coefficient_10nt"
+                    "y_axis": "Correlation_coefficient_10nt",
+                    "optimization": "top-left"
                 }
             }
         },
@@ -49,7 +50,8 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_50nt",
-                    "y_axis": "Correlation_coefficient_50nt"
+                    "y_axis": "Correlation_coefficient_50nt",
+                    "optimization": "top-left"
                 }
             }
         },
@@ -77,7 +79,8 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_100nt",
-                    "y_axis": "Correlation_coefficient_100nt"
+                    "y_axis": "Correlation_coefficient_100nt",
+                    "optimization": "top-left"
                 }
             }
         },

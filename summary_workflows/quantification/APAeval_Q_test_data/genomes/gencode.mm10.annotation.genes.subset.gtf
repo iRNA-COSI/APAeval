@@ -14002,3 +14002,4 @@ X	HAVANA	gene	155276211	155334657	.	-	.	gene_id "ENSG00000155962.13"; gene_type 
 X	HAVANA	gene	155276211	155334657	.	-	.	gene_id "ENSG00000155962.13"; gene_type "protein_coding"; gene_name "CLIC2"; level 1; hgnc_id "HGNC:2063"; tag "overlapping_locus"; havana_gene "OTTHUMG00000022660.5";
 X	HAVANA	gene	155276211	155334657	.	-	.	gene_id "ENSG00000155962.13"; gene_type "protein_coding"; gene_name "CLIC2"; level 1; hgnc_id "HGNC:2063"; tag "overlapping_locus"; havana_gene "OTTHUMG00000022660.5";
 X	HAVANA	gene	155276211	155334657	.	-	.	gene_id "ENSG00000155962.13"; gene_type "protein_coding"; gene_name "CLIC2"; level 1; hgnc_id "HGNC:2063"; tag "overlapping_locus"; havana_gene "OTTHUMG00000022660.5";
+Y	ENSEMBL	gene	90784738	90816464	.	+	.	gene_id "ENSMUSG00000096768.7"; gene_type "protein_coding"; gene_name "Gm47283"; level 3;
