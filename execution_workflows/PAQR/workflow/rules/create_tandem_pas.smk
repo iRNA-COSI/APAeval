@@ -18,7 +18,7 @@ rule get_TPAS_scripts:
 
 # Import the TPAS module
 module tandem_pas:
-    snakefile: github("zavolanlab/tandem-pas", path="Snakefile", commit="98478da")
+    snakefile: github("zavolanlab/tandem-pas", path="Snakefile", commit="7f12eb2")
     config: config["tpas"]
 
 use rule * from tandem_pas as TPAS_*
