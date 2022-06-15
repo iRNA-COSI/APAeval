@@ -327,7 +327,7 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
         ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda y, loc: "{:,}".format(int(y))))
 
     # set parameters for optimization
-    better = "top-left"
+    better = aggregation_file["datalink"]["inline_data"]["visualization"]["optimization"]
     max_x = True
     max_y = True
 
