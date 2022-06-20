@@ -78,6 +78,40 @@ def plot_square_quartiles(x_values, means, tools, better, ax, percentile=50):
             elif x_values[i] < x_percentile and means[i] < y_percentile:
                 tools_quartiles[tools[i]] = 4
 
+    elif better == "top-left":
+        # add quartile numbers to plot
+        plt.text(0.99, 0.85, '2', verticalalignment='top', horizontalalignment='right', transform=ax.transAxes, fontsize=25, alpha=0.2)
+        plt.text(0.01, 0.85, '1', verticalalignment='top', horizontalalignment='left', transform=ax.transAxes, fontsize=25, alpha=0.2)
+        plt.text(0.99, 0.15, '4', verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, fontsize=25, alpha=0.2)
+        plt.text(0.01, 0.15, '3', verticalalignment='bottom', horizontalalignment='left', transform=ax.transAxes, fontsize=25, alpha=0.2)
+
+        for i, val in enumerate(tools, 0):
+            if x_values[i] >= x_percentile and means[i] < y_percentile:
+                tools_quartiles[tools[i]] = 4
+            elif x_values[i] >= x_percentile and means[i] >= y_percentile:
+                tools_quartiles[tools[i]] = 2
+            elif x_values[i] < x_percentile and means[i] >= y_percentile:
+                tools_quartiles[tools[i]] = 1
+            elif x_values[i] < x_percentile and means[i] < y_percentile:
+                tools_quartiles[tools[i]] = 3
+
+    elif better == "bottom-left":
+        # add quartile numbers to plot
+        plt.text(0.99, 0.85, '4', verticalalignment='top', horizontalalignment='right', transform=ax.transAxes, fontsize=25, alpha=0.2)
+        plt.text(0.01, 0.85, '3', verticalalignment='top', horizontalalignment='left', transform=ax.transAxes, fontsize=25, alpha=0.2)
+        plt.text(0.99, 0.15, '2', verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, fontsize=25, alpha=0.2)
+        plt.text(0.01, 0.15, '1', verticalalignment='bottom', horizontalalignment='left', transform=ax.transAxes, fontsize=25, alpha=0.2)
+
+        for i, val in enumerate(tools, 0):
+            if x_values[i] >= x_percentile and means[i] < y_percentile:
+                tools_quartiles[tools[i]] = 2
+            elif x_values[i] >= x_percentile and means[i] >= y_percentile:
+                tools_quartiles[tools[i]] = 4
+            elif x_values[i] < x_percentile and means[i] >= y_percentile:
+                tools_quartiles[tools[i]] = 3
+            elif x_values[i] < x_percentile and means[i] < y_percentile:
+                tools_quartiles[tools[i]] = 1
+
     return (tools_quartiles)
 
 
@@ -122,6 +156,14 @@ def draw_diagonal_line(scores_and_values, quartile, better, max_x, max_y):
     elif better == "top-right":
         x_coords = (half_point[0] + max_x, half_point[0] - max_x)
         y_coords = (half_point[1] - max_y, half_point[1] + max_y)
+    elif better == "top-left":
+        x_coords = (half_point[0] + max_x, half_point[0] - max_x)
+        y_coords = (half_point[1] + max_y, half_point[1] - max_y)
+
+    elif better == "bottom-left":
+        x_coords = (half_point[0] - max_x, half_point[0] + max_x)
+        y_coords = (half_point[1] + max_y, half_point[1] - max_y)
+
 
     plt.plot(x_coords, y_coords, linestyle='--', color='#0A58A2', linewidth=1.5)
 
@@ -156,6 +198,10 @@ def plot_diagonal_quartiles(x_values, means, tools, better):
             scores.append(x_norm[i] + (1 - means_norm[i]))
         elif better == "top-right":
             scores.append(x_norm[i] + means_norm[i])
+        elif better == "top-left":
+            scores.append(1-x_norm[i] + means_norm[i])
+        elif better == "bottom-left":
+            scores.append(1-x_norm[i] + (1 - means_norm[i]))
 
     # add plot annotation boxes with info about scores and tool names
     for counter, scr in enumerate(scores):
@@ -281,7 +327,7 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
         ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda y, loc: "{:,}".format(int(y))))
 
     # set parameters for optimization
-    better = "top-right"
+    better = aggregation_file["datalink"]["inline_data"]["visualization"]["optimization"]
     max_x = True
     max_y = True
 
@@ -294,9 +340,22 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
         right_edge = [[p_frontX[0], p_frontX[0]], [p_frontY[0], y_lims[1]]]
         plt.plot(left_edge[0], left_edge[1], right_edge[0], right_edge[1], linestyle='--', color='red',
                  linewidth=1)
+
     elif better == 'top-right':
         left_edge = [[x_lims[0], p_frontX[-1]], [p_frontY[-1], p_frontY[-1]]]
         right_edge = [[p_frontX[0], p_frontX[0]], [p_frontY[0], y_lims[0]]]
+        plt.plot(left_edge[0], left_edge[1], right_edge[0], right_edge[1], linestyle='--', color='red',
+                 linewidth=1)
+
+    elif better == 'top-left':
+        left_edge = [[x_lims[1], p_frontX[-1]], [p_frontY[-1], p_frontY[-1]]]
+        right_edge = [[p_frontX[0], p_frontX[0]], [p_frontY[0], y_lims[0]]]
+        plt.plot(left_edge[0], left_edge[1], right_edge[0], right_edge[1], linestyle='--', color='red',
+                 linewidth=1)
+
+    elif better == 'bottom-left':
+        left_edge = [[x_lims[1], p_frontX[-1]], [p_frontY[-1], p_frontY[-1]]]
+        right_edge = [[p_frontX[0], p_frontX[0]], [p_frontY[0], y_lims[1]]]
         plt.plot(left_edge[0], left_edge[1], right_edge[0], right_edge[1], linestyle='--', color='red',
                  linewidth=1)
 
@@ -311,6 +370,18 @@ def print_chart(challenge_dir, summary_dir, challenge_type, classification_type)
         plt.annotate('better', xy=(0.98, 0.95), xycoords='axes fraction',
                      xytext=(-30, -30), textcoords='offset points',
                      ha="right", va="top",
+                     arrowprops=dict(facecolor='black', shrink=0.05, width=0.9))
+
+    elif better == 'top-left':
+        plt.annotate('better', xy=(0.04, 0.95), xycoords='axes fraction',
+                     xytext=(30, -30), textcoords='offset points',
+                     ha="left", va="top",
+                     arrowprops=dict(facecolor='black', shrink=0.05, width=0.9))
+
+    elif better == 'bottom-left':
+        plt.annotate('better', xy=(0.04, 0.04), xycoords='axes fraction',
+                     xytext=(30, 30), textcoords='offset points',
+                     ha="left", va="bottom",
                      arrowprops=dict(facecolor='black', shrink=0.05, width=0.9))
 
     # add chart grid
