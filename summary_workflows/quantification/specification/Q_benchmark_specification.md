@@ -198,6 +198,8 @@ The following tables list the metric names, value types and units, and a descrip
 | `Expression_non-matched-PAS_100nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 100 nt distance threshold (window) |
 | `Correlation_coefficient_Pearson_relative_100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
 
+> The correlation metrics above are also computed for Spearman correlation, but currently not used in the plots. The metric ids are adjusted accordingly.
+
 #### Output 2
 
 The OpenEBench aggregation file contains information required to produce one plot.
