@@ -1,0 +1,6 @@
+{
+    "runtime_sec": 123.45,
+    "max_mem_kib": 987,
+    "dir_usage_mib": 32000,
+    "sample_size_mib": 100
+}
