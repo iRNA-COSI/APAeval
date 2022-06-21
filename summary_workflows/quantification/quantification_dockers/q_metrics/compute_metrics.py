@@ -70,7 +70,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             # metric on correlation coefficient
             correlation = matchPAS.corr_with_gt(merged_bed_df)
             # Key: exact name of metric as it appears in specification
-            metric_name = f"Correlation_coefficient_{window}nt"
+            metric_name = f"Correlation_coefficient_Pearson_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [correlation, 0]
 
@@ -83,7 +83,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 merged_bed_df_wpd, _ = match_with_gt_and_pd[0], match_with_gt_and_pd[1]
                 correlation_rel_use = matchPAS.relative_pas_usage(merged_bed_df_wpd, genome)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Correlation_coefficient_relative_{window}nt"
+                metric_name = f"Correlation_coefficient_Pearson_relative_{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [correlation_rel_use, 0]
 

@@ -190,13 +190,13 @@ The following tables list the metric names, value types and units, and a descrip
 
 | Metric_id | Type | Unit | Description |
 | :--- | :--- | :--- | :----------------- |
-| `Correlation_coefficient_10nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 10 nt distance threshold (window) |
-| `Correlation_coefficient_50nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 50 nt distance threshold (window) |
-| `Correlation_coefficient_100nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 100 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_10nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 10 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_50nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 50 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_100nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 100 nt distance threshold (window) |
 | `Expression_non-matched-PAS_10nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 10 nt distance threshold (window) |
 | `Expression_non-matched-PAS_50nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 50 nt distance threshold (window) |
 | `Expression_non-matched-PAS_100nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 100 nt distance threshold (window) |
-| `Correlation_coefficient_relative_100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_relative_100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
 
 #### Output 2
 
