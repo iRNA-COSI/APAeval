@@ -193,14 +193,13 @@ def relative_pas_usage(merged_bed_df, genome):
         all predicted PAS that are matched to ground truth for a given gene.
     2. sum TPM values of all PAS
     3. calculate fraction for each PAS by dividing TPM_PAS by TPM_sum.
-    4. Compute correlation for vector of gene-normalised PAS.
 
     Args:
         merged_bed_df (pandas.df): Table of matched prediction and ground truth PAS. From match_with_gt().
         genome (pandas.df): Table with gene positions.
 
     Returns:
-        float: Metric of relative PAS usage over all genes.
+        float: df of normalised and relative PAS values.
     """
     df = merged_bed_df.copy()
     # get list of PAS per gene
@@ -211,9 +210,7 @@ def relative_pas_usage(merged_bed_df, genome):
     normalised_dfs = [fraction_pas(gene_pas, df) for gene_pas in pas_per_gene]
     # concatenate list of pandas.df
     normalised_df = pd.concat(normalised_dfs, axis=0)
-    # compute correlation
-    metric = corr_with_gt(normalised_df)
-    return metric
+    return normalised_df
 
 def fraction_pas(gene_pas, df):
     """Compute fraction for each PAS.

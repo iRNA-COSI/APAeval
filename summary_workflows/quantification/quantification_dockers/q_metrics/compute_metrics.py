@@ -81,11 +81,12 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             if window == windows[0]:
                 match_with_gt_and_pd = matchPAS.match_with_gt(participant_input,gold_standard,window, "with_unmatched_GT_and_PD")
                 merged_bed_df_wpd, _ = match_with_gt_and_pd[0], match_with_gt_and_pd[1]
-                correlation_rel_use = matchPAS.relative_pas_usage(merged_bed_df_wpd, genome)
+                normalised_df = matchPAS.relative_pas_usage(merged_bed_df_wpd, genome)
+                correlation_Pearson_rel_use = matchPAS.corr_Pearson_with_gt(normalised_df)
                 # Key: exact name of metric as it appears in specification
                 metric_name = f"Correlation_coefficient_Pearson_relative_{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [correlation_rel_use, 0]
+                metrics[metric_name] = [correlation_Pearson_rel_use, 0]
 
         # for each challenge, create all assessment json objects and append them to all_assessments
         for key, value in metrics.items():
