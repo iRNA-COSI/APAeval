@@ -36,6 +36,8 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
     # define array that will hold the full set of assessment datasets
     all_assessments = []
+    # define list with keywords for return type of dataframe from match_with_gt()
+    all_return_df_types = ["with_unmatched_GT", "with_unmatched_GT_and_PD", "without_unmatched"]
 
     for challenge in challenge_ids:
 
@@ -52,41 +54,44 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
         genome = matchPAS.load_genome(genome_file)
 
         for window in windows:
+            for return_df_type in all_return_df_types:
 
-            # METRIC: Matched sites
-            ########################
-            # metric on the number of matched sites
-            match_with_gt_run = matchPAS.match_with_gt(participant_input,gold_standard,window)
-            merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
+                # METRIC: Matched sites
+                ########################
+                # metric on the number of matched sites
+                match_with_gt_run = matchPAS.match_with_gt(f_PD=participant_input, f_GT=gold_standard, 
+                    window=window, return_df_type=return_df_type)
+                merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
 
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"Expression_non-matched-PAS_{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [expression_unmatched, 0]
-
-
-            # METRIC: correlation coefficient
-            #################################
-            # metric on correlation coefficient
-            correlation = matchPAS.corr_with_gt(merged_bed_df)
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"Correlation_coefficient_with_unmatched_GT_{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [correlation, 0]
-
-
-            # METRIC: correlation coefficient of relative pas usage
-            ####################
-            # Only calculate metric for first window size.
-            if window == windows[0]:
-                match_with_gt_and_pd = matchPAS.match_with_gt(participant_input,gold_standard,window, "with_unmatched_GT_and_PD")
-                merged_bed_df_wpd, _ = match_with_gt_and_pd[0], match_with_gt_and_pd[1]
-                normalised_df = matchPAS.relative_pas_usage(merged_bed_df_wpd, genome)
-                correlation_rel_use = matchPAS.corr_with_gt(normalised_df)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Correlation_coefficient_relative_with_unmatched_GT_and_PD_{window}nt"
+                metric_name = f"Expression_non-matched-PAS_{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [correlation_rel_use, 0]
+                metrics[metric_name] = [expression_unmatched, 0]
+
+
+                # METRIC: correlation coefficient
+                #################################
+                # metric on correlation coefficient
+                correlation = matchPAS.corr_with_gt(merged_bed_df)
+                # Key: exact name of metric as it appears in specification
+                metric_name = f"Correlation_coefficient_{return_df_type}_{window}nt"
+                # Value: List of [variable_holding_metric, std_err]
+                metrics[metric_name] = [correlation, 0]
+
+
+                # METRIC: correlation coefficient of relative pas usage
+                ####################
+                # Only calculate metric for first window size.
+                if window == windows[0]:
+                    match_with_gt_and_pd = matchPAS.match_with_gt(f_PD=participant_input, f_GT=gold_standard,
+                        window=window, return_df_type=return_df_type)
+                    merged_bed_df_wpd, _ = match_with_gt_and_pd[0], match_with_gt_and_pd[1]
+                    normalised_df = matchPAS.relative_pas_usage(merged_bed_df_wpd, genome)
+                    correlation_rel_use = matchPAS.corr_with_gt(normalised_df)
+                    # Key: exact name of metric as it appears in specification
+                    metric_name = f"Correlation_coefficient_relative_{return_df_type}_{window}nt"
+                    # Value: List of [variable_holding_metric, std_err]
+                    metrics[metric_name] = [correlation_rel_use, 0]
 
         # for each challenge, create all assessment json objects and append them to all_assessments
         for key, value in metrics.items():
