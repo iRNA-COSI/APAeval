@@ -10,7 +10,7 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS",
-                    "y_axis": "Correlation_coefficient",
+                    "y_axis": "Correlation_coefficient_with_unmatched_GT",
                     "optimization": "top-left"
                 }
             }
@@ -27,7 +27,7 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "bar-plot",
-                    "metric": "Correlation_coefficient_relative"
+                    "metric": "Correlation_coefficient_relative_with_unmatched_GT_and_PD"
                 }
             }
         },
