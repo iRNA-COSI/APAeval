@@ -36,6 +36,7 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 > NOTE: the genome file needs to contain the same substring as the challenge. That is, challenge `[partone].[organism].[partwo].bed` requires a genome annotation file like `[partone].[organism].[partwo].gtf`, where `[organism]` starts with *mm* or *hg* (only these two currently supported). And `[partone]` and `[parttwo]` can be an aribitrary string (or empty string).
 - APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `quantification_dockers/q_metrics/matchPAS`
 - The `Assessment_datasets.json` file is used in the following step
+> NOTE: more metrics are computed and reported in the assessment file than used in the plots.
 
 ### 3. Results Consolidation
 - Gathers the `Assessment_datasets.json` file from the metrics computation step and existing assessment data (currently imported from the `data/` directory; in `nextflow.config`: `assess_dir`)

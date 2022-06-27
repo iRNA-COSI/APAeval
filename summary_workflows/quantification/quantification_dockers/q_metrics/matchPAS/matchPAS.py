@@ -3,7 +3,7 @@ import os
 from io import StringIO
 import pandas as pd
 import numpy as np
-from scipy.stats import pearsonr
+from scipy.stats import pearsonr, spearmanr
 from shutil import which
 
 def bedtools_window(bed1, bed2, window, reverse=False):
@@ -181,13 +181,23 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
         
     return(out_df, nonmatched_expression)
 
-def corr_with_gt(matched_sites):
+def corr_Pearson_with_gt(matched_sites):
 
     vec_true = matched_sites["score_g"]
     vec_pred = matched_sites["score_p"]
 
     # correlation coefficient
     r = pearsonr(vec_true, vec_pred)[0]
+
+    return(r)
+
+def corr_Spearman_with_gt(matched_sites):
+
+    vec_true = matched_sites["score_g"]
+    vec_pred = matched_sites["score_p"]
+
+    # correlation coefficient
+    r = spearmanr(vec_true, vec_pred)[0]
 
     return(r)
 
