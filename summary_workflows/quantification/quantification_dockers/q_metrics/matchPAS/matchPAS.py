@@ -3,7 +3,7 @@ import os
 from io import StringIO
 import pandas as pd
 import numpy as np
-from scipy.stats import pearsonr
+from scipy.stats import pearsonr, spearmanr
 from shutil import which
 
 def bedtools_window(bed1, bed2, window, reverse=False):
@@ -176,13 +176,23 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
         
     return(out_df, nonmatched_expression)
 
-def corr_with_gt(matched_sites):
+def corr_Pearson_with_gt(matched_sites):
 
     vec_true = matched_sites["score_g"]
     vec_pred = matched_sites["score_p"]
 
     # correlation coefficient
     r = pearsonr(vec_true, vec_pred)[0]
+
+    return(r)
+
+def corr_Spearman_with_gt(matched_sites):
+
+    vec_true = matched_sites["score_g"]
+    vec_pred = matched_sites["score_p"]
+
+    # correlation coefficient
+    r = spearmanr(vec_true, vec_pred)[0]
 
     return(r)
 
@@ -193,14 +203,13 @@ def relative_pas_usage(merged_bed_df, genome):
         all predicted PAS that are matched to ground truth for a given gene.
     2. sum TPM values of all PAS
     3. calculate fraction for each PAS by dividing TPM_PAS by TPM_sum.
-    4. Compute correlation for vector of gene-normalised PAS.
 
     Args:
         merged_bed_df (pandas.df): Table of matched prediction and ground truth PAS. From match_with_gt().
         genome (pandas.df): Table with gene positions.
 
     Returns:
-        float: Metric of relative PAS usage over all genes.
+        float: df of normalised and relative PAS values.
     """
     df = merged_bed_df.copy()
     # get list of PAS per gene
@@ -211,9 +220,7 @@ def relative_pas_usage(merged_bed_df, genome):
     normalised_dfs = [fraction_pas(gene_pas, df) for gene_pas in pas_per_gene]
     # concatenate list of pandas.df
     normalised_df = pd.concat(normalised_dfs, axis=0)
-    # compute correlation
-    metric = corr_with_gt(normalised_df)
-    return metric
+    return normalised_df
 
 def fraction_pas(gene_pas, df):
     """Compute fraction for each PAS.

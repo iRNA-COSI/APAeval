@@ -1,10 +1,10 @@
 [
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_10nt",
+        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_10nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_10nt",
+            "metric_id": "Correlation_coefficient_Pearson_10nt",
             "stderr": 0,
             "value": 0.54
         },
@@ -12,11 +12,11 @@
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_50nt",
+        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_50nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_50nt",
+            "metric_id": "Correlation_coefficient_Pearson_50nt",
             "stderr": 0,
             "value": 0.85
         },
@@ -24,11 +24,11 @@
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetB_toolA_Correlation_coefficient_10nt",
+        "_id": "APAeval:datasetB_toolA_Correlation_coefficient_Pearson_10nt",
         "challenge_id": "datasetB",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_10nt",
+            "metric_id": "Correlation_coefficient_Pearson_10nt",
             "stderr": 0,
             "value": 0.76
         },
@@ -36,11 +36,11 @@
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetB_toolA_Correlation_coefficient_50nt",
+        "_id": "APAeval:datasetB_toolA_Correlation_coefficient_Pearson_50nt",
         "challenge_id": "datasetB",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_50nt",
+            "metric_id": "Correlation_coefficient_Pearson_50nt",
             "stderr": 0,
             "value": 0.81
         },
