@@ -168,13 +168,23 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
     
     out_df.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
     
-    # calculate total expression of non-matched PD sites
+    # calculate summary statistics
     if not out_rev_PD.empty:
+        # total expression of non-matched PD sites
         nonmatched_expression = (out_rev_PD["score_p"]).sum()
+        matched_expression = (out["score_p"]).sum()
+        percent_nonmatched = nonmatched_expression / (nonmatched_expression + matched_expression) * 100
     else:
-        nonmatched_expression = 0.0   
-        
-    return(out_df, nonmatched_expression)
+        nonmatched_expression = 0.0
+        percent_nonmatched = 0.0
+
+    summary_statistics = {"nonmatched_expression": nonmatched_expression,
+        "percent_nonmatched": percent_nonmatched,
+        "n_nonmatched_PD": out_rev_PD.shape[0], # FP
+        "n_nonmatched_GT": out_rev_GT.shape[0], # FN
+        "n_matched": out.shape[0]} # TP
+    
+    return(out_df, summary_statistics)
 
 def corr_Pearson_with_gt(matched_sites):
 
