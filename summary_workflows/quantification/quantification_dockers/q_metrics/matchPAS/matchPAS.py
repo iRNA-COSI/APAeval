@@ -45,12 +45,13 @@ def bedtools_window(bed1, bed2, window, reverse=False):
    
     return(out)
 
-def find_weights(matched_sites, pd_pos):
+def find_weights(matched_sites_orig, pd_pos):
     """
     Calculate score weights for PD sites matched to multiple GT sites.
     If PD and GT sites are a perfect match, the weights are not split.
     If PD site between two GT sites, weights calculated based on distance.
     """
+    matched_sites = matched_sites_orig.copy()
     matched_sites.sort_values(by=["dist"], inplace=True)
     matched_sites = matched_sites.reset_index(drop=True)
     matched_sites["weight"] = 0.0
