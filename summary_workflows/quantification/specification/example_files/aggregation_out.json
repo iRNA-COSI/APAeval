@@ -1,6 +1,6 @@
 [
     {
-        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_10nt_vs_Expression_non-matched-PAS_10nt",
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_with_unmatched_GT_10nt_vs_Expression_non-matched-PAS_10nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -26,14 +26,14 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_10nt",
-                    "y_axis": "Correlation_coefficient_Pearson_10nt"
+                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT_10nt"
                 }
             }
         },
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_50nt_vs_Expression_non-matched-PAS_50nt",
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_with_unmatched_GT_50nt_vs_Expression_non-matched-PAS_50nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -59,14 +59,47 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_50nt",
-                    "y_axis": "Correlation_coefficient_Pearson_50nt"
+                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT_50nt"
                 }
             }
         },
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_relative_50nt",
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_with_unmatched_GT_100nt_vs_Expression_non-matched-PAS_100nt",
+        "challenge_ids": [
+            "datasetA"
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [
+                    {
+                        "metric_x": 0.5,
+                        "metric_y": 0.8,
+                        "participant_id": "toolA"
+                    },
+                    {
+                        "metric_x": 0.2,
+                        "metric_y": 0.75,
+                        "participant_id": "toolB"
+                    },
+                    {
+                        "metric_x": 0.3,
+                        "metric_y": 0.4,
+                        "participant_id": "toolC"
+                    }
+                ],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Expression_non-matched-PAS_100nt",
+                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT_100nt"
+                }
+            }
+        },
+        "type": "aggregation"
+    },
+    {
+        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -87,7 +120,7 @@
                     }
                 ],
                 "visualization": {
-                    "metric": "Correlation_coefficient_Pearson_relative_50nt",
+                    "metric": "Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt",
                     "type": "bar-plot"
                 }
             }
