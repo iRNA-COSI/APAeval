@@ -138,6 +138,8 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
 
     # splid PD sites that matched with multiple GT
     out = split_pd_by_dist(out)
+    if out.empty:
+        raise RuntimeError(f"No overlap found between participant: {f_PD} and ground truth: {f_GT}")
 
     # find PD sites with no GT overlap given the window
     out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
@@ -163,8 +165,11 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
     elif return_df_type == "with_unmatched_GT_and_PD":
         # add GT sites with no PD match AND PD sites with no GT match
         out_df = pd.concat([out, out_rev_GT, out_rev_PD])
+    elif return_df_type == "without_unmatched":
+        # do not consider any unmatched sites
+        out_df = out
     else:
-        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: with_unmatched_GT or with_umatched_GT_and_PD.")
+        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: with_unmatched_GT, with_umatched_GT_and_PD or without_unmatched.")
     
     out_df.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
     

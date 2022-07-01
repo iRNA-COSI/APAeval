@@ -1,6 +1,6 @@
 [
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_Expression_non-matched-PAS_10nt_vs_Correlation_coefficient_Pearson_10nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_Expression_non-matched-PAS_10nt_vs_Correlation_coefficient_Pearson_with_unmatched_GT_10nt",
         "challenge_ids": [
             "Qx.mm10"
         ],
@@ -21,7 +21,7 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_10nt",
-                    "y_axis": "Correlation_coefficient_Pearson_10nt",
+                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT_10nt",
                     "optimization": "top-left"
                 }
             }
@@ -29,7 +29,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_Expression_non-matched-PAS_50nt_vs_Correlation_coefficient_Pearson_50nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_Expression_non-matched-PAS_50nt_vs_Correlation_coefficient_Pearson_with_unmatched_GT_50nt",
         "challenge_ids": [
             "Qx.mm10"
         ],
@@ -50,7 +50,7 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_50nt",
-                    "y_axis": "Correlation_coefficient_Pearson_50nt",
+                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT_50nt",
                     "optimization": "top-left"
                 }
             }
@@ -58,7 +58,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_Expression_non-matched-PAS_100nt_vs_Correlation_coefficient_Pearson_100nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_Expression_non-matched-PAS_100nt_vs_Correlation_coefficient_Pearson_with_unmatched_GT_100nt",
         "challenge_ids": [
             "Qx.mm10"
         ],
@@ -79,7 +79,7 @@
                 "visualization": {
                     "type": "2D-plot",
                     "x_axis": "Expression_non-matched-PAS_100nt",
-                    "y_axis": "Correlation_coefficient_Pearson_100nt",
+                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT_100nt",
                     "optimization": "top-left"
                 }
             }
@@ -87,7 +87,7 @@
         "type": "aggregation"
     },
     {
-        "_id": "APAeval:2022-04-27_Qx_Aggregation_Correlation_coefficient_Pearson_relative_100nt",
+        "_id": "APAeval:2022-04-27_Qx_Aggregation_Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt",
         "challenge_ids": [
             "Qx.mm10"
         ],
@@ -104,7 +104,7 @@
                     }
                 ],
                 "visualization": {
-                    "metric": "Correlation_coefficient_Pearson_relative_100nt",
+                    "metric": "Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt",
                     "type": "bar-plot"
                 }
             }

@@ -190,15 +190,15 @@ The following tables list the metric names, value types and units, and a descrip
 
 | Metric_id | Type | Unit | Description |
 | :--- | :--- | :--- | :----------------- |
-| `Correlation_coefficient_Pearson_10nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 10 nt distance threshold (window) |
-| `Correlation_coefficient_Pearson_50nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 50 nt distance threshold (window) |
-| `Correlation_coefficient_Pearson_100nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 100 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_with_unmatched_GT_10nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 10 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_with_unmatched_GT_50nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 50 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_with_unmatched_GT_100nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 100 nt distance threshold (window) |
 | `Expression_non-matched-PAS_10nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 10 nt distance threshold (window) |
 | `Expression_non-matched-PAS_50nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 50 nt distance threshold (window) |
 | `Expression_non-matched-PAS_100nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 100 nt distance threshold (window) |
-| `Correlation_coefficient_Pearson_relative_100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
+| `Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
 
-> The correlation metrics above are also computed for Spearman correlation, but currently not used in the plots. The metric ids are adjusted accordingly.
+> The above mentioned correlation metrics are actually calculated for three different matching types - `with_unmatched_GT`, `with_unmatched_GT_and_PD` and `without_unmatched`, and for *Pearson*'s as well as *Spearman*'s r. All these variants will appear in the `assessment_out.json` and `aggregation_out.json`. However, the`aggregation_out.json` will only contain the metrics explicitly specified for visualization in`quantification_dockers/q_consolidation/aggregation_template_Q.json`
 
 #### Output 2
 
