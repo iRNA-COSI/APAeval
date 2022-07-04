@@ -40,6 +40,7 @@ include { INPUT_CHECK    } from '../subworkflows/input_check' addParams( options
 include { SAMTOOLS       } from '../modules/samtools'         addParams( options: samtools_options )
 include { MAKE_TAPAS_REF } from '../modules/make_tapas_ref'   addParams( options: [:] )
 include { TAPAS_QUANT    } from '../modules/tapas_quant'      addParams( options: tapas_quant_options )
+include { MAKE_QUANT_BED } from '../modules/make_quant_bed'   addParams( options: [:] )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -61,7 +62,9 @@ workflow EXECUTE_TAPAS{
          MAKE_TAPAS_REF.out.tapas_ref
             .combine ( SAMTOOLS.out.read_coverage )
             .set { ch_tapas_input }
-         TAPAS_QUANT( ch_tapas_input )
+         TAPAS_QUANT ( ch_tapas_input )
+         MAKE_QUANT_BED ( TAPAS_QUANT.out.quant_txt )
+         
     }
 
 ////////////////////////////////////////////////////
