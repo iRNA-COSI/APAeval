@@ -8,10 +8,15 @@ def main(roar_results_path, output_tsv):
 
     df = pd.read_csv(roar_results_path, sep="\t")
 
-    df[["gene_id", "pval"]].to_csv(output_tsv,
-                                   header=False,
-                                   index=False,
-                                   sep="\t")
+    # Roar does combinatorial comparisons of individual samples
+    # 'pval' reports multiplication of each of these comparisons, which will pretty much always result in an extremely small pval
+    # Select the smallest p-value across all comparisons to report in output
+    df.loc[:, "min_pval"] = df.loc[:, df.columns.str.startswith("pvalue_")].min(axis="columns")
+
+    df[["gene_id", "min_pval"]].to_csv(output_tsv,
+                                       header=False,
+                                       index=False,
+                                       sep="\t")
 
 
 
