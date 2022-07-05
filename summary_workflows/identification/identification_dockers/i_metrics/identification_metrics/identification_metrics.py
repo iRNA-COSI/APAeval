@@ -47,8 +47,8 @@ def find_overlapping_sites(participant_input, gold_standard, window):
     """
     bt_window_out = bedtools_window(gold_standard, participant_input, window)
 
-    overlapping_gold_standard = list(bt_window_out[["chrom_gt", "chromStart_gt", "chromEnd_gt", "strand_gt"]].itertuples(index=False, name=None))
-    overlapping_participant = list(bt_window_out[["chrom_pd", "chromStart_pd", "chromEnd_pd", "strand_pd"]].itertuples(index=False, name=None))
+    overlapping_gold_standard = list(set(bt_window_out[["chrom_gt", "chromStart_gt", "chromEnd_gt", "strand_gt"]].itertuples(index=False, name=None)))
+    overlapping_participant = list(set(bt_window_out[["chrom_pd", "chromStart_pd", "chromEnd_pd", "strand_pd"]].itertuples(index=False, name=None)))
 
     return overlapping_gold_standard, overlapping_participant
 
@@ -67,6 +67,9 @@ def calculate_base_metrics(participant_input, gold_standard, window):
     - FP (False Positives)
     - FN (False Negatives) 
     for a given window size.
+
+    True Positives are defined here as ground truth sites that have a matching site in prediction.
+    This might not be the same as prediction sites that have a matching sites in ground truth.
     """
 
     true_sites_gold_standard, true_sites_participant = find_overlapping_sites(participant_input, gold_standard, window)
@@ -77,7 +80,7 @@ def calculate_base_metrics(participant_input, gold_standard, window):
     false_sites_gold_standard = [x for x in all_sites_gold_standard if x not in true_sites_gold_standard]
     false_sites_participant = [x for x in all_sites_participant if x not in true_sites_participant]
 
-    tp = len(true_sites_participant)
+    tp = len(true_sites_gold_standard)
     fp = len(false_sites_participant)
     fn = len(false_sites_gold_standard)
 
@@ -102,12 +105,12 @@ def fdr(tp, fp):
     return fp / (tp + fp)
 
 
-def precision_and_sensitivity(participant_input, gold_standard, window):
+def calculate_complex_metrics(participant_input, gold_standard, window):
     """
     Calculates TP, FP and FN, and returns precision and sensitivity for given window size.
     """
     tp, fp, fn = calculate_base_metrics(participant_input, gold_standard, window)
-    return precision(tp, fp), sensitivity(tp, fn)
+    return precision(tp, fp), sensitivity(tp, fn), fdr(tp, fp)
 
 def multi_matched(participant_input,gold_standard,window):
     return
