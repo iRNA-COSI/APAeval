@@ -50,7 +50,10 @@ def find_overlapping_sites(participant_input, gold_standard, window):
     overlapping_gold_standard = list(set(bt_window_out[["chrom_gt", "chromStart_gt", "chromEnd_gt", "strand_gt"]].itertuples(index=False, name=None)))
     overlapping_participant = list(set(bt_window_out[["chrom_pd", "chromStart_pd", "chromEnd_pd", "strand_pd"]].itertuples(index=False, name=None)))
 
-    return overlapping_gold_standard, overlapping_participant
+    bt_window_out_duplicated_participant = bt_window_out[bt_window_out.duplicated(['name_pd'], keep=False)].sort_values(by='name_pd')
+    duplicated_participant = list(set(bt_window_out_duplicated_participant[["chrom_pd", "chromStart_pd", "chromEnd_pd", "strand_pd"]].itertuples(index=False, name=None)))
+
+    return overlapping_gold_standard, overlapping_participant, duplicated_participant
 
 def find_all_sites(bedfile):
     bed_df = pd.read_csv(bedfile, delimiter='\t', header=None, dtype={0: str})
@@ -64,15 +67,16 @@ def calculate_base_metrics(participant_input, gold_standard, window):
     """
     Returns numbers of:
     - TP (True Positives), 
-    - FP (False Positives)
-    - FN (False Negatives) 
+    - FP (False Positives),
+    - FN (False Negatives),
+    and proportion of multi-matched participant sites
     for a given window size.
 
     True Positives are defined here as ground truth sites that have a matching site in prediction.
     This might not be the same as prediction sites that have a matching sites in ground truth.
     """
 
-    true_sites_gold_standard, true_sites_participant = find_overlapping_sites(participant_input, gold_standard, window)
+    true_sites_gold_standard, true_sites_participant, multi_matched_participant = find_overlapping_sites(participant_input, gold_standard, window)
 
     all_sites_gold_standard = find_all_sites(gold_standard)
     all_sites_participant = find_all_sites(participant_input)
@@ -84,7 +88,9 @@ def calculate_base_metrics(participant_input, gold_standard, window):
     fp = len(false_sites_participant)
     fn = len(false_sites_gold_standard)
 
-    return tp, fp, fn
+    multi_matched_proportion = len(multi_matched_participant) / len(true_sites_participant)
+
+    return tp, fp, fn, multi_matched_proportion
 
 def precision(tp, fp):
     """
@@ -109,8 +115,8 @@ def calculate_complex_metrics(participant_input, gold_standard, window):
     """
     Calculates TP, FP and FN, and returns precision and sensitivity for given window size.
     """
-    tp, fp, fn = calculate_base_metrics(participant_input, gold_standard, window)
-    return precision(tp, fp), sensitivity(tp, fn), fdr(tp, fp)
+    tp, fp, fn, multi_matched_proportion = calculate_base_metrics(participant_input, gold_standard, window)
+    return precision(tp, fp), sensitivity(tp, fn), fdr(tp, fp), multi_matched_proportion
 
 def multi_matched(participant_input,gold_standard,window):
     return

@@ -53,35 +53,20 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
         for window in windows:
 
-            # METRIC: Precision
+            # METRIC: Precision, Sensitivity and FDR
             ########################
 
-            # precision = im.precision(participant_input,gold_standard,window)
-            precision = 0.9
-
+            precision, sensitivity, fdr, multi = im.calculate_complex_metrics(participant_input,gold_standard,window)
+            
             # Key: exact name of metric as it appears in specification
             metric_name = f"Precision_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [precision, 0]
 
-
-            # METRIC: Sensitivity
-            #################################
-
-            # sensitivity = im.sensitivity(participant_input,gold_standard,window)
-            sensitivity = 0.9
-
             # Key: exact name of metric as it appears in specification
             metric_name = f"Sensitivity_{window}nt"
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [sensitivity, 0]
-                    
-
-            # METRIC: Multi-matched
-            ####################
-
-            # multi = im.multi_matched(participant_input,gold_standard,window)
-            multi = 50
 
             # Key: exact name of metric as it appears in specification
             metric_name = f"Multi-matched_{window}nt"
