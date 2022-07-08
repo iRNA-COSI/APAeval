@@ -184,10 +184,7 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
         percent_nonmatched = 0.0
 
     summary_statistics = {"nonmatched_expression": nonmatched_expression,
-        "percent_nonmatched": percent_nonmatched,
-        "n_nonmatched_PD": out_rev_PD.shape[0], # FP
-        "n_nonmatched_GT": out_rev_GT.shape[0], # FN
-        "n_matched": out.shape[0]} # TP
+        "percent_nonmatched": percent_nonmatched}
     
     return(out_df, summary_statistics)
 
