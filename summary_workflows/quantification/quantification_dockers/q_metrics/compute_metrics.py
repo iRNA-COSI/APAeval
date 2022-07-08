@@ -58,7 +58,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 # obtain dataframe for metric computation
                 match_with_gt_run = matchPAS.match_with_gt(f_PD=participant_input, f_GT=gold_standard, 
                     window=window, return_df_type=return_df_type)
-                merged_bed_df, expression_unmatched = match_with_gt_run[0], match_with_gt_run[1]
+                merged_bed_df, summary_statistics = match_with_gt_run[0], match_with_gt_run[1]
                 
                 # METRIC: Matched sites
                 ########################
@@ -66,7 +66,10 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 # Key: exact name of metric as it appears in specification
                 metric_name = f"Expression_non-matched-PAS_{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [expression_unmatched, 0]
+                metrics[metric_name] = [summary_statistics["nonmatched_expression"], 0]
+                # METRIC: Percent unmatched, based on TPM
+                metric_name = f"Percent_non-matched-PAS_{window}nt"
+                metrics[metric_name] = [summary_statistics['percent_nonmatched'], 0]
 
                 # METRIC: correlation coefficient
                 #################################
