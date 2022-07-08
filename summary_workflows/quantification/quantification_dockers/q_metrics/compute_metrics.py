@@ -37,7 +37,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
     # define array that will hold the full set of assessment datasets
     all_assessments = []
     # define list with keywords for return type of dataframe from match_with_gt()
-    all_return_df_types = ["with_unmatched_GT", "with_unmatched_GT_and_PD", "without_unmatched"]
+    all_return_df_types = ["all_GT", "union", "intersection"]
 
     for challenge in challenge_ids:
 
@@ -64,11 +64,11 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 ########################
                 # metric on the expression of non matched polyA sites.
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Expression_non-matched-PAS_{window}nt"
+                metric_name = f"Sum_FP_TPM:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [summary_statistics["nonmatched_expression"], 0]
                 # METRIC: Percent unmatched, based on TPM
-                metric_name = f"Percent_non-matched-PAS_{window}nt"
+                metric_name = f"Percent_FP_TPM:{window}nt"
                 metrics[metric_name] = [summary_statistics['percent_nonmatched'], 0]
 
                 # METRIC: correlation coefficient
@@ -76,13 +76,13 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 # metric on correlation coefficient
                 correlation_pearson = matchPAS.corr_Pearson_with_gt(merged_bed_df)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Correlation_coefficient_Pearson_{return_df_type}_{window}nt"
+                metric_name = f"Pearson_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [correlation_pearson, 0]
                 # Spearman correlation
                 correlation_spearman = matchPAS.corr_Spearman_with_gt(merged_bed_df)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Correlation_coefficient_Spearman_{return_df_type}_{window}nt"
+                metric_name = f"Spearman_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [correlation_spearman, 0]
 
@@ -93,13 +93,13 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                     normalised_df = matchPAS.relative_pas_usage(merged_bed_df, genome)
                     correlation_Pearson_rel_use = matchPAS.corr_Pearson_with_gt(normalised_df)
                     # Key: exact name of metric as it appears in specification
-                    metric_name = f"Correlation_coefficient_Pearson_relative_{return_df_type}_{window}nt"
+                    metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
                     # Value: List of [variable_holding_metric, std_err]
                     metrics[metric_name] = [correlation_Pearson_rel_use, 0]
                     # Spearman correlation
                     correlation_Spearman_rel_use = matchPAS.corr_Spearman_with_gt(normalised_df)
                     # Key: exact name of metric as it appears in specification
-                    metric_name = f"Correlation_coefficient_Spearman_relative_{return_df_type}_{window}nt"
+                    metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
                     # Value: List of [variable_holding_metric, std_err]
                     metrics[metric_name] = [correlation_Spearman_rel_use, 0]
 

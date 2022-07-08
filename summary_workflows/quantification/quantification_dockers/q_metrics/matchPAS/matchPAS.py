@@ -127,7 +127,7 @@ def merge_pd_by_gt(matched_sites):
     return matched_sites
 
 
-def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
+def match_with_gt(f_PD, f_GT, window, return_df_type = "all_GT"):
 
     # check for presence of participant input data
     assert os.path.exists(f_PD), "Participant file not found, please check input data."
@@ -160,17 +160,17 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
     # merge PD sites that matched with the same GT by summing their expression
     out = merge_pd_by_gt(out)
 
-    if return_df_type == "with_unmatched_GT":
+    if return_df_type == "all_GT":
         # add GT sites with no PD match
         out_df = pd.concat([out, out_rev_GT])
-    elif return_df_type == "with_unmatched_GT_and_PD":
+    elif return_df_type == "union":
         # add GT sites with no PD match AND PD sites with no GT match
         out_df = pd.concat([out, out_rev_GT, out_rev_PD])
-    elif return_df_type == "without_unmatched":
+    elif return_df_type == "intersection":
         # do not consider any unmatched sites
         out_df = out
     else:
-        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: with_unmatched_GT, with_umatched_GT_and_PD or without_unmatched.")
+        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: all_GT, union or intersection.")
     
     out_df.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
     
