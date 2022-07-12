@@ -42,7 +42,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
     for challenge in challenge_ids:
 
         # ID prefix for assessment objects
-        base_id = f"{community}:{challenge}_{participant}_"
+        base_id = f"{community}:{challenge}:{participant}:"
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
         metrics = {}
         # ground truth file

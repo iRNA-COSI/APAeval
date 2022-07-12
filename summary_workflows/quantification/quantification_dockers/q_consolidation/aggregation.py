@@ -280,7 +280,7 @@ def load_aggregation_template(aggregation_template, community_id, event_date, ch
     # Create aggregation objects for all plots specified in the template, and for all metrics (different window sizes!) detected in the assessment. Fill objects with ID and challenge ID; data will be appended later
 
     # Prefix for aggregation object ids
-    base_id = f"{community_id}:{event_date}_{challenge_id}_Aggregation_"
+    base_id = f"{community_id}:{event_date}:{challenge_id}:Aggregation:"
 
     # For all different plots
     for item in template:
@@ -296,8 +296,8 @@ def load_aggregation_template(aggregation_template, community_id, event_date, ch
                 # new aggregation object
                 win_item = deepcopy(item)
 
-                win_size = x_win.split("_")[-1]
-                y_win = "_".join([y, win_size])
+                win_size = x_win.split(":")[-1]
+                y_win = ":".join([y, win_size])
                 win_metrics = f"{x_win}_vs_{y_win}" 
                 win_item["_id"] = base_id + win_metrics
                 win_item["challenge_ids"] = [challenge_id]
