@@ -70,6 +70,26 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 # METRIC: Percent unmatched, based on TPM
                 metric_name = f"Percent_non-matched-PAS_{window}nt"
                 metrics[metric_name] = [summary_statistics['percent_nonmatched'], 0]
+                
+                # Performance metrics
+                metric_name = f"Sensitivity_{window}nt"
+                sensitivity = (summary_statistics["tp"] / 
+                    (summary_statistics["tp"] + summary_statistics["fn"]))
+                metrics[metric_name] = [sensitivity, 0]
+
+                metric_name = f"Precision_{window}nt"
+                precision = (summary_statistics["tp"] / 
+                    (summary_statistics["tp"] + summary_statistics["fp"]))
+                metrics[metric_name] = [precision, 0]
+
+                metric_name = f"F1_score_{window}nt"
+                f1_score = precision * sensitivity / (precision + sensitivity)
+                metrics[metric_name] = [f1_score, 0]
+
+                metric_name = f"Jaccard_index_{window}nt"
+                jaccard_index = (summary_statistics["tp"] / 
+                    (summary_statistics["tp"] + summary_statistics["fp"] + summary_statistics["fn"]))
+                metrics[metric_name] = [jaccard_index, 0]
 
                 # METRIC: correlation coefficient
                 #################################

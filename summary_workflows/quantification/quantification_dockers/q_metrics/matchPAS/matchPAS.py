@@ -183,9 +183,18 @@ def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
     else:
         nonmatched_expression = 0.0
         percent_nonmatched = 0.0
+    
+    # binary classification metrics
+     # number of ground truth sites with matching prediction site > 0 score
+    true_positives = out.loc[out["score_p"] > 0].shape[0]
+    false_positives = out_rev_PD.shape[0] # number of prediction sites without ground truth sites
+    false_negatives = out_rev_GT.shape[0] # number of ground truth sites without prediction sites
 
     summary_statistics = {"nonmatched_expression": nonmatched_expression,
-        "percent_nonmatched": percent_nonmatched}
+        "percent_nonmatched": percent_nonmatched,
+        "tp": true_positives,
+        "fp": false_positives,
+        "fn": false_negatives}
     
     return(out_df, summary_statistics)
 
