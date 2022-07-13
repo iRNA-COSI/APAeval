@@ -11,7 +11,6 @@ Outputs depend on features available for the participant (i.e. not all participa
 - quantification benchmarking event:
   - BED file with identified unique poly(A) sites and TPM values for each site
   - BED file with identified unique poly(A) sites and relative usage values for each site
-  - BED file with coordinates of regions (e.g. terminal exons, genes) and the relative usage values for each region
 - differential usage benchmarking event:
   - TSV file with gene ID and significance of differential PAS usage
 
@@ -28,7 +27,6 @@ Inputs to execution workflows are provided by APAeval.
   | 02 | BED | [Specification][spec-bed] | [Link][out2] |
   | 03 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
   | 04 | BED | [Specification][spec-bed] | [Link][out4] |
-  | 05 | BED | [Specification][spec-bed] | [Link][out5] |  
 
 ### Additional info inputs
 
@@ -78,18 +76,6 @@ Fields:
 - **score** - relative usage value for the identified site (between 0-1)
 - **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
-#### Format 05
-
-This BED file contains positions of regions (e.g. terminal exons of genes, whole genes) and the relative usage values for each identified region in the **score** column.
-
-Fields:
-
-- **chrom** - the name of the chromosome
-- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the first nucleotide of the region (e.g. terminal exon, gene); the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
-- **chromEnd** - the ending position of the feature in the chromosome; this corresponds to the last nucleotide of the region.
-- **name** - defines the name of the identified region. It's recommended to use a conventional identifier (e.g. Ensembl transcript ID, gene ID)
-- **score** - relative usage value for the identified region
-- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
 
 ## Naming conventions
 For naming conventions please refer to the [execution workflow README][ex-readme]
@@ -100,7 +86,6 @@ For naming conventions please refer to the [execution workflow README][ex-readme
 [out2]: ./example_output_files/output2.bed
 [out3]: ./example_output_files/output3.tsv
 [out4]: ./example_output_files/output4.bed
-[out5]: ./example_output_files/output5.bed
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [wiki-tsv]: <https://en.wikipedia.org/wiki/Tab-separated_values>
 [ex-readme]: ./README.md
