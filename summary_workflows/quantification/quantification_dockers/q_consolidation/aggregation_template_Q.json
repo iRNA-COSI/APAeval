@@ -9,8 +9,8 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "Expression_non-matched-PAS",
-                    "y_axis": "Correlation_coefficient_Pearson_with_unmatched_GT",
+                    "x_axis": "Sum_FP_TPM",
+                    "y_axis": "Pearson_r:all_GT",
                     "optimization": "top-left"
                 }
             }
@@ -27,7 +27,7 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "bar-plot",
-                    "metric": "Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD"
+                    "metric": "Pearson_r_relative:union"
                 }
             }
         },

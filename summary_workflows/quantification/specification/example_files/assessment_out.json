@@ -1,159 +1,174 @@
 [
     {
-        "_id": "APAeval:datasetA_toolA_Expression_non-matched-PAS_100nt",
+        "_id": "APAeval:datasetA:tool1:Sum_FP_TPM:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Expression_non-matched-PAS_100nt",
+            "metric_id": "Sum_FP_TPM:100nt",
             "stderr": 0,
             "value": 10200
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_with_unmatched_GT_100nt",
+        "_id": "APAeval:datasetA:tool1:Percent_FP_TPM:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Pearson_with_unmatched_GT_100nt",
+            "metric_id": "Percent_FP_TPM:100nt",
             "stderr": 0,
-            "value": 0.85
+            "value": 0.4609279587021252
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Spearman_with_unmatched_GT_100nt",
+        "_id": "APAeval:datasetA:tool1:Pearson_r:all_GT:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Spearman_with_unmatched_GT_100nt",
+            "metric_id": "Pearson_r:all_GT:100nt",
             "stderr": 0,
-            "value": 0.76
+            "value": 0.9927517848004038
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_relative_with_unmatched_GT_100nt",
+        "_id": "APAeval:datasetA:tool1:Spearman_r:all_GT:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Pearson_relative_with_unmatched_GT_100nt",
+            "metric_id": "Spearman_r:all_GT:100nt",
             "stderr": 0,
-            "value": 0.81
+            "value": 0.911896485225774
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Spearman_relative_with_unmatched_GT_100nt",
+        "_id": "APAeval:datasetA:tool1:Pearson_r_relative:all_GT:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Spearman_relative_with_unmatched_GT_100nt",
+            "metric_id": "Pearson_r_relative:all_GT:100nt",
             "stderr": 0,
-            "value": 0.82
+            "value": 0.9973187127532759
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_with_unmatched_GT_and_PD_100nt",
+        "_id": "APAeval:datasetA:tool1:Spearman_r_relative:all_GT:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Pearson_with_unmatched_GT_and_PD_100nt",
+            "metric_id": "Spearman_r_relative:all_GT:100nt",
             "stderr": 0,
-            "value": 0.85
+            "value": 0.8207826816681234
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Spearman_with_unmatched_GT_and_PD_100nt",
+        "_id": "APAeval:datasetA:tool1:Pearson_r:union:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Spearman_with_unmatched_GT_and_PD_100nt",
+            "metric_id": "Pearson_r:union:100nt",
             "stderr": 0,
-            "value": 0.76
+            "value": 0.9928929010139482
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt",
+        "_id": "APAeval:datasetA:tool1:Spearman_r:union:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Pearson_relative_with_unmatched_GT_and_PD_100nt",
+            "metric_id": "Spearman_r:union:100nt",
             "stderr": 0,
-            "value": 0.5
+            "value": 0.9034003721843807
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Spearman_relative_with_unmatched_GT_and_PD_100nt",
+        "_id": "APAeval:datasetA:tool1:Pearson_r_relative:union:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Spearman_relative_with_unmatched_GT_and_PD_100nt",
+            "metric_id": "Pearson_r_relative:union:100nt",
             "stderr": 0,
-            "value": 0.55
+            "value": 0.9973187127532759
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_without_unmatched_100nt",
+        "_id": "APAeval:datasetA:tool1:Spearman_r_relative:union:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Pearson_without_unmatched_100nt",
+            "metric_id": "Spearman_r_relative:union:100nt",
             "stderr": 0,
-            "value": 0.9
+            "value": 0.8207826816681234
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Spearman_without_unmatched_100nt",
+        "_id": "APAeval:datasetA:tool1:Pearson_r:intersection:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Spearman_without_unmatched_100nt",
+            "metric_id": "Pearson_r:intersection:100nt",
             "stderr": 0,
-            "value": 0.91
+            "value": 0.9929707592239266
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Pearson_relative_without_unmatched_100nt",
+        "_id": "APAeval:datasetA:tool1:Spearman_r:intersection:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Pearson_relative_without_unmatched_100nt",
+            "metric_id": "Spearman_r:intersection:100nt",
             "stderr": 0,
-            "value": 0.8155
+            "value": 0.922868515623047
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
     },
     {
-        "_id": "APAeval:datasetA_toolA_Correlation_coefficient_Spearman_relative_without_unmatched_100nt",
+        "_id": "APAeval:datasetA:tool1:Pearson_r_relative:intersection:100nt",
         "challenge_id": "datasetA",
         "community_id": "APAeval",
         "metrics": {
-            "metric_id": "Correlation_coefficient_Spearman_relative_without_unmatched_100nt",
+            "metric_id": "Pearson_r_relative:intersection:100nt",
             "stderr": 0,
-            "value": 0.8255
+            "value": 0.9973187127532759
         },
-        "participant_id": "toolA",
+        "participant_id": "tool1",
         "type": "assessment"
-    }
-
-]
+    },
+    {
+        "_id": "APAeval:datasetA:tool1:Spearman_r_relative:intersection:100nt",
+        "challenge_id": "datasetA",
+        "community_id": "APAeval",
+        "metrics": {
+            "metric_id": "Spearman_r_relative:intersection:100nt",
+            "stderr": 0,
+            "value": 0.8207826816681234
+        },
+        "participant_id": "tool1",
+        "type": "assessment"
+    },
+    {
+        ".... same assessment objects for other window sizes....":""
+    } 
+    
+]    

@@ -4,6 +4,7 @@ from __future__ import division
 import io
 import os
 import json
+import pandas as pd
 from argparse import ArgumentParser
 from JSON_templates import JSON_templates
 from matchPAS import matchPAS
@@ -37,12 +38,12 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
     # define array that will hold the full set of assessment datasets
     all_assessments = []
     # define list with keywords for return type of dataframe from match_with_gt()
-    all_return_df_types = ["with_unmatched_GT", "with_unmatched_GT_and_PD", "without_unmatched"]
+    all_return_df_types = ["all_GT", "union", "intersection"]
 
     for challenge in challenge_ids:
 
         # ID prefix for assessment objects
-        base_id = f"{community}:{challenge}_{participant}_"
+        base_id = f"{community}:{challenge}:{participant}:"
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
         metrics = {}
         # ground truth file
@@ -54,35 +55,70 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
         genome = matchPAS.load_genome(genome_file)
 
         for window in windows:
-            for return_df_type in all_return_df_types:
-                # obtain dataframe for metric computation
-                match_with_gt_run = matchPAS.match_with_gt(f_PD=participant_input, f_GT=gold_standard, 
-                    window=window, return_df_type=return_df_type)
-                merged_bed_df, summary_statistics = match_with_gt_run[0], match_with_gt_run[1]
-                
-                # METRIC: Matched sites
-                ########################
-                # metric on the expression of non matched polyA sites.
-                # Key: exact name of metric as it appears in specification
-                metric_name = f"Expression_non-matched-PAS_{window}nt"
-                # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [summary_statistics["nonmatched_expression"], 0]
-                # METRIC: Percent unmatched, based on TPM
-                metric_name = f"Percent_non-matched-PAS_{window}nt"
-                metrics[metric_name] = [summary_statistics['percent_nonmatched'], 0]
+            # obtain dataframes with matched and unmatched sites
+            matched, only_PD, only_GT = matchPAS.match_with_gt(f_PD=participant_input, f_GT=gold_standard, window=window)
 
-                # METRIC: correlation coefficient
+            # METRIC: Expression unmatched sites
+            ####################################
+            # Key: exact name of metric as it appears in specification
+            metric_name = f"Sum_FP_TPM:{window}nt"
+            
+            # Get metric
+            if not only_PD.empty:
+                # total expression of non-matched PD sites
+                tpm_unmatched = (only_PD["score_p"]).sum()
+            else:
+                tpm_unmatched = 0.0
+            
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [tpm_unmatched, 0]
+            
+           
+            # METRIC: Percent expression unmatched
+            ######################################
+            # Key: exact name of metric as it appears in specification
+            metric_name = f"Percent_FP_TPM:{window}nt"
+            
+            # Get metric
+            if not matched.empty:
+                tpm_matched = (matched["score_p"]).sum()
+                pct_tpm_unmatched = tpm_unmatched / (tpm_unmatched + tpm_matched) * 100
+            else:
+                pct_tpm_unmatched = 100.0
+
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [pct_tpm_unmatched, 0]
+
+
+            ## Return-type dependent
+            for return_df_type in all_return_df_types:
+                if return_df_type == "all_GT":
+                    # add GT sites with no PD match
+                    sites = pd.concat([matched, only_GT])
+                elif return_df_type == "union":
+                    # add GT sites with no PD match AND PD sites with no GT match
+                    sites = pd.concat([matched, only_GT, only_PD])
+                elif return_df_type == "intersection":
+                    # do not consider any unmatched sites
+                    sites = matched
+                else:
+                    raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: all_GT, union or intersection.")
+                    
+                sites.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
+
+                # METRIC: correlation coefficients
                 #################################
-                # metric on correlation coefficient
-                correlation_pearson = matchPAS.corr_Pearson_with_gt(merged_bed_df)
+                # Pearson correlation
+                correlation_pearson = matchPAS.corr_Pearson_with_gt(sites)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Correlation_coefficient_Pearson_{return_df_type}_{window}nt"
+                metric_name = f"Pearson_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [correlation_pearson, 0]
+
                 # Spearman correlation
-                correlation_spearman = matchPAS.corr_Spearman_with_gt(merged_bed_df)
+                correlation_spearman = matchPAS.corr_Spearman_with_gt(sites)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Correlation_coefficient_Spearman_{return_df_type}_{window}nt"
+                metric_name = f"Spearman_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [correlation_spearman, 0]
 
@@ -90,16 +126,19 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                 ####################
                 # Only calculate metric for first window size.
                 if window == windows[0]:
-                    normalised_df = matchPAS.relative_pas_usage(merged_bed_df, genome)
+                    normalised_df = matchPAS.relative_pas_usage(sites, genome)
+
+                    # Pearson
                     correlation_Pearson_rel_use = matchPAS.corr_Pearson_with_gt(normalised_df)
                     # Key: exact name of metric as it appears in specification
-                    metric_name = f"Correlation_coefficient_Pearson_relative_{return_df_type}_{window}nt"
+                    metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
                     # Value: List of [variable_holding_metric, std_err]
                     metrics[metric_name] = [correlation_Pearson_rel_use, 0]
-                    # Spearman correlation
+
+                    # Spearman
                     correlation_Spearman_rel_use = matchPAS.corr_Spearman_with_gt(normalised_df)
                     # Key: exact name of metric as it appears in specification
-                    metric_name = f"Correlation_coefficient_Spearman_relative_{return_df_type}_{window}nt"
+                    metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
                     # Value: List of [variable_holding_metric, std_err]
                     metrics[metric_name] = [correlation_Spearman_rel_use, 0]
 

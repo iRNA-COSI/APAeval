@@ -127,67 +127,42 @@ def merge_pd_by_gt(matched_sites):
     return matched_sites
 
 
-def match_with_gt(f_PD, f_GT, window, return_df_type = "with_unmatched_GT"):
+def match_with_gt(f_PD, f_GT, window):
 
     # check for presence of participant input data
     assert os.path.exists(f_PD), "Participant file not found, please check input data."
     # check for presence of ground truth
     assert os.path.exists(f_GT), "Ground truth file not found, please check input data."
     
-    # bedtools window with specified parameter
+    ## Get matching sites (TP if p_score > 0 )
     out = bedtools_window(f_PD, f_GT, window)
 
-    # splid PD sites that matched with multiple GT
+    # split PD sites that matched with multiple GT
     out = split_pd_by_dist(out)
     if out.empty:
         raise RuntimeError(f"No overlap found between participant: {f_PD} and ground truth: {f_GT}")
 
-    # find PD sites with no GT overlap given the window
-    out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
-    if not out_rev_PD.empty:
-        out_rev_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
-        out_rev_PD['score_g'] = [0.0]*len(out_rev_PD)
-
-    # find GT sites with no PD overlap given the window, assign score 0 to ground truth and set other columns to values from prediction
-    out_rev_GT = bedtools_window(f_GT, f_PD, window, reverse=True)
-    if not out_rev_GT.empty:
-        out_rev_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
-        out_rev_GT['score_p'] = [0.0]*len(out_rev_GT)
- 
     # sort
     out.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
     # merge PD sites that matched with the same GT by summing their expression
     out = merge_pd_by_gt(out)
 
-    if return_df_type == "with_unmatched_GT":
-        # add GT sites with no PD match
-        out_df = pd.concat([out, out_rev_GT])
-    elif return_df_type == "with_unmatched_GT_and_PD":
-        # add GT sites with no PD match AND PD sites with no GT match
-        out_df = pd.concat([out, out_rev_GT, out_rev_PD])
-    elif return_df_type == "without_unmatched":
-        # do not consider any unmatched sites
-        out_df = out
-    else:
-        raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: with_unmatched_GT, with_umatched_GT_and_PD or without_unmatched.")
-    
-    out_df.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
-    
-    # calculate summary statistics
+    ## Get PD sites without matching GT (FP)
+    out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
     if not out_rev_PD.empty:
-        # total expression of non-matched PD sites
-        nonmatched_expression = (out_rev_PD["score_p"]).sum()
-        matched_expression = (out["score_p"]).sum()
-        percent_nonmatched = nonmatched_expression / (nonmatched_expression + matched_expression) * 100
-    else:
-        nonmatched_expression = 0.0
-        percent_nonmatched = 0.0
+        out_rev_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+        out_rev_PD['score_g'] = [0.0]*len(out_rev_PD)
 
-    summary_statistics = {"nonmatched_expression": nonmatched_expression,
-        "percent_nonmatched": percent_nonmatched}
-    
-    return(out_df, summary_statistics)
+    ## Get GT sites without matching PD (FN)
+    # assign score 0 to ground truth and set other columns to values from prediction
+    out_rev_GT = bedtools_window(f_GT, f_PD, window, reverse=True)
+    if not out_rev_GT.empty:
+        out_rev_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+        out_rev_GT['score_p'] = [0.0]*len(out_rev_GT)
+ 
+    return(out, out_rev_PD, out_rev_GT)
+
 
 def corr_Pearson_with_gt(matched_sites):
 

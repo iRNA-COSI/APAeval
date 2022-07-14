@@ -43,9 +43,3 @@ python3 matchPAS.py adultCortex.PAPERCLIP.mm10.bed siControl_R1.MACEseq.mm10.bed
 ### Output:
 - a copy of the prediction file `prediction_merged_<window>.bed` with rows merged, only in case there were overlapping sites given the window
 - the output file containing ground truth matches `prediction_matched_<window>.bed`
-
-
-### Issues:
-- currently, predicted sites that have no overlapping ground truth site within the window are discarded
-- there is no option in `bedtools window` to keep those, except for `-v` which requires another  `bedtools window` run
-- this needs to be addressed because it would favor tools that find less sites but with higher accuracy
