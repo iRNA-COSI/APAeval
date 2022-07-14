@@ -10,6 +10,7 @@ Outputs depend on features available for the participant (i.e. not all participa
   - BED file with identified poly(A) sites with single nucleotide resolution
 - quantification benchmarking event:
   - BED file with identified unique poly(A) sites and TPM values for each site
+  - BED file with identified unique poly(A) sites and relative usage values for each site
 - differential usage benchmarking event:
   - TSV file with gene ID and significance of differential PAS usage
 
@@ -25,9 +26,10 @@ Inputs to execution workflows are provided by APAeval.
   | 01 | BED | [Specification][spec-bed] | [Link][out1] |
   | 02 | BED | [Specification][spec-bed] | [Link][out2] |
   | 03 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
-  
+  | 04 | BED | [Specification][spec-bed] | [Link][out4] |
+
 ### Additional info inputs
-  
+
 #### Format 01
 
 This BED file contains single-nucleotide position of poly(A) sites identified by the participant.  
@@ -61,15 +63,29 @@ This TSV file contains two columns:
 
 Column names should not be added to the file.
 
+#### Format 04
+
+This BED file contains positions of unique poly(A) sites with relative usage values for each identified site in the **score** column. The relative usage values must be fractional for each poly(A) site (e.g. fraction used vs other sites in the same terminal exon).
+
+Fields:
+
+- **chrom** - the name of the chromosome
+- **chromStart** - the starting position of the feature in the chromosome; this corresponds to the last nucleotide just upstream of the cleavage and polyadenylation reaction; the starting position is 0-based, i.e. the first base on the chromosome is numbered 0
+- **chromEnd** - the ending position of the feature in the chromosome; as identified PAS are single-nucleotide, the ending position is equal to `chromStart + 1`
+- **name** - defines the name of the identified poly(A) site
+- **score** - relative usage value for the identified site (between 0-1)
+- **strand** - defines the strand; either "." (=no strand) or "+" or "-".
+
 
 ## Naming conventions
 For naming conventions please refer to the [execution workflow README][ex-readme]
 
 [//]: # (References)
-  
+
 [out1]: ./example_output_files/output1.bed
 [out2]: ./example_output_files/output2.bed
 [out3]: ./example_output_files/output3.tsv
+[out4]: ./example_output_files/output4.bed
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [wiki-tsv]: <https://en.wikipedia.org/wiki/Tab-separated_values>
 [ex-readme]: ./README.md
