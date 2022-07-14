@@ -6,6 +6,7 @@ Contents:
 - [Available utilities](#available-utilities)
   - [Convert GTF to BED12 (aka 'gene model') file](#convert-gtf-to-bed12-aka-gene-model-file)
   - [Convert .csv to .tsv (NO Docker)](#convert-csv-to-tsv-no-docker)
+  - [Convert assessment json to .tsv (NO Docker)](#convert-assessment-json-to-tsv-no-docker)
 - [Contributing instructions](#contributing-instructions)
 
 
@@ -40,6 +41,19 @@ Currently no Docker image available, but the script can be run inside the `apaev
 python csv2tsv.py --csv samples.csv --tsv samples.tsv
 ```
 
+### Convert assessment json to .tsv (NO Docker)
+
+**Description:** Convert an OEB  `assessment_datasets.json` to a `.tsv` file using `pandas`. json objects will be flattened, and each object is converted to a table row. Furthermore, the `metric_id` is split into 3 columns "metric", "window_size" and "site_set". If more than one json file is provided as input, resulting tables will be concatenated.
+
+**Subdirectory name**: `metrics_json2tsv`
+
+**Compatibility:**
+Currently no Docker image available, but the script can be run inside the `apaeval_execution_workflow` conda environment. 
+
+**Usage:**
+```
+python metrics_json2tsv.py --file-list assessment1.json assessment2.json --output metrics.tsv
+```
 ## Contributing instructions
 
 Have code for a pre-processing / file wrangling task that you think may be general to other tools? To add a tool to the directory, we need you to create a pull request with the following tasks completed:
