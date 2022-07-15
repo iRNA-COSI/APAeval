@@ -190,18 +190,30 @@ The following tables list the metric names, value types and units, and a descrip
 
 | Metric_id | Type | Unit | Description |
 | :--- | :--- | :--- | :----------------- |
-| `Pearson_r:all_GT:10nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 10 nt distance threshold (window) |
-| `Pearson_r:all_GT:50nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 50 nt distance threshold (window) |
-| `Pearson_r:all_GT:100nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 100 nt distance threshold (window) |
 | `Sum_FP_TPM:10nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 10 nt distance threshold (window) |
 | `Sum_FP_TPM:50nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 50 nt distance threshold (window) |
 | `Sum_FP_TPM:100nt` | `float` | N/A | Total expression of non-matched sites quantified by benchmarked tool for 100 nt distance threshold (window) |
 | `Percent_FP_TPM:10nt` | `float` | N/A | Percent total expression of non-matched sites for total expression of non-matched and matched sites quantified by benchmarked tool for 10 nt distance threshold (window) |
 | `Percent_FP_TPM:50nt` | `float` | N/A | Percent total expression of non-matched sites for total expression of non-matched and matched sites quantified by benchmarked tool for 50 nt distance threshold |
 | `Percent_FP_TPM:100nt` | `float` | N/A | Percent total expression of non-matched sites for total expression of non-matched and matched sites quantified by benchmarked tool for 100 nt distance threshold |
+| `Sensitivity:10nt` | `float` | N/A | Sensitivity (recall, hit rate, true positive rate) = TP / (TP + FN) for 10 nt distance threshold |
+| `Sensitivity:50nt` | `float` | N/A | Sensitivity (recall, hit rate, true positive rate) = TP / (TP + FN) for 50 nt distance threshold |
+| `Sensitivity:100nt` | `float` | N/A | Sensitivity (recall, hit rate, true positive rate) = TP / (TP + FN) for 100 nt distance threshold |
+| `Precision:10nt` | `float` | N/A | Precision (positive predictive value) = TP / (TP + FP) for 10 nt distance threshold |
+| `Precision:50nt` | `float` | N/A | Precision (positive predictive value) = TP / (TP + FP) for 50 nt distance threshold |
+| `Precision:100nt` | `float` | N/A | Precision (positive predictive value) = TP / (TP + FP) for 100 nt distance threshold |
+| `F1_score:10nt` | `float` | N/A | F1 score, harmonic mean of precision and sensitivity for 10 nt distance threshold |
+| `F1_score:50nt` | `float` | N/A | F1 score, harmonic mean of precision and sensitivity for 50 nt distance threshold |
+| `F1_score:100nt` | `float` | N/A | F1 score, harmonic mean of precision and sensitivity for 100 nt distance threshold |
+| `Jaccard_index:10nt` | `float` | N/A | Jaccard index (Jaccard similarity coefficient) = TP / (TP + FP + FN) for 10 nt distance threshold |
+| `Jaccard_index:50nt` | `float` | N/A | Jaccard index (Jaccard similarity coefficient) = TP / (TP + FP + FN) for 50 nt distance threshold |
+| `Jaccard_index:100nt` | `float` | N/A | Jaccard index (Jaccard similarity coefficient) = TP / (TP + FP + FN) for 100 nt distance threshold |
+| `Pearson_r:all_GT:10nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 10 nt distance threshold (window) |
+| `Pearson_r:all_GT:50nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 50 nt distance threshold (window) |
+| `Pearson_r:all_GT:100nt` | `float` | N/A | Correlation between poly(A) site quantification by benchmarked tool and ground truth dataset calculated for 100 nt distance threshold (window) |
 | `Pearson_r_relative:union:100nt` | `float` | N/A | Correlation between relative PAS usage calculated from RNAseq-based PAS quantification and orthogonal 3'end seq data for 100 nt distance threshold (window) |
 
-> The above mentioned correlation metrics are actually calculated for three different matching types - `all_GT` (this is equivalent to TP + FN), `union` (TP + FP + FN) and `intersection` (TP), and for *Pearson*'s as well as *Spearman*'s r. All these variants will appear in the `assessment_datasets.json` and `consolidated_result.json`. However, the aggregation objects (for plotting in OEB) will only contain the metrics explicitly specified for visualization in`quantification_dockers/q_consolidation/aggregation_template_Q.json`
+> The above mentioned correlation metrics are actually calculated for three different matching types - `all_GT` (this is equivalent to TP + FN), `union` (TP + FP + FN) and `intersection` (TP), and for *Pearson*'s as well as *Spearman*'s r. All these variants will appear in the `assessment_datasets.json` and `consolidated_result.json`. However, the aggregation objects (for plotting in OEB) will only contain the metrics explicitly specified for visualization in `quantification_dockers/q_consolidation/aggregation_template_Q.json`
 
 #### Output 2
 
