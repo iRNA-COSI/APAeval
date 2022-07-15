@@ -89,6 +89,29 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [pct_tpm_unmatched, 0]
 
+            # METRIC Performance metrics
+            ######################################
+            # binary classification metrics
+            # number of ground truth sites with matching prediction site and TPM > 0
+            TP = matched.loc[matched["score_p"] > 0].shape[0]
+            FP = only_PD.shape[0] # number of prediction sites without ground truth sites
+            FN = only_GT.shape[0] # number of ground truth sites without prediction sites
+
+            metric_name = f"Sensitivity:{window}nt"
+            sensitivity = TP / (TP + FN)
+            metrics[metric_name] = [sensitivity, 0]
+
+            metric_name = f"Precision:{window}nt"
+            precision = TP / (TP + FP)
+            metrics[metric_name] = [precision, 0]
+
+            metric_name = f"F1_score:{window}nt"
+            f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
+            metrics[metric_name] = [f1_score, 0]
+
+            metric_name = f"Jaccard_index:{window}nt"
+            jaccard_index = TP / (TP + FP + FN)
+            metrics[metric_name] = [jaccard_index, 0]
 
             ## Return-type dependent
             for return_df_type in all_return_df_types:
@@ -153,6 +176,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
                  mode='w', encoding="utf-8") as f:
         jdata = json.dumps(all_assessments, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(jdata)
+
 
 def select_genome_file(file_name, genome_path):
     """Select the genome file according to the organism.
