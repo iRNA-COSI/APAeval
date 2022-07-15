@@ -97,19 +97,19 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
             FP = only_PD.shape[0] # number of prediction sites without ground truth sites
             FN = only_GT.shape[0] # number of ground truth sites without prediction sites
 
-            metric_name = f"Sensitivity_{window}nt"
+            metric_name = f"Sensitivity:{window}nt"
             sensitivity = TP / (TP + FN)
             metrics[metric_name] = [sensitivity, 0]
 
-            metric_name = f"Precision_{window}nt"
+            metric_name = f"Precision:{window}nt"
             precision = TP / (TP + FP)
             metrics[metric_name] = [precision, 0]
 
-            metric_name = f"F1_score_{window}nt"
+            metric_name = f"F1_score:{window}nt"
             f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
             metrics[metric_name] = [f1_score, 0]
 
-            metric_name = f"Jaccard_index_{window}nt"
+            metric_name = f"Jaccard_index:{window}nt"
             jaccard_index = TP / (TP + FP + FN)
             metrics[metric_name] = [jaccard_index, 0]
 
