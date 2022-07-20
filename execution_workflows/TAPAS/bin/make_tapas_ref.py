@@ -25,7 +25,6 @@ for ln in bed:
  ln=ln.split("\t")
  transcript="NM_"+ln[3]
  gene="NM_"+transcript2gene[ln[3]]
- organized=[gene,transcript,ln[0].strip("chr"),ln[5],ln[1],ln[2],ln[6],ln[7],ln[9],ln[10],ln[11]]
+ organized=[gene,transcript,ln[0],ln[5],ln[1],ln[2],ln[6],ln[7],ln[9],ln[10],ln[11]]
  outfile.write("\t".join(organized))
 outfile.close()
- 
