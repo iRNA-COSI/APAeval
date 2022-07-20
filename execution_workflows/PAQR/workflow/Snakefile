@@ -7,7 +7,7 @@ import os
 import sys
 
 
-# Set/overwrite redundant config params for the subworkflows and modules       
+# Set/overwrite redundant config params for the subworkflows and modules
 config["tpas"]["outdir"] = os.path.join(config["out_dir"], "tpas")
 config["tpas"]["logdir"] = os.path.join(config["out_dir"], "logs")
 config["paqr"]["PAQ_outdir"] = os.path.join(config["out_dir"], "paqr")
@@ -26,12 +26,16 @@ include: "rules/postprocess.smk"
 localrules: create_log_dir, get_TPAS_scripts, get_PAQR_scripts, finish
 
 rule finish:
-    """Rule that specifies the final output. 
+    """Rule that specifies the final output.
     """
     input:
         BED_quantification = expand(os.path.join(
                 config["out_dir"],
                 "{sample}_" + config["challenge_code"] + "_" + config["method"] + "_" + config["outcode"] + ".bed"),
+                sample = samples.index),
+        BED_rel_quantification = expand(os.path.join(
+                config["out_dir"],
+                "{sample}_" + config["challenge_code"] + "_" + config["method"] + "_" + config["rel_use_outcode"] + ".bed"),
                 sample = samples.index)
 
 

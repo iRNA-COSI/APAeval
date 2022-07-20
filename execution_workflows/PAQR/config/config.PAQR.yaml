@@ -13,7 +13,8 @@ atlas_version: "m38"
 out_dir: "results"
 challenge_code : "AA" # find at https://github.com/iRNA-COSI/APAeval/blob/main/summary_workflows/challenge_codes.md
 method: "PAQR" # same as the name of the directory
-outcode: "02" # for quantification challenge
+outcode: "02" # for TPM quantification challenge
+rel_use_outcode: "04" # for per-PAS fractional relative quantification challenge
 
 ##################################
 # Create Tandem poly(A)-sites
@@ -33,7 +34,7 @@ tpas:
   strandedness: ["stranded"]
 
   # minimum support that a site in the atlas needs to be considered
-  # This is bed column 5 of the atlas 
+  # This is bed column 5 of the atlas
   # (version 1.0: number of supporting protocols, version 2.0: tpm)
   min_support: 0
 
@@ -41,7 +42,7 @@ tpas:
   # ensembl: transcript_biotype, gencode: transcript_type
   biotype_key: transcript_type
   # If not filtering, comment the key 'biotype_values', else an error is raised
-  # biotype_values: 
+  # biotype_values:
   #   - lncRNA
   #   - protein_coding
 
@@ -58,7 +59,7 @@ tpas:
   ############################################
   # Mock params needed for DAG, don't change
   polyasites: ""
-  atlas_version: "" 
+  atlas_version: ""
   # out- and logdir are set in Snakefile to be subdirectories of the result directory specified at param `out_dir`
   outdir: ""
   logdir: ""
@@ -77,7 +78,7 @@ paqr:
   PAQ_scripts_dir: "workflow/scripts_paqr"
 
   # path to tab separated file containing samples info
-  # NOTE: alignment files (bam) and their repective indices (bam.bai) must be located in the same directory! 
+  # NOTE: alignment files (bam) and their repective indices (bam.bai) must be located in the same directory!
   PAQ_samples_table: "config/samples.tsv"
 
   # number of nucleotides for which the coverage profile is extended
@@ -120,11 +121,11 @@ paqr:
   PAQ_cluster_distance: "200"
 
   # upstream extension added to the poly(A) cluster's end
-  # during the check for global break points 
+  # during the check for global break points
   PAQ_upstream_cluster_extension: "200"
 
   # upper limit on the ratio of coverage mean squared error values
-  # after and before including a new break point 
+  # after and before including a new break point
   PAQ_coverage_mse_ratio_limit: "0.5"
 
   ############################################
