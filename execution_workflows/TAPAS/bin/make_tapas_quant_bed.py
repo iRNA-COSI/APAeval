@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 tapa_quant_txt=open(sys.argv[1],'r')
 outbed=open(sys.argv[2],'w')
