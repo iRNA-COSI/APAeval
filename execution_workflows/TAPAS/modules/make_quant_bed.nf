@@ -18,6 +18,6 @@ process MAKE_QUANT_BED {
 
     script:
     """
-    make_quant_bed.py $tapas_quant_txt tapas_quant.bed
+    make_tapas_quant_bed.py $tapas_quant_txt tapas_quant.bed
     """
 }
