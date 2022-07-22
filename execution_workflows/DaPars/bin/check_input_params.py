@@ -12,6 +12,7 @@ def parse_args(args=None):
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
     parser.add_argument("IDENTIFICATION_OUT_SUFFIX", help="Name of DaPars output for the identification challenge.")
+    parser.add_argument("RELATIVE_USAGE_QUANTIFICATION_OUT_SUFFIX", help="Name of DaPars output for the relative usage quantification challenge.")
     parser.add_argument("DIFFERENTIAL_OUT", help="Name of DaPars output for the differential challenge.")
     parser.add_argument("RUN_IDENTIFICATION", help="Can either be 'true' or 'false'")
     parser.add_argument("RUN_RELATIVE_USAGE_QUANTIFICATION", help="Can either be 'true' or 'false'")

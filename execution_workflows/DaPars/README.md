@@ -24,8 +24,7 @@ columns:
 It is important to name samples of the same condition with the exact condition name under the condition
 column in the samplesheet since samples are grouped per condition to be processed in the differential step.
 To run DaPars with test data provided for APAeval, check the path to DaPars with `pwd` and replace 
-the `path_to` in samplesheet_example_files.csv or samplesheet_example_files_identification.csv with the path 
-from the `pwd` command. 
+the `path_to` in samplesheet_example_files.csv with the path from the `pwd` command. 
 
 When using your own data and input file instead of the provided test data and sample sheet, make sure to include in the 
 input file you are using the absolute paths to the four files, with the four column names following the column
@@ -46,6 +45,7 @@ To run with singularity, comment out line 49 in Dapars/nextflow.config file `doc
 Parameters used to run the two steps of DaPars are specified in conf/modules.config file. 
 Parameters relevant to the workflow itself are:
 - `run_identification` - set to true to obtain identification challenge output. Specifying any other value will throw an error.
+- `run_relative_usage_quantification` - set to true to obtain relative expression quantification challenge output. Specifying any other value will throw an error.
 - `run_differential` - set to true to obtain differential challenge output. Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Dapars/results/dapars/
 - `output_file` - name of the output file for the current run ending with .bed if running identification and .tsv if running differential
@@ -65,18 +65,24 @@ Parameters relevant to the workflow itself are:
 - Sample name for each row in the sample sheet should be unique
 - Every sample (every row) in the sample sheet will run through the identification workflow
 
+### Running the relatie usage quantification workflow
+- Set the 'run_relative_usage_quantification' parameter in conf/modules.config to true
+- Change 'relative_usage_quantification_out_suffix' parameter in conf/modules.config to 
+  the desired file suffix that ends with '.bed'
+- Sample name for each row in the sample sheet should be unique
+- Every sample (every row) in the sample sheet will run through the relative usage quantification workflow
+
 ### Running the workflow
 Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
 `nextflow main.nf --input samplesheet_example_files.csv`. 
 
 ## Output & post-processing
 When using the default output_dir parameter value in conf/modules.config, DaPars store results under
-DaPars/results/dapars/challenge_outputs folder. For identification 
+DaPars/results/dapars/challenge_outputs folder. For identification and relative usage quantification
 outputs, the files have sample names as prefixes to differentiate the different runs. The differential output file 
 will stay as the name specified in modules.config file.
 
 ## Notes
-- It is not possible to obtain quantification challenge output data since the TPM value in the output file
   is provided per transcript instead of per site. Hence, this tool is not compatible for quantification
   challenge. 
 - Make sure that the input bam files have leading 'chr' in the chromosome column. Otherwise, once 
