@@ -25,7 +25,7 @@ def parse_deAPA_output(file_in):
         chromosome = row['Gene'].split('|')[2]
         orientation = row['Gene'].split('|')[3]
         proximal_apa = int(row['Predicted_Proximal_APA'])
-        distal_relative_usage = int(row['A_1_PDUI'])
+        distal_relative_usage = float(row['A_1_PDUI'])
         proximal_relative_usage = 1 - distal_relative_usage
 
         # Get distal apa site from the Loci column
