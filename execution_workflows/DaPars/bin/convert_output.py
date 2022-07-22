@@ -43,8 +43,8 @@ def parse_deAPA_output(file_in):
         name = '|'.join([row['Gene'].split('|')[0], chromosome, loci, orientation])
 
         # add proximal and distal apa sites in separate rows
-        outputs.add((chromosome, str(proximal_apa), str(proximal_apa+1), name, distal_relative_usage, orientation))
-        outputs.add((chromosome, str(distal_apa), str(distal_apa+1), name, proximal_relative_usage, orientation))
+        outputs.add((chromosome, str(proximal_apa), str(proximal_apa+1), name, str(proximal_relative_usage), orientation))
+        outputs.add((chromosome, str(distal_apa), str(distal_apa+1), name, str(distal_relative_usage), orientation))
 
     return outputs
         
@@ -120,7 +120,7 @@ def main(args=None):
     if args.MODE == 'identification':
         convert_to_identification(args.FILE_IN, args.FILE_OUT)
     elif args.MODE == 'relative_usage_quantification':
-       convert_to_relative_usage_quantification(arges.FILE_IN, args.FILE_OUT)
+       convert_to_relative_usage_quantification(args.FILE_IN, args.FILE_OUT)
     elif args.MODE == 'differential':
         convert_to_differential(args.FILE_IN, args.FILE_OUT)
 

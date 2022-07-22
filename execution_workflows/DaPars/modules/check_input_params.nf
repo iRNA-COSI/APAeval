@@ -15,10 +15,12 @@ process CHECK_INPUT_PARAMS {
 
     script:
     run_identification = options.run_identification
+    run_relative_usage_quantification = options.run_relative_usage_quantification
     run_differential = options.run_differential
     identification_out_suffix = options.identification_out_suffix
+    relative_usage_quantification_out_suffix = options.relative_usage_quantification_out_suffix
     differential_out = options.differential_out
     """
-    check_input_params.py $identification_out_suffix $differential_out $run_identification $run_differential
+    check_input_params.py $identification_out_suffix $relative_usage_quantification_out_suffix $differential_out $run_identification $run_relative_usage_quantification $run_differential
     """
 }

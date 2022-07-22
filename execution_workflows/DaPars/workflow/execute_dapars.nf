@@ -32,12 +32,14 @@ def isOffline() {
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 def run_identification = modules['final_output'].run_identification
+def run_relative_usage_quantification = modules['final_output'].run_relative_usage_quantification
 def run_differential = modules['final_output'].run_differential
 
-include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
-include { PREPROCESS_FILES } from '../subworkflows/preprocess_files' addParams( options: [:] )
-include { RUN_IDENTIFICATION } from '../subworkflows/run_identification' addParams( options: [:] )
-include { RUN_DIFFERENTIAL } from '../subworkflows/run_differential' addParams( options: [:] )
+include { INPUT_CHECK                       } from '../subworkflows/input_check' addParams( options: [:] )
+include { PREPROCESS_FILES                  } from '../subworkflows/preprocess_files' addParams( options: [:] )
+include { RUN_IDENTIFICATION                } from '../subworkflows/run_identification' addParams( options: [:] )
+include { RUN_RELATIVE_USAGE_QUANTIFICATION } from '../subworkflows/run_relative_usage_quantification' addParams( options: [:] )
+include { RUN_DIFFERENTIAL                  } from '../subworkflows/run_differential' addParams( options: [:] )
 
 ////////////////////////////////////////////////////
 /* --           RUN MAIN WORKFLOW              -- */
@@ -52,6 +54,12 @@ workflow EXECUTE_DAPARS {
 
         if( run_identification ){
             RUN_IDENTIFICATION (
+                PREPROCESS_FILES.out.ch_convert_to_bedgraph_out,
+                PREPROCESS_FILES.out.ch_extracted_3utr_out
+            )
+        }
+        if( run_relative_usage_quantification ){
+            RUN_RELATIVE_USAGE_QUANTIFICATION (	
                 PREPROCESS_FILES.out.ch_convert_to_bedgraph_out,
                 PREPROCESS_FILES.out.ch_extracted_3utr_out
             )

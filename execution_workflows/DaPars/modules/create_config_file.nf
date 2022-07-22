@@ -28,7 +28,7 @@ process CREATE_CONFIG_FILE {
         fdr_cutoff = options.fdr_cutoff
         pdui_cutoff = options.pdui_cutoff
         fold_change_cutoff = options.fold_change_cutoff
-        if ( run_mode == "identification" ) {
+        if ( run_mode == "identification" || run_mode == "relative_usage_quantification" ) {
             config_output = sample + "_config"
         }
         else {
