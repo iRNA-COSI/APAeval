@@ -7,12 +7,16 @@ samples: "config/samples.csv"
 out_dir: "results/"
 
 # Path to GTF annotation file
-gtf: "../../../tests/test_data/gencode_2genes_noChr.vM18.annotation.gtf"
+gtf: "../../../tests/test_data/gencode_2genes_Chr_prefix.vM18.annotation.gtf"
 
 
 # Suffix for name of for per-sample identification output BED file
-# This will be output to <out_dir/<sample_name><out_bed_suffix>
-out_bed_suffix: .identified_polya.bed
+# This will be output to <out_dir/<sample_name><out_id_bed_suffix>
+out_id_bed_suffix: _DaPars2_01.bed
+
+# Suffix for name of per-sample fractional relative usage quantification output BED file
+# This will be output to <out_dir/<sample_name><out_rel_bed_suffix>
+out_rel_bed_suffix: _DaPars2_04.bed
 
 # Parameters
 # Minumum coverage for event to be considered for further analysis

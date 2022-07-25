@@ -1,7 +1,11 @@
 
 # DaPars2
 
-Execution workflow to run DaPars2 and generate poly(A) site identification challenge output. See [Notes section](#notes) for clarifications on exclusion from the quantification and differential usage challenges.
+Execution workflow to run DaPars2. The tool qualifies for the following APAeval benchmarking events:
+- poly(A) site identification
+- poly(A) site relative usage quantification
+
+See [Notes section](#notes) for clarifications on exclusion from the TPM quantification and differential usage challenges.
 
 
 Github repo: https://github.com/3UTR/DaPars2
@@ -68,7 +72,8 @@ bash run_local.sh
 
 ## Output & post-processing
 > *  DaPars2 output tables are generated per chromosome for each sample. Under the main results directory, these are available at `intermediate_<sample_name>/apa_<chr_name>/apa_result_temp.<chr_name>.txt`
-> * BED file of identified proximal and distal poly(A) sites per sample, generated at the base of the main results directory at `<sample_name><out_bed_suffix>` (out_bed_suffix is defined in `config/config.DaPars2.yaml`). The BED file is **unsorted**.
+> * BED file of identified proximal and distal poly(A) sites per sample, generated at the base of the main results directory at `<sample_name><out_id_bed_suffix>` (out_id_bed_suffix is defined in `config/config.DaPars2.yaml`). The BED file is **unsorted**.
+> * BED file of identified proximal and distal poly(A) sites per sample along with their fractional relative usage to other PAS in the same region in the 'score' column. The file is generated at the base of the main results directory at `<sample_name><out_rel_bed_suffix>` (out_rel_bed_suffix is defined in `config/config.DaPars2.yaml`). The BED file is **unsorted**.
 
 
 
@@ -76,6 +81,6 @@ bash run_local.sh
 > * This workflow uses `Dapars2_Multi_Sample.py` where one can assign chromosome name as a command line argument, whereas `DaPars2_Multi_Sample_Multi_Chr.py` is hardcoded for standard human chromosomes with the 'chr' prefix. Both scripts otherwise produce identical output with test data.
 > * In [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html), the input files are in wiggle format; however, the testing data that it provides is in bedgraph format. This workflow generates bedgraph files and runs successfully without error on test data
 > * The [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html) states a dependency on R but no scripts appears to use R. The Docker image does not install R and Dapars2 runs successfully without error on test data.
-> * DaPars2 only provides polyA site quantification through it's relative **P**ercent **D**istal site **U**sage **I**ndex (PDUI) metric. Our current quantification benchmarks require a [TPM value per polyA site](https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/execution_output_specification.md#format-02), so DaPars2 is not included for the quantification challenge as it stands.
+> * DaPars2 only provides polyA site quantification through it's relative **P**ercent **D**istal site **U**sage **I**ndex (PDUI) metric. Since DaPars2 uses a '2 site model' for each region, we can obtain the proximal site fractional relative usage by subtracting the PDUI from 1. As such, DaPars2 qualifies for the [relative usage quantification challenge ('Format 04') but not the 'TPM' quantification challenge ('Format 02')](https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/execution_output_specification.md#format-02).
 > * Unlike DaPars, DaPars2 does not perform differential polyA site usage testing and cannot be included for the differential usage challenge.
 > * Owing to bug report at 3UTR/DaPars2#8, the 'Loci' column start coordinates (which originate from a BED file and should follow BED coordinate conventions) are shifted forward by 1nt. If extracted without modification, distal poly(A) sites on the minus strand would be 1nt upstream of the source transcript. 1nt is subtracted from the 'Loci start' coordinate for transcripts on the minus strand to ensure they match the source transcript.

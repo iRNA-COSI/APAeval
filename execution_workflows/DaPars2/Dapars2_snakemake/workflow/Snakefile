@@ -10,12 +10,14 @@ import sys
 
 samples = pd.read_csv(config["samples"]).set_index("sample", drop=False)
 
+out_suffixes = [config["out_id_bed_suffix"], config["out_rel_bed_suffix"]]
+
 LOG_DIR = os.path.join(config["out_dir"], config["logs_subdir"],"")
 
 include: "rules/preprocess_annotation.smk"
 include: "rules/preprocess_seq.smk"
 include: "rules/dapars2.smk"
-include: "rules/get_identification_bed.smk"
+include: "rules/get_output_beds.smk"
 
 #-------------------------------------------------------------------------------
 localrules: finish
@@ -26,8 +28,9 @@ rule finish:
     """
     input:
         final = expand(
-            os.path.join(config["out_dir"], "{sample}" + config["out_bed_suffix"]),
-            sample=samples.index.values)
+            os.path.join(config["out_dir"], "{sample}" + "{suffixes}"),
+            sample=samples.index.values,
+            suffixes=out_suffixes)
 
 
 
