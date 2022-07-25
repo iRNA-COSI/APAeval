@@ -55,37 +55,35 @@ Parameters relevant to the workflow itself are:
 ### Running the differential workflow
 - Set the 'run_differential' parameter in conf/modules.config to true
 - Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
-- Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file 
+- Ensure the sample sheet contains exactly two distinct conditions in the condition column. An example input file
   is samplesheet_example_files.csv
 
 ### Running the identification workflow
 - Set the 'run_identification' parameter in conf/modules.config to true
-- Change 'identification_out_suffix' parameter in conf/modules.config to 
+- Change 'identification_out_suffix' parameter in conf/modules.config to
   the desired file suffix that ends with '.bed'
 - Sample name for each row in the sample sheet should be unique
 - Every sample (every row) in the sample sheet will run through the identification workflow
 
 ### Running the relatie usage quantification workflow
 - Set the 'run_relative_usage_quantification' parameter in conf/modules.config to true
-- Change 'relative_usage_quantification_out_suffix' parameter in conf/modules.config to 
+- Change 'relative_usage_quantification_out_suffix' parameter in conf/modules.config to
   the desired file suffix that ends with '.bed'
 - Sample name for each row in the sample sheet should be unique
 - Every sample (every row) in the sample sheet will run through the relative usage quantification workflow
 
 ### Running the workflow
-Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
-`nextflow main.nf --input samplesheet_example_files.csv`. 
+Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with
+`nextflow main.nf --input samplesheet_example_files.csv`.
 
 ## Output & post-processing
 When using the default output_dir parameter value in conf/modules.config, DaPars store results under
 DaPars/results/dapars/challenge_outputs folder. For identification and relative usage quantification
-outputs, the files have sample names as prefixes to differentiate the different runs. The differential output file 
+outputs, the files have sample names as prefixes to differentiate the different runs. The differential output file
 will stay as the name specified in modules.config file.
 
 ## Notes
-  is provided per transcript instead of per site. Hence, this tool is not compatible for quantification
-  challenge. 
-- Make sure that the input bam files have leading 'chr' in the chromosome column. Otherwise, once 
+- Make sure that the input bam files have leading 'chr' in the chromosome column. Otherwise, once
   converted to input bedgraph file for DaPars, the workflow will exit with an error
 ![](chr_prefix_error_msg.png)
    This is because DaPars checks for the leading 'chr' in the process and would error out otherwise.
@@ -94,7 +92,7 @@ will stay as the name specified in modules.config file.
 - DaPars' [documentation](http://xiazlab.org/dapars_tutorial/html/DaPars.html) specifies that a gene symbol file
   is required. The gene symbol file consists of a column of transcript id and another column of gene symbol. This
   file is then used to include the gene symbol for each row in the output file under `Gene` column, for example looks
-  like `ENSMUST00000203335.1|Wnk1|chr6|-`. However, since the differential output file requires a gene id instead of a 
+  like `ENSMUST00000203335.1|Wnk1|chr6|-`. However, since the differential output file requires a gene id instead of a
   gene symbol, this workflow extracts a gene symbol file required by DaPars by populating it with transcript id and gene id,
   such that the `Gene` column in Dapars' output file looks like `ENSMUST00000203335.1|ENSMUSG00000045962.16|chr6|-`.The gene
   id for each row can then be easily extracted for differential output file by taking the second item from the output above.
