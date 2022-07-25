@@ -20,11 +20,11 @@ def parse_args(args=None):
 
 def main(args=None):
     args = parse_args(args)
-    if args.RUN_IDENTIFICATION == 'true':
+    if args.RUN_IDENTIFICATION == True:
         if not args.IDENTIFICATION_OUT_SUFFIX.endswith(".bed"):
             msg = "The identification output file name should end with '.bed'"
             sys.exit(msg) 
-    if args.RUN_RELATIVE_USAGE_QUANTIFICATION == 'true':
+    if args.RUN_RELATIVE_USAGE_QUANTIFICATION == True:
         if not args.IDENTIFICATION_OUT_SUFFIX.endswith(".bed"):
             msg = "The relative usage quantification output file name should end with '.bed'"
             sys.exit(msg)

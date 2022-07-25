@@ -11,7 +11,6 @@ def output_files = modules['output_files']
     Check IsoSCM run mode and file name input parameters
 */
 process CHECK_INPUT_PARAMS {
-    publishDir "${params.outdir}/isoscm/${options.output_dir}", mode: params.publish_dir_mode
     container "docker.io/apaeval/isoscm:latest"
 
     script:
