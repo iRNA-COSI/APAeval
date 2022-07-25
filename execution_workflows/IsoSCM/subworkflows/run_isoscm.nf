@@ -3,9 +3,12 @@
  */
 
 def modules = params.modules.clone()
-
+def run_identification = modules['run_mode'].run_identification
+def run_relative_usage_quantification = modules['run_mode'].run_relative_usage_quantification
 include { ISOSCM_ASSEMBLE } from '../modules/isoscm_assemble' addParams( options: [:] )
 include { POSTPROCESS_IDENTIFICATION } from '../modules/postprocess_identification' addParams( options: [:] )
+include { ISOSCM_COMPARE } from '../modules/isoscm_compare' addParams( options: [:] )
+include { POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION } from '../modules/postprocess_relative_usage_quantification' addParams( options: [:] )
 
 workflow RUN_ISOSCM {
      take:
@@ -17,12 +20,23 @@ workflow RUN_ISOSCM {
      */
      ISOSCM_ASSEMBLE( ch_aligned_bam_files_dir )
 
-     /*
-        Get identification output file
-     */
      ISOSCM_ASSEMBLE.out.ch_isoscm_assemble_out
          .map { it -> [ it[0], it[1] ] }
          .set{ ch_postprocess_identification_in }
-     POSTPROCESS_IDENTIFICATION( ch_postprocess_identification_in ) 
+     
+     /*
+        Get identification output file
+     */
+     if ( run_identification ) {
+         POSTPROCESS_IDENTIFICATION( ch_postprocess_identification_in ) 
+     }
+
+    /*
+        Get relative usage quantification output file
+    */
+    if ( run_relative_usage_quantification ) {
+        ISOSCM_COMPARE( ch_aligned_bam_files_dir )
+        POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION( ch_postprocess_relative_usage_quantification_in )
+    }
 }
 
