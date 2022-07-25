@@ -92,6 +92,7 @@ def convert_to_identification(file_in, file_out):
     identification_outputs = parse_deAPA_output(file_in)
     for identification_output in identification_outputs:
         # change the score column to '.'
+        identification_output = list(identification_output)
         identification_output[4] = "."
         identification_out.write("\t".join(identification_output) + "\n")
 
