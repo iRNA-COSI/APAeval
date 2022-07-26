@@ -13,16 +13,17 @@ process POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION {
         label 'process_high'
 
         input:
-        tuple val(sample), path(compare_out_relative_usage_quantification)
+        tuple val(sample), path(compare_output)
 
         output:
-        path(relative_usage_quantification_output_file), emit: ch_postprocess_relative_usage_quantification_out
+        path(relative_usage_quantification_output_file), emit: ch_relative_usage_quantification_postprocess_out
 
         script:
         output_dir = "${output_files.output_dir}"
         relative_usage_quantification_output_file = sample + "_" + relative_usage_quantification_out_suffix
-        
+        run_mode = "relative_usage_quantification"
+ 
         """
-        postprocess_relative_usage_quantification.py $compare_out_relative_usage_quantification $relative_usage_quantification_output_file
+        postprocess.py $compare_output $run_mode $relative_usage_quantification_output_file
         """
  }
