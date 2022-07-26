@@ -16,8 +16,9 @@ process MAKE_QUANT_BED {
         path "*", emit: ch_qapa_quant_bed
 
         script:
-        qapa_quant_bed = "qapa_quant.bed"
+        qapa_quant_bed_ppau = "qapa_quant_ppau.bed"
+        qapa_quant_bed_tpm  = "qapa_quant_tpm.bed"
         """
-        make_quant_bed.py $qapa_results $qapa_quant_bed
+        make_quant_bed.py $qapa_results $qapa_quant_bed_ppau $qapa_quant_bed_tpm
         """
  }
