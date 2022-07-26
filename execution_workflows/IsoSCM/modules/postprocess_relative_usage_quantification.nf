@@ -16,7 +16,7 @@ process POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION {
         tuple val(sample), path(compare_out_relative_usage_quantification)
 
         output:
-        path(output_file), emit: ch_postprocess_relative_usage_quantification_out
+        path(relative_usage_quantification_output_file), emit: ch_postprocess_relative_usage_quantification_out
 
         script:
         output_dir = "${output_files.output_dir}"

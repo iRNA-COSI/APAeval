@@ -10,19 +10,19 @@ process ISOSCM_COMPARE {
         label 'process_high'
 
         input:
-        tuple val(sample), val(strand), path(aligned_bam), path(aligned_bai)
+        tuple val(sample), path(assemble_out_xml_rename)
 
         output:
-        tuple val(sample), path(assemble_out_identification_rename), emit: ch_isoscm_assemble_out
+        tuple val(sample), path(relative_usage_quantification_out), emit: ch_isoscm_compare_out
 
         script:
-        assemble_out_identification_rename = "identification_out"
+        compare_out_relative_usage_quantification_rename = "relative_usage_quantification_out"
         
-      	assemble_out_identification = sample + ".cp.gtf"
+      	compare_out = sample + ".txt"
         
         """
-        java -Xmx100G -jar /IsoSCM.jar assemble -bam $aligned_bam -base $sample -s $strand -dir isoscm
-
-        mv isoscm/tmp/$assemble_out_identification $assemble_out_identification_rename
+        java -Xmx100G -jar /IsoSCM.jar compare -base $sample -x1 $assemble_out_xml_rename -x2 $assemble_out_xml_rename
+        
+        mv compare/$compare_out $compare_out_relative_usage_quantification_rename
         """
 }

@@ -35,8 +35,8 @@ workflow RUN_ISOSCM {
         Get relative usage quantification output file
     */
     if ( run_relative_usage_quantification ) {
-        ISOSCM_COMPARE( ch_aligned_bam_files_dir )
-        POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION( ch_postprocess_relative_usage_quantification_in )
+        ISOSCM_COMPARE( ISOSCM_ASSEMBLE.out.ch_isoscm_assemble_out_xml )
+        POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION( ISOSCM_COMPARE.out.ch_isoscm_compare_out )
     }
 }
 
