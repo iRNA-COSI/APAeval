@@ -5,9 +5,9 @@ params.options = [:]
 def options    = initOptions(params.options)
 def modules = params.modules.clone()
 def output_files = modules['output_files'].clone()
-def identification_out_suffix = output_files.identification_out_suffix
+def relative_usage_quantification_out_suffix = output_files.relative_usage_quantification_out_suffix
 
-process POSTPROCESS_IDENTIFICATION {
+process POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION {
         publishDir "${params.outdir}/isoscm/${output_dir}", mode: params.publish_dir_mode
         container "docker.io/apaeval/isoscm:latest"
         label 'process_high'
@@ -16,14 +16,14 @@ process POSTPROCESS_IDENTIFICATION {
         tuple val(sample), path(compare_output)
 
         output:
-        path(identification_output_file), emit: ch_identification_postprocess_out
+        path(relative_usage_quantification_output_file), emit: ch_relative_usage_quantification_postprocess_out
 
         script:
         output_dir = "${output_files.output_dir}"
-        identification_output_file = sample + "_" + identification_out_suffix
-        run_mode = 'identification'
+        relative_usage_quantification_output_file = sample + "_" + relative_usage_quantification_out_suffix
+        run_mode = "relative_usage_quantification"
  
         """
-        postprocess.py $compare_output $run_mode $identification_output_file
+        postprocess.py $compare_output $run_mode $relative_usage_quantification_output_file
         """
  }
