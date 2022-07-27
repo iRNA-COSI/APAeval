@@ -1,0 +1,464 @@
+"""
+Snakemake pipeline for APA-Scan.
+For help see: https://snakemake.readthedocs.io/en/stable/index.html.
+"""
+
+
+
+
+
+##### READ THIS ###############################################################
+
+# I had to edite the APA-Scan.py and methods.py scripts themselves, so it is a
+# bit different to these files that you can access from the creators GitHub.
+# All the changes are marked in the provided versions of these files with all
+# caps and "~ EM" at the end to indicate that it was me, Euan McDonnell, adding
+# them. Basically I'm not convinced their use of the configuration.ini file,
+# particularly with respect to filepaths, works. I had to edit some strings that
+# corresponding to filenames, mess with changing directories a bit and remove
+# an argument from one function as it wasn't happy at all with it there.
+
+# The APA-Scan.py script works using a configuration.ini file that takes as
+# input some directory and filenames. The ones you need (and that it seems to
+# work for) are:
+#   1. Input directories for your 2 RNA-Seq conditions (one for each condition,
+#      ie for the test data, srsf3 and control)
+#   2. Filenames for the fasta genome file and NCBI RefSeq annotation file ( can
+#      download from: https://genome.ucsc.edu/cgi-bin/hgTables )
+#   3. Output directory to save the output to.
+#
+# There are options to include PAS-Seq data and to use some "extended" UTR mode,
+# however the inclusion and toggling of these don't seem to work so let's just
+# ignore it.
+
+###############################################################################
+
+
+
+
+
+# ------------------------------------------------------------------------------
+# Recommendations
+
+
+### COMMAND LINE EXECUTION
+# Ignoring executor/platform-specific and resource needs, ecommend that you run:
+#
+#   snakemake --use-conda --forcerun generate_configurationfile
+#
+#       --forcerun (or -R ) option is there so that the configurationfile
+#       generation is forced to run even if the output configuration.ini is
+#       present. Basically --forcerun allows you to specifically tell
+#       Snakemake to rerun certain rules, even if the output files of that rule
+#       are present and complete. This is so that you can ensure that it is
+#       updated for new files/sets of samples etc.
+
+
+### RULE GROUPING
+# I've chosen to group all the rules together as the only one that requires any
+# real computational power is run_apa_scan. The rest are literally just file-
+# editing, so it's greedy and wasteful that they get their own cores. This might
+# mean you don't actually need --forcerun especially on a HPC/cloud executor,
+# but I'm not sure and it's best to be safe I think.
+
+
+### CODING
+# All I get when running snakemake --lint is it complaining that the text of
+# shell section of the rule generate_configurationfile refers to an absolute
+# path, however this is actually not a huge issue because I'm using
+# "os.getcwd()" meaning that the script will be tailored to the path of the
+# machine it's been run on. As far as I can tell you NEED to provide the abs-
+# olute path in the configuration.ini file else APA-Scan.py gets aggy and starts
+# throwing out errors.
+# I also get an error saying that I'm using old string formatting and should be
+# using "f". I actually find the string addition format really easy to read and
+# I think for this purpose it actually works well. I also don't see it really
+# causing any issues to the actual workflow itself.
+
+
+
+
+
+# ------------------------------------------------------------------------------
+# Packages, Libraries and Sources
+
+import pandas as pd
+
+
+
+
+# ------------------------------------------------------------------------------
+# Config/Metadata
+
+# Don't actually need this for the samplenames, you just need to know which
+# samples belong to which condition (ie in the test_data, control or srsf3).
+# I'm tempted to modify the APA-Scan.py script to work more like a standard
+# command line function, but obvs that'll depend on time
+
+
+# Read in config file
+configfile: "config/config.APA-Scan.yaml"
+
+# Convert config to dataframe
+# No need to call abspath here
+samples = pd.read_csv(config["sample_tbl"], sep=",")
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# Parameters, filenames & sample data
+
+
+#### NOTES #####################################################################
+
+# APA-Scan requires your 2 levels of input bams to be in their own separate folders.
+# So I imagine this'll carry on from the previous RNA-Seq alignment step. They just
+# need to be in bam format and there can be multiple in a directory.
+# MAY NEED TO ADJUST THE INDEXING DEPENDING ON THE LEVELS, BUT CAN PROBABLY MAKE
+# THIS CUSTOMISABLE FROM THE COMMAND LINE OR A CONFIG FILE ETC. THIS IS BECAUSE
+# THE LAYOUT OF THESE WILL DICTATE THE ORIENTATION OF LEVELS THAT ARE COMPARED
+# BY APA-SCAN. IE FOR THE TEST DATA, THIS MAKES SO SRSF3 is CONDITION1 AND
+# THE CONTROL IS CONDITION 2
+
+################################################################################
+
+
+
+# Parameters
+THREADS = config["threads"]
+
+# Conda
+CONDA_YAML = config["method"] + ".yaml"
+
+# Scripts
+CONVERT_ID_PYSCRIPT = config["scripts"] + "/convert_geneids.py"
+
+# Input file directories
+CURRENT_DIR = os.getcwd()
+conds = samples["condition"].unique()
+
+assert len(conds) == 2, f"2 distinct condition strings must be present in 'condition' column of sample table - there are {len(conds)}"
+
+BASE_COND = conds[0]
+TEST_COND = conds[1]
+
+BASE_SAMPLES = samples.loc[samples["condition"] == BASE_COND, "sample"].tolist()
+TEST_SAMPLES = samples.loc[samples["condition"] == TEST_COND, "sample"].tolist()
+
+# Output filename shorthands
+PARAMCODE = config["paramcode"]
+APA_SCAN_OUTPUT = config["method"].replace("-","_") + "_" + BASE_COND + "_Vs_" + TEST_COND + ".xlsx" # Raw output of APA-Scan.py
+APA_SCAN_OUTPREFIX = PARAMCODE + "_" + config["method"] # Prefix for final APA-Scan output
+
+# Annotation file
+# These NEED to be in the same directory you run APA-Scan.py from.
+ANNOTATION = config["gtf"]
+GENOMEFILE = config["genome"]
+
+
+# Print to compare conditions and check correct way round
+# print(">>>>> COMPARING: ")
+# print("   >> " + BASE_COND)
+# print("   >> " + TEST_COND)
+# print("   >> APA-Scan RAW OUTPUT IS :- " + config["out_dir"] + "/" + APA_SCAN_OUTPUT)
+
+
+
+
+
+# Final Target Rule ------------------------------------------------------------
+localrules: finish
+
+# Final output .xlsx file, that's been renamed with rename_output.
+
+rule finish:
+    """Rule that specifies the final output.
+    """
+    input:
+        os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_01.bed"),
+        os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_03.tsv")
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# Preprocessing: obtain suitable input formats
+
+
+#### NOTES #####################################################################
+
+# What's going on here is that APA-Scan is set up so it reads a specific file,
+# "configuration.ini" to get the information it needs to run, such as where
+# the data, annotation and genome files are and how to output them.
+# What this function below does is there's a "blank" configuration file present
+# which has fields that correspond to different directories and files etc. These
+# are in the form "dataofinterest_dir", for example input_dir1, input_dir2,
+# annotation_dir and genome_dir. Using sed, we replace these tags with our
+# dirs/files of interest, which are set at the top. Output is just set to the
+# curren working directory as APA-Scan again is really painful and picky so
+# best not to tempt fate and the bioinformatics demons.
+
+# It's s obviously possible to just
+# define the configuration.ini file before running the whole pipeline, but this
+# wont work for multiple runs with different samples and studies. This is my
+# attempt to make it a bit generalisable (touch wood). I'm hoping whatever levels
+# you want to compare, you could parse that in some way from the previous step?
+
+################################################################################
+
+rule gtfToGenePred:
+    """
+    Generate input transcript annotation format for APA-Scan
+    Expects 'RefSeq' table format, with first column corresponding to 'bin'
+    https://genome.ucsc.edu/cgi-bin/hgTables?db=hg38&hgta_group=genes&hgta_track=refSeqComposite&hgta_table=ncbiRefSeqCurated&hgta_doSchema=describe+table+schema
+    gtfToGenePred does not output this bin field as it is not part of the GTF transcript annotation
+    The 1st awk line adds a dummy 1st field so column indexes are as expected for APA-Scan.py
+    2nd awk line adds a header column (required for APA-Scan)
+    """
+    input:
+        config["gtf"]
+
+    output:
+        os.path.join(config["out_dir"], "annotation.txt")
+
+    params:
+        header = "\t".join(["bin", "name",
+                            "chrom", "strand",
+                            "txStart", "txEnd",
+                            "cdsStart", "cdsEnd",
+                            "exonCount", "exonStarts",
+                            "exonEnds", "score",
+                            "name2", "cdsStartStat",
+                            "cdsEndStat", "exonFrames"])
+    conda:
+        os.path.join(config["envs"], CONDA_YAML)
+
+    log:
+        os.path.join(config["out_dir"], "logs", "gtfToGenePred.log")
+
+    shell:
+        """
+        (gtfToGenePred -genePredExt {input} {output}.tmp
+        awk 'BEGIN {{FS=OFS}} {{ print "0\t"$0}}' {output}.tmp | \
+        awk -F"\\t" 'BEGIN {{ print "{params.header}" }}1' > {output} && \
+        rm {output}.tmp
+        ) &> {log}
+        """
+
+rule bams_to_condition_subdir:
+    """
+    Takes BAM files in sample table,
+    creates soft links to provided paths under distinct subdirectories of outdir,
+    so all BAMs of the same condition are under their own directory
+    (requirement of APA-Scan)
+    """
+
+    input:
+        sample_tbl = config["sample_tbl"]
+
+    output:
+        base_cond = expand(os.path.join(config["out_dir"],BASE_COND, "{sample}.bam"), sample=BASE_SAMPLES),
+        test_cond = expand(os.path.join(config["out_dir"],TEST_COND, "{sample}.bam"), sample=TEST_SAMPLES)
+
+    params:
+        main_outdir = config["out_dir"]
+
+    log:
+        os.path.join(config["out_dir"], "logs", "bams_to_condition_subdir.log")
+
+    shell:
+        """
+        (python3 workflow/scripts/condition_bams_to_subdirs.py \
+        -i {input.sample_tbl} \
+        -o {params.main_outdir}) &> {log}
+        """
+
+rule APA_Scan_config_file:
+    input:
+        annotation=os.path.join(config["out_dir"], "annotation.txt"),
+        bams_base_cond=expand(os.path.join(config["out_dir"], BASE_COND, "{sample}.bam"), sample=BASE_SAMPLES),
+        bams_test_cond=expand(os.path.join(config["out_dir"], TEST_COND, "{sample}.bam"), sample=TEST_SAMPLES)
+
+    output:
+        os.path.join(config["out_dir"], "configuration.ini")
+
+    params:
+        base_cond_dir = os.path.join(config["out_dir"], BASE_COND, ""),
+        test_cond_dir = os.path.join(config["out_dir"], TEST_COND, ""),
+        genome_fa = config["genome"],
+        extended_mode = config["run_extended_mode"],
+        outdir = os.path.join(config["out_dir"], "APA-Scan_output")
+
+    log:
+        os.path.join(config["out_dir"], "logs", "APA_Scan_config_file.log")
+
+    shell:
+        """
+        python workflow/scripts/create_apascan_config.py \
+        -b {params.base_cond_dir} \
+        -t {params.test_cond_dir} \
+        -a {input.annotation} \
+        -f {params.genome_fa} \
+        -e {params.extended_mode} \
+        -d {params.outdir} \
+        -o {output}
+        """
+
+
+rule ln_config_to_pwd:
+    """
+    APA-Scan hardcodes for the config file to be present in the current working directory
+    To prevent this from over-writing across multiple runs
+    Make a temporary config file in the PWD (soft-linked to run-specific config generated by rule APA_Scan_config_file)
+    """
+
+    input:
+        os.path.join(config["out_dir"], "configuration.ini")
+
+    output:
+        temp("configuration.ini")
+
+    log:
+        os.path.join(config["out_dir"], "logs", "ln_config_to_pwd.log")
+
+    group:
+        "APA-Scan_pre_processing"
+
+    shell:
+        """
+        (ln -s {input} {output}) &> {log}
+        """
+
+
+rule run_apa_scan:
+    """Run APA-Scan
+    """
+    input:
+        "configuration.ini"
+    output:
+        os.path.join(config["out_dir"], "APA-Scan_output", APA_SCAN_OUTPUT)
+    threads: THREADS
+    conda: os.path.join(config["envs"], CONDA_YAML)
+    group: "APA_SCAN"
+    log:
+        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".run_apa_scan.execute.python_script.log")
+    shell:
+        "( python3 APA-Scan.py ) &> {log}"
+
+
+# This rule just converts the output .xslx from APA-Scan to a csv
+rule convert_to_tsv:
+    """
+    This tool takes the xlsx output of APA-Scan and converts it to .tsv
+    """
+    input:
+        os.path.join(config["out_dir"], "APA-Scan_output", APA_SCAN_OUTPUT)
+    output:
+        os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + ".genenames.tsv")
+    threads: THREADS
+    conda: os.path.join(config["envs"], CONDA_YAML)
+    group: "APA_SCAN"
+    log:
+        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".convert_to_tsv.postprocess_APA-Scan.log")
+    shell:
+        "( xlsx2csv -d 'tab' {input} > {output} ) &> {log} "
+
+
+rule convert_gene_ids:
+    """
+    This tool takes the .tsv format of APA-Scan and converts it to the desired formatted .bed and .tsv files
+    """
+    input:
+        infile=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + ".genenames.tsv")
+    output:
+        out01=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_01.bed"),
+        out03=os.path.join(config["out_dir"], APA_SCAN_OUTPREFIX + "_03.tsv")
+    threads: THREADS
+    conda: os.path.join(config["envs"], CONDA_YAML)
+    group: "APA_SCAN"
+    log:
+        os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".change_gene_ids_and_save.postprocess.log")
+    shell:
+          " python " + CONVERT_ID_PYSCRIPT + \
+                   " {input.infile} {output.out01} {output.out01} "
+
+
+# rule generate_configurationfile:
+#     """Generate configuration.ini file for input to run_apa_scan
+#     """
+#     input:
+#         "blank_configuration.ini"
+#     output:
+#         "configuration.ini"
+#     threads: THREADS
+#     conda: os.path.join(config["envs"], CONDA_YAML)
+#     group: "APA_SCAN"
+#     log:
+#         os.path.join(config["local_log"], APA_SCAN_OUTPREFIX + ".generate_configurationfile.preprocess.log")
+#     shell:
+#         "( sed " + \
+#
+#              # Set the rna-seq input directories
+#              " 's#input_rnaseq1#" + CURRENT_DIR + "/" + CONDITION1 + "#g; " + \
+#              "  s#input_rnaseq2#" + CURRENT_DIR + "/" + CONDITION2 + "#g; " + \
+#
+#              # Set the PAS-seq input directories
+# #             "  s#input_passeq1#" + os.getcwd() + "/test/" + PASSEQ1 + "#g; " + \ # BLANKED OUT AS CAN'T GET THE SCRIPT WORKING WITH PAS-Seq DATA
+# #             "  s#input_passeq2#" + os.getcwd() + "/test/" + PASSEQ2 + "#g; " + \ # BLANKED OUT AS CAN'T GET THE SCRIPT WORKING WITH PAS-Seq DATA
+#
+#              # Set the annotation and genome directories
+#              "  s#annotation_name#" + CURRENT_DIR + "/" + ANNOTATION + "#g; " + \
+#              "  s#genome_name#" + CURRENT_DIR + "/" + GENOMEFILE + "#g; " + \
+#
+#              # Set the output directory
+#              "  s#out_dir#" + CURRENT_DIR + "/" + os.path.join(config["out_dir"]) + "#g' " + \
+#
+#              # Input/Output and Log
+#              " {input} > {output} ) &> {log} "
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# Method-specific rules
+
+
+#### NOTES #####################################################################
+
+# This just runs the APA-Scan.py script, which doesn't take command-line inputs
+# and instead you provide the configuration.ini file which tells the software
+# where to look for the input files (RNA-Seq and PAS-Seq), where the
+# annotation/genome files are found and where to output the result to.
+# because you don't specify input/output from the command line and you don't
+# specify the input files, the configuration.ini file is the ONLY input you
+# need
+
+################################################################################
+
+
+
+#-------------------------------------------------------------------------------
+# Postprocessing: obtain suitable output formats (for benchmarks)
+
+
+# This takes the .csv from above, changes the gene name to ensembl gene id and
+# then saves it as a both a bed file (Format 01) and as Format 02
+# (see Execution worfklows of README on GitHub: https://github.com/iRNA-COSI/APAeval/tree/main/execution_workflows )
+
+
+
+
+
+
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred, check log at %s." % {log})
