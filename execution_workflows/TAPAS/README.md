@@ -16,7 +16,7 @@ columns:
 
 - sample: name of the sample for logs (e.g control_replicate1)
 - bam: BAM input file for the sample
-- gtf: reference_annotation.gtf file
+- read_length: read length of the sample
 
 ### Docker and Singularity containers
 This workflow uses docker containers. To run, make sure that docker is installed and running
@@ -28,7 +28,6 @@ This workflow uses docker containers. To run, make sure that docker is installed
 Parameters used to run the TAPAS are specified in the nextflow.config file.
 Parameters relevant to the workflow itself are:
 - `input` - samplesheet.csv
-Note: TAPAS also allows users to build their own model during the TAPAS run, but this pipeline does not support building one's own model (one would have to build his/her own model by running TAPAS outside of this pipeline). Please refer to [TAPAS's documentation](https://github.com/luskry/TAPAS#options)
 
 ### Running the TAPAS execution workflow
 - Download the test data [here](to be added). The current dataset is in a genomic region where there are enough reads to test TAPAS's PAS quantification functionality.
@@ -44,7 +43,7 @@ nextflow main.nf --input samplesheet.csv -profile <docker/singularity>
 ```
 
 ## Output & post-processing
-TAPAS outputs a gtf file containing both the TAPAS identified entries and the entries from the inputted gtf files. Hence, the post-processing of the TAPAS results filters out the gtf entries from the reference gtf file and only selects entries that indicates TAPAS as their source. The TAPAS entries are formatted into a bed file with the following columns:
+TAPAS outputs a file containing TAPAS identified entries, which are formatted into a bed file with the following columns:
 ```
 chrom,chromStart,chromEnd,name,score,strand
 ```

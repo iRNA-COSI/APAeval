@@ -12,7 +12,7 @@ process TAPAS_QUANT{
   container "docker.io/apaeval/tapas:1.0"
 
   input:
-  tuple path(tapas_ref), val(sample), path(read_coverage)
+  tuple path(tapas_ref), val(sample), path(read_coverage), val(read_length)
     
   output:    
   path "refFlat*", emit: filtered_txt
@@ -21,7 +21,7 @@ process TAPAS_QUANT{
   script:
   tapas_quant_out="tapas_quant_"+"$read_coverage"
   """
-  /APA_sites_detection -ref $tapas_ref -cov $read_coverage -o $tapas_quant_out -l 76
+  /APA_sites_detection -ref $tapas_ref -cov $read_coverage -o $tapas_quant_out -l $read_length
   """
 }
 

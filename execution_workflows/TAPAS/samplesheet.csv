@@ -1,2 +1,2 @@
-sample,bam,gtf
-sample,[/path/to]/SRR6795721.bam,[/path/to]/gencode.v39.annotation.gtf
+sample,bam,read_length
+sample,[/path/to]/SRR6795721.bam,76

@@ -2,6 +2,7 @@
 
 import sys
 bed_path,gtf_path=sys.argv[1],sys.argv[2]
+tapas_ref_path=sys.argv[3]
 def readGTF(gtf_path):
  transcript2gene={}
  gtf=open(gtf_path,"r")
@@ -18,7 +19,6 @@ def readGTF(gtf_path):
  return transcript2gene
 transcript2gene=readGTF(gtf_path)
 
-tapas_ref_path="tapas_ref.txt"
 bed=open(bed_path,"r")
 outfile=open(tapas_ref_path,"w")
 for ln in bed:

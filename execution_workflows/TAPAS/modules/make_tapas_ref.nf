@@ -20,8 +20,9 @@ process MAKE_TAPAS_REF{
   path "*.txt" , emit: tapas_ref
 
   script:
+  tapas_ref_path="tapas_ref.txt"
   """
-  /gtfTobed.py --gtf $gtf --out_bed $out_bed
+  /gtfTobed.py --gtf $gtf --out_bed $out_bed $tapas_ref_path
   make_tapas_ref.py $out_bed $gtf
   """
 }

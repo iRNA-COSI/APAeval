@@ -14,6 +14,7 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 // Check mandatory parameters (missing protocol or profile will exit the run.)
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+if (params.gtf) { ch_gtf = file(params.gtf) } else { exit 1, 'Input gtf not specified!' }
 
 // Function to check if running offline
 def isOffline() {
@@ -51,10 +52,6 @@ workflow EXECUTE_TAPAS{
          INPUT_CHECK ( ch_input )
                .set { ch_sample }
 
-         ch_sample
-               .map { it -> it[2] }
-               .unique()
-               .set { ch_gtf }
          MAKE_TAPAS_REF ( ch_gtf, "tapas.bed" )
 
          SAMTOOLS ( ch_sample )

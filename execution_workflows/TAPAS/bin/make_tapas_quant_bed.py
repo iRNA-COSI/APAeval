@@ -16,6 +16,6 @@ for ln in tapa_quant_txt:
     chromEnd=str(int(chromStart)+1)
    elif strand == '-':
     chromEnd=sites[i]
-    chromStart=str(int(chromEnd)+1)
+    chromStart=str(int(chromEnd)-1)
    outbed.write('\t'.join([chrom,chromStart,chromEnd,name,score,strand])+'\n')
 outbed.close()
