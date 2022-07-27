@@ -1,0 +1,159 @@
+
+# ------------------------------------------------------------------------------
+# Packages, Libraries and Sources
+
+import pandas as pd
+import os
+
+
+# ------------------------------------------------------------------------------
+# Config/Metadata
+
+
+# Convert config to dataframe
+samples = pd.read_csv(os.path.abspath(config["samples"]), sep=",")
+
+# check sample table has expected column names (in expected order)
+assert samples.columns.tolist() == ["sample_name", "bam", "condition"], f"Sample table must only contain the following columns (in this order) - 'sample_name', 'bam', 'condition' - {', '.join(samples.columns)}"
+
+# check 'condition' column only contains 2 unique values
+assert samples['condition'].nunique() == 2, f"'condition' column must contain exactly 2 unique conditions, {samples['condition'].nunique()} found"
+
+# Check that 'control_condition_key' can be found in condition column
+assert (samples['condition'] == config['control_condition_key']).any(), f"'control_condition_key' - {config['control_condition_key']} - was not found in 'condition' column of sample table"
+
+#-------------------------------------------------------------------------------
+# Parameters, filenames & sample data
+
+# Parameters
+THREADS = config["threads"]
+SCRIPTS = config["scripts"]
+OUTDIR = config["out_dir"]
+
+# Check value of 'annotation_type' parameter
+assert config["annotation_type"] in ['single', 'multiple'], f"'annotation_type' must be one of 'single' or 'multiple', {config['annotation_type']} was provided"
+
+# Check 'is_stranded' has been passed as a Boolean
+assert isinstance(config["is_stranded"], bool), f"'is_stranded' must be True/False boolean, {config['is_stranded']} (type {type(config['is_stranded'])}) was provided"
+
+# Strand-aware counting with 'multiple' APA annotation types is not currently supported
+# Check that this combination has not been passed
+if config["is_stranded"] and config["annotation_type"] == "multiple":
+    raise Exception("Strand-aware counting for 'multiple' annotation types is not supported by Roar - set 'is_stranded' to False to use 'multiple' annotations")
+
+# Checking challenge flag values
+assert isinstance(config["run_identification"], bool), f"'run_identification' must be True/False boolean, {config['run_identification']} (type {type(config['run_identification'])}) was provided"
+assert isinstance(config["run_quantification"], bool), f"'run_quantification' must be True/False boolean, {config['run_quantification']} (type {type(config['run_quantification'])}) was provided"
+assert isinstance(config["run_differential"], bool), f"'run_differential' must be True/False boolean, {config['run_differential']} (type {type(config['run_differential'])}) was provided"
+
+
+def flag_info_message(flag_name, challenge_name):
+
+    if config[flag_name]:
+        sys.stderr.write(f"config['{flag_name}'] set to True - {challenge_name} challenge output to be generated\n")
+
+    elif not config[flag_name]:
+        sys.stderr.write(f"config['{flag_name}'] set to False - {challenge_name} challenge output will not be generated. Is this desired run mode?\n")
+
+
+# # Info messages
+flag_info_message("run_identification", "identification")
+flag_info_message("run_quantification", "quantification")
+flag_info_message("run_differential", "differential")
+
+# Roar is currently incompatible with both identification and quantification challenges (see README)
+if config["run_identification"] is not False:
+    raise ValueError("'run_identification' must be set to False as tool is incompatible with the identification challenge/does not perform this task (see README for details).")
+
+if config["run_quantification"] is not False:
+    raise ValueError("'run_quantification' must be set to False as tool is incompatible with the quantification challenge/does not perform this task (see README for details).")
+
+
+# Final Target Rule ------------------------------------------------------------
+localrules: finish
+
+
+rule finish:
+    """Rule that specifies the final output.
+    """
+    input:
+        os.path.join(OUTDIR,
+                     "_".join([config["paramcode"],
+                               config["participant"],
+                               config["differential_output_suffix"]]
+                              )) if config["run_differential"] else []
+
+
+#-------------------------------------------------------------------------------
+
+
+rule run_roar:
+    input:
+        gtf = config["roar_gtf"],
+        sample_tbl = config["samples"]
+
+    output:
+        os.path.join(OUTDIR, "roar_results.tsv")
+
+    params:
+        script = os.path.join(SCRIPTS, "Roar.R"),
+        base_condition = config["control_condition_key"],
+        annot_type = config["annotation_type"],
+        stranded = "--stranded" if config["is_stranded"] else ""
+
+    container:
+        "docker://quay.io/biocontainers/bioconductor-roar:1.28.0--r41hdfd78af_0"
+
+    log:
+        os.path.join(OUTDIR, config["local_log"], "run_roar.log")
+
+    shell:
+        """
+        (Rscript {params.script} \
+        {input.gtf} \
+        {input.sample_tbl} \
+        {params.annot_type} \
+        {params.base_condition} \
+        {output} \
+        {params.stranded}) &> {log}
+        """
+
+
+rule get_differential_tsv:
+    input:
+        os.path.join(OUTDIR, "roar_results.tsv")
+
+    output:
+        os.path.join(OUTDIR,
+                     "_".join([config["paramcode"],
+                               config["participant"],
+                               config["differential_output_suffix"]]
+                              )
+                     )
+
+    params:
+        script = os.path.join(config["scripts"],
+                              "make_differential_tsv.py")
+
+    # PyRanges is built on top of pandas - re-using image to avoid extra images
+    container:
+        "docker://amancevice/pandas:1.4.2-slim"
+
+    log:
+        os.path.join(OUTDIR, config["local_log"], "get_differential_tsv.log")
+
+    shell:
+        """
+        (python {params.script} \
+        -i {input} \
+        -o {output}) &> {log}
+        """
+
+#-------------------------------------------------------------------------------
+# How did it go?
+#-------------------------------------------------------------------------------
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred, check log at %s." % {log})
