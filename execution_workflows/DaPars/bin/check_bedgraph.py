@@ -21,7 +21,7 @@ def check_bedgraph(file_in):
 	fin = open(file_in, "rt")
 
 	for line in fin:
-		if line[0] != '#' and line[:3] != "chr":
+		if line[0] != '#' and '.' not in line and line[:3] != "chr":
 			msg = "Found a row in the sample file " + file_in + " without leading 'chr' in the chromosome column.\n" + \
 				" Please use a file with leading 'chr' for all sequence regions."
 			sys.exit(msg)
