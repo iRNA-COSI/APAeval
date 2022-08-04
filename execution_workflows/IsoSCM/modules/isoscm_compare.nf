@@ -4,6 +4,11 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
+/* 
+    ISOSCM compare is the second step of the tool. The splice-graphs outputs from the assemble step is used in the compare
+    step to perform joint segmentation of the terminal exons of coexpressed transcripts. This step reports the realtive usage
+    of identified change points in each sample in a tabular format
+*/
 process ISOSCM_COMPARE {
         publishDir "${params.outdir}/isoscm/isoscm_assemble_out_dir/${sample}", mode: params.publish_dir_mode
 	container "docker.io/apaeval/isoscm:latest"

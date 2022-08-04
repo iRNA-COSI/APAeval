@@ -43,7 +43,7 @@ def parse_input_file(file_in):
     return outputs
 
 
-def get_identification_output(outputs, file_out):
+def write_identification_output(outputs, file_out):
     file_out = open(file_out, "wt")
     for output in outputs:
         output[4] = "."
@@ -51,7 +51,7 @@ def get_identification_output(outputs, file_out):
     file_out.close()
 
 
-def get_relative_usage_quantification_output(outputs, file_out):
+def write_relative_usage_quantification_output(outputs, file_out):
     file_out = open(file_out, "wt")
     for output in outputs:
         file_out.write("\t".join(output) + "\n")
@@ -62,9 +62,9 @@ def main(args=None):
     args = parse_args(args)
     outputs = parse_input_file(args.FILE_IN)
     if args.RUN_MODE == 'identification':
-        get_identification_output(outputs, args.FILE_OUT)
+        write_identification_output(outputs, args.FILE_OUT)
     if args.RUN_MODE == 'relative_usage_quantification':
-        get_relative_usage_quantification_output(outputs, args.FILE_OUT)
+        write_relative_usage_quantification_output(outputs, args.FILE_OUT)
 
 
 if __name__ == '__main__':
