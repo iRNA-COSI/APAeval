@@ -1,3 +1,5 @@
 pandas
 jsonschema
 scipy
+git+https://github.com/iRNA-COSI/APAeval.git@code-deduplication-modules#egg=matchPAS&subdirectory=utils/matchPAS
+git+https://github.com/iRNA-COSI/APAeval.git@code-deduplication-modules#egg=JSON_templates&subdirectory=summary_workflows/JSON_templates

@@ -6,7 +6,7 @@ import numpy as np
 import os, json
 import sys
 from argparse import ArgumentParser
-from JSON_templates import JSON_templates
+import JSON_templates
 
 parser = ArgumentParser()
 parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
