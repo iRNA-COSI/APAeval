@@ -1,0 +1,12 @@
+name: apaeval_poc_rel_quant
+
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - python=3.9
+  - pyranges=0.0.117
+  - jupyter=1.0.0
+  - nb_conda
+  - plotnine
