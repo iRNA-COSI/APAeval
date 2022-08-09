@@ -6,8 +6,8 @@ import os
 import json
 import pandas as pd
 from argparse import ArgumentParser
-from JSON_templates import JSON_templates
-from matchPAS import matchPAS
+import JSON_templates
+import matchPAS
 
 def main(args):
 
