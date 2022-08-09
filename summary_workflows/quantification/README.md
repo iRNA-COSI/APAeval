@@ -12,20 +12,21 @@ This README describes the APAeval **quantification** summary workflow. For a mor
 - [Usage](#usage)
   - [Building docker images](#building-docker-images)
   - [Running the summary workflow](#running-the-summary-workflow)
+- [Notes on running the workflow](#notes-on-running-the-workflow)
 ## Description of steps
 ### 1. Validation
-- `input_file`: output file from execution workflow in bed6 format
+- `input_file`: list of output files from execution workflow in bed6 format
 - Validation checks performed in [`quantification_dockers/q_validation/validation.py`][validation-py]:
    - input file has to be tab separated file with 6 columns
    - start and end coordinates (col 2,3) have to be int64
    - strand (col 6) has to be one of [+,-]
    - chromosome (col 1) has to match the ones from the genome annotation (see below `genome_dir`)
   
-- The `validated-participant-data.json` file is not used in the subsequent steps, but the workflow exits if the input file doesn't comply to the specifications of the current benchmarking event
+- The `validated-participant-data.json` file is not used in the subsequent steps, but the workflow exits if one of the input file doesn't comply to the specifications of the current benchmarking event
   
 ### 2. Metrics Computation
 - "input file" and "gold standard file" will be compared in order to calculate the metrics
-- `input_file`: output file from execution workflow in bed6 format
+- `input_file`: list of output files from execution workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
 >NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
 - `windows` parameter is used to compute metrics for a list of window sizes.
@@ -34,7 +35,7 @@ This README describes the APAeval **quantification** summary workflow. For a mor
   - For running on OEB: The genome directory is specified in `nextflow.config`. 
   - For the test data, challenge `test.mm10_test.gt` will use genome file `test.genome.mm10_test.gtf`, because both contain `mm10_test` within two dots in the string.
 > NOTE: the genome file needs to contain the same substring as the challenge. That is, challenge `[partone].[organism].[partwo].bed` requires a genome annotation file like `[partone].[organism].[partwo].gtf`, where `[organism]` starts with *mm* or *hg* (only these two currently supported). And `[partone]` and `[parttwo]` can be an aribitrary string (or empty string).
-- APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `quantification_dockers/q_metrics/matchPAS`
+- APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `utils/matchPAS`
 - The `Assessment_datasets.json` file is used in the following step
 > NOTE: more metrics are computed and reported in the assessment file than used in the plots.
 
@@ -68,9 +69,9 @@ Then, you can rebuild the docker image locally (see above).
 ### Running the summary workflow
 One can use the following command to run the summary workflow from command line:
 ```
-nextflow run main.nf -profile docker
+nextflow run main.nf -profile docker -c infiles.config
 ```
-This reads the parameters from the [nextflow.config][nextflow-config] file.
+This reads the parameters from the [nextflow.config][nextflow-config] file and the specified [infiles.config][infiles-config], where the latter override any parameters of the same name in the nextflow.config.
 
 ## Notes on running the workflow
 
@@ -86,3 +87,4 @@ This reads the parameters from the [nextflow.config][nextflow-config] file.
 [validation-py]:./quantification_dockers/q_validation/validation.py
 [metrics-py]:./quantification_dockers/q_metrics/compute_metrics.py
 [nextflow-config]: ./nextflow.config
+[infiles-config]: ./infiles.config

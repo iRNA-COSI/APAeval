@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 import JSON_templates
 
 parser = ArgumentParser()
-parser.add_argument("-i", "--participant_data", nargs='+', help="execution workflow prediction outputs", required=True)
+parser.add_argument("-i", "--participant_data", nargs='+', help="List of execution workflow output files", required=True)
 parser.add_argument("-com", "--community_name", help="name of benchmarking community", required=True)
 parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
 parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
@@ -92,10 +92,10 @@ def  validate_input_data(participant_input, community, challenges, participant_n
 
     validated = False
 
-    for c,i in zip(challenges,participant_input):
+    for challenge,infile in zip(challenges,participant_input):
     # get participant output (= input to be validated)
         try:
-            participant_data = pandas.read_csv(i, sep='\t',
+            participant_data = pandas.read_csv(infile, sep='\t',
                                             comment="#", header=None)
         except:
             sys.exit("ERROR: Submitted data file {} could not be read!".format(i))
@@ -121,7 +121,7 @@ def  validate_input_data(participant_input, community, challenges, participant_n
         if n_col_check and coord_check and strand_check and chr_check:
             validated = True
         else:
-            print("WARNING: Submitted data does not comply with required bed format.")
+            print(f"WARNING: Submitted file {infile} does not comply with required bed format.")
             validated = False
         #----------------------------------------------------
 
@@ -129,16 +129,15 @@ def  validate_input_data(participant_input, community, challenges, participant_n
     data_id = community + ":" + participant_name
     output_json = JSON_templates.write_participant_dataset(data_id, community, challenges, participant_name, validated)
 
-    # print file
-
+    # print validated participant file
     with open(out_path , 'w') as f:
         json.dump(output_json, f, sort_keys=True, indent=4, separators=(',', ': '))
 
+    # Only pass if all input files are valid
     if validated == True:
-
         sys.exit(0)
     else:
-        sys.exit("ERROR: Submitted data is not in valid format! Please check " + out_path)
+        sys.exit("ERROR: One or more of the submitted files don't comply with APAeval specified format! Please check " + out_path)
 
 
 if __name__ == '__main__':

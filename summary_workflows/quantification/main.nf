@@ -17,7 +17,7 @@ if (params.help) {
 	    Run with user parameters:
 	   nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
 	    Mandatory arguments:
-	        --input                 BED/TXT file with APA site information
+	        --input                 List of BED/TXT files with APA site information
 	        --community_id          Name or OEB permanent ID for the benchmarking community
 	        --participant_id        Name of the tool used for prediction
 	        --goldstandard_dir      Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
@@ -45,7 +45,7 @@ if (params.help) {
 	    ==============================================
 	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
 	    ==============================================
-	        Input file: ${params.input}
+	        Input files: ${params.input}
 	        Benchmarking community = ${params.community_id}
 	        Tool name : ${params.participant_id}
 	        Gold standard dataset directory: ${params.goldstandard_dir}
