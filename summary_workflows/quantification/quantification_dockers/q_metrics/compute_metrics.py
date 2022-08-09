@@ -21,6 +21,9 @@ def main(args):
     windows = args.windows
     genome_path = args.genome_dir
 
+    print(f"INFO: inputs {participant_input}")
+    print(f"INFO: challenges {challenge_ids}")
+    
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
         try:
@@ -40,7 +43,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
     # define list with keywords for return type of dataframe from match_with_gt()
     all_return_df_types = ["all_GT", "union", "intersection"]
 
-    for challenge in challenge_ids:
+    for challenge, i in zip(challenge_ids, participant_input):
 
         # ID prefix for assessment objects
         base_id = f"{community}:{challenge}:{participant}:"
@@ -56,7 +59,7 @@ def compute_metrics(participant_input, gold_standards_dir, challenge_ids, partic
 
         for window in windows:
             # obtain dataframes with matched and unmatched sites
-            matched, only_PD, only_GT = matchPAS.match_with_gt(f_PD=participant_input, f_GT=gold_standard, window=window)
+            matched, only_PD, only_GT = matchPAS.match_with_gt(f_PD=i, f_GT=gold_standard, window=window)
 
             # METRIC: Expression unmatched sites
             ####################################
@@ -220,7 +223,7 @@ def select_genome_file(file_name, genome_path):
 if __name__ == '__main__':
 
     parser = ArgumentParser()
-    parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
+    parser.add_argument("-i", "--participant_data", nargs='+',  help="execution workflow prediction outputs", required=True)
     parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
     parser.add_argument("-g", "--gold_standards_dir", help="dir that contains gold standard datasets for current challenge", required=True)
     parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)

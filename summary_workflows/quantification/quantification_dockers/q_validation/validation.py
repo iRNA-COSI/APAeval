@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 import JSON_templates
 
 parser = ArgumentParser()
-parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
+parser.add_argument("-i", "--participant_data", nargs='+', help="execution workflow prediction outputs", required=True)
 parser.add_argument("-com", "--community_name", help="name of benchmarking community", required=True)
 parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
 parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
@@ -89,38 +89,41 @@ def main(args):
 
 
 def  validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names):
-    # get participant output (= input to be validated)
-    try:
-        participant_data = pandas.read_csv(participant_input, sep='\t',
-                                           comment="#", header=None)
-    except:
-        sys.exit("ERROR: Submitted data file {} could not be read!".format(participant_input))
-    
-    #---------------------------------------------------
-    # INPUT FILE VALIDATION
-    # FOR APAeval QUANTIFICATION:
-    # Check for valid bed6 format
 
-    ## check number of columns
-    n_col_check = len(participant_data.columns) == 6
-    ## check start and end coordinates
-    coord_check = participant_data.dtypes[1] == np.int64 and participant_data.dtypes[2] == np.int64
-    ## check strands
-    strands = list(set(participant_data.iloc[:, 5].values))
-    strand_check = len(strands) == 2 and strands.count('-')+strands.count('+') == 2
-    ## check ref seq format of chromosomes
-    accepted_chr = chr_names
-    data_chr = list(set(participant_data.iloc[:, 0].values))
-    chr_check = [str(chr) in accepted_chr for chr in data_chr].count(False) == 0
-    
-    ## All checks true?
     validated = False
-    if n_col_check and coord_check and strand_check and chr_check:
-        validated = True
-    else:
-        print("WARNING: Submitted data does not comply with required bed format.")
-        validated = False
-    #----------------------------------------------------
+
+    for c,i in zip(challenges,participant_input):
+    # get participant output (= input to be validated)
+        try:
+            participant_data = pandas.read_csv(i, sep='\t',
+                                            comment="#", header=None)
+        except:
+            sys.exit("ERROR: Submitted data file {} could not be read!".format(i))
+        
+        #---------------------------------------------------
+        # INPUT FILE VALIDATION
+        # FOR APAeval QUANTIFICATION:
+        # Check for valid bed6 format
+
+        ## check number of columns
+        n_col_check = len(participant_data.columns) == 6
+        ## check start and end coordinates
+        coord_check = participant_data.dtypes[1] == np.int64 and participant_data.dtypes[2] == np.int64
+        ## check strands
+        strands = list(set(participant_data.iloc[:, 5].values))
+        strand_check = len(strands) == 2 and strands.count('-')+strands.count('+') == 2
+        ## check ref seq format of chromosomes
+        accepted_chr = chr_names
+        data_chr = list(set(participant_data.iloc[:, 0].values))
+        chr_check = [str(chr) in accepted_chr for chr in data_chr].count(False) == 0
+        
+        ## All checks true?
+        if n_col_check and coord_check and strand_check and chr_check:
+            validated = True
+        else:
+            print("WARNING: Submitted data does not comply with required bed format.")
+            validated = False
+        #----------------------------------------------------
 
 
     data_id = community + ":" + participant_name

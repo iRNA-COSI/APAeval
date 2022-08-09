@@ -67,7 +67,7 @@ if (params.help) {
 
 // input files
 
-input_file = file(params.input)
+input_file = params.input
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
 challenge_ids = params.challenges_ids
@@ -98,7 +98,7 @@ process validation {
 	publishDir "${validation_file.parent}", saveAs: { filename -> validation_file.name }, mode: 'copy'
 
 	input:
-	file input_file
+	val input_file
 	val challenge_ids
 	val tool_name
 	val community_id
@@ -122,7 +122,7 @@ process compute_metrics {
 
 	input:
 	val file_validated from EXIT_STAT
-	file input_file
+	val input_file
 	val challenge_ids
 	path gold_standards_dir
 	val tool_name
