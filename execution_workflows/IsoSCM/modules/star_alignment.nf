@@ -24,27 +24,55 @@ process STAR_ALIGNMENT {
     script:
     star_out_bam = sample + ".Aligned.sortedByCoord.out.bam"
     if (read_type == "single") {
-    	"""
-   	STAR \
-     	--runThreadN $task.cpus \
-      	--outSAMtype BAM SortedByCoordinate \
-     	--genomeDir $star_index_file \
-      	--outSAMstrandField intronMotif \
-      	--readFilesIn $fastq1 \
-        --readFilesCommand gunzip -c \
-        --outFileNamePrefix $sample. 
-        """
+        if ( strand == "unstranded") {
+    	    """
+   	    STAR \
+     	    --runThreadN $task.cpus \
+      	    --outSAMtype BAM SortedByCoordinate \
+     	    --genomeDir $star_index_file \
+      	    --outSAMattributes XS \
+      	    --readFilesIn $fastq1 \
+            --readFilesCommand gunzip -c \
+            --outFileNamePrefix $sample. 
+            """
+        }
+        else {
+            """
+            STAR \
+            --runThreadN $task.cpus \
+            --outSAMtype BAM SortedByCoordinate \
+            --genomeDir $star_index_file \
+            --outSAMattributes XS \
+            --readFilesIn $fastq1 \
+            --readFilesCommand gunzip -c \
+            --outFileNamePrefix $sample.
+            """
+        }
     }
     else {
-	"""
-        STAR \
-        --runThreadN $task.cpus \
-        --outSAMtype BAM SortedByCoordinate \
-        --genomeDir $star_index_file \
-        --outSAMstrandField intronMotif \
-        --readFilesIn $fastq1 $fastq2 \
-        --readFilesCommand gunzip -c \
-        --outFileNamePrefix $sample.
-        """
+        if ( strand == "unstranded" ){
+	    """
+            STAR \
+            --runThreadN $task.cpus \
+            --outSAMtype BAM SortedByCoordinate \
+            --genomeDir $star_index_file \
+            --outSAMstrandField intronMotif \
+            --readFilesIn $fastq1 $fastq2 \
+            --readFilesCommand gunzip -c \
+            --outFileNamePrefix $sample.
+            """
+        }
+        else {
+            """
+            STAR \
+            --runThreadN $task.cpus \
+            --outSAMtype BAM SortedByCoordinate \
+            --genomeDir $star_index_file \
+            --outSAMattributes XS \
+            --readFilesIn $fastq1 $fastq2 \
+            --readFilesCommand gunzip -c \
+            --outFileNamePrefix $sample.
+            """
+        }
     }
 }
