@@ -40,6 +40,8 @@ python3 matchPAS.py prediction.bed ground_truth.bed window
 python3 matchPAS.py adultCortex.PAPERCLIP.mm10.bed siControl_R1.MACEseq.mm10.bed 15
 ```
 
+Locally build the module for debugging: `pip install -e .` into the active APAeval conda environment.
+
 ### Output:
 - a copy of the prediction file `prediction_merged_<window>.bed` with rows merged, only in case there were overlapping sites given the window
 - the output file containing ground truth matches `prediction_matched_<window>.bed`

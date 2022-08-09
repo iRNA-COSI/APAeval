@@ -1,2 +1,3 @@
 pandas
 jsonschema
+git+https://github.com/iRNA-COSI/APAeval.git@main#egg=JSON_templates&subdirectory=summary_workflows/JSON_templates
