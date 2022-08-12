@@ -15,7 +15,7 @@ process PREDICT_APA {
         tag"$sample"
         publishDir "${params.outdir}/apatrap", mode: params.publish_dir_mode
         container "docker.io/apaeval/apatrap:latest"
-        label 'process_high'
+        label 'process_big_mem'
         
         input:
         val sample_bedgraph_files_dir

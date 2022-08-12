@@ -13,7 +13,7 @@ to create the nextflow pipeline flow of this module
 
 ## Running APAtrap workflow
 
-## Input & pre-processing
+### Input & pre-processing
 Required files are to be specified in the input `samplesheet_example_files.csv`. Each row in the sample sheet has four
 columns:
 
@@ -34,13 +34,13 @@ input file you are using the absolute path to the file, with the four column nam
 names in `samplesheet_example_files.csv`.
 
 ### Running with Docker or Singularity
-## Docker
+#### Docker
 This workflow uses docker containers. To run with docker, make sure that docker is installed and running 
 (e.g. to ensure docker is running, run the command `docker --help` and a help message should be printed).
 Additionally, make sure that line 49 in Apatrap/nextflow.config file `docker.enabled=true` is uncommented while line
 51 `singularity.enabled=true` is commented out.
 
-## Singularity
+#### Singularity
 To run with singularity, comment out line 49 in Apatrap/nextflow.config file `docker.enabled=true` and make sure that line
 51 `singularity.enabled=true` is uncommented.
 
@@ -71,7 +71,10 @@ Parameters relevant to the workflow itself are:
   the desired file suffix that ends with '.bed'
 - In the sample sheet, at least one row is required to be provided 
 
-
+### Tuning workflow resources
+We have seen that APAtrap uses a lot of memory when running big datasets. As such, the processes use `process_big_mem` to allocate a generous amount of memory and run time. Depending on your resources availability, this can be tuned in conf/base.config. 
+Because of the amount of memory and time needed for APAtrap to run, we have to split samples by chromosome so that the workflow could complete in a reasonable amount of time. Even then, each process required around 20G. When tuning workflow resources, this should be kept in mind in case the workflow stops from memory or run time related errors.
+ 
 ### Running the workflow
 Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
 `nextflow main.nf --input samplesheet_example_files.csv`. 
@@ -80,7 +83,7 @@ Note that it's recommended to delete the existing `results` folder to remove res
 This is to avoid polluting the next run with the results from the previous run when we are using the same sample name(s),
 which would likely result in an error.
 
-## Output & post-processing
+### Output & post-processing
 When using the default `output_dir` parameter value in conf/modules.config, APAtrap run results in files of the outputs 
 of the challenges located under APAtrap/results/apatrap/challenges_outputs folder.
 For identification outputs, the files have sample names as prefixes to differentiate the different runs.
