@@ -17,24 +17,22 @@ if (params.help) {
 	    Run the pipeline with default parameters read from nextflow.config:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
-	   nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --assess_dir {benchmark.data.dir} --results_dir {output.dir}
+	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --aggregation_dir {benchmark.data.dir} --output {output.dir}
 	    Mandatory arguments:
 	        --input                 List of BED/TXT files with APA site information
 	        --community_id          Name or OEB permanent ID for the benchmarking community
 	        --participant_id        Name of the tool used for prediction
 	        --goldstandard_dir      Dir that contains gold standard/ground truth files used to calculate the metrics for all challenges
 	        --challenges_ids        Challenge ids selected by the user, separated by spaces
-	        --assess_dir            Dir where the data for the benchmark are stored
+	        --aggregation_dir            Dir where the data for the benchmark are stored
 	    Other options:
-	        --validation_result     .json output from validation step
-	        --assessment_results    .json output from metrics computation step
-		--consolidation_result .json output from consolidation step
-	        --outdir                The output directory where results for VRE will be saved
+	        --consolidation_result .json output from consolidation step
+	        --output                The output directory where results will be saved
 	        --statsdir              The output directory with nextflow statistics
 	        --otherdir              The output directory where custom results will be saved (no directory inside)
 	        --windows               Window sizes for scanning for poly(A) sites (List of int).
-		--genome_dir            Dir where genome files for computing relative PAS usage metrics.
-	        --offline               If set to 1, consolidation will be performed with local data in assess_dir only (omit to perform OEB DB query)
+	        --genome_dir            Dir with genome files for computing relative PAS usage metrics.
+	        --offline               If set to 1, consolidation will be performed with local data in aggregation_dir only (omit to perform OEB DB query)
 	    Flags:
 	        --help                  Display this message
 	    """.stripIndent()
@@ -52,11 +50,9 @@ if (params.help) {
 	        Tool name : ${params.participant_id}
 	        Gold standard dataset directory: ${params.goldstandard_dir}
 	        Challenge ids: ${params.challenges_ids}
-	        Published benchmark data directory: ${params.assess_dir}
-	        Validation result JSON file: ${params.validation_result}
-	        Assessment result JSON file: ${params.assessment_results}
+	        Published benchmark data directory: ${params.aggregation_dir}
 	        Consolidation result JSON file: ${params.consolidation_result}
-	        Consolidated benchmark results directory: ${params.outdir}
+	        Consolidated benchmark results directory: ${params.output}
 	        Nextflow statistics directory: ${params.statsdir}
 	        Directory with community-specific results: ${params.otherdir}
 	        Window size for scanning for poly(A) sites: ${params.windows}
@@ -81,8 +77,6 @@ offline = params.offline
 
 // Output
 
-// assessment_file = file(params.assessment_results)
-// validation_file = file(params.validation_result)
 consolidation_file = file(params.consolidation_result)
 out_dir = file(params.output, type: 'dir')
 results = file(params.results, type: 'dir')
