@@ -1,4 +1,6 @@
 #!/usr/bin/env nextflow
+nextflow.enable.dsl=2
+
 
 if (params.help) {
 	
@@ -64,52 +66,55 @@ if (params.help) {
 
 }
 
+// Input
 
-// input files
-
-input_file = params.input
+input_files = Channel.fromList(params.input)
 tool_name = params.participant_id.replaceAll("\\s","_")
 gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' ) 
 challenge_ids = params.challenges_ids
-benchmark_data = Channel.fromPath(params.assess_dir, type: 'dir' )
+benchmark_data = Channel.fromPath(params.aggregation_dir, type: 'dir' )
 community_id = params.community_id
 event_date = params.event_date
 windows = params.windows
 genome_dir = Channel.fromPath(params.genome_dir, type: 'dir' )
-genome_dir.into{
-	genome_dir_val
-	genome_dir_comp
-}
 offline = params.offline
 
-// output 
-validation_file = file(params.validation_result)
-assessment_file = file(params.assessment_results)
+// Output
+
+// assessment_file = file(params.assessment_results)
+// validation_file = file(params.validation_result)
 consolidation_file = file(params.consolidation_result)
-aggregation_dir = file(params.outdir, type: 'dir')
+out_dir = file(params.output, type: 'dir')
+results = file(params.results, type: 'dir')
 other_dir = file(params.otherdir, type: 'dir')
 
+
+// Process definitions
 
 process validation {
 
 	// validExitStatus 0,1
 	tag "Validating input file format"
 	
-	publishDir "${validation_file.parent}", saveAs: { filename -> validation_file.name }, mode: 'copy'
+	publishDir out_dir,
+	mode: 'copy',
+	overwrite: false,
+	saveAs: { filename -> "validated_${input_file.baseName}.json" }
+
 
 	input:
-	val input_file
+	each(path input_file)
 	val challenge_ids
 	val tool_name
 	val community_id
-	path genome_dir_val
+	path genome_dir
 
 	output:
-	val task.exitStatus into EXIT_STAT
-	file 'validation.json' into validation_out
+	val task.exitStatus, emit: validation_status
+	path validation_file, emit: validation_file
 	
 	"""
-	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation.json --genome_dir $genome_dir_val
+	python /app/validation.py -i $input_file -com $community_id -c $challenge_ids -p $tool_name -o validation_file --genome_dir $genome_dir
 	"""
 
 }
@@ -118,54 +123,100 @@ process compute_metrics {
 
 	tag "Computing benchmark metrics for submitted data"
 	
-	publishDir "${assessment_file.parent}", saveAs: { filename -> assessment_file.name }, mode: 'copy'
+	publishDir out_dir,
+	mode: 'copy',
+	overwrite: false,
+	saveAs: { filename -> "assessments_${input_file.baseName}.json" }
 
 	input:
-	val file_validated from EXIT_STAT
-	val input_file
+	val validation_status
+	each (path input_file)
 	val challenge_ids
 	path gold_standards_dir
 	val tool_name
 	val community_id
 	val windows
-	path genome_dir_comp
+	path genome_dir
 
 	output:
-	file 'assessment.json' into assessment_out
+	path "${input_file.baseName}.json", emit: ass_json
 
 	when:
-	file_validated == 0
+	validation_status == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o assessment.json -w $windows --genome_dir $genome_dir_comp
+	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o "${input_file.baseName}.json" -w $windows --genome_dir $genome_dir
 	"""
 }
 
 process benchmark_consolidation {
 
 	tag "Performing benchmark assessment and building plots"
-	publishDir "${aggregation_dir.parent}", pattern: "aggregation_dir", saveAs: { filename -> aggregation_dir.name }, mode: 'copy'
-	publishDir "${consolidation_file.parent}", pattern: "consolidated_result.json", saveAs: { filename -> consolidation_file.name }, mode: 'copy'
+
+	publishDir "${results.parent}", 
+	pattern: "results_dir", 
+	mode: 'copy',
+	overwrite: false,
+	saveAs: { filename -> results.name } 
+
+	publishDir out_dir,
+	mode: 'copy',
+	overwrite: false,
+	saveAs: { filename -> consolidation_file.name }
 
 	input:
 	path benchmark_data
-	file assessment_out
-	file validation_out
+	val ass_json
+	val validation_file
 	val challenge_ids
     val event_date
 	val offline
 	
 	output:
-	path 'aggregation_dir', type: 'dir'
-	path 'consolidated_result.json'
+	path "results_dir"
+	path "consolidated_result.json"
 
 	"""
-	python /app/aggregation.py -b $benchmark_data -a $assessment_out -o aggregation_dir -d $event_date --offline $offline
-	python /app/merge_data_model_files.py -v $validation_out -m $assessment_out -c $challenge_ids -a aggregation_dir -o consolidated_result.json
+	python /app/aggregation.py -b $benchmark_data -a $ass_json -o results_dir -d $event_date --offline $offline
+	python /app/merge_data_model_files.py -v $validation_file -m $ass_json -c $challenge_ids -a results_dir -o consolidated_result.json
 	"""
 
 }
 
+// Workflow
+
+workflow {
+	validation(
+		input_files, 
+		challenge_ids, 
+		tool_name, 
+		community_id, 
+		genome_dir
+		)
+	validations = validation.out.validation_file.collect()
+
+	compute_metrics(
+		validation.out.validation_status,
+		input_files,
+		challenge_ids,
+		gold_standards_dir,
+		tool_name,
+		community_id,
+		windows,
+		genome_dir
+		)
+	assessments = compute_metrics.out.ass_json.collect()
+
+
+	benchmark_consolidation(
+		benchmark_data,
+		assessments,
+		validations,
+		challenge_ids,
+		event_date,
+		offline
+		)
+}
 
 workflow.onComplete { 
 	println ( workflow.success ? "Done!" : "Oops .. something went wrong" )
