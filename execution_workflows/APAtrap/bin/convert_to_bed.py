@@ -49,7 +49,7 @@ def reformat_bed(file_in, run_identification, run_quantification, identification
         # column with proximal apa sites
         # in decreasing order when strand is - e.g 119924739,119924260
         # in increasing order when strand i + e.g. 78340249,78340414
-        proximal_apa_sites = row['Predicted_APA'].split(",")
+        proximal_apa_sites = str(row['Predicted_APA']).split(",")
 
         # Write identification file
         for proximal_apa_site in proximal_apa_sites:
