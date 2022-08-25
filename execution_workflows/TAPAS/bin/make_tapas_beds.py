@@ -20,4 +20,5 @@ for ln in tapa_quant_txt:
     chromStart=str(int(chromEnd)-1)
    outbed_quant.write('\t'.join([chrom,chromStart,chromEnd,name,score,strand])+'\n')
    outbed_ident.write('\t'.join([chrom,chromStart,chromEnd,name,'.',strand])+'\n')
-outbed.close()
+outbed_quant.close()
+outbed_ident.close()
