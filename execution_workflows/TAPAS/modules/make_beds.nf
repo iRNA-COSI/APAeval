@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-process MAKE_QUANT_BED {
+process MAKE_BEDS {
     tag "$sample"
     publishDir "${params.outdir}/tapas/tapas_quant/", mode: params.publish_dir_mode
 
@@ -18,6 +18,6 @@ process MAKE_QUANT_BED {
 
     script:
     """
-    make_tapas_quant_bed.py $tapas_quant_txt tapas_quant.bed
+    make_tapas_beds.py $tapas_quant_txt tapas_quantification.bed tapas_identification.bed
     """
 }

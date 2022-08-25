@@ -2,7 +2,8 @@
 
 import sys
 tapa_quant_txt=open(sys.argv[1],'r')
-outbed=open(sys.argv[2],'w')
+outbed_quant=open(sys.argv[2],'w')
+outbed_ident=open(sys.argv[3],'w')
 for ln in tapa_quant_txt:
  ln=ln.strip().split('\t')
  g_id,chrom,strand=ln[0].split('NM_')[1],ln[1],ln[2]
@@ -17,5 +18,6 @@ for ln in tapa_quant_txt:
    elif strand == '-':
     chromEnd=sites[i]
     chromStart=str(int(chromEnd)-1)
-   outbed.write('\t'.join([chrom,chromStart,chromEnd,name,score,strand])+'\n')
+   outbed_quant.write('\t'.join([chrom,chromStart,chromEnd,name,score,strand])+'\n')
+   outbed_ident.write('\t'.join([chrom,chromStart,chromEnd,name,'.',strand])+'\n')
 outbed.close()
