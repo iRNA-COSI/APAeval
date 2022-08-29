@@ -83,13 +83,13 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
     # Find TEs with at least two overlapping PAS
     print(f"Number of union terminal exons - {m_t_exons.te_id_min.nunique()}")
     m_t_exons = m_t_exons.count_overlaps(pas, strandedness="same")
-    m_t_exons = m_t_exons.subset(lambda df: df["NumberOverlaps"] >= 2)
+    m_t_exons = m_t_exons.subset(lambda df: df["NumberOverlaps"] >= 2).drop("NumberOverlaps")
     print(f"Number of union terminal exons with >=2 overlapping PAS - {m_t_exons.te_id_min.nunique()}")
 
     # Filter & annotate PAS overlapping TEs with APA
     print(f"Number of unique PAS in input BED - {pas.pas_id.nunique()}")
     # Default is inner join so all PAS not overlapping TEs are dropped
-    pas = pas.join(m_t_exons.drop("NumberOverlaps"), strandedness="same").drop(["Start_b", "End_b", "Strand_b"])
+    pas = pas.join(m_t_exons, strandedness="same").drop(["Start_b", "End_b", "Strand_b"])
     print(f"Number of unique PAS overlapping TEs with APA - {pas.pas_id.nunique()}")
 
     # Compute sum of TPMs of overlapping PAS for each terminal exon
@@ -190,25 +190,44 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
 
     print(f"Total number of TEs with APA after filtering steps - {pas_rep.te_id_min.nunique()}")
 
+    # Generate full terminal exon ID & output BEDs
+    # <gene_id>|<tx_id1>,<tx_id2>|<prediction_group_identifier>|<pas_number>
+    # PAS - <gene_id>|<tx_id1>,<tx_id2>|NA|<1/2>
+    # TEs - <gene_id>|<tx_id1>,<tx_id2>|NA|NA
 
+    valid_te_id_min = set(pas_rep.te_id_min)
 
+    # Generate te_id for PAS BED
+    pas_rep.predn_group = "NA"
 
+    pas_rep = filterPAS.assign_id(pas_rep,
+                                  cols_to_cat=["te_id_min", "predn_group", "pas_number"],
+                                  sep_char="|",
+                                  out_col="te_id")
 
+    pas_rep = pas_rep[["te_id", "rel_exp"]].apply(lambda df: df.rename(columns={"te_id": "Name",
+                                                                                "rel_exp": "Score"}))
 
+    print(pas_rep)
 
+    # te_id for terminal exons BED
+    m_t_exons = m_t_exons.subset(lambda df: df["te_id_min"].isin(valid_te_id_min))
 
+    # Create dummy columns
+    m_t_exons.predn_group = "NA"
+    m_t_exons.pas_number = "NA"
 
+    m_t_exons = filterPAS.assign_id(m_t_exons,
+                                    cols_to_cat=["te_id_min", "predn_group", "pas_number"],
+                                    sep_char="|",
+                                    out_col="te_id")
 
+    m_t_exons = m_t_exons[["te_id"]].apply(lambda df: df.rename(columns={"te_id": "Name"}))
 
-
-
-
-
-
-
-
-
-
+    # Output to BED
+    # Note: pr.to_bed will fill default cols if not present, so no need to manually add Score for terminal exons
+    pas_rep.to_bed(out_prefix + ".rep_gt_pas.bed")
+    m_t_exons.to_bed(out_prefix + ".rep_tes.bed")
 
 
 if __name__ == '__main__':
