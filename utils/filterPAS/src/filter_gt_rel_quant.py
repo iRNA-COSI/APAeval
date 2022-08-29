@@ -280,8 +280,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # check that fractions are between 0-1
-    assert 0 <= args.min_total_expression_frac <= 1, f"--min-total-expression-frac must be between 0 & 1 - {args.min_total_expression_frac}"
-    assert 0 <= args.site_min_expression_frac <= 1, f"--site-min-expression-frac must be between 0 & 1 - {args.site_min_expression_frac}"
+    assert 0 <= args.min_total_expression_frac <= 1, f"--min-total-expression-frac must be between 0 & 1, provided value - {args.min_total_expression_frac}"
+    assert 0 <= args.site_min_expression_frac <= 1, f"--site-min-expression-frac must be between 0 & 1, provided value - {args.site_min_expression_frac}"
 
     main(args.bed,
          args.gtf,
