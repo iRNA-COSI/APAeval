@@ -231,4 +231,61 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
 
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2], float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5]),sys.argv[6])
+
+    descrpn="""Filter a BED file of polyA sites to 2 representative sites overlapping terminal exons"""
+
+    parser = argparse.ArgumentParser(description=descrpn,
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter, # Add defaults to end of help strings
+                                     )
+
+    parser.add_argument("-b", "--bed",
+                        required=True,
+                        type=str,
+                        default=argparse.SUPPRESS,
+                        help="Path to BED file of polyA sites")
+
+    parser.add_argument("-g",
+                        "--gtf",
+                        required=True,
+                        type=str,
+                        default=argparse.SUPPRESS,
+                        help="Path to GTF file of transcript models")
+
+    parser.add_argument("--min-total-expression-frac",
+                        type=float,
+                        default=0.8,
+                        help="Minimum fraction of total expression of overlapping PAS provided by two highest expressed sites for terminal exon to be retained")
+
+    parser.add_argument("--site-min-expression-frac",
+                        type=float,
+                        default=0.05,
+                        help="Minimum fraction of total expression of representative sites on terminal exon contributed by minor PAS for terminal exon to be retained")
+
+    parser.add_argument("-w", "--window-size",
+                        required=True,
+                        type=int,
+                        default=50,
+                        help="Size of window (nt) to consider polyA sites separated by less than window as overlapping")
+
+    parser.add_argument("-o","--output-prefix",
+                        type=str,
+                        default=argparse.SUPPRESS,
+                        help="Name of prefix for output BED files. polyA site BED suffixed with '.rep_gt_pas.bed' & terminal exon BED '.rep_tes.bed'")
+
+
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit()
+
+    args = parser.parse_args()
+
+    # check that fractions are between 0-1
+    assert 0 <= args.min_total_expression_frac <= 1, f"--min-total-expression-frac must be between 0 & 1 - {args.min_total_expression_frac}"
+    assert 0 <= args.site_min_expression_frac <= 1, f"--site-min-expression-frac must be between 0 & 1 - {args.site_min_expression_frac}"
+
+    main(args.bed,
+         args.gtf,
+         args.min_total_expression_frac,
+         args.site_min_expression_frac,
+         args.window_size,
+         args.output_prefix)
