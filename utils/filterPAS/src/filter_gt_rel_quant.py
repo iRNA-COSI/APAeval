@@ -89,7 +89,7 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
     # Filter & annotate PAS overlapping TEs with APA
     print(f"Number of unique PAS in input BED - {pas.pas_id.nunique()}")
     # Default is inner join so all PAS not overlapping TEs are dropped
-    pas = pas.join(m_t_exons.drop("NumberOverlaps"), strandedness="same")
+    pas = pas.join(m_t_exons.drop("NumberOverlaps"), strandedness="same").drop(["Start_b", "End_b", "Strand_b"])
     print(f"Number of unique PAS overlapping TEs with APA - {pas.pas_id.nunique()}")
 
     # Compute sum of TPMs of overlapping PAS for each terminal exon
@@ -100,13 +100,13 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
                               value_col="tpm",
                               out_col="sum_tpm")
 
-    print(m_t_exons_sum)
+    # print(m_t_exons_sum)
 
     # Select two representative sites for each TE by largest TPM
     # Note: Many TEs will only have 2 overlapping PAS so this filtering step is null. Opting to consider all events together for code simplicity
     pas_rep = pas.groupby("te_id_min").apply(lambda x: x.nlargest(2, "tpm")).reset_index(drop=True)
 
-    print(pas_rep)
+    # print(pas_rep)
 
     # Calculate sum of expression of two representative sites for each TE
     pas_rep_sum = group_sum(pas_rep,
@@ -145,6 +145,52 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
     # Filter for TEs where minor site has fractional expression >= min_frac_site
     pas_rep = pas_rep.groupby("te_id_min").filter(lambda x: x["rel_exp"].min() >= min_frac_site)
     print(f"Number of union terminal exons where minor site has >= {min_frac_site} of total expression on terminal exon - {pas_rep['te_id_min'].nunique()}")
+
+
+    # Check that selected sites are not within window_size of one another (prevent matches to both prox & distal PAS)
+
+    # First assign 'pas_number' to differentiate proximal and distal pas
+    # 1 = proximal pas, 2 = distal pas
+    pas_rep = pr.PyRanges(pas_rep, int64=True)
+    # Have to assign a 'dummy column' to conform to add_region_number
+    pas_rep = filterPAS.add_region_number(pas_rep.assign("Feature",
+                                               lambda df: pd.Series(["pas"]*len(df.index))),
+                                id_col="te_id_min",
+                                out_col="pas_number",
+                                feature_key="pas"
+                                ).drop("Feature")
+
+    # print(pas_rep[["te_id_min", "pas_number"]])
+
+    # Overlap join proximal sites with distal sites
+    # slack extends intervals prior to overlap query (i.e. allows overlap within window_size)
+    # non-overlapping intervals have cols from query filled with -1
+    pas_rep_prox = pas_rep.subset(lambda df: df["pas_number"] == 1)
+    prox_dist = pas_rep_prox.join(pas_rep.subset(lambda df: df["pas_number"] == 2),
+                                  how="left",
+                                  strandedness="same",
+                                  slack=window_size)
+
+    # Subset to overlapping PAS
+    prox_dist = prox_dist.subset(lambda df: df["Start_b"] != -1)
+
+    if len(prox_dist) != 0:
+        # Some prox and distal PAS overlap - check they come from same te_id
+        prox_dist = prox_dist.subset(lambda df: df["te_id_min"] == df["te_id_min_b"])
+        olap_ids = set(prox_dist.te_id_min)
+
+        print(f"Number of union terminal exons where representative PAS fall within {window_size} of one another - {len(olap_ids)}")
+
+        # Remove overlapping TEs
+        pas_rep = pas_rep.subset(lambda df: ~df["te_id_min"].isin(olap_ids))
+
+
+    else:
+        print(f"Number of union terminal exons where representative PAS fall within {window_size} of one another - 0")
+
+    print(f"Total number of TEs with APA after filtering steps - {pas_rep.te_id_min.nunique()}")
+
+
 
 
 
