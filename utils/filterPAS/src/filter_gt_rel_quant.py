@@ -208,7 +208,7 @@ def main(gt_bed,gtf,min_total_expr_frac, min_frac_site, window_size, out_prefix)
     pas_rep = pas_rep[["te_id", "rel_exp"]].apply(lambda df: df.rename(columns={"te_id": "Name",
                                                                                 "rel_exp": "Score"}))
 
-    print(pas_rep)
+    # print(pas_rep)
 
     # te_id for terminal exons BED
     m_t_exons = m_t_exons.subset(lambda df: df["te_id_min"].isin(valid_te_id_min))
