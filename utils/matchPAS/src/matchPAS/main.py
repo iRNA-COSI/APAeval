@@ -151,14 +151,18 @@ def match_with_gt(f_PD, f_GT, window):
     ## Get PD sites without matching GT (FP)
     out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
     if not out_rev_PD.empty:
+        # Duplicate the cols to cols with label "g"
         out_rev_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+        # Now GT and PD cols are the same: FP; so label "g" has to get expression zero
         out_rev_PD['score_g'] = [0.0]*len(out_rev_PD)
 
     ## Get GT sites without matching PD (FN)
-    # assign score 0 to ground truth and set other columns to values from prediction
+    # Note that columns at first will be labelled "p", although they are ground truth sites
     out_rev_GT = bedtools_window(f_GT, f_PD, window, reverse=True)
     if not out_rev_GT.empty:
+        # Duplicate the cols to cols with label "g"
         out_rev_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+        # Now GT and PD cols are the same: FN; so label "p" has to get expression zero
         out_rev_GT['score_p'] = [0.0]*len(out_rev_GT)
  
     return(out, out_rev_PD, out_rev_GT)

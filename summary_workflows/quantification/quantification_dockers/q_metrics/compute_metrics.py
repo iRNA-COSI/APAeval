@@ -64,7 +64,7 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         # obtain dataframes with matched and unmatched sites
         matched, only_PD, only_GT = matchPAS.match_with_gt(f_PD=infile, f_GT=gold_standard, window=window)
 
-        # METRIC: Expression unmatched sites
+        # METRIC: Expression unmatched sites (= expression FP)
         ####################################
         # Key: exact name of metric as it appears in specification
         metric_name = f"Sum_FP_TPM:{window}nt"
