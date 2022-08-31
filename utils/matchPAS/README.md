@@ -46,6 +46,14 @@ Below is an overview of the contents of the module. If available, the documentat
 
 ## Developer notes
 - Locally build the module for debugging: `pip install -e .` into the active APAeval conda environment.
+- For creating the markdown documentation of the module: 
+	```bash
+	# inside activated APAeval conda env
+	pip install pdoc3
+
+	# cd into utils/matchPAS/
+	pdoc -o . src/matchPAS/main.py
+	```
 
 
 
