@@ -4,7 +4,7 @@ This module contains functions for
 - matching of poly(A) sites between prediction (PD) and ground truth (GT)
 - calculation of performance metrics for benchmarking the prediction tools
 
-Below is an overview of the contents of the module. If available, the documentation for individual functions can be found [here][matchpas-md].
+Below is an overview of the contents of the module. If available, the documentation for individual functions can be found [here][module-md].
 
 
 
@@ -51,8 +51,8 @@ Below is an overview of the contents of the module. If available, the documentat
 	# inside activated APAeval conda env
 	pip install pdoc3
 
-	# cd into utils/matchPAS/
-	pdoc -o . src/matchPAS/main.py
+	# cd into utils/apaeval/
+	pdoc -o . src/apaeval/main.py
 	```
 
 
@@ -64,5 +64,5 @@ This module is based on original APAeval2021 hackathon work done by [Leo Schärf
 - [`corr_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/corr_with_gt.py)
 
 [//]: # (References)
-[matchpas-md]: ./main.md
+[module-md]: ./main.md
 [bedtools-window]: https://bedtools.readthedocs.io/en/latest/content/tools/window.html

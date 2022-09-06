@@ -18,6 +18,14 @@ Functions
 :   
 
     
+`f1_score(precision, sensitivity)`
+:   Returns F1 score of prediction.
+
+    
+`fdr(tp, fp)`
+:   Returns False Discovery Rate of prediction.
+
+    
 `find_pas_genes(gene, df)`
 :   Find all PAS in given gene.
     
@@ -50,6 +58,10 @@ Functions
         pandas.df: 'df' for rows 'gene_pas' with 'score' columns as fractions.
 
     
+`jaccard(tp, fp, fn)`
+:   Returns Jaccard index of prediction.
+
+    
 `load_genome(genome_path)`
 :   Load genome annotation in gtf format.
     
@@ -62,12 +74,12 @@ Functions
         pandas.df with genes.
 
     
-`match_with_gt(f_PD, f_GT, window)`
-:   
-
-    
 `merge_pd_by_gt(matched_sites)`
 :   Identify multiple PD sites matched to single GT site, merge and sum the scores.
+
+    
+`precision(tp, fp)`
+:   Returns precision of prediction.
 
     
 `relative_pas_usage(merged_bed_df, genome)`
@@ -84,6 +96,27 @@ Functions
     
     Returns:
         float: df of normalised and relative PAS values.
+
+    
+`select_genome_file(file_name, genome_path)`
+:   Select the genome file according to the organism.
+    
+    Requires that the file_name contains an expression containing organism
+    information, which will be matched against the genome_path directory.
+    The format should be: name.mm10.ext or name.hg38extension.ext, with
+    matching genome annotations: gencode.mm10.gtf and gencode.hg38extension.gtf.
+    Note: no check for the extension (e.g. gtf) is done.
+    
+    Args:
+        file_name (str): Name containing organism information. Supported: mm* and hg*.
+        genome_path (str): directory containing genome annotations in gtf format.
+    
+    Returns:
+        str with genome file path.
+
+    
+`sensitivity(tp, fn)`
+:   Returns sensitivity/TPR/recall of prediction.
 
     
 `split_pd_by_dist(matched_sites)`
