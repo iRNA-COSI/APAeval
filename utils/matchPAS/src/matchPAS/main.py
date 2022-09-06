@@ -6,6 +6,94 @@ import numpy as np
 from scipy.stats import pearsonr, spearmanr
 from shutil import which
 
+#############################
+# Genome/annotation related
+#############################
+
+def select_genome_file(file_name, genome_path):
+    """Select the genome file according to the organism.
+
+    Requires that the file_name contains an expression containing organism
+    information, which will be matched against the genome_path directory.
+    The format should be: name.mm10.ext or name.hg38extension.ext, with
+    matching genome annotations: gencode.mm10.gtf and gencode.hg38extension.gtf.
+    Note: no check for the extension (e.g. gtf) is done.
+
+    Args:
+        file_name (str): Name containing organism information. Supported: mm* and hg*.
+        genome_path (str): directory containing genome annotations in gtf format.
+
+    Returns:
+        str with genome file path.
+    """
+    GENOME_STRINGS = ["mm", "hg"]
+    SPLITSTRING = "."
+    assert os.path.exists(genome_path), f"Genome annotation directory not found: {genome_path}"
+    file_components =  file_name.split(SPLITSTRING)
+    # search for genome
+    for genome_string in GENOME_STRINGS:
+        match = [comp for comp in file_components if genome_string in comp]
+        if len(match) != 0:
+            break
+    if len(match) == 0:
+        raise ValueError(f"No genome string: {GENOME_STRINGS} in file_name: {file_name} found.")
+    # find all genome files in genome_path
+    for f in os.listdir(genome_path):
+        # find exact match in file
+        genome_match = [f for comp in f.split(SPLITSTRING) if match[0] == comp]
+        if len(genome_match) != 0:
+            break
+    if len(genome_match) == 0:
+        raise ValueError(f"No genome string: {GENOME_STRINGS} in genome_path: {genome_path} found.")
+    # return path to file
+    return os.path.join(genome_path, genome_match[0])
+
+
+def load_genome(genome_path):
+    """Load genome annotation in gtf format.
+    
+    Requires feature 'gene', which is available in gencode.
+    
+    Args:
+        genome_path: file path for gtf.
+    
+    Returns:
+        pandas.df with genes.
+    """
+    assert os.path.exists(genome_path), f"Genome annotation not found: {genome_path}"
+    # load gtf according to specifications (https://www.ensembl.org/info/website/upload/gff.html)
+    genome = pd.read_csv(genome_path, sep="\t", header=None,
+            comment="#",
+            names=['seqname','source', 'feature','start','end','score','strand','frame','attribute'],
+            usecols=['seqname','start','end','strand','feature'],
+            dtype={'seqname': str, 'start': np.int64, 'end': np.int64, 'strand': str, 'feature': str})
+    # Subset genome to only features gene
+    subset = genome['feature'] == "gene"
+    assert not subset.sum() == 0, f"No feature: 'gene' found in {genome_path}"
+    genome.drop('feature', 1, inplace=True)
+    return genome[subset]
+    
+
+def find_pas_genes(gene, df):
+    """Find all PAS in given gene.
+
+    Args:
+        gene (dict): dict with keys 'seqname', 'start', 'end' and 'strand'.
+        df (pandas.df): df with columns 'chrom_g' (str), 'chromStart_g' (int),
+            'chromEnd_g' (int) and 'strand_g'.
+
+    Returns:
+        pd.Series: Array of indices indicating PAS for gene 'gene'.
+    """
+    subset = (df['chrom_g'] == gene['seqname']) & (df['strand_g'] == gene['strand'])
+    subset = subset & (df['chromStart_g'] > gene['start']) & (df['chromEnd_g'] < gene['end'])
+    return subset
+
+#####################
+# PAS matching
+#####################
+
+
 def bedtools_window(bed1, bed2, window, reverse=False):
     """
     Python wrapper for bedtools window.
@@ -127,6 +215,34 @@ def merge_pd_by_gt(matched_sites):
 
     return matched_sites
 
+###############
+# Metrics
+###############
+
+
+def precision(tp, fp):
+    """
+    Returns precision of prediction.
+    """
+    return tp / (tp + fp)
+
+def sensitivity(tp, fn):
+    """
+    Returns sensitivity/TPR/recall of prediction.
+    """
+    return tp / (tp + fn)
+def f1_score(precision, sensitivity):
+    """
+    Returns F1 score of prediction.
+    """
+    return  2 * (precision * sensitivity) / (precision + sensitivity)
+
+def jaccard(tp, fp, fn):
+    """
+    Returns Jaccard index of prediction.
+    """
+    return  tp / (tp + fp + fn)
+
 def corr_Pearson_with_gt(matched_sites):
 
     vec_true = matched_sites["score_g"]
@@ -198,41 +314,3 @@ def fraction_pas(gene_pas, df):
         df.loc[gene_pas,'score_g'] = df.loc[gene_pas,'score_g'] / ground_sum
     return df.loc[gene_pas,:]
 
-def find_pas_genes(gene, df):
-    """Find all PAS in given gene.
-    
-    Args:
-        gene (dict): dict with keys 'seqname', 'start', 'end' and 'strand'.
-        df (pandas.df): df with columns 'chrom_g' (str), 'chromStart_g' (int),
-            'chromEnd_g' (int) and 'strand_g'.
-    
-    Returns:
-        pd.Series: Array of indices indicating PAS for gene 'gene'.
-    """
-    subset = (df['chrom_g'] == gene['seqname']) & (df['strand_g'] == gene['strand'])
-    subset = subset & (df['chromStart_g'] > gene['start']) & (df['chromEnd_g'] < gene['end'])
-    return subset
-
-def load_genome(genome_path):
-    """Load genome annotation in gtf format.
-    
-    Requires feature 'gene', which is available in gencode.
-    
-    Args:
-        genome_path: file path for gtf.
-    
-    Returns:
-        pandas.df with genes.
-    """
-    assert os.path.exists(genome_path), f"Genome annotation not found: {genome_path}"
-    # load gtf according to specifications (https://www.ensembl.org/info/website/upload/gff.html)
-    genome = pd.read_csv(genome_path, sep="\t", header=None,
-            comment="#",
-            names=['seqname','source', 'feature','start','end','score','strand','frame','attribute'],
-            usecols=['seqname','start','end','strand','feature'],
-            dtype={'seqname': str, 'start': np.int64, 'end': np.int64, 'strand': str, 'feature': str})
-    # Subset genome to only features gene
-    subset = genome['feature'] == "gene"
-    assert not subset.sum() == 0, f"No feature: 'gene' found in {genome_path}"
-    genome.drop('feature', 1, inplace=True)
-    return genome[subset]

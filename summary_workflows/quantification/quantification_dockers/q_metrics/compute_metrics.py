@@ -61,7 +61,7 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
 
     # genome annotation file
-    genome_file = select_genome_file(challenge, genome_path)
+    genome_file = matchPAS.select_genome_file(challenge, genome_path)
     # log to stdout
     print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
     genome = matchPAS.load_genome(genome_file)
@@ -141,19 +141,19 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         FN = only_GT.shape[0] # number of ground truth sites without prediction sites
 
         metric_name = f"Sensitivity:{window}nt"
-        sensitivity = TP / (TP + FN)
+        sensitivity = matchPAS.sensitivity(TP, FN)
         metrics[metric_name] = [sensitivity, 0]
 
         metric_name = f"Precision:{window}nt"
-        precision = TP / (TP + FP)
+        precision = matchPAS.precision(TP, FP)
         metrics[metric_name] = [precision, 0]
 
         metric_name = f"F1_score:{window}nt"
-        f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
+        f1_score = matchPAS.f1_score(precision, sensitivity)
         metrics[metric_name] = [f1_score, 0]
 
         metric_name = f"Jaccard_index:{window}nt"
-        jaccard_index = TP / (TP + FP + FN)
+        jaccard_index = matchPAS.jaccard(TP, FP, FN)
         metrics[metric_name] = [jaccard_index, 0]
 
         ## Return-type dependent
@@ -220,44 +220,6 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         jdata = json.dumps(all_assessments, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(jdata)
 
-
-def select_genome_file(file_name, genome_path):
-    """Select the genome file according to the organism.
-
-    Requires that the file_name contains an expression containing organism
-    information, which will be matched against the genome_path directory.
-    The format should be: name.mm10.ext or name.hg38extension.ext, with
-    matching genome annotations: gencode.mm10.gtf and gencode.hg38extension.gtf.
-    Note: no check for the extension (e.g. gtf) is done.
-
-    Args:
-        file_name (str): Name containing organism information. Supported: mm* and hg*.
-        genome_path (str): directory containing genome annotations in gtf format.
-
-    Returns:
-        str with genome file path.
-    """
-    GENOME_STRINGS = ["mm", "hg"]
-    SPLITSTRING = "."
-    assert os.path.exists(genome_path), f"Genome annotation directory not found: {genome_path}"
-    file_components =  file_name.split(SPLITSTRING)
-    # search for genome
-    for genome_string in GENOME_STRINGS:
-        match = [comp for comp in file_components if genome_string in comp]
-        if len(match) != 0:
-            break
-    if len(match) == 0:
-        raise ValueError(f"No genome string: {GENOME_STRINGS} in file_name: {file_name} found.")
-    # find all genome files in genome_path
-    for f in os.listdir(genome_path):
-        # find exact match in file
-        genome_match = [f for comp in f.split(SPLITSTRING) if match[0] == comp]
-        if len(genome_match) != 0:
-            break
-    if len(genome_match) == 0:
-        raise ValueError(f"No genome string: {GENOME_STRINGS} in genome_path: {genome_path} found.")
-    # return file
-    return os.path.join(genome_path, genome_match[0])
 
 
 if __name__ == '__main__':
