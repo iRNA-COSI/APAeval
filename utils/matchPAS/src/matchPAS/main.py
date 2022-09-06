@@ -124,49 +124,8 @@ def merge_pd_by_gt(matched_sites):
         # drop duplicates and merge back to main df
         not_unq_GT.drop_duplicates(subset=["name_g"], keep="first", inplace=True)
         matched_sites = pd.concat([matched_sites, not_unq_GT])
+
     return matched_sites
-
-
-def match_with_gt(f_PD, f_GT, window):
-
-    # check for presence of participant input data
-    assert os.path.exists(f_PD), "Participant file not found, please check input data."
-    # check for presence of ground truth
-    assert os.path.exists(f_GT), "Ground truth file not found, please check input data."
-    
-    ## Get matching sites (TP if p_score > 0 )
-    out = bedtools_window(f_PD, f_GT, window)
-
-    # split PD sites that matched with multiple GT
-    out = split_pd_by_dist(out)
-    if out.empty:
-        raise RuntimeError(f"No overlap found between participant: {f_PD} and ground truth: {f_GT}")
-
-    # sort
-    out.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
-
-    # merge PD sites that matched with the same GT by summing their expression
-    out = merge_pd_by_gt(out)
-
-    ## Get PD sites without matching GT (FP)
-    out_rev_PD = bedtools_window(f_PD, f_GT, window, reverse=True)
-    if not out_rev_PD.empty:
-        # Duplicate the cols to cols with label "g"
-        out_rev_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
-        # Now GT and PD cols are the same: FP; so label "g" has to get expression zero
-        out_rev_PD['score_g'] = [0.0]*len(out_rev_PD)
-
-    ## Get GT sites without matching PD (FN)
-    # Note that columns at first will be labelled "p", although they are ground truth sites
-    out_rev_GT = bedtools_window(f_GT, f_PD, window, reverse=True)
-    if not out_rev_GT.empty:
-        # Duplicate the cols to cols with label "g"
-        out_rev_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = out_rev_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
-        # Now GT and PD cols are the same: FN; so label "p" has to get expression zero
-        out_rev_GT['score_p'] = [0.0]*len(out_rev_GT)
- 
-    return(out, out_rev_PD, out_rev_GT)
-
 
 def corr_Pearson_with_gt(matched_sites):
 

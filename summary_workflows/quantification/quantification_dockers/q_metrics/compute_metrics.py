@@ -52,17 +52,54 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     base_id = f"{community}:{challenge}:{participant}:"
     # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
     metrics = {}
+
+    # check for presence of participant input data
+    assert os.path.exists(infile), "Participant file not found, please check input data."
+
     # ground truth file
     gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
+    assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
+
     # genome annotation file
     genome_file = select_genome_file(challenge, genome_path)
     # log to stdout
     print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
     genome = matchPAS.load_genome(genome_file)
+    
 
     for window in windows:
-        # obtain dataframes with matched and unmatched sites
-        matched, only_PD, only_GT = matchPAS.match_with_gt(f_PD=infile, f_GT=gold_standard, window=window)
+
+        ## Get matching sites
+        matched = matchPAS.bedtools_window(infile, gold_standard, window)
+
+        # split PD sites that matched with multiple GT
+        matched = matchPAS.split_pd_by_dist(matched)
+        if matched.empty:
+            raise RuntimeError(f"No overlap found between participant: {infile} and ground truth: {gold_standard}")
+
+        # sort
+        matched.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
+
+        # merge PD sites that matched with the same GT by summing their expression
+        matched = matchPAS.merge_pd_by_gt(matched)
+
+        ## Get PD sites without matching GT (FP)
+        only_PD = matchPAS.bedtools_window(infile, gold_standard, window, reverse=True)
+        if not only_PD.empty:
+            # Duplicate the cols to cols with label "g"
+            only_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+            # Now GT and PD cols are the same: FP; so label "g" has to get expression zero
+            only_PD['score_g'] = [0.0]*len(only_PD)
+
+        ## Get GT sites without matching PD (FN)
+        # Note that columns at first will be labelled "p", although they are ground truth sites
+        only_GT = matchPAS.bedtools_window(gold_standard, infile, window, reverse=True)
+        if not only_GT.empty:
+            # Duplicate the cols to cols with label "g"
+            only_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+            # Now GT and PD cols are the same: FN; so label "p" has to get expression zero
+            only_GT['score_p'] = [0.0]*len(only_GT)
+
 
         # METRIC: Expression unmatched sites (= expression FP)
         ####################################
