@@ -20,9 +20,11 @@ def parse_args(args=None):
     parser.add_argument("SAMPLE_FILE", help="Input sample file for the run.")
     parser.add_argument("IDENTIFICATION_OUT_SUFFIX", help="Name of APAtrap output for the identification challenge.")
     parser.add_argument("QUANTIFICATION_OUT_SUFFIX", help="Name of APAtrap output for the quantification challenge.")
+    parser.add_argument("RELATIVE_USAGE_QUANTIFICATION_OUT_SUFFIX", help="Name of APAtrap output for the relative usage quantification challenge.")
     parser.add_argument("DIFFERENTIAL_OUT", help="Name of APAtrap output for the differential challenge.")
     parser.add_argument("RUN_IDENTIFICATION", help="Can either be 'true' or 'false")
     parser.add_argument("RUN_QUANTIFICATION", help="Can either be 'true' or 'false")
+    parser.add_argument("RUN_RELATIVE_USAGE_QUANTIFICATION", help="Can either be 'true' or 'false")
     parser.add_argument("RUN_DIFFERENTIAL", help="Can either be 'true' or 'false")
     return parser.parse_args(args)
 
@@ -39,6 +41,10 @@ def main(args=None):
     if args.RUN_QUANTIFICATION:
         if not args.QUANTIFICATION_OUT_SUFFIX.endswith(".bed"):
             msg = "The quantification output file name should end with '.bed'"
+            sys.exit(msg)
+    if args.RUN_RELATIVE_USAGE_QUANTIFICATION:
+        if not args.RELATIVE_USAGE_QUANTIFICATION_OUT_SUFFIX.endswith(".bed"):
+            msg = "The relative usage quantification output file name should end with '.bed'"
             sys.exit(msg)
     if args.RUN_DIFFERENTIAL:
         if not args.DIFFERENTIAL_OUT.endswith(".tsv"):
