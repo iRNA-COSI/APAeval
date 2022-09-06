@@ -45,7 +45,7 @@ Comparison of PAS predicted from **simulated RNA-Seq data with dataset used for 
 
 ### Metrics
 #### Poly(A) site matching
-To compute the metrics, the poly(A) sites identified from the RNAseq data by the benchmarked tool (PD) and from the ground-truth dataset (GT) should be first mapped to each other as [implemented in the `matchPAS` module][matchpas]. Briefly
+To compute the metrics, the poly(A) sites identified from the RNAseq data by the benchmarked tool (PD) and from the ground-truth dataset (GT) should be first mapped to each other as [implemented in the `apaeval` module][apa-module]. Briefly
 - Matching of PD and GT sites is performed for different window sizes (specified below); i.e. a PD site is considered matched if its coordinates are within [GT - window, GT + window]
   - If a PD site matches multiple GT sites its score is split between the GT sites according to distance
   - If multiple PD sites match one GT they are merged and their score is summed
@@ -245,5 +245,5 @@ The OEB consolidation file contains all validation, assessment and aggregation o
 [spec-json]: <https://www.ecma-international.org/publications-and-standards/standards/ecma-404/>
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
 [spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
-[matchpas]: ../../../utils/matchPAS/
+[apa-module]: ../../../utils/apaeval/
 [oeb]: <https://openebench.bsc.es/>

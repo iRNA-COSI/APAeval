@@ -7,7 +7,7 @@ import json
 import pandas as pd
 from argparse import ArgumentParser
 import JSON_templates
-import matchPAS
+import apaeval as apa
 
 def main(args):
 
@@ -61,19 +61,25 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
 
     # genome annotation file
-    genome_file = matchPAS.select_genome_file(challenge, genome_path)
+    genome_file = apa.select_genome_file(challenge, genome_path)
     # log to stdout
     print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
-    genome = matchPAS.load_genome(genome_file)
+    genome = apa.load_genome(genome_file)
     
 
     for window in windows:
 
         ## Get matching sites
-        matched = matchPAS.bedtools_window(infile, gold_standard, window)
+        matched = apa.bedtools_window(infile, gold_standard, window)
 
+        # Number of duplicated PD sites, i.e. PD sites that matched multiple GT sites
+        dPD_count = sum(matched.duplicated(['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p'], keep="first")) 
+
+        # Number of "duplicated" GT sites, i.e. GT sites that matched multiple PD sites
+        dGT_count = sum(matched.duplicated(['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g'], keep="first")) 
+    
         # split PD sites that matched with multiple GT
-        matched = matchPAS.split_pd_by_dist(matched)
+        matched = apa.split_pd_by_dist(matched)
         if matched.empty:
             raise RuntimeError(f"No overlap found between participant: {infile} and ground truth: {gold_standard}")
 
@@ -81,10 +87,10 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         matched.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
         # merge PD sites that matched with the same GT by summing their expression
-        matched = matchPAS.merge_pd_by_gt(matched)
+        matched = apa.merge_pd_by_gt(matched)
 
         ## Get PD sites without matching GT (FP)
-        only_PD = matchPAS.bedtools_window(infile, gold_standard, window, reverse=True)
+        only_PD = apa.bedtools_window(infile, gold_standard, window, reverse=True)
         if not only_PD.empty:
             # Duplicate the cols to cols with label "g"
             only_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
@@ -93,7 +99,7 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
 
         ## Get GT sites without matching PD (FN)
         # Note that columns at first will be labelled "p", although they are ground truth sites
-        only_GT = matchPAS.bedtools_window(gold_standard, infile, window, reverse=True)
+        only_GT = apa.bedtools_window(gold_standard, infile, window, reverse=True)
         if not only_GT.empty:
             # Duplicate the cols to cols with label "g"
             only_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
@@ -141,19 +147,19 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         FN = only_GT.shape[0] # number of ground truth sites without prediction sites
 
         metric_name = f"Sensitivity:{window}nt"
-        sensitivity = matchPAS.sensitivity(TP, FN)
+        sensitivity = apa.sensitivity(TP, FN)
         metrics[metric_name] = [sensitivity, 0]
 
         metric_name = f"Precision:{window}nt"
-        precision = matchPAS.precision(TP, FP)
+        precision = apa.precision(TP, FP)
         metrics[metric_name] = [precision, 0]
 
         metric_name = f"F1_score:{window}nt"
-        f1_score = matchPAS.f1_score(precision, sensitivity)
+        f1_score = apa.f1_score(precision, sensitivity)
         metrics[metric_name] = [f1_score, 0]
 
         metric_name = f"Jaccard_index:{window}nt"
-        jaccard_index = matchPAS.jaccard(TP, FP, FN)
+        jaccard_index = apa.jaccard(TP, FP, FN)
         metrics[metric_name] = [jaccard_index, 0]
 
         ## Return-type dependent
@@ -175,14 +181,14 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
             # METRIC: correlation coefficients
             #################################
             # Pearson correlation
-            correlation_pearson = matchPAS.corr_Pearson_with_gt(sites)
+            correlation_pearson = apa.corr_Pearson_with_gt(sites)
             # Key: exact name of metric as it appears in specification
             metric_name = f"Pearson_r:{return_df_type}:{window}nt"
             # Value: List of [variable_holding_metric, std_err]
             metrics[metric_name] = [correlation_pearson, 0]
 
             # Spearman correlation
-            correlation_spearman = matchPAS.corr_Spearman_with_gt(sites)
+            correlation_spearman = apa.corr_Spearman_with_gt(sites)
             # Key: exact name of metric as it appears in specification
             metric_name = f"Spearman_r:{return_df_type}:{window}nt"
             # Value: List of [variable_holding_metric, std_err]
@@ -192,17 +198,17 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
             ####################
             # Only calculate metric for first window size.
             if window == windows[0]:
-                normalised_df = matchPAS.relative_pas_usage(sites, genome)
+                normalised_df = apa.relative_pas_usage(sites, genome)
 
                 # Pearson
-                correlation_Pearson_rel_use = matchPAS.corr_Pearson_with_gt(normalised_df)
+                correlation_Pearson_rel_use = apa.corr_Pearson_with_gt(normalised_df)
                 # Key: exact name of metric as it appears in specification
                 metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
                 metrics[metric_name] = [correlation_Pearson_rel_use, 0]
 
                 # Spearman
-                correlation_Spearman_rel_use = matchPAS.corr_Spearman_with_gt(normalised_df)
+                correlation_Spearman_rel_use = apa.corr_Spearman_with_gt(normalised_df)
                 # Key: exact name of metric as it appears in specification
                 metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]

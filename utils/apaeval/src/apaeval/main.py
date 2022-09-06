@@ -231,6 +231,13 @@ def sensitivity(tp, fn):
     Returns sensitivity/TPR/recall of prediction.
     """
     return tp / (tp + fn)
+
+def fdr(tp, fp):
+    """
+    Returns False Discovery Rate of prediction.
+    """
+    return fp / (tp + fp) 
+
 def f1_score(precision, sensitivity):
     """
     Returns F1 score of prediction.

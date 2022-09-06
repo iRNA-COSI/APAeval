@@ -19,7 +19,7 @@ participant dataset. In order to create datasets with structure compatible with 
 
 2. [**Metrics_computation**](./q_metrics):
 Predictions are compared with the 'Gold Standards' provided by the community, resulting in a set of quality metrics that reflect the performance of the benchmarking participants. Those metrics are written into assessment datasets. In order to create datasets with structure compatible with the [Elixir Benchmarking Data Model][elixir-data-model], please use the following [python module and JSON schema][oeb-json].
-Functions for APAeval metrics calculation should be defined in the module [`utils/matchPAS`][matchpas] and imported in `compute_metrics.py`
+Functions for APAeval metrics calculation should be defined in the module [`utils/apaeval`][apa-module] and imported in `compute_metrics.py`
 
 
 3. [**Consolidation**](./q_consolidation):
@@ -34,7 +34,7 @@ Please check out the sections on [building docker images][build-images] and [run
 [main-nf]: ../main.nf
 [readme-qswf]: ../README.md
 [readme-swf]: ../../README.md
-[matchpas]: ../../../utils/matchPAS/src/matchPAS/main.py
+[apa-module]: ../../../utils/apaeval/src/apaeval/main.py
 [build-images]: ../../README.md#7-build-images
 [run-workflow]: ../../README.md#8-test-run
 [elixir-data-model]: https://github.com/inab/benchmarking-data-model
