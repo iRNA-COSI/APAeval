@@ -107,6 +107,9 @@ In the former you'll have to adjust the docker container names and general workf
 Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification summary workflow][q-swf]).
 
 ### 7. Build images
+> ATTENTION: the [apaeval module][apa-module] is installed inside the containers via a git url specified in the respective `requirements.txt` (for [q_validation](quantification/quantification_dockers/q_validation/requirements.txt) and [q_metrics](quantification/quantification_dockers/q_metrics/requirements.txt)). If you made changes to the module, don't forget to push your branch and adjust those urls accordingly.
+
+
 After making the necessary changes for your specific event, you will have to build the docker images locally by either of the following two methods:
 
 1. Go to the `[X]_dockers/` directory and run the following
