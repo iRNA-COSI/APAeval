@@ -69,7 +69,10 @@ utils/
         |-  src/matchPAS/main.py       
 ```
 
-Within such a directory we find the `main.nf` and `nextflow.config` files, which specify the workflow and all its event-specific parameters, respectively, as well as a `[participant]_[event].config `, which contains the input file- and challenge names for a particular participant. `main.nf` ideally does NOT have to be changed (at least not much) between benchmarking events, as it simply connects the three steps `validation`, `metrics_computation` and `consolidation` inherent to the OEB workflow structure. In contrast, file and tool names, and parameters, have to be adapted in `nextflow.config` and `[participant]_[event].config ` for dedicated workflow runs.   
+Within such a directory we find the `main.nf` and `nextflow.config` files, which specify the workflow and all its event-specific parameters, respectively, as well as a `[participant]_[event].config `, which contains the input file- and challenge names for a particular participant. `main.nf` ideally does NOT have to be changed (at least not much) between benchmarking events, as it simply connects the three steps `validation`, `metrics_computation` and `consolidation` inherent to the OEB workflow structure. In contrast, file and tool names have to be adapted in `[participant]_[event].config ` for dedicated workflow runs. The name of `[participant]_[event].config` also has to be specified in `nextflow.config` at the top under `includeConfig`, and finally `nextflow.config` is the place to change additional parameters if necessary.
+
+> ATTENTION: Keep `nextflow.config` unchanged (apart from the above mentioned `includeConfig`) within an event, in order to be able to directly compare the different participant runs.    
+
 Within the benchmarking event's directory resides a subdirectory `specification` with a detailed description of required input and output file formats, as well as of the metrics to be calculated for the respective benchmarking event. The *actual code* is hidden in the directory `[benchmarking_event]_dockers`; For each of the three summary workflow steps required by OEB, a separate docker container will be built:
 
 1. Validation
@@ -134,7 +137,7 @@ nextflow run main.nf -profile docker -c tool_event.config
 nextflow run main.nf -profile slurm -c tool_event.config
 
 ```
-> NOTE: Parameters from the [nextflow.config][nextflow-config] file are read **in addition** to the ones specified with the `-c` flag, but the latter will override any parameters of the same name in the nextflow.config.
+> NOTE: Parameters from the [nextflow.config][nextflow-config] file are read **in addition** to the ones specified with the `-c` flag, but the latter will override any parameters of the same name in the nextflow.config. Don't forget to `includeConfig` the `tool_event.config` in the `nextflow.config`
 
 ## HOW TO: "PRODUCTION"
 When you have completed the steps described above you can finally run the summary workflow on real data. Below are some hints to help you get going.
@@ -143,9 +146,7 @@ When you have completed the steps described above you can finally run the summar
 Place the participant output into a directory like `DATA/PARTICIPANT_NAME/` and make sure the files are named like `PARTICIPANT_NAME.CHALLENGE_ID.EVENT.EXT`
 
 ### 2. Adapt configs
-You're going to run the workflow for one participant at a time, but you can specify multiple challenges for that participant. To do so, adapt the `nextflow.config` (params `participant_id` and `indir`) and create a participant specific `[participant]_[event].config` (copy `tool_event.config`). There you'll specify input files and challenge names. 
-
-> NOTE: in the current implementation you have to specify `participant_id` and `indir` in both the `nextflow.config` AND the `[participant]_[event].config`
+You're going to run the workflow for one participant at a time, but you can specify multiple challenges for that participant. To do so, create a participant specific `[participant]_[event].config` (copy `tool_event.config`). There you'll specify input files and challenge names. ***Don't forget to set your new config's name at the top of `nextflow.config` (directive `includeConfig`).***
 
 ### 3. Containers & images
 Make sure you have the images appropriate for your system ready. If you're running docker you can use the images you built locally in the [HOW TO: DEVELOP](#7-build-containers) section. If you want to use singularity you'll first have to push those images to a publicly accessible repo, e.g. dockerhub. Make sure to rename the images (see bash command below) and adjust the paths in the `nextflow.config` accordingly.
