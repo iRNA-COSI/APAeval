@@ -7,7 +7,7 @@ import json
 import pandas as pd
 from argparse import ArgumentParser
 import JSON_templates
-import matchPAS
+import apaeval as apa
 
 def main(args):
 
@@ -52,19 +52,62 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     base_id = f"{community}:{challenge}:{participant}:"
     # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
     metrics = {}
+
+    # check for presence of participant input data
+    assert os.path.exists(infile), "Participant file not found, please check input data."
+
     # ground truth file
     gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
+    assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
+
     # genome annotation file
-    genome_file = select_genome_file(challenge, genome_path)
+    genome_file = apa.select_genome_file(challenge, genome_path)
     # log to stdout
     print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
-    genome = matchPAS.load_genome(genome_file)
+    genome = apa.load_genome(genome_file)
+    
 
     for window in windows:
-        # obtain dataframes with matched and unmatched sites
-        matched, only_PD, only_GT = matchPAS.match_with_gt(f_PD=infile, f_GT=gold_standard, window=window)
 
-        # METRIC: Expression unmatched sites
+        ## Get matching sites
+        matched = apa.bedtools_window(infile, gold_standard, window)
+
+        # Number of duplicated PD sites, i.e. PD sites that matched multiple GT sites
+        dPD_count = sum(matched.duplicated(['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p'], keep="first")) 
+
+        # Number of "duplicated" GT sites, i.e. GT sites that matched multiple PD sites
+        dGT_count = sum(matched.duplicated(['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g'], keep="first")) 
+    
+        # split PD sites that matched with multiple GT
+        matched = apa.split_pd_by_dist(matched)
+        if matched.empty:
+            raise RuntimeError(f"No overlap found between participant: {infile} and ground truth: {gold_standard}")
+
+        # sort
+        matched.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
+
+        # merge PD sites that matched with the same GT by summing their expression
+        matched = apa.merge_pd_by_gt(matched)
+
+        ## Get PD sites without matching GT (FP)
+        only_PD = apa.bedtools_window(infile, gold_standard, window, reverse=True)
+        if not only_PD.empty:
+            # Duplicate the cols to cols with label "g"
+            only_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+            # Now GT and PD cols are the same: FP; so label "g" has to get expression zero
+            only_PD['score_g'] = [0.0]*len(only_PD)
+
+        ## Get GT sites without matching PD (FN)
+        # Note that columns at first will be labelled "p", although they are ground truth sites
+        only_GT = apa.bedtools_window(gold_standard, infile, window, reverse=True)
+        if not only_GT.empty:
+            # Duplicate the cols to cols with label "g"
+            only_GT[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_GT[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
+            # Now GT and PD cols are the same: FN; so label "p" has to get expression zero
+            only_GT['score_p'] = [0.0]*len(only_GT)
+
+
+        # METRIC: Expression unmatched sites (= expression FP)
         ####################################
         # Key: exact name of metric as it appears in specification
         metric_name = f"Sum_FP_TPM:{window}nt"
@@ -92,84 +135,84 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         else:
             pct_tpm_unmatched = 100.0
 
-        # Value: List of [variable_holding_metric, std_err]
-        metrics[metric_name] = [pct_tpm_unmatched, 0]
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [pct_tpm_unmatched, 0]
 
-        # METRIC Performance metrics
-        ######################################
-        # binary classification metrics
-        # number of ground truth sites with matching prediction site and TPM > 0
-        TP = matched.loc[matched["score_p"] > 0].shape[0]
-        FP = only_PD.shape[0] # number of prediction sites without ground truth sites
-        FN = only_GT.shape[0] # number of ground truth sites without prediction sites
+            # METRIC Performance metrics
+            ######################################
+            # binary classification metrics
+            # number of ground truth sites with matching prediction site and TPM > 0
+            TP = matched.loc[matched["score_p"] > 0].shape[0]
+            FP = only_PD.shape[0] # number of prediction sites without ground truth sites
+            FN = only_GT.shape[0] # number of ground truth sites without prediction sites
 
-        metric_name = f"Sensitivity:{window}nt"
-        sensitivity = TP / (TP + FN)
-        metrics[metric_name] = [sensitivity, 0]
+            metric_name = f"Sensitivity:{window}nt"
+            sensitivity = apa.sensitivity(TP, FN)
+            metrics[metric_name] = [sensitivity, 0]
 
-        metric_name = f"Precision:{window}nt"
-        precision = TP / (TP + FP)
-        metrics[metric_name] = [precision, 0]
+            metric_name = f"Precision:{window}nt"
+            precision = apa.precision(TP, FP)
+            metrics[metric_name] = [precision, 0]
 
-        metric_name = f"F1_score:{window}nt"
-        f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
-        metrics[metric_name] = [f1_score, 0]
+            metric_name = f"F1_score:{window}nt"
+            f1_score = apa.f1_score(precision, sensitivity)
+            metrics[metric_name] = [f1_score, 0]
 
-        metric_name = f"Jaccard_index:{window}nt"
-        jaccard_index = TP / (TP + FP + FN)
-        metrics[metric_name] = [jaccard_index, 0]
+            metric_name = f"Jaccard_index:{window}nt"
+            jaccard_index = apa.jaccard(TP, FP, FN)
+            metrics[metric_name] = [jaccard_index, 0]
 
-        ## Return-type dependent
-        for return_df_type in all_return_df_types:
-            if return_df_type == "all_GT":
-                # add GT sites with no PD match
-                sites = pd.concat([matched, only_GT])
-            elif return_df_type == "union":
-                # add GT sites with no PD match AND PD sites with no GT match
-                sites = pd.concat([matched, only_GT, only_PD])
-            elif return_df_type == "intersection":
-                # do not consider any unmatched sites
-                sites = matched
-            else:
-                raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: all_GT, union or intersection.")
+            ## Return-type dependent
+            for return_df_type in all_return_df_types:
+                if return_df_type == "all_GT":
+                    # add GT sites with no PD match
+                    sites = pd.concat([matched, only_GT])
+                elif return_df_type == "union":
+                    # add GT sites with no PD match AND PD sites with no GT match
+                    sites = pd.concat([matched, only_GT, only_PD])
+                elif return_df_type == "intersection":
+                    # do not consider any unmatched sites
+                    sites = matched
+                else:
+                    raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: all_GT, union or intersection.")
                 
-            sites.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
+                sites.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
-            # METRIC: correlation coefficients
-            #################################
-            # Pearson correlation
-            correlation_pearson = matchPAS.corr_Pearson_with_gt(sites)
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"Pearson_r:{return_df_type}:{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [correlation_pearson, 0]
-
-            # Spearman correlation
-            correlation_spearman = matchPAS.corr_Spearman_with_gt(sites)
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"Spearman_r:{return_df_type}:{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [correlation_spearman, 0]
-
-            # METRIC: correlation coefficient of relative pas usage
-            ####################
-            # Only calculate metric for first window size.
-            if window == windows[0]:
-                normalised_df = matchPAS.relative_pas_usage(sites, genome)
-
-                # Pearson
-                correlation_Pearson_rel_use = matchPAS.corr_Pearson_with_gt(normalised_df)
+                # METRIC: correlation coefficients
+                #################################
+                # Pearson correlation
+                correlation_pearson = apa.corr_Pearson_with_gt(sites)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
+                metric_name = f"Pearson_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [correlation_Pearson_rel_use, 0]
+                metrics[metric_name] = [correlation_pearson, 0]
 
-                # Spearman
-                correlation_Spearman_rel_use = matchPAS.corr_Spearman_with_gt(normalised_df)
+                # Spearman correlation
+                correlation_spearman = apa.corr_Spearman_with_gt(sites)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
+                metric_name = f"Spearman_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [correlation_Spearman_rel_use, 0]
+                metrics[metric_name] = [correlation_spearman, 0]
+
+                # METRIC: correlation coefficient of relative pas usage
+                ####################
+                # Only calculate metric for first window size.
+                if window == windows[0]:
+                    normalised_df = apa.relative_pas_usage(sites, genome)
+
+                    # Pearson
+                    correlation_Pearson_rel_use = apa.corr_Pearson_with_gt(normalised_df)
+                    # Key: exact name of metric as it appears in specification
+                    metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
+                    # Value: List of [variable_holding_metric, std_err]
+                    metrics[metric_name] = [correlation_Pearson_rel_use, 0]
+
+                    # Spearman
+                    correlation_Spearman_rel_use = apa.corr_Spearman_with_gt(normalised_df)
+                    # Key: exact name of metric as it appears in specification
+                    metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
+                    # Value: List of [variable_holding_metric, std_err]
+                    metrics[metric_name] = [correlation_Spearman_rel_use, 0]
 
     # for the challenge, create all assessment json objects and append them to all_assessments
     for key, value in metrics.items():
@@ -183,44 +226,6 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         jdata = json.dumps(all_assessments, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(jdata)
 
-
-def select_genome_file(file_name, genome_path):
-    """Select the genome file according to the organism.
-
-    Requires that the file_name contains an expression containing organism
-    information, which will be matched against the genome_path directory.
-    The format should be: name.mm10.ext or name.hg38extension.ext, with
-    matching genome annotations: gencode.mm10.gtf and gencode.hg38extension.gtf.
-    Note: no check for the extension (e.g. gtf) is done.
-
-    Args:
-        file_name (str): Name containing organism information. Supported: mm* and hg*.
-        genome_path (str): directory containing genome annotations in gtf format.
-
-    Returns:
-        str with genome file path.
-    """
-    GENOME_STRINGS = ["mm", "hg"]
-    SPLITSTRING = "."
-    assert os.path.exists(genome_path), f"Genome annotation directory not found: {genome_path}"
-    file_components =  file_name.split(SPLITSTRING)
-    # search for genome
-    for genome_string in GENOME_STRINGS:
-        match = [comp for comp in file_components if genome_string in comp]
-        if len(match) != 0:
-            break
-    if len(match) == 0:
-        raise ValueError(f"No genome string: {GENOME_STRINGS} in file_name: {file_name} found.")
-    # find all genome files in genome_path
-    for f in os.listdir(genome_path):
-        # find exact match in file
-        genome_match = [f for comp in f.split(SPLITSTRING) if match[0] == comp]
-        if len(genome_match) != 0:
-            break
-    if len(genome_match) == 0:
-        raise ValueError(f"No genome string: {GENOME_STRINGS} in genome_path: {genome_path} found.")
-    # return file
-    return os.path.join(genome_path, genome_match[0])
 
 
 if __name__ == '__main__':

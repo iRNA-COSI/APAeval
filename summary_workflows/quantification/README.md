@@ -32,7 +32,7 @@ This README describes the APAeval **(absolute) quantification** summary workflow
   - For running on OEB: The genome directory is specified in `nextflow.config`
   - For the test data, challenge `challenge_1.mm10` with ground truth file `challenge_1.mm10.bed` will use genome file `gencode.test.mm10.gtf`, because both contain `mm10` within two dots in the filename.
 > NOTE: the genome file needs to contain the same substring as the challenge. That is, challenge `[partone].[organism].[partwo].bed` requires a genome annotation file like `[partone].[organism].[partwo].gtf`, where `[organism]` starts with *mm* or *hg* (only these two currently supported). And `[partone]` and `[parttwo]` can be an aribitrary string (or empty string).
-- APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `utils/matchPAS`
+- APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `utils/apaeval`
 - The `assessments_[participant].[challenge].[event].json` file is used in the consolidation step
 
 
@@ -44,7 +44,6 @@ This README describes the APAeval **(absolute) quantification** summary workflow
 
 ## Usage
 Please check out the sections on [building docker images][build-images] and [running the summary workflow][run-workflow] in the main [APAeval summary workflow README][readme-swf]
-
 
 
 [//]: # (References)

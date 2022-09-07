@@ -65,8 +65,8 @@ summmary_workflows/
                 |- ...    
 ...
 utils/
-    |- matchPAS/
-        |-  src/matchPAS/main.py       
+    |- apaeval/
+        |-  src/apaeval/main.py       
 ```
 
 Within such a directory we find the `main.nf` and `nextflow.config` files, which specify the workflow and all its event-specific parameters, respectively, as well as a `[participant]_[event].config `, which contains the input file- and challenge names for a particular participant. `main.nf` ideally does NOT have to be changed (at least not much) between benchmarking events, as it simply connects the three steps `validation`, `metrics_computation` and `consolidation` inherent to the OEB workflow structure. In contrast, file and tool names have to be adapted in `[participant]_[event].config ` for dedicated workflow runs. The name of `[participant]_[event].config` also has to be specified in `nextflow.config` at the top under `includeConfig`, and finally `nextflow.config` is the place to change additional parameters if necessary.
@@ -80,7 +80,7 @@ Within the benchmarking event's directory resides a subdirectory `specification`
 3. Consolidation
 
 
-The "dockers" directories contain Dockerfiles, requirements, and dedicated python scripts. In order to create datasets that are compatible with the [Elixir Benchmarking Data Model][elixir-data-model], the JSON templates in the main `summary_workflows` directory are imported in the respective docker containers. The provided *python scripts*, as well as the module `utils/matchPAS` they import, are where the action happens: **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
+The "dockers" directories contain Dockerfiles, requirements, and dedicated python scripts. In order to create datasets that are compatible with the [Elixir Benchmarking Data Model][elixir-data-model], the JSON templates in the main `summary_workflows` directory are imported in the respective docker containers. The provided *python scripts*, as well as the module `utils/apaeval` they import, are where the action happens: **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
 
 
 ## HOW TO: DEVELOP
@@ -92,7 +92,7 @@ If not done so already, copy the whole contents of the `quantification` director
 OEB requires all inputs to be validated. To check for correct input file formats for your benchmarking event, adapt the validation in [`validation.py`][validation-py] (around line 50). Update the corresponding `requirements.txt`, `constraints.txt` and `Dockerfile` for installation of additional packages, if necessary.
 
 ### 3. Calculate the metrics
-Adapt [`compute_metrics.py`][metrics-py] to compare the participant output to the community provided gold standard file(s). You can define custom functions in modules within the [`utils` directory][apaeval-utils] (in the example of the quantification summary workflow, we created a module [`matchPAS`][matchpas]).
+Adapt [`compute_metrics.py`][metrics-py] to compare the participant output to the community provided gold standard file(s). You can define custom functions in the [`utils/apaeval`][apa-module] module.
 
 >NOTE: the extension of the gold standard file is currently hardcoded in [`compute_metrics.py`][metrics-py] in line 56. Change this according to your gold standard file format.
 
@@ -107,6 +107,9 @@ In the former you'll have to adjust the docker container names and general workf
 Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification summary workflow][q-swf]).
 
 ### 7. Build images
+> ATTENTION: the [apaeval module][apa-module] is installed inside the containers via a git url specified in the respective `requirements.txt` (for [q_validation](quantification/quantification_dockers/q_validation/requirements.txt) and [q_metrics](quantification/quantification_dockers/q_metrics/requirements.txt)). If you made changes to the module, don't forget to push your branch and adjust those urls accordingly.
+
+
 After making the necessary changes for your specific event, you will have to build the docker images locally by either of the following two methods:
 
 1. Go to the `[X]_dockers/` directory and run the following
@@ -168,7 +171,7 @@ The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_work
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
 [elixir-data-model]: https://github.com/inab/benchmarking-data-model
 [metrics-py]:quantification/quantification_dockers/q_metrics/compute_metrics.py
-[matchpas]: https://github.com/iRNA-COSI/APAeval/tree/main/utils/matchPAS
+[apa-module]: https://github.com/iRNA-COSI/APAeval/tree/main/utils/apaeval
 [oeb]: <https://openebench.bsc.es/>
 [nextflow-config]: quantification/nextflow.config
 [q-swf]: quantification/README.md

@@ -154,6 +154,7 @@ process benchmark_consolidation {
 	saveAs: { filename -> results.name } 
 
 	publishDir out_dir,
+	pattern: "consolidated_result.json",
 	mode: 'copy',
 	overwrite: false,
 	saveAs: { filename -> consolidation_file.name }
