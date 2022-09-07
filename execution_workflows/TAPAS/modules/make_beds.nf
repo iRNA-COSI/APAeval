@@ -4,7 +4,9 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
+
 process MAKE_BEDS {
+    publishDir "${params.outdir}/${params.modules.make_beds.publish_dir}", mode: params.publish_dir_mode
     tag "$sample"
 
     container "quay.io/biocontainers/python:3.8.3"
