@@ -14,20 +14,11 @@ def main(args):
     aggregation_data = args.aggregation_data
     challenges = args.challenge_ids
     out_path = args.output
+    print(out_path)
 
     # Nextflow passes list, python reads string. We need python lists
     metrics_data = [m.strip('[').strip(']').strip(',') for m in metrics_data]
     validation_data = [v.strip('[').strip(']').strip(',') for v in validation_data]
-
-
-    # Assuring the output path does exist
-    if not os.path.exists(os.path.dirname(out_path)):
-        try:
-            os.makedirs(os.path.dirname(out_path))
-            with open(out_path, mode="a"):
-                pass
-        except OSError as exc:
-            print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
             
     # This is the final consolidated output
     data_model_file = []
