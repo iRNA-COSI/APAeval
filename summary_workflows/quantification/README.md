@@ -25,7 +25,7 @@ This README describes the APAeval **(absolute) quantification** summary workflow
 - "input file" and "gold standard file" will be compared in order to calculate the metrics
 - `input_file`: output file from execution workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
->NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in `nextflow.config`. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
+>NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in [`[tool]_[event].config`][tool-event-config]. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
 - `windows` parameter is used to compute metrics for a list of window sizes.
     - For running on OEB: the parameter is read from `nextflow.config`.
 - `genome_dir`: Directory to genome annotation in gtf format with 9 fields as specified [here](https://www.gencodegenes.org/pages/data_format.html). The gtf is used for the relative PAS usage metric computation.
@@ -37,7 +37,7 @@ This README describes the APAeval **(absolute) quantification** summary workflow
 
 
 ### 3. Results Consolidation
-- Gathers *all* `validated_[participant].[challenge].[event].json` files from the validation step, *all* `assessments_[participant].[challenge].[event].json` files from the metrics computation step, and - if available - existing aggregation data (currently imported from the `data/` directory; in `nextflow.config`: `assess_dir`)
+- Gathers *all* `validated_[participant].[challenge].[event].json` files from the validation step, *all* `assessments_[participant].[challenge].[event].json` files from the metrics computation step, and - if available - existing aggregation data (currently imported from the `data/` directory; in `nextflow.config`: `aggregation_dir`)
 - Outputs OEB compatible `consolidated_result.json` file for the tested participant
 - "aggregation" objects in the `consolidated_result.json` determine which metrics are to be plotted against each other on the OEB website
 - In order to specify which of the metrics present in the assessment objects should be plotted on OEB, the file `quantification_dockers/q_consolidation/aggregation_template.json` has to be modified.
@@ -55,4 +55,4 @@ Please check out the sections on [building docker images][build-images] and [run
 [validation-py]:./quantification_dockers/q_validation/validation.py
 [metrics-py]:./quantification_dockers/q_metrics/compute_metrics.py
 [nextflow-config]: ./nextflow.config
-[infiles-config]: ./infiles.config
+[tool-event-config]: ./tool_event.config
