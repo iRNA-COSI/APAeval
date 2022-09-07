@@ -89,7 +89,7 @@ If not done so already, copy the whole contents of the `quantification` director
 OEB requires all inputs to be validated. To check for correct input file formats for your benchmarking event, adapt the validation in [`validation.py`][validation-py] (around line 50). Update the corresponding `requirements.txt`, `constraints.txt` and `Dockerfile` for installation of additional packages, if necessary.
 
 ### 3. Calculate the metrics
-Adapt [`compute_metrics.py`][metrics-py] to compare the participant output to the community provided gold standard file(s). You can define custom functions in modules within the [`utils` directory][apaeval-utils] (in the example of the quantification summary workflow, we created a module [`apaeval`][apa-module]).
+Adapt [`compute_metrics.py`][metrics-py] to compare the participant output to the community provided gold standard file(s). You can define custom functions in the [`utils/apaeval`][apa-module] module.
 
 >NOTE: the extension of the gold standard file is currently hardcoded in [`compute_metrics.py`][metrics-py] in line 56. Change this according to your gold standard file format.
 
