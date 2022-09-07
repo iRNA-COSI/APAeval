@@ -18,5 +18,5 @@ workflow INPUT_CHECK {
         .set { ch_sample }
 
     emit:
-    ch_sample // [ sample, barcode, fasta, gtf, is_transcripts, annotation_str ]
+    ch_sample // [ sample, bam, read_length ]
 }

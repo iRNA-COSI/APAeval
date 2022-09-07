@@ -16,7 +16,7 @@ process TAPAS_QUANT{
     
   output:    
   path "refFlat*", emit: filtered_txt
-  path "tapas*", emit: quant_txt
+  tuple val(sample), path("tapas*"), emit: quant_txt
 
   script:
   tapas_quant_out="tapas_quant_"+"$read_coverage"

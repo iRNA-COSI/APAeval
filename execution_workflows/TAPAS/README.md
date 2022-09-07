@@ -6,7 +6,7 @@ The [application](https://github.com/arefeen/TAPAS) is free to download,
 and the [README documentation](https://github.com/arefeen/TAPAS#tapas-tool-for-alternative-polyadenylation-site-analysis) was used as a reference
 to create the nextflow pipeline of this module.
 
-This workflow qualifies for the APAeval **quantification challenge only**.
+This workflow qualifies for the APAeval **identification and quantification challenges**.
 
 ## Running TAPAS workflow
 
@@ -32,14 +32,14 @@ Parameters relevant to the workflow itself are:
 ### Running the TAPAS execution workflow
 - Download the test data [here](to be added). The current dataset is in a genomic region where there are enough reads to test TAPAS's PAS quantification functionality.
 
-- Update the samplesheet.csv with the full path to the downloaded bam, gtf, and fasta files.
+- Update the samplesheet.csv with the full path to the downloaded bam file(s).
 ```
-sample,bam,gtf
-sample,[path_to]/SRR6795721.bam,[path_to]/gencode.v39.annotation.gtf
+sample,bam,read_length
+sample,[path_to]/SRR6795721.bam,[int(read_length)]
 ```
 - Run the pipeline with the samplesheet.csv with the input paths updated using either docker or singularity containers
 ```
-nextflow main.nf --input samplesheet.csv -profile <docker/singularity>
+nextflow main.nf --input samplesheet.csv --gtf [/path/to/gtf] -profile <docker/singularity>
 ```
 
 ## Output & post-processing

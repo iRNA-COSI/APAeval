@@ -34,7 +34,7 @@ def print_error(error, context='Line', context_str=''):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    sample,bam,gtf
+    sample,bam,read_length
     """
 
     input_extensions = []
@@ -43,7 +43,7 @@ def check_samplesheet(file_in, file_out):
 
         ## Check header
         MIN_COLS = 3
-        HEADER = ['sample','bam','gtf']
+        HEADER = ['sample','bam','read_length']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bam, gtf = lspl[:len(HEADER)]
+            sample, bam, read_length = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -76,15 +76,13 @@ def check_samplesheet(file_in, file_out):
                 if not bam.endswith(".bam"):
                     print_error("bam does not have extension 'bam'", 'Line', line)
 
-            ## Check gtf extension
-            if gtf:
-                if gtf.find(" ") != -1:
-                    print_error("gtf contains spaces!", 'Line', line)
-                if not gtf.endswith(".gtf"):
-                    print_error("gtf does not have extension '.gtf'", 'Line', line)
+            ## Check read_length
+            if read_length:
+                if read_length.find(" ") != -1:
+                    print_error("read_length contains spaces!", 'Line', line)
 
-            ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
-            sample_info = [ sample, bam, gtf ]
+            ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, read_length, is_transcripts ]}}
+            sample_info = [ sample, bam, read_length ]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns
@@ -92,7 +90,7 @@ def check_samplesheet(file_in, file_out):
         out_dir = os.path.dirname(file_out)
         make_dir(out_dir)
         with open(file_out, "w") as fout:
-            fout.write(",".join(['sample','bam','gtf']) + "\n")
+            fout.write(",".join(['sample','bam','read_length']) + "\n")
             for sample_info in sample_info_list:
                 ### Write to file
                 fout.write(",".join(sample_info)+"\n")

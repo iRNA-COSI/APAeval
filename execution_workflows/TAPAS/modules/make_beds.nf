@@ -6,18 +6,19 @@ def options    = initOptions(params.options)
 
 process MAKE_BEDS {
     tag "$sample"
-    publishDir "${params.outdir}/tapas/tapas_quant/", mode: params.publish_dir_mode
 
     container "quay.io/biocontainers/python:3.8.3"
 
     input:
-    path tapas_quant_txt
+    tuple val(sample), path(tapas_quant_txt)
 
     output:
     path "*.bed"
 
     script:
+    identification_bed="$sample" +${params.identification_bed_suffix}
+    quantification_bed="$sample" +${params.quantification_bed_suffix}
     """
-    make_tapas_beds.py $tapas_quant_txt tapas_quantification.bed tapas_identification.bed
+    make_tapas_beds.py $tapas_quant_txt $quantification_bed $identification_bed
     """
 }
