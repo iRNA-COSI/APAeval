@@ -15,6 +15,11 @@ def main(args):
     challenges = args.challenge_ids
     out_path = args.output
 
+    # Nextflow passes list, python reads string. We need python lists
+    metrics_data = [m.strip('[').strip(']').strip(',') for m in metrics_data]
+    validation_data = [v.strip('[').strip(']').strip(',') for v in validation_data]
+
+
     # Assuring the output path does exist
     if not os.path.exists(os.path.dirname(out_path)):
         try:
@@ -29,9 +34,11 @@ def main(args):
 
     # get the output files from previous steps and concatenate
     # from validation ("validated_participant_data")
-    data_model_file = join_json_files(validation_data, data_model_file, "*.json")
+    for v in validation_data:
+        data_model_file = join_json_files(v, data_model_file, "*.json")
     # from metrics ("assessment_out")
-    data_model_file = join_json_files(metrics_data, data_model_file, "*.json")
+    for m in metrics_data:
+        data_model_file = join_json_files(m, data_model_file, "*.json")
     # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge/challenge.json"
     # we have to do that for all challenges in the list
     for challenge in challenges:
@@ -82,8 +89,8 @@ def join_json_files(data_directory, data_model_file, file_extension):
 if __name__ == '__main__':
 
     parser = ArgumentParser()
-    parser.add_argument("-v", "--validation_data", help="path to validated_participant_data.json", required=True)
-    parser.add_argument("-m", "--metrics_data", help="path to assessment_datasets.json", required=True)
+    parser.add_argument("-v", "--validation_data", nargs="+", help="path to validated_participant_data.json", required=True)
+    parser.add_argument("-m", "--metrics_data", nargs="+", help="path to assessment_datasets.json", required=True)
     parser.add_argument("-a", "--aggregation_data", help="dir where the data for benchmark summary/aggregation are stored",
                         required=True)
     parser.add_argument("-c", "--challenge_ids", help="Ids of the challenges, separated by space", nargs='+', required=True)
