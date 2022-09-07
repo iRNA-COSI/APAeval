@@ -46,7 +46,6 @@ This README describes the APAeval **(absolute) quantification** summary workflow
 Please check out the sections on [building docker images][build-images] and [running the summary workflow][run-workflow] in the main [APAeval summary workflow README][readme-swf]
 
 
-
 [//]: # (References)
 [readme-swf]: ../README.md
 [build-images]: ../README.md#7-build-images

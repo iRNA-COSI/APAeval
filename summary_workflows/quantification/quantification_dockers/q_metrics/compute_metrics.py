@@ -135,84 +135,84 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         else:
             pct_tpm_unmatched = 100.0
 
-        # Value: List of [variable_holding_metric, std_err]
-        metrics[metric_name] = [pct_tpm_unmatched, 0]
+            # Value: List of [variable_holding_metric, std_err]
+            metrics[metric_name] = [pct_tpm_unmatched, 0]
 
-        # METRIC Performance metrics
-        ######################################
-        # binary classification metrics
-        # number of ground truth sites with matching prediction site and TPM > 0
-        TP = matched.loc[matched["score_p"] > 0].shape[0]
-        FP = only_PD.shape[0] # number of prediction sites without ground truth sites
-        FN = only_GT.shape[0] # number of ground truth sites without prediction sites
+            # METRIC Performance metrics
+            ######################################
+            # binary classification metrics
+            # number of ground truth sites with matching prediction site and TPM > 0
+            TP = matched.loc[matched["score_p"] > 0].shape[0]
+            FP = only_PD.shape[0] # number of prediction sites without ground truth sites
+            FN = only_GT.shape[0] # number of ground truth sites without prediction sites
 
-        metric_name = f"Sensitivity:{window}nt"
-        sensitivity = apa.sensitivity(TP, FN)
-        metrics[metric_name] = [sensitivity, 0]
+            metric_name = f"Sensitivity:{window}nt"
+            sensitivity = apa.sensitivity(TP, FN)
+            metrics[metric_name] = [sensitivity, 0]
 
-        metric_name = f"Precision:{window}nt"
-        precision = apa.precision(TP, FP)
-        metrics[metric_name] = [precision, 0]
+            metric_name = f"Precision:{window}nt"
+            precision = apa.precision(TP, FP)
+            metrics[metric_name] = [precision, 0]
 
-        metric_name = f"F1_score:{window}nt"
-        f1_score = apa.f1_score(precision, sensitivity)
-        metrics[metric_name] = [f1_score, 0]
+            metric_name = f"F1_score:{window}nt"
+            f1_score = apa.f1_score(precision, sensitivity)
+            metrics[metric_name] = [f1_score, 0]
 
-        metric_name = f"Jaccard_index:{window}nt"
-        jaccard_index = apa.jaccard(TP, FP, FN)
-        metrics[metric_name] = [jaccard_index, 0]
+            metric_name = f"Jaccard_index:{window}nt"
+            jaccard_index = apa.jaccard(TP, FP, FN)
+            metrics[metric_name] = [jaccard_index, 0]
 
-        ## Return-type dependent
-        for return_df_type in all_return_df_types:
-            if return_df_type == "all_GT":
-                # add GT sites with no PD match
-                sites = pd.concat([matched, only_GT])
-            elif return_df_type == "union":
-                # add GT sites with no PD match AND PD sites with no GT match
-                sites = pd.concat([matched, only_GT, only_PD])
-            elif return_df_type == "intersection":
-                # do not consider any unmatched sites
-                sites = matched
-            else:
-                raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: all_GT, union or intersection.")
+            ## Return-type dependent
+            for return_df_type in all_return_df_types:
+                if return_df_type == "all_GT":
+                    # add GT sites with no PD match
+                    sites = pd.concat([matched, only_GT])
+                elif return_df_type == "union":
+                    # add GT sites with no PD match AND PD sites with no GT match
+                    sites = pd.concat([matched, only_GT, only_PD])
+                elif return_df_type == "intersection":
+                    # do not consider any unmatched sites
+                    sites = matched
+                else:
+                    raise ValueError(f"The variable return_df_type did not match any known string. Actual: {return_df_type}. Expected: all_GT, union or intersection.")
                 
-            sites.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
+                sites.sort_values(by=['chrom_g', 'chromStart_g', 'chromEnd_g', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
-            # METRIC: correlation coefficients
-            #################################
-            # Pearson correlation
-            correlation_pearson = apa.corr_Pearson_with_gt(sites)
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"Pearson_r:{return_df_type}:{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [correlation_pearson, 0]
-
-            # Spearman correlation
-            correlation_spearman = apa.corr_Spearman_with_gt(sites)
-            # Key: exact name of metric as it appears in specification
-            metric_name = f"Spearman_r:{return_df_type}:{window}nt"
-            # Value: List of [variable_holding_metric, std_err]
-            metrics[metric_name] = [correlation_spearman, 0]
-
-            # METRIC: correlation coefficient of relative pas usage
-            ####################
-            # Only calculate metric for first window size.
-            if window == windows[0]:
-                normalised_df = apa.relative_pas_usage(sites, genome)
-
-                # Pearson
-                correlation_Pearson_rel_use = apa.corr_Pearson_with_gt(normalised_df)
+                # METRIC: correlation coefficients
+                #################################
+                # Pearson correlation
+                correlation_pearson = apa.corr_Pearson_with_gt(sites)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
+                metric_name = f"Pearson_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [correlation_Pearson_rel_use, 0]
+                metrics[metric_name] = [correlation_pearson, 0]
 
-                # Spearman
-                correlation_Spearman_rel_use = apa.corr_Spearman_with_gt(normalised_df)
+                # Spearman correlation
+                correlation_spearman = apa.corr_Spearman_with_gt(sites)
                 # Key: exact name of metric as it appears in specification
-                metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
+                metric_name = f"Spearman_r:{return_df_type}:{window}nt"
                 # Value: List of [variable_holding_metric, std_err]
-                metrics[metric_name] = [correlation_Spearman_rel_use, 0]
+                metrics[metric_name] = [correlation_spearman, 0]
+
+                # METRIC: correlation coefficient of relative pas usage
+                ####################
+                # Only calculate metric for first window size.
+                if window == windows[0]:
+                    normalised_df = apa.relative_pas_usage(sites, genome)
+
+                    # Pearson
+                    correlation_Pearson_rel_use = apa.corr_Pearson_with_gt(normalised_df)
+                    # Key: exact name of metric as it appears in specification
+                    metric_name = f"Pearson_r_relative:{return_df_type}:{window}nt"
+                    # Value: List of [variable_holding_metric, std_err]
+                    metrics[metric_name] = [correlation_Pearson_rel_use, 0]
+
+                    # Spearman
+                    correlation_Spearman_rel_use = apa.corr_Spearman_with_gt(normalised_df)
+                    # Key: exact name of metric as it appears in specification
+                    metric_name = f"Spearman_r_relative:{return_df_type}:{window}nt"
+                    # Value: List of [variable_holding_metric, std_err]
+                    metrics[metric_name] = [correlation_Spearman_rel_use, 0]
 
     # for the challenge, create all assessment json objects and append them to all_assessments
     for key, value in metrics.items():
