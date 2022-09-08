@@ -59,6 +59,8 @@ workflow EXECUTE_TAPAS{
          MAKE_TAPAS_REF.out.tapas_ref
             .combine ( SAMTOOLS.out.read_coverage )
             .set { ch_tapas_input }
+         ch_tapas_input
+            .view()
          TAPAS_QUANT ( ch_tapas_input )
          MAKE_BEDS ( TAPAS_QUANT.out.quant_txt )
          
