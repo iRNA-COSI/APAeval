@@ -35,11 +35,14 @@ if (params.help) {
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
 
+include { EXECUTE_GETUTR } from './workflow/execute_getutr' addParams( [:] )
+
 workflow {
     /*
      * RUN GETUTR WORKFLOW
      */
-    include { EXECUTE_GETUTR } from './workflow/execute_getutr' addParams( [:] )
+     println "gregor";
+
     EXECUTE_GETUTR ()
 }
 

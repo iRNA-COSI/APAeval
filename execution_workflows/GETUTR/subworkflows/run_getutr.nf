@@ -5,6 +5,7 @@
 include { GETUTR_PROCESS  } from '../modules/getutr_process' addParams( options: [:] )
 
 workflow RUN_GETUTR {
+    /*
     take:
     ch_sample
     ch_sampconds
@@ -18,6 +19,8 @@ workflow RUN_GETUTR {
 
     ch_tffasta = ''
     GETUTR_PROCESS ( ch_gff_fasta )
+    */
+    GETUTR_PROCESS ()
 
 }
 

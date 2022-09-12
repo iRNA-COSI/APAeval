@@ -8,7 +8,7 @@ ENV TZ=Europe/Zurich
 RUN apt update -y
 RUN apt install software-properties-common -y
 RUN apt-get update -y
-RUN apt-get install r-base python2.7 curl wget bedtools python-dev -y
+RUN apt-get install r-base python2.7 curl wget bedtools python-dev samtools -y
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 RUN python2.7 get-pip.py
 RUN pip2 install numpy
