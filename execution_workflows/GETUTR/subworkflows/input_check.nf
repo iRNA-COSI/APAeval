@@ -17,9 +17,7 @@ workflow INPUT_CHECK {
         .splitCsv ( header:true, sep:',' )
         .map { get_sample_info(it) }
         .set { ch_sample }
-    ch_condition =CHECK_SAMPLESHEET.out.ch_condition
 
     emit:
-    ch_sample // [ sample, barcode, fasta, gtf, is_transcripts, annotation_str ]
-    ch_condition
+    ch_sample // [ sample, bam, gtf ]
 }

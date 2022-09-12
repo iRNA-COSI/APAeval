@@ -17,6 +17,7 @@ RUN mkdir /software
 WORKDIR /software
 RUN wget -c http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred
 RUN chmod +x gtfToGenePred
+ENV PATH="${PATH}:/software"
 
 RUN curl http://big.hanyang.ac.kr/GETUTR/samples/GETUTR.2.0.0.tar.gz --output GETUTR.2.0.0.tar.gz
 RUN tar xfz GETUTR.2.0.0.tar.gz

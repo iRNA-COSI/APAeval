@@ -41,8 +41,7 @@ workflow {
     /*
      * RUN GETUTR WORKFLOW
      */
-     println "gregor";
-
+     
     EXECUTE_GETUTR ()
 }
 
