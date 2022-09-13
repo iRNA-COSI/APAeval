@@ -17,6 +17,6 @@ For each sample line, the results are stored in `results/$sample.PAVA.cps.2.0.0.
 
 Running the nextflow once you define the `samplesheet.csv` is a one line command:
 
-`nextflow main.nf --input samplesheet.csv -profile docker`
+`nextflow main.nf --input samplesheet.csv --gtf /full/path/genome.gtf -profile docker`
 
 Voila
