@@ -15,9 +15,11 @@ process GETUTR_PROCESS {
         input:
         tuple val(sample), path(bam), path(gtf)
 
+        output:
+        path "*.bed"
+
         script:
         """
-        echo $gtf
         python2.7 /software/GETUTR/getutr.py -r $gtf -i $bam -o $sample
         """
 }
