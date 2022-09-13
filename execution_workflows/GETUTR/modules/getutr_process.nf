@@ -1,7 +1,5 @@
 // Import generic module functions
 
-//python2.7 GETUTR/getutr.py --mode makeTFfasta --gff $gff --genomefasta $fasta --lasttwoexons --librarytype RNAseq
-
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
