@@ -37,6 +37,8 @@ def modules = params.modules.clone()
 
 // TO DO -- define options for the processes below
 
+if (params.gtf) { ch_gtf = file(params.gtf) } else { exit 1, 'GTF annotation not specified!' }
+
 include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
 include { RUN_GETUTR  } from '../subworkflows/run_getutr'  addParams( options: [:] )
 
@@ -44,10 +46,9 @@ include { RUN_GETUTR  } from '../subworkflows/run_getutr'  addParams( options: [
 /* --           RUN MAIN WORKFLOW              -- */
 ////////////////////////////////////////////////////
 
-workflow EXECUTE_GETUTR{
+workflow EXECUTE_GETUTR {
          INPUT_CHECK ( ch_input )
-         //RUN_GETUTR ( INPUT_CHECK.out.ch_sample, INPUT_CHECK.out.ch_condition, ch_labrat_quant_dir)
-         RUN_GETUTR ( INPUT_CHECK.out.ch_sample )
+         RUN_GETUTR ( INPUT_CHECK.out.ch_sample, ch_gtf )
     }
 
 ////////////////////////////////////////////////////

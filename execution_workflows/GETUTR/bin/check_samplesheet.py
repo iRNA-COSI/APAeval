@@ -34,7 +34,7 @@ def print_error(error, context='Line', context_str=''):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    sample, bam, gtf
+    sample, bam
     """
 
     input_extensions = []
@@ -42,8 +42,8 @@ def check_samplesheet(file_in, file_out):
     with open(file_in, "r") as fin:
 
         ## Check header
-        MIN_COLS = 3
-        HEADER = ['sample', 'bam', 'gtf']
+        MIN_COLS = 2
+        HEADER = ['sample', 'bam']
         header = fin.readline().strip().split(",")
         if header[:len(HEADER)] != HEADER:
             print("ERROR: Please check samplesheet header -> {} != {}".format(",".join(header), ",".join(HEADER)))
@@ -62,7 +62,7 @@ def check_samplesheet(file_in, file_out):
                 print_error("Invalid number of populated columns (minimum = {})!".format(MIN_COLS), 'Line', line)
 
             ## Check group name entries
-            sample, bam, gtf = lspl[:len(HEADER)]
+            sample, bam = lspl[:len(HEADER)]
             if sample:
                 if sample.find(" ") != -1:
                     print_error("Sample entry contains spaces!", 'Line', line)
@@ -76,14 +76,7 @@ def check_samplesheet(file_in, file_out):
                 if not bam.endswith(".bam"):
                     print_error("bam does not have extension '.bam'", 'Line', line)
 
-            ## Check gtf entries
-            if gtf:
-                if gtf.find(" ") != -1:
-                    print_error("gtf contains spaces!", 'Line', line)
-                if not gtf.endswith(".gtf"):
-                    print_error("gtf does not have extension '.gtf'", 'Line', line)
-
-            sample_info = [ sample, bam, gtf ]
+            sample_info = [ sample, bam ]
             sample_info_list.append(sample_info)
 
     ## Write validated samplesheet with appropriate columns

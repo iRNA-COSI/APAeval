@@ -2,9 +2,6 @@ FROM ubuntu:20.04
 
 MAINTAINER Gregor Rot <gregor.rot@gmail.com>
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/Zurich
-
 RUN apt update -y
 RUN apt install software-properties-common -y
 RUN apt-get update -y
