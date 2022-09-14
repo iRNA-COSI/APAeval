@@ -21,7 +21,7 @@ for ln in tapa_quant_txt:
    elif strand == '-':
     chromEnd=sites[i]
     chromStart=str(int(chromEnd)-1)
-   outbed_relative_quant.write('\t'.join([chrom,chromStart,chromEnd,name,relative_score,strand])+'\n')
+   outbed_relative_quant.write('\t'.join([chrom,chromStart,chromEnd,name,str(relative_score),strand])+'\n')
    outbed_ident.write('\t'.join([chrom,chromStart,chromEnd,name,'.',strand])+'\n')
 outbed_relative_quant.close()
 outbed_ident.close()
