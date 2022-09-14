@@ -1,0 +1,36 @@
+[
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Sum_FP_TPM",
+                    "y_axis": "Pearson_r:all_GT",
+                    "optimization": "top-left"
+                }
+            }
+        },
+        "type": "aggregation"
+    },
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [],
+                "visualization": {
+                    "type": "bar-plot",
+                    "metric": "Pearson_r_relative:union"
+                }
+            }
+        },
+        "type": "aggregation"
+    }
+]
