@@ -10,6 +10,7 @@ for ln in tapa_quant_txt:
  ln=ln.strip().split('\t')
  g_id,chrom,strand=ln[0].split('NM_')[1],ln[1],ln[2]
  sites,scores=ln[3].split(','),ln[4].split(',')
+ scores = [float(score) for score in scores]
  if len(sites) == len(scores):
   for i in range(len(sites)):
    name=g_id+'_'+str(i)
