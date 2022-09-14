@@ -18,7 +18,8 @@ process SAMTOOLS {
     tuple val(sample), path("*.txt"), val(read_length), emit: read_coverage
 
     script:
+    coverage_file="$sample" + "_read_coverage.txt"
     """
-    samtools depth $bam > read_coverage.txt    
+    samtools depth $bam > $coverage_file    
     """
 }
