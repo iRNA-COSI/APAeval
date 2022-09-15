@@ -6,12 +6,13 @@ if (params.help) {
 	
 	log.info"""
 	    =====================================================
-	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
-	    Author(s): Yuk Kei Wan (*1,*2), Asier Gonzalez (*3), CJ Herrmann (*4)
+	    APAeval RELATIVE QUANTIFICATION BENCHMARKING PIPELINE
+	    Author(s): Matthew Gazzara (*1,*2), Sam Bryce-Smith (*1,*3), CJ Herrmann (*4), Yuk Kei Wan (*1,*5)
 	    *1 iRNA COSI
-	    *2 Genomic Institute of Singapore, A*STAR, Singapore
-	    *3 Barcelona Supercomputing Center, Barcelone, Spain
-	    *4 Biozentrum, University of Basel, Switzerland
+            *2 University of Pennsylvania, United States
+            *3 University Collge London, United Kingdom
+            *4 Biozentrum, University of Basel, Switzerland
+	    *5 Genomic Institute of Singapore, A*STAR, Singapore
 	    =====================================================
 	    Usage:
 	    Run the pipeline with default parameters read from nextflow.config:
@@ -42,9 +43,9 @@ if (params.help) {
 
 	log.info """\
 
-	    ==============================================
-	    APAeval QUANTIFICATION BENCHMARKING PIPELINE
-	    ==============================================
+	    =====================================================
+	    APAeval RELATIVE QUANTIFICATION BENCHMARKING PIPELINE
+	    =====================================================
 	        Input files: ${params.input}
 	        Benchmarking community = ${params.community_id}
 	        Tool name : ${params.participant_id}
@@ -164,7 +165,7 @@ process benchmark_consolidation {
 	val ass_json
 	val validation_file
 	val challenge_ids
-    val event_date
+        val event_date
 	val offline
 	
 	output:

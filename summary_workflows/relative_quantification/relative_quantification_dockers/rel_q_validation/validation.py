@@ -112,7 +112,7 @@ def  validate_input_data(infile, community, challenge, participant_name, out_pat
     
     #---------------------------------------------------
     # INPUT FILE VALIDATION
-    # FOR APAeval QUANTIFICATION:
+    # FOR APAeval RELATIVE QUANTIFICATION:
     # Check for valid bed6 format
 
     ## check number of columns
