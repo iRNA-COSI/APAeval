@@ -43,6 +43,7 @@ sample,[path_to]/SRR6795721.bam,[int(read_length)]
 ```
 nextflow main.nf --input samplesheet.csv --gtf [/path/to/gtf] -profile <docker/singularity>
 ```
+- Note: please make sure that the provided GTF file's chromosome names are without the `chr` prefix. Please strip the `chr` prefix off prior to running the workflow if the GTF file you use has a `chr` prefix in its chromosome names.
 
 ## Output & post-processing
 TAPAS outputs a file containing TAPAS identified entries, which are formatted into a bed file with the following columns:
