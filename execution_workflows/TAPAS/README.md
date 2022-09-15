@@ -6,7 +6,7 @@ The [application](https://github.com/arefeen/TAPAS) is free to download,
 and the [README documentation](https://github.com/arefeen/TAPAS#tapas-tool-for-alternative-polyadenylation-site-analysis) was used as a reference
 to create the nextflow pipeline of this module.
 
-This workflow qualifies for the APAeval **identification and quantification challenges**.
+This workflow qualifies for the APAeval **identification and relative quantification challenges**.
 
 ## Running TAPAS workflow
 
@@ -28,6 +28,8 @@ This workflow uses docker containers. To run, make sure that docker is installed
 Parameters used to run the TAPAS are specified in the nextflow.config file.
 Parameters relevant to the workflow itself are:
 - `input` - samplesheet.csv
+- `identification_bed_suffix`
+- `relative_quantification_bed_suffix`
 
 ### Running the TAPAS execution workflow
 - Download the test data [here](to be added). The current dataset is in a genomic region where there are enough reads to test TAPAS's PAS quantification functionality.
