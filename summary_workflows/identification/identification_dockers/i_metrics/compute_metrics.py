@@ -164,11 +164,14 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         f.write(jdata)
 
     # print non-OEB-compatible metrics (lists) to separate file
-    rogue_metrics = {}
+    rogue_metrics = {
+        "community_id": community,
+        "challenge_id": challenge,
+        "participant_id": participant}
     rogue_metrics["precision_vector"] = p_vec
     rogue_metrics["recall_vector"] = r_vec
     rogue_metrics["window_list"] = windowlist
-    with io.open(os.path.dirname(out_path) + "rogue_metrics.json", mode='w', encoding="utf-8") as f:
+    with io.open(os.path.join(os.path.dirname(out_path), "rogue_metrics.json"), mode='w', encoding="utf-8") as f:
         jdata = json.dumps(rogue_metrics,                 
                     sort_keys=True,
                     indent=4,
