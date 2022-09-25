@@ -15,8 +15,8 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 // Check mandatory parameters (missing protocol or profile will exit the run.)
 
-if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-//if (params.labrat_quant_dir) { ch_labrat_quant_dir = file(params.labrat_quant_dir) } else { ch_labrat_quant_dir = '' }
+if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified! (--input)' }
+if (params.gtf) { ch_gtf = file(params.gtf) } else { exit 1, 'Please specify GTF file (--gtf)' }
 
 // Function to check if running offline
 def isOffline() {

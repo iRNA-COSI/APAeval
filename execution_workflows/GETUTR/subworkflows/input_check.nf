@@ -19,5 +19,5 @@ workflow INPUT_CHECK {
         .set { ch_sample }
 
     emit:
-    ch_sample // [ sample, bam, gtf ]
+    ch_sample // [ sample, bam ]
 }

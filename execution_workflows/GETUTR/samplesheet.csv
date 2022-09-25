@@ -1,5 +1,5 @@
-sample,bam,gtf
-SRR6795718,/home/gregor/APAeval/data/SRR6795718.bam,/home/gregor/APAeval/data/gencode.v39.annotation.gtf
-SRR6795719,/home/gregor/APAeval/data/SRR6795719.bam,/home/gregor/APAeval/data/gencode.v39.annotation.gtf
-SRR6795726,/home/gregor/APAeval/data/SRR6795726.bam,/home/gregor/APAeval/data/gencode.v39.annotation.gtf
-SRR6795727,/home/gregor/APAeval/data/SRR6795727.bam,/home/gregor/APAeval/data/gencode.v39.annotation.gtf
+sample,bam
+SRR6795718,/home/gregor/APAeval/data/SRR6795718.bam
+SRR6795719,/home/gregor/APAeval/data/SRR6795719.bam
+SRR6795726,/home/gregor/APAeval/data/SRR6795726.bam
+SRR6795727,/home/gregor/APAeval/data/SRR6795727.bam
