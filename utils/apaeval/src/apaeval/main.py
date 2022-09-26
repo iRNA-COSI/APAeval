@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from scipy.stats import pearsonr, spearmanr
 from shutil import which
+import pyranges as pr
 
 #############################
 # Genome/annotation related
@@ -49,29 +50,33 @@ def select_genome_file(file_name, genome_path):
     return os.path.join(genome_path, genome_match[0])
 
 
-def load_genome(genome_path):
+def load_genome(genome_path, feature="gene"):
     """Load genome annotation in gtf format.
     
-    Requires feature 'gene', which is available in gencode.
+    And subset to only return feature.
+    E.g. feature 'gene', which is available in gencode.
+
+    Note:
+        The returned dataframe contains all attributes as read in by pyranges.
     
     Args:
         genome_path: file path for gtf.
+        feature (str): feature to subset. Default: gene.
     
     Returns:
-        pandas.df with genes.
+        pandas.df with [feature] rows from genome. 
     """
     assert os.path.exists(genome_path), f"Genome annotation not found: {genome_path}"
-    # load gtf according to specifications (https://www.ensembl.org/info/website/upload/gff.html)
-    genome = pd.read_csv(genome_path, sep="\t", header=None,
-            comment="#",
-            names=['seqname','source', 'feature','start','end','score','strand','frame','attribute'],
-            usecols=['seqname','start','end','strand','feature'],
-            dtype={'seqname': str, 'start': np.int64, 'end': np.int64, 'strand': str, 'feature': str})
-    # Subset genome to only features gene
-    subset = genome['feature'] == "gene"
-    assert not subset.sum() == 0, f"No feature: 'gene' found in {genome_path}"
-    genome.drop('feature', 1, inplace=True)
-    return genome[subset]
+    # Load genome with pyranges and subset genome to only features gene
+    genome = pr.read_gtf(genome_path).subset(lambda df: df["Feature"] == feature)
+    # cast as pandas dataframe
+    genome = genome.as_df()
+    # rename columns; the first 8 columns are always the same 
+    # see https://www.ensembl.org/info/website/upload/gff.html
+    cols_to_update = ["seqname", "source", "feature", "start", "end", 
+        "score", "strand", "frame"] + genome.columns[8:].tolist()
+    genome.columns = cols_to_update
+    return genome
     
 
 def find_pas_genes(gene, df):
@@ -85,6 +90,7 @@ def find_pas_genes(gene, df):
     Returns:
         pd.Series: Array of indices indicating PAS for gene 'gene'.
     """
+    assert all([x in gene.keys() for x in ["seqname", "source", "start", "end"]])
     subset = (df['chrom_g'] == gene['seqname']) & (df['strand_g'] == gene['strand'])
     subset = subset & (df['chromStart_g'] > gene['start']) & (df['chromEnd_g'] < gene['end'])
     return subset
