@@ -5,6 +5,7 @@ import io
 import os
 import json
 import pandas as pd
+import numpy as np
 from argparse import ArgumentParser
 from sklearn.metrics import auc
 import JSON_templates
@@ -61,8 +62,10 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     # check for presence of participant input data
     assert os.path.exists(infile), "Participant file not found, please check input data."
 
+    PD = pd.read_csv(infile, delimiter="\t", header=None, index_col=False,
+        names = ['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p'])
     # Number of PD (predicted) sites
-    PD_cnt = pd.read_csv(infile, delimiter="\t", header=None).shape[0]
+    PD_cnt = PD.shape[0]
 
     # Cols for selecting unique PD sites
     PD_cols = ['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p']
@@ -71,8 +74,10 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
     assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
 
+    GT = pd.read_csv(gold_standard, delimiter="\t", header=None, index_col=False,
+        names = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g'])
     # Number of GT sites
-    GT_cnt = pd.read_csv(gold_standard, delimiter="\t", header=None).shape[0]
+    GT_cnt = GT.shape[0]
 
     # Cols for selecting unique GT sites
     GT_cols = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g']
@@ -134,19 +139,39 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
             dGT_proportion = dGT_cnt / tGT_cnt
 
             # Save for assessment objects
-            metrics[f"Sensitivity:{window}nt"] = [sensitivity, 0]
-            metrics[f"Precision:{window}nt"] = [precision, 0]
+            metrics[f"Sensitivity:{window}nt"] = [sensitivity, 0] # Metric 1
+            metrics[f"Precision:{window}nt"] = [precision, 0] # Metric 2
             metrics[f"FDR:{window}nt"] = [fd_rate, 0]
             metrics[f"F1_score:{window}nt"] = [f1_score, 0]
             metrics[f"Jaccard_index:{window}nt"] = [jaccard_index, 0]
-            metrics[f"multi_matched_PD:{window}nt"] = [dPD_proportion, 0]
+            metrics[f"multi_matched_PD:{window}nt"] = [dPD_proportion, 0] # Metric 4
             metrics[f"multi_matched_GT:{window}nt"] = [dGT_proportion, 0]
 
     # With precision and recall for all window sizes
     pr_auc = auc(r_vec, p_vec)
 
     # Save for assessment objects
-    metrics["AUC"] = [pr_auc, 0] 
+    metrics["AUC"] = [pr_auc, 0] # Metric 3
+
+    # METRICS:Percentage of genes with correctly identified number of PAS
+    pas_per_gene_GT = [apa.find_pas_genes(gene, GT) for i, gene in genome.iterrows()]
+    # count number of PAS per gene (i.e. row) in GT
+    counts_GT = [len(np.where(pas)[0]) for pas in pas_per_gene_GT]
+    # Number of genes with > 0 PAS
+    genes_nonzero_PAS = np.array([x > 0 for x in counts_GT], dtype=bool)
+    n_genes_nonzero_PAS = len(np.where(genes_nonzero_PAS)[0])
+
+    # count number of PAS per gene (i.e. row) in PD
+    PDwcn = PD.copy()
+    PDwcn.columns = GT.columns
+    pas_per_gene_PD = [apa.find_pas_genes(gene, PDwcn) for i, gene in genome.iterrows()]
+    counts_PD = [len(np.where(pas)[0]) for pas in pas_per_gene_PD]
+    # Number of genes with identical number of polyA sites in PD and GT and > 0 PAS
+    genes_identical_PAS = np.array([counts_PD[i] == counts_GT[i] for i in range(len(counts_GT))], dtype=bool)
+    n_genes_identical_PAS = len(np.where(genes_identical_PAS & genes_nonzero_PAS)[0])
+    perc_genes_w_PAS =  n_genes_identical_PAS / n_genes_nonzero_PAS * 100
+
+    metrics["percentage_genes_w_correct_nPAS"] = [perc_genes_w_PAS, 0] # Metric 5
 
 
     # for the challenge, create all assessment json objects and append them to all_assessments
