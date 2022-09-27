@@ -1,4 +1,4 @@
-#Background
+# Background
 When running APAtrap on the entire sample, we noticed that 
 the workflow used a lot of memory and went for over 70 hours 
 before we killed it. As such, we have been running 
