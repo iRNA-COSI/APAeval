@@ -13,6 +13,13 @@ used as examples on how to run APAtrap on samples per chromosome in
 case users encounter similar issues with huge memory usage and long 
 running time.
 
-#Scripts
+# Split BAM files by chormosome
+- chr_list.txt - List of chromosomes to split BAM files to
+- split_bams_by_chr.py - Python script to generate final shell scripts that split a sample by chromosome for all samples
+- split_mayr_bams.sh - Example of one of the final shell scripts outputted by split_bams_by_chr.py to split bam files by chromosome for mayr sample
+
+# Prepare samplesheets per chromosome to run APAtrap execution workflow
 - generate_samplesheet.py - generate sample sheets for all chromosomes, following the file name format of the sample files that have been split by chromosome
+
+# Combine challenge outputs per chromosome into one file
 - combine_outputs.py - for each sample, combine the per chromosome outputs into one final output file
