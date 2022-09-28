@@ -173,6 +173,28 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
 
     metrics["percentage_genes_w_correct_nPAS"] = [perc_genes_w_PAS, 0] # Metric 5
 
+    # METRICS: polyA sites assigned to different genomic features
+    # For the predicted PAS and based on the genome annotation
+    exome = apa.load_genome(genome_file, feature="exon")
+    prPD = apa.load_bed(infile)
+
+    # Count terminal exons
+    texome = apa.get_terminal_exons(exome)
+    n_tes_PD = apa.sum_overlaps(texome, prPD)
+
+    # Count exclusive exons, i.e. exons without terminal exons
+    exclusive_exome = apa.get_non_terminal_exons(exome, texome)
+    n_es_PD = apa.sum_overlaps(exclusive_exome, prPD)
+
+    # Count introns
+    introme = apa.get_introns(genome, exome)
+    # report number of PAS assigned to introns
+    n_intron_PD = apa.sum_overlaps(introme, prPD)
+
+    # intergenome = apa.get_intergenic_regions(texome, genome)
+    # n_intergenome_PD = apa.sum_overlaps(intergenome, prPD)
+
+    # TODO: assign remaining predictions to other
 
     # for the challenge, create all assessment json objects and append them to all_assessments
     for key, value in metrics.items():

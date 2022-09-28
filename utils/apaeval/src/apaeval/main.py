@@ -50,7 +50,7 @@ def select_genome_file(file_name, genome_path):
     return os.path.join(genome_path, genome_match[0])
 
 
-def load_genome(genome_path, feature="gene"):
+def load_genome(genome_path: str, feature: str="gene") -> pd.DataFrame:
     """Load genome annotation in gtf format.
     
     And subset to only return feature.
@@ -77,9 +77,29 @@ def load_genome(genome_path, feature="gene"):
         "score", "strand", "frame"] + genome.columns[8:].tolist()
     genome.columns = cols_to_update
     return genome
-    
 
-def find_pas_genes(gene, df):
+
+def genome_to_pyranges(df: pd.DataFrame) -> pr.PyRanges:
+    """Convert the df to a pyranges object.
+    
+    Args:
+        pandas.df: created by load_genome with pyranges
+    
+    Returns:
+        pyranges.PyRanges: genome annotation.
+    """
+    cols_to_update = ["Chromosome", "Source", "Feature", "Start", "End", 
+        "Score", "Strand", "Frame"] + df.columns[8:].tolist()
+    df.columns = cols_to_update
+    return pr.PyRanges(df=df)
+
+
+def load_bed(bed_path: str) -> pr.PyRanges:
+    """Load BED file with pyranges"""
+    return pr.read_bed(bed_path)
+
+
+def find_pas_genes(gene: dict, df: pd.DataFrame) -> pd.Series:
     """Find all PAS in given gene.
 
     Args:
@@ -90,10 +110,84 @@ def find_pas_genes(gene, df):
     Returns:
         pd.Series: Array of indices indicating PAS for gene 'gene'.
     """
-    assert all([x in gene.keys() for x in ["seqname", "source", "start", "end"]])
+    assert all([x in gene.keys() for x in ["seqname", "start", "end"]])
     subset = (df['chrom_g'] == gene['seqname']) & (df['strand_g'] == gene['strand'])
     subset = subset & (df['chromStart_g'] > gene['start']) & (df['chromEnd_g'] < gene['end'])
     return subset
+
+
+def get_terminal_exons(exome: pd.DataFrame) -> pr.PyRanges:
+    """Get Terminal Exons.
+    Defined as last exon number in given transcript
+    and filter transcripts with 1 exon.
+    """
+    exome.exon_number = exome.exon_number.astype(int)
+    # only consider transcripts with > 1 exon
+    sexome = exome.loc[exome.exon_number > 1,]
+    # use sorted df, the highest exon number will be on top
+    sexome = sexome.sort_values(['transcript_id', 'exon_number'], ascending=False)
+    # remove duplicates and only keep highest exon number per transcript
+    texome = sexome.loc[~sexome.duplicated(['transcript_id'], keep="first"),]
+    # Combine overlapping TEs
+    # convert to pyranges object
+    prtexome = genome_to_pyranges(texome)
+    # merge overlapping TEs with same gene_id
+    gtes = prtexome.merge(strand=True, by="gene_id").sort()
+    return gtes
+
+
+def sum_overlaps(f2: pr.PyRanges, f1: pr.PyRanges) -> int:
+    """Report number of overlaps in f1 with f2
+    """
+    f2 = f2.count_overlaps(f1)
+    n_tes_PD = f2.NumberOverlaps.sum()
+    return n_tes_PD
+
+
+def get_non_terminal_exons(exome: pd.DataFrame, texome: pr.PyRanges) -> pr.PyRanges:
+    """get exons, without terminal exons
+    """
+    # exclusive_exome = exome.loc[exome.index.difference(texome.index)]
+    # exclusive_exome = apa.genome_to_pyranges(exclusive_exome)
+    exclusive_exome = genome_to_pyranges(exome).subtract(texome)
+    return exclusive_exome
+
+
+def get_introns(genome: pd.DataFrame, exome: pd.DataFrame) -> pr.PyRanges:
+    """get introns
+    Introns are non-exonic regions within a gene
+    """
+    # 
+    prgenome = genome_to_pyranges(genome)
+    prexome = genome_to_pyranges(exome)
+    introme = prgenome.subtract(prexome)
+    introme.Feature = "intron"
+    return introme
+
+
+def get_intergenic_regions(terminal_exons: pr.PyRanges, genome: pd.DataFrame) -> pr.PyRanges:
+    """Get intergenic regions in proximity of terminal exons
+    Count intergenic region in proximity of TE with < 1kb and 
+        >= 1kb distance to 3' end of TE
+    """
+    # TODO: check correctness
+    DISTANCE_PROXIMITY = 1000
+    # assume no other feature 1kb downstream of TE
+    intergenome = terminal_exons.copy()
+    # treat each strand separately
+    intergenome_plus = intergenome.subset(lambda df: df.Strand == "+")
+    intergenome_plus.Start = intergenome_plus.End
+    intergenome_plus = intergenome_plus.extend({"3": DISTANCE_PROXIMITY})
+    intergenome_minus = intergenome.subset(lambda df: df.Strand == "-")
+    intergenome_minus.End = intergenome_minus.Start
+    intergenome_minus = intergenome_minus.extend({"3": DISTANCE_PROXIMITY})
+    # merge strand-specific to one pyranges object again
+    intergenome = intergenome_plus.join(intergenome_minus, how="outer")
+    intergenome.extend({"3": DISTANCE_PROXIMITY})
+    # find collisions with genes
+    intergenome = intergenome.subtract(genome_to_pyranges(genome))
+    return intergenome
+
 
 #####################
 # PAS matching
