@@ -15,12 +15,9 @@ for ln in tapa_quant_txt:
   for i in range(len(sites)):
    name=g_id+'_'+str(i)
    relative_score=scores[i]/sum(scores)
-   if strand == '+':
-    chromStart=sites[i]
-    chromEnd=str(int(chromStart)+1)
-   elif strand == '-':
-    chromEnd=sites[i]
-    chromStart=str(int(chromEnd)-1)
+   ## treating both + and - strands the same
+   chromStart=sites[i]
+   chromEnd=str(int(chromStart)+1)
    outbed_relative_quant.write('\t'.join([chrom,chromStart,chromEnd,name,str(relative_score),strand])+'\n')
    outbed_ident.write('\t'.join([chrom,chromStart,chromEnd,name,'.',strand])+'\n')
 outbed_relative_quant.close()

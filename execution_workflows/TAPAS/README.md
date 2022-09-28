@@ -32,7 +32,17 @@ Parameters relevant to the workflow itself are:
 - `relative_quantification_bed_suffix`
 
 ### Running the TAPAS execution workflow
-- Download the test data [here](to be added). The current dataset is in a genomic region where there are enough reads to test TAPAS's PAS quantification functionality.
+- Download the test data as follows. The current dataset is in a genomic region where there are enough reads to test TAPAS's PAS quantification functionality.
+  - Download the '500 genes' test BAM files from the APAeval GDrive & extract the tarball
+  - Subset the *_chr.bam BAMs to chr11 and re-index with samtools e.g. samtools view -bh siSrsf3_R1_500genes_chr.bam chr11 > chr11_siSrsf3_R1_500genes_chr.bam && samtools index chr11_siSrsf3_R1_500genes_chr.bam
+  - (Optional but recommended to save time) subset the Gencode vM18 GTF to chr11
+    ```
+    wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M18/gencode.vM18.annotation.gtf.gz
+    gzip -d gencode.vM18.annotation.gtf.gz
+    awk -F"\t" '{if($1=="chr11") {print $0}}' gencode.vM18.annotation.gtf > chr11.gencode.vM18.annotation.gtf
+    ```
+  - Generate PolyAsite BED with 'chr' prefixed chromosome names as nicely detailed by @ninsch3000 in PAQR's README :)
+  - Update samples.tsv with paths to the subsetted BAMs, config with paths to to full/subsetted GTF & modified PolyASite BED
 
 - Update the samplesheet.csv with the full path to the downloaded bam file(s).
 ```
@@ -43,7 +53,7 @@ sample,[path_to]/SRR6795721.bam,[int(read_length)]
 ```
 nextflow main.nf --input samplesheet.csv --gtf [/path/to/gtf] -profile <docker/singularity>
 ```
-- Note: please make sure that the provided GTF file's chromosome names are without the `chr` prefix. Please strip the `chr` prefix off prior to running the workflow if the GTF file you use has a `chr` prefix in its chromosome names.
+- Note: the test data in `tests/test_data` will not produce any output
 
 ## Output & post-processing
 TAPAS outputs a file containing TAPAS identified entries, which are formatted into a bed file with the following columns:
