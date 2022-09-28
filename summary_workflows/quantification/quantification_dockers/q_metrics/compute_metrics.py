@@ -65,7 +65,12 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     # log to stdout
     print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
     genome = apa.load_genome(genome_file)
-    
+
+    # Cols for selecting unique PD sites
+    PD_cols = ['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p']
+
+    # Cols for selecting unique GT sites
+    GT_cols = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g']
 
     for window in windows:
 
@@ -73,10 +78,10 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         matched = apa.bedtools_window(infile, gold_standard, window)
 
         # Number of duplicated PD sites, i.e. PD sites that matched multiple GT sites
-        dPD_count = sum(matched.duplicated(['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p'], keep="first")) 
+        dPD_count = sum(matched.duplicated(PD_cols, keep="first")) 
 
         # Number of "duplicated" GT sites, i.e. GT sites that matched multiple PD sites
-        dGT_count = sum(matched.duplicated(['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g'], keep="first")) 
+        dGT_count = sum(matched.duplicated(GT_cols, keep="first")) 
     
         # split PD sites that matched with multiple GT
         matched = apa.split_pd_by_dist(matched)
@@ -141,8 +146,8 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         # METRIC Performance metrics
         ######################################
         # binary classification metrics
-        # number of ground truth sites with matching prediction site and TPM > 0
-        TP = matched.loc[matched["score_p"] > 0].shape[0]
+        # number of ground truth sites with matching prediction site
+        TP = matched[~matched.duplicated(GT_cols)].shape[0]
         FP = only_PD.shape[0] # number of prediction sites without ground truth sites
         FN = only_GT.shape[0] # number of ground truth sites without prediction sites
 
