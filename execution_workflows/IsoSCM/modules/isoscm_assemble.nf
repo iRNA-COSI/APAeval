@@ -24,7 +24,6 @@ process ISOSCM_ASSEMBLE {
         tuple val(sample), path(assemble_out_xml_rename), emit: ch_isoscm_assemble_out_xml
 
         script:
-        assemble_out_identification_rename = "identification_out"       
       	assemble_out_identification = sample + ".cp.gtf"
         assemble_out_xml = sample + ".assembly_parameters.xml"
         assemble_out_xml_rename = "assemble_out_xml"
@@ -32,7 +31,6 @@ process ISOSCM_ASSEMBLE {
         """
         java -Xmx100G -jar /IsoSCM.jar assemble -bam $aligned_bam -base $sample -s $strand -dir isoscm
         
-        mv isoscm/tmp/$assemble_out_identification $assemble_out_identification_rename
         mv isoscm/$assemble_out_xml $assemble_out_xml_rename
         """
        

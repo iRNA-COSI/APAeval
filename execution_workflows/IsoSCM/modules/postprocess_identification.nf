@@ -16,13 +16,14 @@ process POSTPROCESS_IDENTIFICATION {
         tuple val(sample), path(compare_output)
 
         output:
-        path(output_file), emit: ch_postprocess_identification_out
+        path(identification_output_file), emit: ch_identification_postprocess_out
 
         script:
         output_dir = "${output_files.output_dir}"
-        output_file = sample + "_" + identification_out_suffix
-        
+        identification_output_file = sample + "_" + identification_out_suffix
+        run_mode = 'identification'
+ 
         """
-        postprocess_identification.py $compare_output $output_file
+        postprocess.py $compare_output $run_mode $identification_output_file
         """
  }
