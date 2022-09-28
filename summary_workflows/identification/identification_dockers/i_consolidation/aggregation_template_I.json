@@ -1,0 +1,52 @@
+[
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [],
+                "visualization": {
+                    "type": "2D-plot",
+                    "x_axis": "Sensitivity",
+                    "y_axis": "Precision",
+                    "optimization": "top-right"
+                }
+            }
+        },
+        "type": "aggregation"
+    },
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [],
+                "visualization": {
+                    "type": "bar-plot",
+                    "metric": "AUC"
+                }
+            }
+        },
+        "type": "aggregation"
+    },
+    {
+        "_id": "ID",
+        "challenge_ids": [
+            
+        ],
+        "datalink": {
+            "inline_data": {
+                "challenge_participants": [],
+                "visualization": {
+                    "type": "bar-plot",
+                    "metric": "Genes_correct_PAS"
+                }
+            }
+        },
+        "type": "aggregation"
+    }
+]
