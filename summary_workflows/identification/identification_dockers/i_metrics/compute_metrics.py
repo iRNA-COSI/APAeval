@@ -180,7 +180,8 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
 
     # Count terminal exons
     texome = apa.get_terminal_exons(exome)
-    n_tes_PD = apa.sum_overlaps(texome, prPD)
+    gtes = apa.merge_TE_overlaps(texome)
+    n_tes_PD = apa.sum_overlaps(gtes, prPD)
 
     # Count exclusive exons, i.e. exons without terminal exons
     exclusive_exome = apa.get_non_terminal_exons(exome, texome)
@@ -191,10 +192,11 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     # report number of PAS assigned to introns
     n_intron_PD = apa.sum_overlaps(introme, prPD)
 
-    # intergenome = apa.get_intergenic_regions(texome, genome)
-    # n_intergenome_PD = apa.sum_overlaps(intergenome, prPD)
+    intergenome = apa.get_intergenic_regions(gtes, genome)
+    n_intergenome_PD = apa.sum_overlaps(intergenome, prPD)
 
-    # TODO: assign remaining predictions to other
+    # assign remaining predictions to other
+    n_other = len(prPD) - n_tes_PD - n_es_PD - n_intron_PD - n_intergenome_PD
 
     # for the challenge, create all assessment json objects and append them to all_assessments
     for key, value in metrics.items():

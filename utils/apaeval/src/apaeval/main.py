@@ -69,6 +69,7 @@ def load_genome(genome_path: str, feature: str="gene") -> pd.DataFrame:
     assert os.path.exists(genome_path), f"Genome annotation not found: {genome_path}"
     # Load genome with pyranges and subset genome to only features gene
     genome = pr.read_gtf(genome_path).subset(lambda df: df["Feature"] == feature)
+    assert len(genome) > 0, f"Genome annotation empty with feature: {feature}"
     # cast as pandas dataframe
     genome = genome.as_df()
     # rename columns; the first 8 columns are always the same 
@@ -128,10 +129,14 @@ def get_terminal_exons(exome: pd.DataFrame) -> pr.PyRanges:
     sexome = sexome.sort_values(['transcript_id', 'exon_number'], ascending=False)
     # remove duplicates and only keep highest exon number per transcript
     texome = sexome.loc[~sexome.duplicated(['transcript_id'], keep="first"),]
-    # Combine overlapping TEs
     # convert to pyranges object
     prtexome = genome_to_pyranges(texome)
-    # merge overlapping TEs with same gene_id
+    return prtexome
+
+
+def merge_TE_overlaps(prtexome: pr.PyRanges) -> pr.PyRanges:
+    """Merge overlapping TEs based on gene ID
+    """
     gtes = prtexome.merge(strand=True, by="gene_id").sort()
     return gtes
 
@@ -147,9 +152,8 @@ def sum_overlaps(f2: pr.PyRanges, f1: pr.PyRanges) -> int:
 def get_non_terminal_exons(exome: pd.DataFrame, texome: pr.PyRanges) -> pr.PyRanges:
     """get exons, without terminal exons
     """
-    # exclusive_exome = exome.loc[exome.index.difference(texome.index)]
-    # exclusive_exome = apa.genome_to_pyranges(exclusive_exome)
-    exclusive_exome = genome_to_pyranges(exome).subtract(texome)
+    exome = genome_to_pyranges(exome)
+    exclusive_exome = exome.subtract(texome, strandedness="same")
     return exclusive_exome
 
 
@@ -160,18 +164,18 @@ def get_introns(genome: pd.DataFrame, exome: pd.DataFrame) -> pr.PyRanges:
     # 
     prgenome = genome_to_pyranges(genome)
     prexome = genome_to_pyranges(exome)
-    introme = prgenome.subtract(prexome)
+    introme = prgenome.subtract(prexome, strandedness="same")
     introme.Feature = "intron"
     return introme
 
 
 def get_intergenic_regions(terminal_exons: pr.PyRanges, genome: pd.DataFrame) -> pr.PyRanges:
     """Get intergenic regions in proximity of terminal exons
-    Count intergenic region in proximity of TE with < 1kb and 
-        >= 1kb distance to 3' end of TE
+    Count intergenic region in proximity of TE with <= 1kb distance to 3' end of TE
     """
     # TODO: check correctness
     DISTANCE_PROXIMITY = 1000
+    genome = genome_to_pyranges(genome)
     # assume no other feature 1kb downstream of TE
     intergenome = terminal_exons.copy()
     # treat each strand separately
@@ -182,10 +186,10 @@ def get_intergenic_regions(terminal_exons: pr.PyRanges, genome: pd.DataFrame) ->
     intergenome_minus.End = intergenome_minus.Start
     intergenome_minus = intergenome_minus.extend({"3": DISTANCE_PROXIMITY})
     # merge strand-specific to one pyranges object again
-    intergenome = intergenome_plus.join(intergenome_minus, how="outer")
-    intergenome.extend({"3": DISTANCE_PROXIMITY})
+    intergenome = pd.concat([intergenome_plus.df, intergenome_minus.df])
+    intergenome = pr.PyRanges(df = intergenome)
     # find collisions with genes
-    intergenome = intergenome.subtract(genome_to_pyranges(genome))
+    intergenome = intergenome.subtract(genome, strandedness="same")
     return intergenome
 
 
