@@ -162,8 +162,8 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
     n_genes_nonzero_PAS = len(np.where(genes_nonzero_PAS)[0])
 
     # count number of PAS per gene (i.e. row) in PD
-    PDwcn = PD.copy()
-    PDwcn.columns = GT.columns
+    PDwcn = PD[PD_cols].drop_duplicates()
+    PDwcn.columns = GT_cols
     pas_per_gene_PD = [apa.find_pas_genes(gene, PDwcn) for i, gene in genome.iterrows()]
     counts_PD = [len(np.where(pas)[0]) for pas in pas_per_gene_PD]
     # Number of genes with identical number of polyA sites in PD and GT and > 0 PAS
