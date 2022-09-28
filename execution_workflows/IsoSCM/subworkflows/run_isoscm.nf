@@ -26,9 +26,6 @@ workflow RUN_ISOSCM {
      /*
         Get identification output file
      */
-     ISOSCM_ASSEMBLE.out.ch_isoscm_assemble_out
-         .map { it -> [ it[0], it[1] ] }
-         .set{ ch_postprocess_identification_in }
-     POSTPROCESS_IDENTIFICATION( ch_postprocess_identification_in ) 
+     POSTPROCESS_IDENTIFICATION( ISOSCM_COMPARE.out.ch_isoscm_compare_out )
 }
 

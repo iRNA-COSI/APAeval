@@ -12,7 +12,7 @@ def options    = initOptions(params.options)
      the second step, the compare step.
 */
 process ISOSCM_ASSEMBLE {
-        publishDir "${params.outdir}/isoscm/isoscm_assemble_out_dir/${sample}", mode: params.publish_dir_mode
+        publishDir "${params.outdir}/isoscm/isoscm_assemble_out_dir/", mode: params.publish_dir_mode
 	container "docker.io/apaeval/isoscm:latest"
         label 'process_high'
 
@@ -20,18 +20,15 @@ process ISOSCM_ASSEMBLE {
         tuple val(sample), val(strand), path(aligned_bam), path(aligned_bai)
 
         output:
-        tuple val(sample), path(assemble_out_identification_rename), emit: ch_isoscm_assemble_out
-        tuple val(sample), path(assemble_out_xml_rename), emit: ch_isoscm_assemble_out_xml
+        tuple val(sample), path(assemble_out_xml), emit: ch_isoscm_assemble_out_xml
 
         script:
-      	assemble_out_identification = sample + ".cp.gtf"
         assemble_out_xml = sample + ".assembly_parameters.xml"
-        assemble_out_xml_rename = "assemble_out_xml"
           
         """
         java -Xmx100G -jar /IsoSCM.jar assemble -bam $aligned_bam -base $sample -s $strand -dir isoscm
         
-        mv isoscm/$assemble_out_xml $assemble_out_xml_rename
+        mv isoscm/$assemble_out_xml $assemble_out_xml
         """
        
 }
