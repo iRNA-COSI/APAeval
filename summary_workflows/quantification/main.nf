@@ -73,6 +73,7 @@ community_id = params.community_id
 event_date = params.event_date
 windows = params.windows
 genome_dir = Channel.fromPath(params.genome_dir, type: 'dir' )
+tpm_threshold = params.tpm_threshold
 offline = params.offline
 
 // Output
@@ -131,6 +132,7 @@ process compute_metrics {
 	val community_id
 	val windows
 	path genome_dir
+	val tpm_threshold
 
 	output:
 	path "${input_file.baseName}.json", emit: ass_json
@@ -139,7 +141,7 @@ process compute_metrics {
 	validation_status == 0
 
 	"""
-	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o "${input_file.baseName}.json" -w $windows --genome_dir $genome_dir
+	python3 /app/compute_metrics.py -i $input_file -c $challenge_ids -g $gold_standards_dir -p $tool_name -com $community_id -o "${input_file.baseName}.json" -w $windows --genome_dir $genome_dir --tpm_threshold $tpm_threshold
 	"""
 }
 
@@ -198,7 +200,8 @@ workflow {
 		tool_name,
 		community_id,
 		windows,
-		genome_dir
+		genome_dir,
+		tpm_threshold
 		)
 	assessments = compute_metrics.out.ass_json.collect()
 
