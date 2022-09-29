@@ -49,11 +49,14 @@ Parameters used to run APAtrap are specified in conf/modules.config file.
 Parameters relevant to the workflow itself are:
 - `run_identification` - set to true to obtain identification challenge output. Specifying any other value will throw an error.
 - `run_quantification` - set to true to obtain quantification challenge output. Specifying any other value will throw an error.
+- `run_relative_usage_quantification` - set to true to obtain relative usage quantification challenge output. Specifying any other value will throw an error.
 - `run_differential` - set to true to obtain differential challenge output. Specifying any other value will throw an error.
 - `output_dir` - name of the folder that the final output files are going to be in, located under Apatrap/results/apatrap/
 - `identification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running identification,
                                 the prefix will be the different sample names obtained from the sample column in the sample sheet
 - `quantification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running quantification,
+                                the prefix will be the different sample names obtained from the sample column in the sample sheet
+- `relative_usage_quantification_out_suffix` - suffix of the output file(s) for the current run ending with .bed when running relative usage quantification,
                                 the prefix will be the different sample names obtained from the sample column in the sample sheet
 - `differential_out` - name of the output file for the current run ending with .tsv when running differential
 - `genome_file` - absolute path from the APAtrap folder to the input GTF annotation file can be obtained by replacing `path_to`
@@ -64,10 +67,10 @@ Parameters relevant to the workflow itself are:
 - Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains exactly two distinct conditions in the condition column
 
-### Running the identification and quantification workflow
-- Set the 'run_identification' and/or 'run_quantification' parameters in conf/modules.config to true to 
-  run identification and/or quantification workflows
-- Change 'identification_out_suffix' and/or 'quantification_out_suffix' parameters in conf/modules.config to 
+### Running the identification, quantification, and relative usage quantification workflow
+- Set the 'run_identification' and/or 'run_quantification' and/or 'run_relative_usage_quantification' parameters in conf/modules.config to true to 
+  run identification and/or quantification and/or relative usage quantificationworkflows
+- Change 'identification_out_suffix' and/or 'quantification_out_suffix' and/or 'relative_usage_quantification_out_suffix' parameters in conf/modules.config to 
   the desired file suffix that ends with '.bed'
 - In the sample sheet, at least one row is required to be provided 
 
@@ -86,7 +89,7 @@ which would likely result in an error.
 ### Output & post-processing
 When using the default `output_dir` parameter value in conf/modules.config, APAtrap run results in files of the outputs 
 of the challenges located under APAtrap/results/apatrap/challenges_outputs folder.
-For identification outputs, the files have sample names as prefixes to differentiate the different runs.
+For identification, quantification, and relative usage quantification outputs, the files have sample names as prefixes to differentiate the different runs.
 The differential output file will stay as the name specified in modules.config file.
 
 

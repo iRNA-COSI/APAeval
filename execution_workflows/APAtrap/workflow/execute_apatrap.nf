@@ -33,6 +33,7 @@ def isOffline() {
 def modules = params.modules.clone()
 def run_identification = modules['final_output'].run_identification
 def run_quantification = modules['final_output'].run_quantification
+def run_relative_usage_quantification = modules['final_output'].run_relative_usage_quantification
 def run_differential = modules['final_output'].run_differential
 
 include { INPUT_CHECK } from '../subworkflows/input_check' addParams( options: [:] )
@@ -51,7 +52,7 @@ workflow EXECUTE_APATRAP{
 
     PREPROCESS_FILES ( ch_sample )
 
-    if( run_identification || run_quantification ){
+    if( run_identification || run_quantification || run_relative_usage_quantification ){
         RUN_IDENTIFICATION_QUANTIFICATION (
             PREPROCESS_FILES.out.ch_sample_bedgraph_files_dir,
             PREPROCESS_FILES.out.ch_3utr_input )
