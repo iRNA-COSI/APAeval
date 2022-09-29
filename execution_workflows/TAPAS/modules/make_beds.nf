@@ -19,7 +19,7 @@ process MAKE_BEDS {
 
     script:
     identification_bed= "$sample" + "${params.identification_bed_suffix}"
-    quantification_bed= "$sample" + "${params.quantification_bed_suffix}"
+    quantification_bed= "$sample" + "${params.relative_quantification_bed_suffix}"
     """
     make_tapas_beds.py $tapas_quant_txt $quantification_bed $identification_bed
     """
