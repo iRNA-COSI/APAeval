@@ -43,7 +43,7 @@ def parse_input_file(file_in):
                 start = int(row[6].split(":")[1].split("-")[1]) - 1
             # if negative strand, distal PAS is the end of the upstrea segment
             elif strand == '-':
-                start = int(row[6]split(":")[1].split("-")[1]) - 1
+                start = int(row[6]split(":")[0].split("-")[1]) - 1
             end = start + 1
             name = '|'.join([chrom, str(start) + ":" + str(end), strand])
             output = [chrom, str(start), str(end), name, ".", strand]
