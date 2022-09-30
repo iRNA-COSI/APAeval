@@ -14,7 +14,7 @@ process GETUTR_PROCESS {
         tuple val(sample), path(bam), path(gtf)
 
         output:
-        path "*.bed"
+        path "*.bed", emit: ch_getutr_output
 
         script:
         """

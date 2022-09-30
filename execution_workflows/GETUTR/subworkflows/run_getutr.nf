@@ -3,6 +3,7 @@
  */
 
 include { GETUTR_PROCESS  } from '../modules/getutr_process' addParams( options: [:] )
+include { POSTPROCESSING_IDENTIFICATION } from '../modules/postprocessing_identification' addParams( options: [:] )
 
 workflow RUN_GETUTR {
     take:
@@ -14,6 +15,15 @@ workflow RUN_GETUTR {
        .map { it -> [ it[0], it[1], ch_gtf ] }
        .set { sample_bam }
 
-    GETUTR_PROCESS ( sample_bam )
+    GETUTR_PROCESS(sample_bam)
+
+    GETUTR_PROCESS.out.ch_getutr_output
+        .set { ch_postprocessing_input }
+
+    ch_sample
+        .map { it -> it[0] }
+        .set { sample_only }
+
+    POSTPROCESSING_IDENTIFICATION(sample_only, ch_postprocessing_input)
 }
 
