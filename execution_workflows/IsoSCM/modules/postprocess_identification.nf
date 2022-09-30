@@ -13,16 +13,17 @@ process POSTPROCESS_IDENTIFICATION {
         label 'process_high'
 
         input:
-        tuple val(sample), path(assemble_out_identification)
+        tuple val(sample), path(compare_output)
 
         output:
-        path(output_file), emit: ch_postprocess_identification_out
+        path(identification_output_file), emit: ch_identification_postprocess_out
 
         script:
         output_dir = "${output_files.output_dir}"
-        output_file = sample + "_" + identification_out_suffix
-        
+        identification_output_file = sample + "_" + identification_out_suffix
+        run_mode = 'identification'
+ 
         """
-        postprocess_identification.py $assemble_out_identification $output_file
+        postprocess.py $compare_output $run_mode $identification_output_file
         """
  }
