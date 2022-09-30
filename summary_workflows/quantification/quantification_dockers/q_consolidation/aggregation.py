@@ -28,7 +28,8 @@ def parse_arguments():
     parser.add_argument(
         "-a", 
         "--assessment_data", 
-        help="path to participant assessment.json", required=True
+        nargs="+",
+        help="List of paths to participant assessment.json", required=True
     )
     parser.add_argument(
         "-b", 
@@ -66,6 +67,11 @@ def main():
     output_dir = options.output
     event_date = options.event_date
     offline = options.offline
+
+    # Nextflow passes list, python reads list of strings. We need to clean up list elements
+    assessment_data = [a.strip('[').strip(']').strip(',') for a in assessment_data]
+
+    logging.info(f"Assessment data: {assessment_data}")
 
     # Assuring the output directory for participant does exist
     if not os.path.exists(output_dir):
@@ -226,10 +232,15 @@ def get_metrics_per_challenge(assessment_data):
         }
     }
     '''
-    # read assessment file
-    with open(assessment_data, mode='r', encoding="utf-8") as f:
-        assessments = json.load(f)
+    # read assessment files
+    assessments = []
+    for ass in assessment_data:
+        with open(ass, mode='r', encoding="utf-8") as f:
+            a = json.load(f)
+        assessments.extend(a)
     
+    logging.debug(f"Assessments: {assessments}")
+
     # initialize
     challenges = {}
     participant_id = assessments[0]["participant_id"]
@@ -369,7 +380,7 @@ if __name__ == '__main__':
         options = parse_arguments().parse_args()
 
         # set up logging during the execution
-        logging.basicConfig(level=logging.DEBUG, 
+        logging.basicConfig(level=logging.INFO, 
                     format='%(asctime)s %(levelname)s:%(message)s', datefmt='%Y-%m-%d %H:%M:%S ')
         # execute the body of the script
         logging.info("Starting script")

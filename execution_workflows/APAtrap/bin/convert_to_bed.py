@@ -7,33 +7,40 @@ import pandas as pd
 
 def parse_args(args=None):
     description = "Reformat APAtrap identifyDistal3UTR bed file into the output files of " + \
-                  "identification and quantification challenges"
-    epilog = "Example usage: python convert_to_tsv.py <FILE_IN> <RUN_IDENTIFICATION> " + \
-             "<RUN_QUANTIFICATION> <IDENTIFICATION_OUT> <QUANTIFICATION_OUT>"
+                  "identification, quantification, and relative usage quantification challenges"
+    epilog = "Example usage: python convert_to_bed.py <FILE_IN> <RUN_IDENTIFICATION> " + \
+             "<RUN_QUANTIFICATION> <RUN_RELATIVE_USAGE_QUANTIFICATION> <IDENTIFICATION_OUT> " + \
+             "<QUANTIFICATION_OUT> <RELATIVE_USAGE_QUANTIFICATION_OUT>"
 
     parser = argparse.ArgumentParser(description=description, epilog=epilog)
     parser.add_argument("FILE_IN", help="Input deAPA output txt file.")
     parser.add_argument("RUN_IDENTIFICATION", help="Boolean indicating whether identification run mode is on")
     parser.add_argument("RUN_QUANTIFICATION", help="Boolean indicating whether quantification run mode is on")
+    parser.add_argument("RUN_RELATIVE_USAGE_QUANTIFICATION", help="Boolean indicating whether relative usage quantification run mode is on")
     parser.add_argument("IDENTIFICATION_OUT", help="Name of output file for identification challenge")
     parser.add_argument("QUANTIFICATION_OUT", help="Name of output file for quantification challenge")
+    parser.add_argument("RELATIVE_USAGE_QUANTIFICATION_OUT", help="Name of output file for relative usage quantification challenge")
     return parser.parse_args(args)
 
 
-def reformat_bed(file_in, run_identification, run_quantification, identification_out, quantification_out):
+def reformat_bed(file_in, run_identification, run_quantification, run_relative_usage_quantification, 
+                 identification_out, quantification_out, relative_usage_quantification_out):
     """
     This function reformats the txt predictAPA output file to files for
     identification and quantification challenges
     :param file_in: txt file to be reformatted
     :param run_identification: boolean whether to write identification file
     :param run_quantification: boolean whether to write quantification file
+    :param run_relative_usage_quantification: boolean whether to write relative usage quantification file
     :param identification_out: identification output file name
     :param quantification_out: quantification output file name
+    :param relative_usage_quantification_out: relative usage quantification output file name
     :return: N/A
     """
 
     identification_outputs = set()
     quantification_outputs = set()
+    relative_usage_quantification_outputs = set()
 
     df = pd.read_csv(file_in, sep='\t')
     for index, row in df.iterrows():
@@ -49,7 +56,7 @@ def reformat_bed(file_in, run_identification, run_quantification, identification
         # column with proximal apa sites
         # in decreasing order when strand is - e.g 119924739,119924260
         # in increasing order when strand i + e.g. 78340249,78340414
-        proximal_apa_sites = row['Predicted_APA'].split(",")
+        proximal_apa_sites = str(row['Predicted_APA']).split(",")
 
         # Write identification file
         for proximal_apa_site in proximal_apa_sites:
@@ -76,32 +83,43 @@ def reformat_bed(file_in, run_identification, run_quantification, identification
 
         # Write quantification file
         all_apa_sites = [int(x) for x in proximal_apa_sites]
-        all_apa_sites.append(distal_apa_site)
+        all_apa_sites.append(int(distal_apa_site))
 
         # Expression level of each APA sites (from the most proximal site to the distal site, seperated by comma).
-        expressions = row['Group_1_1_Separate_Exp'].split(',')
+        expressions = [float(x) for x in row['Group_1_1_Separate_Exp'].split(',')]
+        sum_of_expressions = sum(expressions)
 
         for i in range(len(all_apa_sites)):
             output = (chrom, str(all_apa_sites[i]), str(all_apa_sites[i] + 1), name, str(expressions[i]), strand)
             quantification_outputs.add(output)
 
+        for i in range(len(all_apa_sites)):
+            output = (chrom, str(all_apa_sites[i]), str(all_apa_sites[i] + 1), name, str(expressions[i]/sum_of_expressions), strand)
+            relative_usage_quantification_outputs.add(output)
+    
     # write to files
     if run_identification == 'true':
         identification_out = open(identification_out, "wt")
         for row in identification_outputs:
             identification_out.write("\t".join(row) + "\n")
         identification_out.close()
+    
     if run_quantification == 'true':
         quantification_out = open(quantification_out, "wt")
         for row in quantification_outputs:
             quantification_out.write("\t".join(row) + "\n")
         quantification_out.close()
 
+    if run_relative_usage_quantification == "true":
+        relative_usage_quantification_out = open(relative_usage_quantification_out, "wt")
+        for row in relative_usage_quantification_outputs:
+            relative_usage_quantification_out.write("\t".join(row) + "\n")
+        relative_usage_quantification_out.close()
 
 def main(args=None):
     args = parse_args(args)
-    reformat_bed(args.FILE_IN, args.RUN_IDENTIFICATION, args.RUN_QUANTIFICATION,
-                 args.IDENTIFICATION_OUT, args.QUANTIFICATION_OUT)
+    reformat_bed(args.FILE_IN, args.RUN_IDENTIFICATION, args.RUN_QUANTIFICATION, args.RUN_RELATIVE_USAGE_QUANTIFICATION,
+                 args.IDENTIFICATION_OUT, args.QUANTIFICATION_OUT, args.RELATIVE_USAGE_QUANTIFICATION_OUT)
 
 
 if __name__ == '__main__':

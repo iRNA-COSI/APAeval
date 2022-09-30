@@ -7,9 +7,9 @@ def run_mode = modules['run_mode']
 def run_identification = run_mode.run_identification
 def run_relative_usage_quantification = run_mode.run_relative_usage_quantification
 include { ISOSCM_ASSEMBLE } from '../modules/isoscm_assemble' addParams( options: [:] )
+include { ISOSCM_COMPARE } from '../modules/isoscm_compare' addParams( options: [:] )
 include { POSTPROCESS_IDENTIFICATION } from '../modules/postprocess_identification' addParams( options: [:] )
 include { POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION } from '../modules/postprocess_relative_usage_quantification' addParams( options: [:] )
-include { ISOSCM_COMPARE } from '../modules/isoscm_compare' addParams( options: [:] )
 
 workflow RUN_ISOSCM {
      take:

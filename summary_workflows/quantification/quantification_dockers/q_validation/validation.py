@@ -6,10 +6,10 @@ import numpy as np
 import os, json
 import sys
 from argparse import ArgumentParser
-from JSON_templates import JSON_templates
+import JSON_templates
 
 parser = ArgumentParser()
-parser.add_argument("-i", "--participant_data", help="execution workflow prediction outputs", required=True)
+parser.add_argument("-i", "--participant_data", help="Execution workflow output file to be validated", required=True)
 parser.add_argument("-com", "--community_name", help="name of benchmarking community", required=True)
 parser.add_argument("-c", "--challenge_ids", nargs='+', help="List of challenge ids selected by the user, separated by spaces", required=True)
 parser.add_argument("-p", "--participant_name", help="name of the tool used for prediction", required=True)
@@ -62,8 +62,19 @@ def main(args):
     participant_name = args.participant_name
     out_path = args.output
     genome_path = args.genome_dir
-    gtf = select_genome_file(challenges[0], genome_path)
+
+    print(f"INFO: input {participant_input}")
+    print(f"INFO: Possible challenges {challenges}")
+
+    challenge = [c for c in challenges if c.split('.')[0] in str(participant_input)][0]
+    
+    print(f"INFO: Selected challenge {challenge}")
+
+    # Get matching annotation file
+    gtf = select_genome_file(challenge, genome_path)
+    print(f"INFO: Selected genome file {gtf}")
     chr_names = list()
+
     with open(gtf, 'r') as f:
         for row in f:
             if not row.startswith('#'):
@@ -84,17 +95,20 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names)
+    validate_input_data(participant_input, community, challenge, participant_name, out_path, chr_names)
 
 
 
-def  validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names):
+def  validate_input_data(infile, community, challenge, participant_name, out_path, chr_names):
+
+    validated = False
+
     # get participant output (= input to be validated)
     try:
-        participant_data = pandas.read_csv(participant_input, sep='\t',
-                                           comment="#", header=None)
+        participant_data = pandas.read_csv(infile, sep='\t',
+                                        comment="#", header=None)
     except:
-        sys.exit("ERROR: Submitted data file {} could not be read!".format(participant_input))
+        sys.exit("ERROR: Submitted data file {} could not be read!".format(infile))
     
     #---------------------------------------------------
     # INPUT FILE VALIDATION
@@ -103,39 +117,41 @@ def  validate_input_data(participant_input, community, challenges, participant_n
 
     ## check number of columns
     n_col_check = len(participant_data.columns) == 6
+    print(f"INFO: Columns check returned {n_col_check}")
     ## check start and end coordinates
     coord_check = participant_data.dtypes[1] == np.int64 and participant_data.dtypes[2] == np.int64
+    print(f"INFO: Coordinate check returned {coord_check}")
     ## check strands
     strands = list(set(participant_data.iloc[:, 5].values))
     strand_check = len(strands) == 2 and strands.count('-')+strands.count('+') == 2
+    print(f"INFO: Strand check returned {strand_check}")
     ## check ref seq format of chromosomes
     accepted_chr = chr_names
     data_chr = list(set(participant_data.iloc[:, 0].values))
     chr_check = [str(chr) in accepted_chr for chr in data_chr].count(False) == 0
+    print(f"INFO: Chromosome check returned {chr_check}")
     
     ## All checks true?
-    validated = False
     if n_col_check and coord_check and strand_check and chr_check:
         validated = True
     else:
-        print("WARNING: Submitted data does not comply with required bed format.")
+        print(f"WARNING: Submitted file {infile} does not comply with required bed format.")
         validated = False
     #----------------------------------------------------
 
 
     data_id = community + ":" + participant_name
-    output_json = JSON_templates.write_participant_dataset(data_id, community, challenges, participant_name, validated)
+    output_json = JSON_templates.write_participant_dataset(data_id, community, challenge, participant_name, validated)
 
-    # print file
-
+    # print validated participant file
     with open(out_path , 'w') as f:
         json.dump(output_json, f, sort_keys=True, indent=4, separators=(',', ': '))
 
+    # Only pass if all input files are valid
     if validated == True:
-
         sys.exit(0)
     else:
-        sys.exit("ERROR: Submitted data is not in valid format! Please check " + out_path)
+        sys.exit("ERROR: One or more of the submitted files don't comply with APAeval specified format! Please check " + out_path)
 
 
 if __name__ == '__main__':

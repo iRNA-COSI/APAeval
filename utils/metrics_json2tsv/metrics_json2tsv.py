@@ -46,6 +46,9 @@ def main():
                 LOGGER.error(f"Can't read json file, please check format.")
                 raise exc
 
+        # Make sure we only consider assessment objects
+        jmetrics = [j for j in jmetrics if j["type"] == "assessment"]
+        
         # Convert json to df
         tmetrics = pd.json_normalize(jmetrics)
         
@@ -63,6 +66,8 @@ def main():
     metrics_df[['window_size', 'site_set']] = metrics_df['temp'].str.split(':', 1, expand=True)
     # drop obsolete cols
     metrics_df.drop(['temp','metrics.metric_id'],axis=1, inplace=True)
+    # Get rid of "nt" in window size
+    metrics_df['window_size'] = metrics_df['window_size'].str.strip("nt")
 
 
     # And write metrics table to file

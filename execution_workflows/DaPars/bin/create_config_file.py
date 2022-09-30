@@ -47,7 +47,7 @@ def get_sample_files_differential(bedgraphs_dir):
 
 
 def get_sample_files(bedgraph_dir, bedgraph_file, run_mode):
-	if run_mode == "identification":
+	if run_mode == "identification" or run_mode == 'relative_usage_quantification':
 		return bedgraph_file, bedgraph_file
 	else:
 		return get_sample_files_differential(bedgraph_dir)

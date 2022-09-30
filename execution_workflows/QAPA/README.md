@@ -58,7 +58,7 @@ nextflow main.nf --input samplesheet_example.csv --gtf <path_to_gtf> --polyabed 
 
 ## Output & post-processing
 When using the default output_dir parameter value in conf/modules.config, QAPA store results under
-`results/qapa` folder, and the quantification output BED files will be stored in `results/qapa/<sample_name>/qapa_quant.bed`.
+`results/qapa` folder, and the quantification output BED files (one in PPAU fraction, another in per-PAS TPM) will be stored in `results/qapa/<sample_name>/qapa_quant_ppau.bed` and `results/qapa/<sample_name>/qapa_quant_tpm.bed`.
 
 ## Author contact
 If you have any question or comment about QAPA, please submit an issue on [QAPA's GitHub repository](https://github.com/morrislab/qapa/issues)
