@@ -20,6 +20,7 @@ def main(args):
     out_path = args.output
     windows = args.windows
     genome_path = args.genome_dir
+    tpm_threshold = args.tpm_threshold
 
     print(f"INFO: input {participant_input}")
     print(f"INFO: Possible challenges {challenge_ids}")
@@ -38,10 +39,11 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenge, participant, community, out_path, windows, genome_path)
+    compute_metrics(participant_input, gold_standards_dir, challenge, participant, community, out_path, windows, genome_path, tpm_threshold)
 
 
-def compute_metrics(infile, gold_standards_dir, challenge, participant, community, out_path, windows, genome_path):
+def compute_metrics(infile, gold_standards_dir, challenge, participant,
+    community, out_path, windows, genome_path, TPM_THRESHOLD):
 
     # define array that will hold the full set of assessment datasets
     all_assessments = []
@@ -77,6 +79,9 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
         ## Get matching sites
         matched = apa.bedtools_window(infile, gold_standard, window)
 
+        # filter TPM <= TPM_THRESHOLD
+        matched = matched.loc[matched.score_p > TPM_THRESHOLD,]
+
         # Number of duplicated PD sites, i.e. PD sites that matched multiple GT sites
         dPD_count = sum(matched.duplicated(PD_cols, keep="first")) 
 
@@ -96,6 +101,8 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
 
         ## Get PD sites without matching GT (FP)
         only_PD = apa.bedtools_window(infile, gold_standard, window, reverse=True)
+        # filter TPM <= TPM_THRESHOLD
+        only_PD = only_PD.loc[only_PD.score_p > TPM_THRESHOLD,]
         if not only_PD.empty:
             # Duplicate the cols to cols with label "g"
             only_PD[['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g']] = only_PD[['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 'score_p', 'strand_p']]
@@ -244,6 +251,9 @@ if __name__ == '__main__':
     parser.add_argument("-o", "--output", help="output path where assessment JSON files will be written", required=True)
     parser.add_argument("-w", "--windows", nargs='+', help="windows (nt) for scanning for poly(A) sites; several window sizes separated by spaces. The first entry is used for MSE calculation.", required=True, type=int)
     parser.add_argument("-gtf", "--genome_dir", help="genome annotation directory. Used for relative PAS usage calculation. Directory needs to contain genome files with matching organism name from challenge.", required=True)
+    parser.add_argument("-tpm", "--tpm_threshold", 
+        help="Expression filter for predictions. PolyA sites with smaller or equal transcripts per million (tpm) will be removed before metric computation.", 
+        required=True, type=int)
 
     args = parser.parse_args()
 
