@@ -68,9 +68,17 @@ Parameters relevant to the workflow itself are:
 - `star_genome_index` - absolute path to the star genome index folder
 
 ### Running the identification workflow
-- Change 'identification_out_suffix' parameter in conf/modules.config to the desired file name that ends with '.bed'
-- Change the 'output_dir' to the desired directory name under IsoSCM/results/isoscm the identification challenge output will be in  
-- An example sample sheet is samplesheet_example_files_identification.csv.
+- Set `run_identification` parameter in conf/modules.config to `true`
+- Change `identification_out_suffix` parameter in conf/modules.config to the desired file name that ends with `.bed`
+- Change the `output_dir` to the desired directory name under IsoSCM/results/isoscm the identification challenge output will be in  
+- An example sample sheet is samplesheet_example_files.csv.
+- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+
+### Running the relative usage quantification workflow
+- Set `run_relative_usage_quantification` parameter in conf/modules.config to `true`
+- Change `relative_usage_quantifciation_out_suffix` parameter in conf/modules.config to the desired file name that ends with `.bed`
+- Change the `output_dir` to the desired directory name under IsoSCM/results/isoscm the relative usage quantification challenge output will be in  
+- An example sample sheet is samplesheet_example_files.csv.
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ## Output & post-processing
