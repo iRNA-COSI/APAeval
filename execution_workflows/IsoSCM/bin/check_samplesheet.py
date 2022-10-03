@@ -77,8 +77,8 @@ def check_samplesheet(file_in, file_out):
                     print_error("bam does not have extension 'bam'", 'Line', line)
             ## Check the strand
             if strand:
-                if strand != "reverse_forward" and strand != "unstranded" and strand != "forward" and strand != "reverse":
-                    print_error("strand can only be either reverse_forward, reverse, forward, or unstranded, received " + strand, 'Line', line)
+                if strand != "reverse_forward" and strand != "unstranded":
+                    print_error("strand can only be either reverse_forward or unstranded, received " + strand, 'Line', line)
 
             ## Check the read_type
             if read_type:
