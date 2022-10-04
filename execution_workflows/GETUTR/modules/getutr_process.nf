@@ -6,7 +6,7 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process GETUTR_PROCESS {
-        publishDir "${params.outdir}", mode: params.publish_dir_mode
+        publishDir "${params.outdir}/getutr", mode: params.publish_dir_mode
         container "docker.io/apaeval/getutr:latest"
         label "process_high"
 
