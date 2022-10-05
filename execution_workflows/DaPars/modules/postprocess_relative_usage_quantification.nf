@@ -15,7 +15,7 @@ process POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION {
 
     input:
     val sample
-    path dapors_output_file
+    path dapars_output_file
 
     output:
     path "*"
