@@ -21,7 +21,8 @@ process CREATE_CONFIG_FILE {
         script:
         annotated_3utr = "$PWD/${params.outdir}/dapars/final_extracted_3utr.bed"
         bedgraphs_dir = "$PWD/${params.outdir}/dapars/sample_bedgraph_files"
-        output_dir = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}"
+        //output_dir = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}"
+        output_dir = "."
         num_least_in_group1 = options.num_least_in_group1
         num_least_in_group2 = options.num_least_in_group2
         coverage_cutoff = options.coverage_cutoff

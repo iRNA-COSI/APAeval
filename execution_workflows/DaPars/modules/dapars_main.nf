@@ -14,9 +14,10 @@ process DAPARS_MAIN {
         val sample
 
         output:
-        path config_file, emit: ch_dapars_output
+        path dapars_output_file, emit: ch_dapars_output
 
         script:
+        dapars_output_file = "dapars_output_All_Prediction_Results.txt"
         """
         python /dapars/src/DaPars_main.py $config_file
         """

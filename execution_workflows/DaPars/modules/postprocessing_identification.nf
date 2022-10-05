@@ -15,16 +15,16 @@ process POSTPROCESSING_IDENTIFICATION {
 
     input:
     val sample
-    path output_file
+    path dapars_output_file
 
     output:
     path "*"
 
     script:
     run_mode = "identification"
-    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
+    //file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
     identification_out = "${sample}_${options.identification_out_suffix}"
     """
-    convert_output.py $file $identification_out $run_mode
+    convert_output.py $dapars_output_file $identification_out $run_mode
     """
 }
