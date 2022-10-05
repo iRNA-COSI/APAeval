@@ -15,16 +15,15 @@ process POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION {
 
     input:
     val sample
-    path output_file
+    path dapors_output_file
 
     output:
     path "*"
 
     script:
     run_mode = "relative_usage_quantification"
-    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
     relative_usage_quantification_out = "${sample}_${options.relative_usage_quantification_out_suffix}"
     """
-    convert_output.py $file $relative_usage_quantification_out $run_mode
+    convert_output.py $dapars_output_file $relative_usage_quantification_out $run_mode
     """
 }

@@ -6,7 +6,6 @@ def options    = initOptions(params.options)
 
 process DAPARS_MAIN {
         tag "$sample"
-        publishDir "${params.outdir}/dapars", mode: params.publish_dir_mode
         container "docker.io/apaeval/dapars:latest"
 
         input:

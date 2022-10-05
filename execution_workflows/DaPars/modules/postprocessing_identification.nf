@@ -7,7 +7,7 @@ def modules = params.modules.clone()
 def options = modules['final_output']
 
 /*
-    Convert DaPars output file to differential challenge file
+    Convert DaPars output file to identification challenge file
 */
 process POSTPROCESSING_IDENTIFICATION {
     publishDir "${params.outdir}/dapars/${options.output_dir}", mode: params.publish_dir_mode
@@ -22,7 +22,6 @@ process POSTPROCESSING_IDENTIFICATION {
 
     script:
     run_mode = "identification"
-    //file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
     identification_out = "${sample}_${options.identification_out_suffix}"
     """
     convert_output.py $dapars_output_file $identification_out $run_mode
