@@ -27,4 +27,3 @@ process POSTPROCESSING_IDENTIFICATION {
     convert_output.py $dapars_output_file $identification_out $run_mode
     """
 }
-

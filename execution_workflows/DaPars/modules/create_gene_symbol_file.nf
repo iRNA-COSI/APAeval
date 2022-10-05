@@ -23,4 +23,3 @@ process CREATE_GENE_SYMBOL_FILE {
     create_gene_symbol_file.py $genome_file $gene_symbol_file
     """
 }
-
