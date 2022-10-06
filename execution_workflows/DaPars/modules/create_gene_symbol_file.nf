@@ -9,7 +9,6 @@ def options    = initOptions(params.options)
     Create gene symbol file from the gtf genome file
 */
 process CREATE_GENE_SYMBOL_FILE {
-    publishDir "${params.outdir}/dapars/gene_symbol_file", mode: params.publish_dir_mode
     container "docker.io/apaeval/dapars:latest"
 
     input:

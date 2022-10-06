@@ -14,7 +14,7 @@ process POSTPROCESSING_DIFFERENTIAL {
     container "docker.io/apaeval/dapars:latest"
 
     input:
-    path config_file
+    path dapars_output_file
     val sample
 
     output:
@@ -22,9 +22,8 @@ process POSTPROCESSING_DIFFERENTIAL {
 
     script:
     run_mode = "differential"
-    file = "$PWD/${params.outdir}/dapars/${run_mode}/${sample}/dapars_output_All_Prediction_Results.txt"
     differential_out = options.differential_out
     """
-    convert_output.py $file $differential_out $run_mode
+    convert_output.py $dapars_output_file $differential_out $run_mode
     """
 }
