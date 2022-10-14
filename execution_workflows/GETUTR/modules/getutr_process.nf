@@ -7,7 +7,7 @@ def options    = initOptions(params.options)
 
 process GETUTR_PROCESS {
         container "docker.io/apaeval/getutr:latest"
-        label 'process_high'
+        label "process_high"
 
         input:
         tuple val(sample), path(bam), path(gtf)
