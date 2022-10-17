@@ -34,8 +34,8 @@ columns:
 
 - sample: name of the sample (e.g control_replicate1)
 - bam: absolute path to BAM input file for the sample 
-- strand: the strandedness of the data, can be 'reverse_forward' or 'unstranded'
-- read_type: whether the sample contains paired-end or single-end reads, can be 'paired' or 'single'
+- strand: the strandedness of the data, can be 'reverse_forward' or 'unstranded'. reverse_forward is only for paired-end reads, while unstranded can be for both single and paired-end reads
+- read_type: whether the sample contains paired-end or single-end reads, can be 'paired' or 'single'. If sample contains single-end reads, strand needs to be set to unstranded otherwise the tool will error out
 Make sure each sample name is unique.
 
 To run IsoSCM with test data provided for APAeval, check the path to IsoSCM with `pwd` and replace 
