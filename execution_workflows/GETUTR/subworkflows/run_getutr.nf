@@ -20,10 +20,6 @@ workflow RUN_GETUTR {
     GETUTR_PROCESS.out.ch_getutr_output
         .set { ch_postprocessing_input }
 
-    ch_sample
-        .map { it -> it[0] }
-        .set { sample_only }
-
-    POSTPROCESSING_IDENTIFICATION(sample_only, ch_postprocessing_input)
+    POSTPROCESSING_IDENTIFICATION(ch_postprocessing_input)
 }
 
