@@ -104,3 +104,34 @@ def write_assessment_dataset( ID, community, challenge, participant_name, metric
         sys.stderr.write(
             "ERROR: JSON schema validation failed. Output json file does not have the correct format:\n" + str(
                 ve) + "\n")
+
+
+"""
+    Assessment datasets should be generated in the METRICS COMPUTATION step
+    The minimal required properties for this dataset are:
+    - ID - the id assigned to this dataset by the community
+    - community - the benchmarking community name/OEB-id
+    - challenge - the challenge where the metrics were computed
+    - participant_name - name/OEB-id of the tool which is evaluated in this assessment
+    - metric - the name of the unique metric which correspond to this assessment
+    - metric_value - the numeric value of the metric
+    - error - the standard error/deviation for the computed metric (can be 0)
+
+"""
+def write_rogue_dataset( ID, community, challenge, participant_name, metric, metric_value, error):
+
+    data = {
+        "_id": ID,
+        "community_id": community,
+        "challenge_id": challenge,
+        "type": "assessment",
+        "metrics": {"metric_id": metric,
+                    "value": metric_value,
+                    "stderr": error
+                    },
+        "participant_id": participant_name
+
+    }
+
+    # No validation here!
+    return data
