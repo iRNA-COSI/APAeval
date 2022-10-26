@@ -50,7 +50,6 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant,
     # define list with keywords for return type of dataframe from match_with_gt()
     all_return_df_types = ["all_GT", "union", "intersection"]
     for challenge in challenges:
-        print(f"DEBUG: challenge {challenge}")
         # ID prefix for assessment objects
         base_id = f"{community}:{challenge}:{participant}:"
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
@@ -61,8 +60,8 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant,
 
         # ground truth file
         gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
-        print(f"DEBUG: gold standard file {gold_standard}")
-        assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
+
+        assert os.path.exists(gold_standard), f"Ground truth file {gold_standard} not found, please check input data."
 
         # genome annotation file
         genome_file = apa.select_genome_file(challenge, genome_path)

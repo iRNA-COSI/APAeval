@@ -4,6 +4,10 @@ This is where the summary workflows for APAeval live. The dedicated code for eac
 - [Overview](#overview)
 - [Summary workflow general description](#summary-workflow-general-description)
   - [Directory structure for summary workflow code](#directory-structure-for-summary-workflow-code)
+- [HOW TO: (File) naming requirements](#how-to-file-naming-requirements)
+  - [Challenges](#challenges)
+  - [Ground truth files](#ground-truth-files)
+  - [Participant output (=input) files](#participant-output-input-files)
 - [HOW TO: DEVELOP](#how-to-develop)
   - [1. Copy template](#1-copy-template)
   - [2. Establish proper validation](#2-establish-proper-validation)
@@ -23,7 +27,7 @@ This is where the summary workflows for APAeval live. The dedicated code for eac
 
 APAeval consists of a number of ***benchmarking events*** to evaluate the performance of different tasks that the methods of interest (=***participants***) might be able to perform: **poly(A) site identification, absolute quantification, relative quantification and assessment of their differential usage**. A method can participate in one or several events, depending on its functions.   
 
-Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the input dataset used for performance assessment**. A challenge is evaluated within a ***summary workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently a profile for Slurm is included). The summary workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
+Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the ground truth dataset used for performance assessment**. A challenge is evaluated within a ***summary workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently a profile for Slurm is included). The summary workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
 
 In order to compare the performance of participants within a challenge/event, the respective summary workflow will be run on output files from all eligible participant execution workflows (For the participant execution workflows please refer to the [iRNA-COSI/APAeval/execution_workflows][apaeval-ewfs] repository!). The calculated metrics will be written to `.json` files that can be either submitted to OEB for database storage and online vizualisation, or transformed into a table format that can be used for creating custom plots with the help of scripts from the [APAeval utils directory][apaeval-utils].
 
@@ -82,7 +86,33 @@ Within the benchmarking event's directory resides a subdirectory `specification`
 
 The "dockers" directories contain Dockerfiles, requirements, and dedicated python scripts. In order to create datasets that are compatible with the [Elixir Benchmarking Data Model][elixir-data-model], the JSON templates in the main `summary_workflows` directory are imported in the respective docker containers. The provided *python scripts*, as well as the module `utils/apaeval` they import, are where the action happens: **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
 
+## HOW TO: (File) naming requirements
+### Challenges
+Challenge IDs have to be of the form 
+```
+[SAMPLE_NAME].([ADDITIONAL_INFO].)[GENOME]
+```
+where `[SAMPLE_NAME]` is a unique id of the condition represented in the ground truth and assessed by the participant. `[ADDITIONAL_INFO]` is optional; this can be used if several ground truths are obtained from the same condition but differ otherwise, e.g. one is a subset of the other.`[GENOME]` is the genome version used for creating the ground truth. MUST contain either `mm` or `hg`, e.g. `mm10` or `hg38_v26`
+> EXAMPLES:    
+> MmusCortex_adult_R1.TE.mm10    
+> GTEXsim_R19.hg38_v26
+### Ground truth files
+The gold standard file MUST be named in the format 
+```
+[CHALLENGE].[EXT]
+```
+where `[CHALLENGE]` is specified in `challenges_ids` in [`[tool]_[event].config`][tool-event-config]. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py] and `[CHALLENGE]` itself has to be of the format described above.   
 
+### Participant output (=input) files
+Participant outputs MUST contain the exact `[SAMPLE_NAME]` part of the challenge(s) (see requirements above) they want to participate in. They have to be of the format
+```
+[PARTICIPANT].[SAMPLE_NAME].[EVENT_ID].[EXT]
+```
+where `[PARTICIPANT]` is the unique name of the participant to be tested. If a tool is for example run in two different modes, that should be reflected here (like MYTOOL and MYTOOL_SPECIAL). `[EVENT_ID]` is a two-digit-code as follows:   
+01 - Identification   
+02 - absolute quantification   
+03 - differential expression   
+04 - relative quantification   
 ## HOW TO: DEVELOP
 For an example of a summary workflow and further instructions, refer to the [quantification summary workflow][q-swf].   
 ### 1. Copy template
@@ -177,6 +207,7 @@ The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_work
 [q-swf]: quantification/README.md
 [tcga-wf]: https://github.com/inab/TCGA_benchmarking_workflow
 [tcga-docker]: https://github.com/inab/TCGA_benchmarking_dockers
+[tool-event-config]:quantification/tool_event.config
 [validation-py]:quantification/quantification_dockers/q_validation/validation.py
 
 
