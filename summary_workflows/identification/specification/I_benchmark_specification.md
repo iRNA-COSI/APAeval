@@ -41,7 +41,7 @@ The metrics should be computed for different distance thresholds between PAS ide
 ### OpenEBench challenges
 
 The metrics are visualised using 2D scatter plots and barplots, as described in _Plots_ section, which are then used for ranking the participating tools.
-The plots for a given input dataset belong to one benchmarking challenge as understood in OpenEBench schema.
+The plots for a given ground truth dataset belong to one benchmarking challenge as understood in OpenEBench schema.
 Not all plots have to be prepared for each dataset, as described in _Plots_ section.
 All identification challenges belong to the same benchmarking event.
 
@@ -209,7 +209,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 The OpenEBench assessment file contains the following attributes:
 
 - **\_id** - follows the format: [COMMUNITY_ID]:[CHALLENGE_ID]\_[PARTICIPANT_ID]\_[METRIC_ID]\_[WINDOW_SIZE]nt
-- **challenge_id** - name of the challenge
+- **challenge_id** - unique identifier, corresponding to ground truth file name without extension. Must be of the format `[sample_name].([additional_info].)[genome_version]` where the part inside `()` is optional
 - **participant_id** - benchmarked tool
 - **metrics**:
 	- **value** - metric value
