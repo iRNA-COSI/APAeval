@@ -14,13 +14,13 @@ process POSTPROCESSING_IDENTIFICATION {
 
     input:
     tuple val(sample), path(getutr_output)
- 
+
     output:
     path "*"
 
     script:
     identification_output = "${sample}_identification_output.bed"
     """
-    awk '{if (\$1=="track") print \$0; else print \$1, \$2, \$3, \$4, ".", \$6}' ${getutr_output} > ${identification_output}
+    awk 'BEGIN {OFS="\t"} {if (\$1=="track") print \$0; else print \$1,\$2,\$3,\$4,".",\$6}' ${getutr_output} > ${identification_output}
     """
 }
