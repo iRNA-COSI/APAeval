@@ -60,8 +60,10 @@ def main():
     # Split metric_id to get window size and return type
     # First get metric name in new col
     metrics_df[['metric','temp']] = metrics_df['metrics.metric_id'].str.split(':', 1, expand=True)
+
     # Now swap return type and window (neccessary to get NA if return type is missing)
-    metrics_df['temp'] = metrics_df['temp'].apply(lambda x: str_swap(x,':'))
+    metrics_df['temp'] = metrics_df['temp'].apply(lambda x: str_swap(x,':') if x is not None else "nt:all" )
+
     # type and window in new col
     metrics_df[['window_size', 'site_set']] = metrics_df['temp'].str.split(':', 1, expand=True)
     # drop obsolete cols
