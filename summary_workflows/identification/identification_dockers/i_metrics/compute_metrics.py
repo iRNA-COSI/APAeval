@@ -25,7 +25,7 @@ def main(args):
     print(f"INFO: input {participant_input}")
     print(f"INFO: Possible challenges {challenge_ids}")
 
-    challenges = [c for c in challenge_ids if c.split('.')[0] in str(participant_input)]
+    challenges = [c for c in challenge_ids if c.split('.')[0] == str(participant_input).split('.')[1]]
     
     print(f"INFO: Selected challenge(s) {challenges}")
     print(f"INFO: Window sizes {windows}")
