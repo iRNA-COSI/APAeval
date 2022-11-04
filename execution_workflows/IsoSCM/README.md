@@ -34,8 +34,8 @@ columns:
 
 - sample: name of the sample (e.g control_replicate1)
 - bam: absolute path to BAM input file for the sample 
-- strand: the strandedness of the data, can be 'reverse_forward' or 'unstranded'
-- read_type: whether the sample contains paired-end or single-end reads, can be 'paired' or 'single'
+- strand: the strandedness of the data, can be 'reverse_forward' or 'unstranded'. reverse_forward is only for paired-end reads, while unstranded can be for both single and paired-end reads
+- read_type: whether the sample contains paired-end or single-end reads, can be 'paired' or 'single'. If sample contains single-end reads, strand needs to be set to unstranded otherwise the tool will error out
 Make sure each sample name is unique.
 
 To run IsoSCM with test data provided for APAeval, check the path to IsoSCM with `pwd` and replace 
@@ -68,9 +68,17 @@ Parameters relevant to the workflow itself are:
 - `star_genome_index` - absolute path to the star genome index folder
 
 ### Running the identification workflow
-- Change 'identification_out_suffix' parameter in conf/modules.config to the desired file name that ends with '.bed'
-- Change the 'output_dir' to the desired directory name under IsoSCM/results/isoscm the identification challenge output will be in  
-- An example sample sheet is samplesheet_example_files_identification.csv.
+- Set `run_identification` parameter in conf/modules.config to `true`
+- Change `identification_out_suffix` parameter in conf/modules.config to the desired file name that ends with `.bed`
+- Change the `output_dir` to the desired directory name under IsoSCM/results/isoscm the identification challenge output will be in  
+- An example sample sheet is samplesheet_example_files.csv.
+- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+
+### Running the relative usage quantification workflow
+- Set `run_relative_usage_quantification` parameter in conf/modules.config to `true`
+- Change `relative_usage_quantifciation_out_suffix` parameter in conf/modules.config to the desired file name that ends with `.bed`
+- Change the `output_dir` to the desired directory name under IsoSCM/results/isoscm the relative usage quantification challenge output will be in  
+- An example sample sheet is samplesheet_example_files.csv.
 - Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ## Output & post-processing

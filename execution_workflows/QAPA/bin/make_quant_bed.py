@@ -9,7 +9,12 @@ qapa_quant_bed_tpm=open(sys.argv[3],'w')
 
 for ln in qapa_results_file:
  ln=ln.strip().split('\t')
- ppau_fraction=float(ln[12])/100.0
+ # if the ppau value is NA, don't calculate ppau fraction
+ if ln[12] == "NA":
+  ppau_fraction = ln[12]
+ # if ppau is not NA, calculate ppau fraction by dividing by 100
+ else:
+  ppau_fraction=float(ln[12])/100.0
  if ln[7] == '+':
   chromStart,chromEnd=str(int(ln[9])-1),ln[9]
  elif ln[7] == '-':

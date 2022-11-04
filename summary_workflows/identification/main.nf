@@ -115,6 +115,7 @@ process compute_metrics {
 	publishDir out_dir,
 	mode: 'copy',
 	overwrite: false,
+	pattern: "${input_file.baseName}.json",
 	saveAs: { filename -> "assessments_${input_file.baseName}.json" }
 
 	publishDir out_dir,

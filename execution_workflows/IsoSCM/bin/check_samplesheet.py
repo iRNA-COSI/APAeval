@@ -75,15 +75,20 @@ def check_samplesheet(file_in, file_out):
                     print_error("bam contains spaces!", 'Line', line)
                 if not bam.endswith(".bam"):
                     print_error("bam does not have extension 'bam'", 'Line', line)
+            
             ## Check the strand
             if strand:
                 if strand != "reverse_forward" and strand != "unstranded":
                     print_error("strand can only be either reverse_forward or unstranded, received " + strand, 'Line', line)
-
+            
             ## Check the read_type
             if read_type:
                 if read_type != "single" and read_type != "paired":
                     print_error("read_type can only be either single or paired, received " + read_type, 'Line', line)
+
+            # Check strand and read_type combination
+            if strand == "reverse_forward" and read_type == "single":
+                print_error("For single end read, strand should be set to unstranded to avoid error thrown by the tool")
 
             ## Create sample mapping dictionary = {group: {replicate : [ barcode, input_file, genome, gtf, is_transcripts ]}}
             sample_info = [ sample, bam, strand, read_type]

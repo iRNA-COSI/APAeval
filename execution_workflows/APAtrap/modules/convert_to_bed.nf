@@ -7,7 +7,7 @@ def modules = params.modules.clone()
 def inputs = modules['final_output']
 
 /*
-    Create files for identification and quantification challenges
+    Create files for identification, quantification, and relative usage quantification challenges
 */
 process CONVERT_TO_BED {
     tag "$sample"
@@ -23,16 +23,20 @@ process CONVERT_TO_BED {
     script:
     run_identification = inputs.run_identification
     run_quantification = inputs.run_quantification
+    run_relative_usage_quantification = inputs.run_relative_usage_quantification
     identification_out = sample + "_" + inputs.identification_out_suffix
     quantification_out = sample + "_" + inputs.quantification_out_suffix
+    relative_usage_quantification_out = sample + "_" + inputs.relative_usage_quantification_out_suffix
 
     """
     convert_to_bed.py \
     $predict_apa_output_file \
     $run_identification \
     $run_quantification \
+    $run_relative_usage_quantification \
     $identification_out \
-    $quantification_out
+    $quantification_out \
+    $relative_usage_quantification_out
     """
 
 }

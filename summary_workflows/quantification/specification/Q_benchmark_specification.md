@@ -101,7 +101,7 @@ Correlation is then calculated globally for all poly(A) sites assigned to genes.
 
 ### OpenEBench challenges
 
-This document describes the specifications for the APAeval "absolute quantification **benchmarking event**", which is partially compatible with the [OpenEBench (OEB) benchmarking plattform][oeb]. The event consists of several **challenges**. In APAeval, a challenge as understood in the OEB terminology is determined by an input *dataset* (one or more *samples*). A participant submits one file ([Input 1](#input-1) as defined below) for each challenge it participates in. The participant's result is compared to the challenge's ground truth ([Input 2](#input-2)) and the metrics described here are stored in OEB specific JSON files.
+This document describes the specifications for the APAeval "absolute quantification **benchmarking event**", which is partially compatible with the [OpenEBench (OEB) benchmarking plattform][oeb]. The event consists of several **challenges**. In APAeval, a challenge as understood in the OEB terminology is determined by the ground truth to compare the participant output to. A participant submits its output ([Input 1](#input-1) as defined below) for each challenge it participates in. The participant's result is compared to the challenge's ground truth ([Input 2](#input-2)) and the metrics described here are stored in OEB specific JSON files.
 
 
 ## Inputs
@@ -216,7 +216,7 @@ Consolidation output contains summarized data from all benchmarked tools within 
 The OEB assessment file contains the following attributes:
 
 - **\_id** - follows the format: community:challenge\_metric\_tool
-- **challenge_id** - describing the combination of input dataset with indication whether it is based on real or simulated data and any parameters used for metric calculation such as distance threshold (window size); e.g. datasetA\_simulated\_10nt
+- **challenge_id** - unique identifier, corresponding to ground truth file name without extension. Must be of the format `[sample_name].([additional_info].)[genome_version]` where the part inside `()` is optional
 - **participant_id** - benchmarked tool
 - **metrics**:
 	- **value** - metric value

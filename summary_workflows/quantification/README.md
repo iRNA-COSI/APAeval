@@ -5,11 +5,14 @@ ___
 
 This README describes the APAeval **(absolute) quantification** summary workflow. For a more general introduction to summary workflows see [the main summary workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
 
+- [(File) naming requirements](#file-naming-requirements)
 - [Description of steps](#description-of-steps)
   - [1. Validation](#1-validation)
   - [2. Metrics Computation](#2-metrics-computation)
   - [3. Results Consolidation](#3-results-consolidation)
 - [Usage](#usage)
+## (File) naming requirements
+See description in [the main summary workflow `README.md`][readme-swf-naming].
 ## Description of steps
 ### 1. Validation
 - `input_file`: output file from execution workflow in bed6 format
@@ -18,6 +21,7 @@ This README describes the APAeval **(absolute) quantification** summary workflow
    - start and end coordinates (col 2,3) have to be int64
    - strand (col 6) has to be one of [+,-]
    - chromosome (col 1) has to match the ones from the genome annotation (see below `genome_dir`)
+   - genome file is checked for valid chromosome naming
   
 - The `validated_[participant].[challenge].[event].json` file is used in the consolidation step, but not in the compute metrics one. However, the workflow exits after the validation step if *one or more* of the input files don't comply to the specifications of the current benchmarking event
   
@@ -25,13 +29,14 @@ This README describes the APAeval **(absolute) quantification** summary workflow
 - "input file" and "gold standard file" will be compared in order to calculate the metrics
 - `input_file`: output file from execution workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
->NOTE: the gold standard file MUST be named in the format `[challenge].bed`, where `[challenge]` is specified in `challenges_ids` in [`[tool]_[event].config`][tool-event-config]. The extension `.bed` is hardcoded within [`compute_metrics.py`][metrics-py].
+
 - `windows` parameter is used to compute metrics for a list of window sizes.
     - For running on OEB: the parameter is read from `nextflow.config`.
 - `genome_dir`: Directory to genome annotation in gtf format with 9 fields as specified [here](https://www.gencodegenes.org/pages/data_format.html). The gtf is used for the relative PAS usage metric computation.
   - For running on OEB: The genome directory is specified in `nextflow.config`
   - For the test data, challenge `challenge_1.mm10` with ground truth file `challenge_1.mm10.bed` will use genome file `gencode.test.mm10.gtf`, because both contain `mm10` within two dots in the filename.
 > NOTE: the genome file needs to contain the same substring as the challenge. That is, challenge `[partone].[organism].[partwo].bed` requires a genome annotation file like `[partone].[organism].[partwo].gtf`, where `[organism]` starts with *mm* or *hg* (only these two currently supported). And `[partone]` and `[parttwo]` can be an aribitrary string (or empty string).
+- `tpm_threshold`: Expression filter for predictions. PolyA sites with smaller or equal transcripts per million (tpm) will be removed before metric compuatation.
 - APAeval custom functions called in [`quantification_dockers/q_metrics/compute_metrics.py`][metrics-py] are defined in `utils/apaeval`
 - The `assessments_[participant].[challenge].[event].json` file is used in the consolidation step
 
@@ -48,6 +53,7 @@ Please check out the sections on [building docker images][build-images] and [run
 
 [//]: # (References)
 [readme-swf]: ../README.md
+[readme-swf-naming]: ../README.md#how-to-file-naming-requirements
 [build-images]: ../README.md#7-build-images
 [run-workflow]: ../README.md#8-test-run
 [q-spec]: ./specification/

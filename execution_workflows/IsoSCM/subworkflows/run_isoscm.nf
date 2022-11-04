@@ -3,9 +3,13 @@
  */
 
 def modules = params.modules.clone()
-
+def run_mode = modules['run_mode']
+def run_identification = run_mode.run_identification
+def run_relative_usage_quantification = run_mode.run_relative_usage_quantification
 include { ISOSCM_ASSEMBLE } from '../modules/isoscm_assemble' addParams( options: [:] )
+include { ISOSCM_COMPARE } from '../modules/isoscm_compare' addParams( options: [:] )
 include { POSTPROCESS_IDENTIFICATION } from '../modules/postprocess_identification' addParams( options: [:] )
+include { POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION } from '../modules/postprocess_relative_usage_quantification' addParams( options: [:] )
 
 workflow RUN_ISOSCM {
      take:
@@ -16,13 +20,21 @@ workflow RUN_ISOSCM {
         Run IsoSCM assemble step for each sample
      */
      ISOSCM_ASSEMBLE( ch_aligned_bam_files_dir )
-
+     
      /*
-        Get identification output file
+        Run IsoSCM compare step for each sample
      */
-     ISOSCM_ASSEMBLE.out.ch_isoscm_assemble_out
-         .map { it -> [ it[0], it[1] ] }
-         .set{ ch_postprocess_identification_in }
-     POSTPROCESS_IDENTIFICATION( ch_postprocess_identification_in ) 
+     ISOSCM_COMPARE( ISOSCM_ASSEMBLE.out.ch_isoscm_assemble_out_xml )
+     
+     /*
+       Get identification and/or relative usage quantification output(s)
+     */
+     if ( run_identification ) {
+         POSTPROCESS_IDENTIFICATION( ISOSCM_COMPARE.out.ch_isoscm_compare_out )
+     }
+
+     if ( run_relative_usage_quantification ) {
+         POSTPROCESS_RELATIVE_USAGE_QUANTIFICATION( ISOSCM_COMPARE.out.ch_isoscm_compare_out )
+     }
 }
 

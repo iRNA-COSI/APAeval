@@ -26,9 +26,9 @@ def main(args):
     print(f"INFO: input {participant_input}")
     print(f"INFO: Possible challenges {challenge_ids}")
 
-    challenge = [c for c in challenge_ids if c.split('.')[0] in str(participant_input)][0]
+    challenges = [c for c in challenge_ids if c.split('.')[0] == str(participant_input).split('.')[1]]
     
-    print(f"INFO: Selected challenge {challenge}")
+    print(f"INFO: Selected challenge(s) {challenges}")
     print(f"INFO: Window sizes {windows}")
 
 
@@ -41,23 +41,14 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenge, participant, community, out_path, windows, genome_path)
+    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path)
 
 
-def compute_metrics(infile, gold_standards_dir, challenge, participant, community, out_path, windows, genome_path):
-
-    # ID prefix for assessment objects
-    base_id = f"{community}:{challenge}:{participant}:"
+def compute_metrics(infile, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path):
     
     # define array that will hold the full set of assessments
     all_assessments = []
-
-    # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
-    metrics = {}
-
-    # Vectors for AUC of precision recall curve
-    p_vec = []
-    r_vec = []
+    rogue_assessments = []
 
     # check for presence of participant input data
     assert os.path.exists(infile), "Participant file not found, please check input data."
@@ -69,116 +60,137 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
 
     # Cols for selecting unique PD sites
     PD_cols = ['chrom_p', 'chromStart_p', 'chromEnd_p', 'strand_p']
-
-    # ground truth file
-    gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
-    assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
-
-    GT = pd.read_csv(gold_standard, delimiter="\t", header=None, index_col=False,
-        names = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g'])
-    # Number of GT sites
-    GT_cnt = GT.shape[0]
-
     # Cols for selecting unique GT sites
     GT_cols = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'strand_g']
 
-    # genome annotation file
-    genome_file = apa.select_genome_file(challenge, genome_path)
-    print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
-    genome = apa.load_genome(genome_file)
-    
-    # For AUC of PR-curve we need more window sizes
-    windowlist = list(range(0,max(windows),max(windows)//10))
-    # Just in case we're missing the specified windows now
-    windowlist.extend([w for w in windows if w not in windowlist])
-    windowlist.sort()
-    for window in windowlist:
+    for challenge in challenges:
+        # ID prefix for assessment objects
+        base_id = f"{community}:{challenge}:{participant}:"
 
-        # Get matching sites
-        # Beware: 1 PD site matching x GT sites will appear on x rows, and vice versa; Dropping duplicates is thus necessary in certain subsequent steps
-        matched = apa.bedtools_window(infile, gold_standard, window)
+        # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
+        metrics = {}
 
-        matched.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
+        # Vectors for AUC of precision recall curve
+        p_vec = []
+        r_vec = []
 
-        # METRICS for all window sizes
-        ######################################
+        # ground truth file
+        gold_standard = os.path.join(gold_standards_dir, challenge + ".bed")
+        assert os.path.exists(gold_standard), "Ground truth file not found, please check input data."
 
-        # "true" GT: number of GT sites with matching PD sites
-        tGT_cnt = matched[~matched.duplicated(GT_cols)].shape[0]
-        # "true" PD: number of PD sites with matching GT sites
-        tPD_cnt = matched[~matched.duplicated(PD_cols)].shape[0]
+        GT = pd.read_csv(gold_standard, delimiter="\t", header=None, index_col=False,
+            names = ['chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 'score_g', 'strand_g'])
+        # Number of GT sites
+        GT_cnt = GT.shape[0]
 
-        # number of GT sites with matching PD site
-        TP = tGT_cnt
-        # number of prediction sites without ground truth sites
-        FP = PD_cnt - tPD_cnt
-        # number of ground truth sites without prediction sites
-        FN = GT_cnt - TP
-
-        sensitivity = apa.sensitivity(TP, FN)
-        r_vec.append(sensitivity)
-        precision = apa.precision(TP, FP)
-        p_vec.append(precision)
+        # genome annotation file
+        genome_file = apa.select_genome_file(challenge, genome_path)
+        print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
+        genome = apa.load_genome(genome_file)
         
+        # For AUC of PR-curve we need more window sizes
+        windowlist = list(range(0,max(windows),max(windows)//10))
+        # Just in case we're missing the specified windows now
+        windowlist.extend([w for w in windows if w not in windowlist])
+        windowlist.sort()
+        for window in windowlist:
 
-        # METRICS for specified window sizes
-        #########################################
+            # Get matching sites
+            # Beware: 1 PD site matching x GT sites will appear on x rows, and vice versa; Dropping duplicates is thus necessary in certain subsequent steps
+            matched = apa.bedtools_window(infile, gold_standard, window)
 
-        if window in windows:
+            matched.sort_values(by=['chrom_p', 'chromStart_p', 'chromEnd_p', 'chromStart_g'], inplace=True, ascending=[True, True, True, True])
 
-            fd_rate = apa.fdr(TP, FP)
-            f1_score = apa.f1_score(precision, sensitivity)
-            jaccard_index = apa.jaccard(TP, FP, FN)
+            # METRICS for all window sizes
+            ######################################
 
-            # Duplicated PD sites, i.e. PD sites that matched multiple GT sites
-            dPD_cnt = sum(matched.duplicated(PD_cols)) 
-            dPD_proportion = dPD_cnt / tPD_cnt
+            # "true" GT: number of GT sites with matching PD sites
+            tGT_cnt = matched[~matched.duplicated(GT_cols)].shape[0]
+            # "true" PD: number of PD sites with matching GT sites
+            tPD_cnt = matched[~matched.duplicated(PD_cols)].shape[0]
 
-            # Duplicated GT sites, i.e. GT sites that matched multiple PD sites
-            dGT_cnt = sum(matched.duplicated(GT_cols))
-            dGT_proportion = dGT_cnt / tGT_cnt
+            # number of GT sites with matching PD site
+            TP = tGT_cnt
+            # number of prediction sites without ground truth sites
+            FP = PD_cnt - tPD_cnt
+            # number of ground truth sites without prediction sites
+            FN = GT_cnt - TP
 
-            # Save for assessment objects
-            metrics[f"Sensitivity:{window}nt"] = [sensitivity, 0] # Metric 1
-            metrics[f"Precision:{window}nt"] = [precision, 0] # Metric 2
-            metrics[f"FDR:{window}nt"] = [fd_rate, 0]
-            metrics[f"F1_score:{window}nt"] = [f1_score, 0]
-            metrics[f"Jaccard_index:{window}nt"] = [jaccard_index, 0]
-            metrics[f"multi_matched_PD:{window}nt"] = [dPD_proportion, 0] # Metric 4
-            metrics[f"multi_matched_GT:{window}nt"] = [dGT_proportion, 0]
+            sensitivity = apa.sensitivity(TP, FN)
+            r_vec.append(sensitivity)
+            precision = apa.precision(TP, FP)
+            p_vec.append(precision)
+            
 
-    # With precision and recall for all window sizes
-    pr_auc = auc(r_vec, p_vec)
+            # METRICS for specified window sizes
+            #########################################
 
-    # Save for assessment objects
-    metrics["AUC"] = [pr_auc, 0] # Metric 3
+            if window in windows:
 
-    # METRICS:Percentage of genes with correctly identified number of PAS
-    pas_per_gene_GT = [apa.find_pas_genes(gene, GT) for i, gene in genome.iterrows()]
-    # count number of PAS per gene (i.e. row) in GT
-    counts_GT = [len(np.where(pas)[0]) for pas in pas_per_gene_GT]
-    # Number of genes with > 0 PAS
-    genes_nonzero_PAS = np.array([x > 0 for x in counts_GT], dtype=bool)
-    n_genes_nonzero_PAS = len(np.where(genes_nonzero_PAS)[0])
+                fd_rate = apa.fdr(TP, FP)
+                f1_score = apa.f1_score(precision, sensitivity)
+                jaccard_index = apa.jaccard(TP, FP, FN)
 
-    # count number of PAS per gene (i.e. row) in PD
-    PDwcn = PD[PD_cols].drop_duplicates()
-    PDwcn.columns = GT_cols
-    pas_per_gene_PD = [apa.find_pas_genes(gene, PDwcn) for i, gene in genome.iterrows()]
-    counts_PD = [len(np.where(pas)[0]) for pas in pas_per_gene_PD]
-    # Number of genes with identical number of polyA sites in PD and GT and > 0 PAS
-    genes_identical_PAS = np.array([counts_PD[i] == counts_GT[i] for i in range(len(counts_GT))], dtype=bool)
-    n_genes_identical_PAS = len(np.where(genes_identical_PAS & genes_nonzero_PAS)[0])
-    perc_genes_w_PAS =  n_genes_identical_PAS / n_genes_nonzero_PAS * 100
+                # Duplicated PD sites, i.e. PD sites that matched multiple GT sites
+                dPD_cnt = sum(matched.duplicated(PD_cols)) 
+                dPD_proportion = dPD_cnt / tPD_cnt
 
-    metrics["percentage_genes_w_correct_nPAS"] = [perc_genes_w_PAS, 0] # Metric 5
+                # Duplicated GT sites, i.e. GT sites that matched multiple PD sites
+                dGT_cnt = sum(matched.duplicated(GT_cols))
+                dGT_proportion = dGT_cnt / tGT_cnt
 
+                # Save for assessment objects
+                metrics[f"Sensitivity:{window}nt"] = [sensitivity, 0]
+                metrics[f"Precision:{window}nt"] = [precision, 0]
+                metrics[f"FDR:{window}nt"] = [fd_rate, 0]
+                metrics[f"F1_score:{window}nt"] = [f1_score, 0]
+                metrics[f"Jaccard_index:{window}nt"] = [jaccard_index, 0]
+                metrics[f"multi_matched_PD:{window}nt"] = [dPD_proportion, 0]
+                metrics[f"multi_matched_GT:{window}nt"] = [dGT_proportion, 0]
 
-    # for the challenge, create all assessment json objects and append them to all_assessments
-    for key, value in metrics.items():
-        object_id = base_id + key
-        assessment_object = JSON_templates.write_assessment_dataset(object_id, community, challenge, participant, key, value[0], value[1])
-        all_assessments.append(assessment_object)
+        # With precision and recall for all window sizes
+        pr_auc = auc(r_vec, p_vec)
+
+        # Save for assessment objects
+        metrics["AUC"] = [pr_auc, 0] 
+
+        # METRICS:Percentage of genes with correctly identified number of PAS
+        pas_per_gene_GT = [apa.find_pas_genes(gene, GT) for i, gene in genome.iterrows()]
+        # count number of PAS per gene (i.e. row) in GT
+        counts_GT = [len(np.where(pas)[0]) for pas in pas_per_gene_GT]
+        # Number of genes with > 0 PAS
+        genes_nonzero_PAS = np.array([x > 0 for x in counts_GT], dtype=bool)
+        n_genes_nonzero_PAS = len(np.where(genes_nonzero_PAS)[0])
+
+        # count number of PAS per gene (i.e. row) in PD
+        PDwcn = PD[PD_cols].drop_duplicates()
+        PDwcn.columns = GT_cols
+        pas_per_gene_PD = [apa.find_pas_genes(gene, PDwcn) for i, gene in genome.iterrows()]
+        counts_PD = [len(np.where(pas)[0]) for pas in pas_per_gene_PD]
+        # Number of genes with identical number of polyA sites in PD and GT and > 0 PAS
+        genes_identical_PAS = np.array([counts_PD[i] == counts_GT[i] for i in range(len(counts_GT))], dtype=bool)
+        n_genes_identical_PAS = len(np.where(genes_identical_PAS & genes_nonzero_PAS)[0])
+        perc_genes_w_PAS =  n_genes_identical_PAS / n_genes_nonzero_PAS * 100
+
+        metrics["percentage_genes_w_correct_nPAS"] = [perc_genes_w_PAS, 0] # Metric 5
+
+        # for the challenge, create all assessment json objects and append them to all_assessments
+        for key, value in metrics.items():
+            object_id = base_id + key
+            assessment_object = JSON_templates.write_assessment_dataset(object_id, community, challenge, participant, key, value[0], value[1])
+            all_assessments.append(assessment_object)
+
+        # also create an object for non-OEB-compatible metrics (arrays)
+        rogue_metrics = {
+        "precision_vector": [p_vec, 0],
+        "recall_vector": [r_vec, 0],
+        "window_list": [windowlist, 0]
+        }
+        for key, value in rogue_metrics.items():
+            object_id = base_id + key
+            rogue_object = JSON_templates.write_rogue_dataset(object_id, community, challenge, participant, key, value[0], value[1])
+            rogue_assessments.append(rogue_object)
+
 
     # once all assessments have been added, print to json file
     with io.open(out_path, mode='w', encoding="utf-8") as f:
@@ -188,16 +200,9 @@ def compute_metrics(infile, gold_standards_dir, challenge, participant, communit
                     separators=(',', ': '))
         f.write(jdata)
 
-    # print non-OEB-compatible metrics (lists) to separate file
-    rogue_metrics = {
-        "community_id": community,
-        "challenge_id": challenge,
-        "participant_id": participant}
-    rogue_metrics["precision_vector"] = p_vec
-    rogue_metrics["recall_vector"] = r_vec
-    rogue_metrics["window_list"] = windowlist
+    
     with io.open(os.path.join(os.path.dirname(out_path), "rogue_metrics.json"), mode='w', encoding="utf-8") as f:
-        jdata = json.dumps(rogue_metrics,                 
+        jdata = json.dumps(rogue_assessments,                 
                     sort_keys=True,
                     indent=4,
                     separators=(',', ': '))

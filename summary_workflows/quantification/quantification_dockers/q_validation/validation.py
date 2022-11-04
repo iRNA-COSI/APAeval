@@ -58,35 +58,36 @@ def main(args):
     # input parameters
     participant_input = args.participant_data
     community = args.community_name
-    challenges = args.challenge_ids
+    challenge_ids = args.challenge_ids
     participant_name = args.participant_name
     out_path = args.output
     genome_path = args.genome_dir
 
     print(f"INFO: input {participant_input}")
-    print(f"INFO: Possible challenges {challenges}")
+    print(f"INFO: Possible challenges {challenge_ids}")
 
-    challenge = [c for c in challenges if c.split('.')[0] in str(participant_input)][0]
+    challenges = [c for c in challenge_ids if c.split('.')[0] ==  str(participant_input).split('.')[1]]
     
-    print(f"INFO: Selected challenge {challenge}")
+    print(f"INFO: Selected challenge(s) {challenges}")
 
-    # Get matching annotation file
-    gtf = select_genome_file(challenge, genome_path)
-    print(f"INFO: Selected genome file {gtf}")
-    chr_names = list()
+    for challenge in challenges:
+        # Check annotation files for all challenges
+        gtf = select_genome_file(challenge, genome_path)
+        print(f"INFO: Selected genome file {gtf}")
+        chr_names = list()
 
-    with open(gtf, 'r') as f:
-        for row in f:
-            if not row.startswith('#'):
-                # gtf is always tab-separated and first column is always seqname.
-                seqname = row.split('\t')[0]
-                if seqname not in chr_names:
-                    chr_names.append(seqname)
-    seqnames_wchr = [s for s in chr_names if 'chr' in s]
-    assert len(seqnames_wchr) == len(chr_names) or len(seqnames_wchr) == 0, \
-        f"WARNING: {genome_path} has a mix of chromosome name formats!"
+        with open(gtf, 'r') as f:
+            for row in f:
+                if not row.startswith('#'):
+                    # gtf is always tab-separated and first column is always seqname.
+                    seqname = row.split('\t')[0]
+                    if seqname not in chr_names:
+                        chr_names.append(seqname)
+        seqnames_wchr = [s for s in chr_names if 'chr' in s]
+        assert len(seqnames_wchr) == len(chr_names) or len(seqnames_wchr) == 0, \
+            f"WARNING: {genome_path} has a mix of chromosome name formats!"
 
-    # Assuring the output path does exist
+    # Assuring the output path for validation.json does exist
     if not os.path.exists(os.path.dirname(out_path)):
         try:
             print(os.path.dirname(out_path))
@@ -95,11 +96,11 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(participant_input, community, challenge, participant_name, out_path, chr_names)
+    validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names)
 
 
 
-def  validate_input_data(infile, community, challenge, participant_name, out_path, chr_names):
+def  validate_input_data(infile, community, challenges, participant_name, out_path, chr_names):
 
     validated = False
 
@@ -141,7 +142,7 @@ def  validate_input_data(infile, community, challenge, participant_name, out_pat
 
 
     data_id = community + ":" + participant_name
-    output_json = JSON_templates.write_participant_dataset(data_id, community, challenge, participant_name, validated)
+    output_json = JSON_templates.write_participant_dataset(data_id, community, challenges, participant_name, validated)
 
     # print validated participant file
     with open(out_path , 'w') as f:
