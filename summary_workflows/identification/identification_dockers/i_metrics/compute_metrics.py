@@ -169,7 +169,10 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         counts_PD = [len(np.where(pas)[0]) for pas in pas_per_gene_PD]
         # Number of genes with identical number of polyA sites in PD and GT and > 0 PAS
         genes_identical_PAS = np.array([counts_PD[i] == counts_GT[i] for i in range(len(counts_GT))], dtype=bool)
+        # Number of genes with identical PAS between GT and PD AND minimum 1 PAS,
+        # that is, only count genes where a PAS is observed in GT.
         n_genes_identical_PAS = len(np.where(genes_identical_PAS & genes_nonzero_PAS)[0])
+        # The percentage of genes with identical PAS is only computed for genes with > 0 PAS in GT.
         perc_genes_w_PAS =  n_genes_identical_PAS / n_genes_nonzero_PAS * 100
 
         metrics["percentage_genes_w_correct_nPAS"] = [perc_genes_w_PAS, 0] # Metric 5
