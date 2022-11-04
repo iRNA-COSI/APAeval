@@ -90,7 +90,7 @@ def find_pas_genes(gene, df):
     Returns:
         pd.Series: Array of indices indicating PAS for gene 'gene'.
     """
-    assert all([x in gene.keys() for x in ["seqname", "source", "start", "end"]])
+    assert all([x in gene.keys() for x in ["seqname", "strand", "start", "end"]])
     subset = (df['chrom_g'] == gene['seqname']) & (df['strand_g'] == gene['strand'])
     subset = subset & (df['chromStart_g'] > gene['start']) & (df['chromEnd_g'] < gene['end'])
     return subset

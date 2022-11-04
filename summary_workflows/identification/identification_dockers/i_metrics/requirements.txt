@@ -2,5 +2,6 @@ pandas
 jsonschema
 scipy
 sklearn
+pyranges
 git+https://github.com/iRNA-COSI/APAeval.git@main#egg=apaeval&subdirectory=utils/apaeval
 git+https://github.com/iRNA-COSI/APAeval.git@main#egg=main&subdirectory=summary_workflows/JSON_templates
