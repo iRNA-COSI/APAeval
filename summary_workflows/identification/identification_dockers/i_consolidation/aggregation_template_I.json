@@ -43,7 +43,7 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "bar-plot",
-                    "metric": "Genes_correct_PAS"
+                    "metric": "percentage_genes_w_correct_nPAS"
                 }
             }
         },
