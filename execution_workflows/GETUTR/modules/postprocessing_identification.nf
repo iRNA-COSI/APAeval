@@ -3,7 +3,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def modules = params.modules.clone()
-// get the configs for this process
+def inputs = modules['final_outputs']
 
 /*
     Convert GETUTR output file to identification challenge file
@@ -19,7 +19,7 @@ process POSTPROCESSING_IDENTIFICATION {
     path "*"
 
     script:
-    identification_output = "${sample}_identification_output.bed"
+    identification_output = sample + inputs.identification_out_suffix
     """
     awk 'BEGIN {OFS="\t"} {if (\$1=="track") print \$0; else print \$1,\$2,\$3,\$4,".",\$6}' ${getutr_output} > ${identification_output}
     """

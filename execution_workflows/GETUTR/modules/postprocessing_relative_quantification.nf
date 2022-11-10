@@ -3,7 +3,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 def modules = params.modules.clone()
-// get the configs for this process
+def inputs = modules['final_outputs']
 
 /*
     Convert GETUTR output file to relative quantification challenge file
@@ -19,7 +19,7 @@ process POSTPROCESSING_RELATIVE_QUANTIFICATION {
     path "*"
 
     script:
-    relative_quantification_output = "${sample}_relative_quantification_output.bed"
+    relative_quantification_output = sample + inputs.relative_usage_quantification_out_suffix
     """
     postprocess_relative_quantification.py ${getutr_output} ${relative_quantification_output}
     """
