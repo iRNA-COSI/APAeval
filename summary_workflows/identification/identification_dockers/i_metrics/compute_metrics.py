@@ -155,18 +155,17 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         metrics["AUC"] = [pr_auc, 0] 
 
         # METRICS:Percentage of genes with correctly identified number of PAS
-        pas_per_gene_GT = [apa.find_pas_genes(gene, GT) for i, gene in genome.iterrows()]
-        # count number of PAS per gene (i.e. row) in GT
-        counts_GT = [len(np.where(pas)[0]) for pas in pas_per_gene_GT]
+        # count number of PAS per gene (i.e. row) in GT; stored as gene-ordered list.
+        counts_GT = [len(np.where(apa.find_pas_genes(gene, GT))[0]) for i, gene in genome.iterrows()]
         # Number of genes with > 0 PAS
         genes_nonzero_PAS = np.array([x > 0 for x in counts_GT], dtype=bool)
         n_genes_nonzero_PAS = len(np.where(genes_nonzero_PAS)[0])
 
-        # count number of PAS per gene (i.e. row) in PD
+        # count number of PAS per gene (i.e. row) in PD; stored as gene-ordered list.
+        # first remove duplicates and rename columns to GT names.
         PDwcn = PD[PD_cols].drop_duplicates()
         PDwcn.columns = GT_cols
-        pas_per_gene_PD = [apa.find_pas_genes(gene, PDwcn) for i, gene in genome.iterrows()]
-        counts_PD = [len(np.where(pas)[0]) for pas in pas_per_gene_PD]
+        counts_PD = [len(np.where(apa.find_pas_genes(gene, PDwcn))[0]) for i, gene in genome.iterrows()]
         # Number of genes with identical number of polyA sites in PD and GT and > 0 PAS
         genes_identical_PAS = np.array([counts_PD[i] == counts_GT[i] for i in range(len(counts_GT))], dtype=bool)
         # Number of genes with identical PAS between GT and PD AND minimum 1 PAS,
