@@ -10,6 +10,7 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 RUN python2.7 get-pip.py
 RUN pip2 install numpy
 RUN pip2 install 'rpy2<2.9.0'
+RUN pip2 install pandas
 RUN mkdir /software
 WORKDIR /software
 RUN wget -c http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred

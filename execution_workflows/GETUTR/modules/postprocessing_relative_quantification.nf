@@ -6,9 +6,9 @@ def modules = params.modules.clone()
 def inputs = modules['final_outputs']
 
 /*
-    Convert GETUTR output file to identification challenge file
+    Convert GETUTR output file to relative quantification challenge file
 */
-process POSTPROCESSING_IDENTIFICATION {
+process POSTPROCESSING_RELATIVE_QUANTIFICATION {
     publishDir "${params.outdir}/getutr", mode: params.publish_dir_mode
     container "docker.io/apaeval/getutr:latest"
 
@@ -19,8 +19,8 @@ process POSTPROCESSING_IDENTIFICATION {
     path "*"
 
     script:
-    identification_output = sample + inputs.identification_out_suffix
+    relative_quantification_output = sample + inputs.relative_usage_quantification_out_suffix
     """
-    awk 'BEGIN {OFS="\t"} {if (\$1=="track") print \$0; else print \$1,\$2,\$3,\$4,".",\$6}' ${getutr_output} > ${identification_output}
+    postprocess_relative_quantification.py ${getutr_output} ${relative_quantification_output}
     """
 }
