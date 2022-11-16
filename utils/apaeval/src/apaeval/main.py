@@ -130,12 +130,15 @@ def bedtools_window(bed1, bed2, window, reverse=False):
     
     # incase there were no sites returned (no overlap / all overlap in case of reverse=True)
     if not out.stdout.decode():
-        out = pd.DataFrame()
+        out = pd.DataFrame(columns=['chrom_p', 'chromStart_p', 'chromEnd_p', 'name_p', 
+            'score_p', 'strand_p', 'chrom_g', 'chromStart_g', 'chromEnd_g', 'name_g', 
+            'score_g', 'strand_g'])
     else:
         out = pd.read_csv(out_handle, delimiter='\t', header=None, dtype={0: str,6: str})
-        
-    # label columns
-    out.rename({0: 'chrom_p', 1: 'chromStart_p', 2: 'chromEnd_p', 3: 'name_p', 4: 'score_p', 5: 'strand_p', 6: 'chrom_g', 7: 'chromStart_g', 8: 'chromEnd_g', 9: 'name_g', 10: 'score_g', 11: 'strand_g'}, axis=1, inplace=True)
+        # label columns
+        out.rename({0: 'chrom_p', 1: 'chromStart_p', 2: 'chromEnd_p', 3: 'name_p', 4: 
+            'score_p', 5: 'strand_p', 6: 'chrom_g', 7: 'chromStart_g', 8: 'chromEnd_g', 9: 
+            'name_g', 10: 'score_g', 11: 'strand_g'}, axis=1, inplace=True)
    
     return(out)
 
