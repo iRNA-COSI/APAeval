@@ -80,9 +80,6 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant,
             ## Get matching sites
             matched = apa.bedtools_window(infile, gold_standard, window)
 
-            # filter TPM <= TPM_THRESHOLD
-            matched = matched.loc[matched.score_p > TPM_THRESHOLD,]
-
             # Number of duplicated PD sites, i.e. PD sites that matched multiple GT sites
             dPD_count = sum(matched.duplicated(PD_cols, keep="first")) 
 
@@ -99,6 +96,9 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant,
 
             # merge PD sites that matched with the same GT by summing their expression
             matched = apa.merge_pd_by_gt(matched)
+
+            # filter TPM <= TPM_THRESHOLD
+            matched = matched.loc[matched.score_p > TPM_THRESHOLD,]
 
             ## Get PD sites without matching GT (FP)
             only_PD = apa.bedtools_window(infile, gold_standard, window, reverse=True)
