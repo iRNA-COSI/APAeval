@@ -12,13 +12,14 @@ def main(args):
     metrics_data = args.metrics_data
     validation_data = args.validation_data
     aggregation_data = args.aggregation_data
+    manifest_data = os.path.join(aggregation_data, "Manifest.json")
     challenges = args.challenge_ids
     out_path = args.output
-    print(out_path)
 
     # Nextflow passes list, python reads string. We need python lists
     metrics_data = [m.strip('[').strip(']').strip(',') for m in metrics_data]
     validation_data = [v.strip('[').strip(']').strip(',') for v in validation_data]
+
             
     # This is the final consolidated output
     data_model_file = []
@@ -27,6 +28,8 @@ def main(args):
     # from validation ("validated_participant_data")
     for v in validation_data:
         data_model_file = join_json_files(v, data_model_file, "*.json")
+    # from Manifest
+    data_model_file = join_json_files(manifest_data, data_model_file, "*.json")
     # from metrics ("assessment_out")
     for m in metrics_data:
         data_model_file = join_json_files(m, data_model_file, "*.json")
