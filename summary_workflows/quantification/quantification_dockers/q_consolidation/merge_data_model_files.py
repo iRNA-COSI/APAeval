@@ -28,11 +28,22 @@ def main(args):
     # from validation ("validated_participant_data")
     for v in validation_data:
         data_model_file = join_json_files(v, data_model_file, "*.json")
-    # from Manifest
+
+    # Merge participant objects for the same participant, if validation was successful
+    first_o = data_model_file[0]
+    for o in range(1,len(data_model_file)):
+        if (data_model_file[o]["participant_id"] == first_o["participant_id"] and data_model_file[o]["datalink"]["status"] == "ok"):
+            first_o["challenge_id"].extend(data_model_file[o]["challenge_id"])
+            del data_model_file[o]
+
+
+    # proceed with objects from Manifest...
     data_model_file = join_json_files(manifest_data, data_model_file, "*.json")
-    # from metrics ("assessment_out")
+
+    # ...and from metrics ("assessment_out")
     for m in metrics_data:
         data_model_file = join_json_files(m, data_model_file, "*.json")
+
     # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge/challenge.json"
     # we have to do that for all challenges in the list
     for challenge in challenges:
