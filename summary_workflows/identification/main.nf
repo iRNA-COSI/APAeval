@@ -119,8 +119,10 @@ process compute_metrics {
 	saveAs: { filename -> "assessments_${input_file.baseName}.json" }
 
 	publishDir out_dir,
-	pattern: "rogue_metrics.json",
-	saveAs: {filename -> "rogue/${input_file.baseName}/rogue_metrics.json"}
+	mode: 'copy',
+	overwrite: false,
+	pattern: "rogue_${input_file.baseName}.json",
+	saveAs: {filename -> "rogue_${input_file.baseName}.json"}
 
 	input:
 	val validation_status
@@ -134,7 +136,7 @@ process compute_metrics {
 
 	output:
 	path "${input_file.baseName}.json", emit: ass_json
-	path "rogue_metrics.json", emit: rogue_json
+	path "rogue_${input_file.baseName}.json", emit: rogue_json
 
 	when:
 	validation_status == 0

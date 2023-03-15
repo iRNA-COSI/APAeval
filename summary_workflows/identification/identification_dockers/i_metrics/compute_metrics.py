@@ -203,7 +203,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         f.write(jdata)
 
     
-    with io.open(os.path.join(os.path.dirname(out_path), "rogue_metrics.json"), mode='w', encoding="utf-8") as f:
+    with io.open(os.path.join(os.path.dirname(out_path), "rogue_" + os.path.basename(out_path)), mode='w', encoding="utf-8") as f:
         jdata = json.dumps(rogue_assessments,                 
                     sort_keys=True,
                     indent=4,
