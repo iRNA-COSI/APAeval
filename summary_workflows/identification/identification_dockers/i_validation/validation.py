@@ -3,7 +3,8 @@
 from __future__ import division, print_function
 import pandas
 import numpy as np
-import os, json
+import os
+import json
 import sys
 from argparse import ArgumentParser
 import JSON_templates
@@ -71,7 +72,7 @@ def main(args):
     print(f"INFO: Selected challenge(s) {challenges}")
 
     for challenge in challenges:
-        # Get matching annotation file
+        # Check annotation files for all challenges
         gtf = select_genome_file(challenge, genome_path)
         print(f"INFO: Selected genome file {gtf}")
         chr_names = list()
@@ -87,12 +88,13 @@ def main(args):
         assert len(seqnames_wchr) == len(chr_names) or len(seqnames_wchr) == 0, \
             f"WARNING: {genome_path} has a mix of chromosome name formats!"
 
-    # Assuring the output path does exist
+    # Assuring the output path for validation.json does exist
     if not os.path.exists(os.path.dirname(out_path)):
         try:
             print(os.path.dirname(out_path))
             os.makedirs(os.path.dirname(out_path))
-            with open(out_path, mode="a") : pass
+            with open(out_path, mode="a") :
+                pass
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
@@ -149,7 +151,7 @@ def  validate_input_data(infile, community, challenges, participant_name, out_pa
         json.dump(output_json, f, sort_keys=True, indent=4, separators=(',', ': '))
 
     # Only pass if all input files are valid
-    if validated == True:
+    if validated:
         sys.exit(0)
     else:
         sys.exit("ERROR: One or more of the submitted files don't comply with APAeval specified format! Please check " + out_path)

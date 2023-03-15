@@ -2,7 +2,6 @@
 import os
 import json
 import logging
-import datetime
 from copy import deepcopy
 from enum import Enum
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -141,7 +140,7 @@ def main():
                 aggregation = json.load(f)
 
         # 2.c) If there's none, open the aggregation template instead        
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
             aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids)
                
@@ -186,9 +185,8 @@ def main():
         logging.debug(f"participants: {participants}")
 
         mani_obj = {
-            "id" : challenge_id_results,
+            "id" : challenge_id,
             "participants": participants,
-            'timestamp': datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
         }
 
         manifest.append(mani_obj)
@@ -259,7 +257,7 @@ def get_metrics_per_challenge(assessment_data):
 
         # make sure all objects belong to same participant
         if item["participant_id"] != participant_id:
-            raise ValueError(f"Something went wrong, not all metrics in the assessment file belong to the same participant.")
+            raise ValueError("Something went wrong, not all metrics in the assessment file belong to the same participant.")
     
     return community_id, participant_id, challenges
 
