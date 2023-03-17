@@ -4,4 +4,4 @@ scipy
 scikit-learn
 pyranges
 git+https://github.com/iRNA-COSI/APAeval.git@main#egg=apaeval&subdirectory=utils/apaeval
-git+https://github.com/iRNA-COSI/APAeval.git@main#egg=main&subdirectory=summary_workflows/JSON_templates
+git+https://github.com/iRNA-COSI/APAeval.git@main#egg=JSON_templates&subdirectory=summary_workflows/JSON_templates
