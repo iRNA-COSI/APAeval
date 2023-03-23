@@ -58,6 +58,7 @@ if (params.help) {
 	        Window size for scanning for poly(A) sites: ${params.windows}
 	        Genome dir for computing relative PAS usage metrics: ${params.genome_dir}
 	        Offline mode: ${params.offline}
+	        TPM threshold: ${params.tpm_threshold}
 		""".stripIndent()
 
 }
