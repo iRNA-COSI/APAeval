@@ -9,8 +9,8 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "Sum_FP_TPM",
-                    "y_axis": "Pearson_r:all_GT",
+                    "x_axis": "Percent_FP_TPM",
+                    "y_axis": "Pearson_r:intersection",
                     "optimization": "top-left"
                 }
             }
@@ -27,7 +27,7 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "bar-plot",
-                    "metric": "Pearson_r_relative:union"
+                    "metric": "F1_score"
                 }
             }
         },
