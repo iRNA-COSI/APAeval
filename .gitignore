@@ -4,7 +4,7 @@
 ### Code ###
 .vscode/*
 !.vscode/tasks.json
-!.vscode/launch.json
+.vscode/launch.json
 *.code-workspace
 
 ### Emacs ###
@@ -333,3 +333,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vim,code,vscode,emacs,sublimetext,linux,macos,windows
+
+DATA/
