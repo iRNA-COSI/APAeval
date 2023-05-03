@@ -1,6 +1,6 @@
 [
     {
-        "_id": "2022-04-27_datasetA_Aggregation_Precision_10nt_vs_Sensitivity_10nt",
+        "_id": "APAeval:2022-04-27:datasetA:Aggregation:Precision:10nt_vs_Sensitivity:10nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -20,15 +20,15 @@
                 ],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "Sensitivity_10nt",
-                    "y_axis": "Precision_10nt"
+                    "x_axis": "Sensitivity:10nt",
+                    "y_axis": "Precision:10nt"
                 }
             }
         },
         "type": "aggregation"
     },
     {
-        "_id": "2022-04-27_datasetA_Aggregation_Precision_50nt_vs_Sensitivity_50nt",
+        "_id": "APAeval:2022-04-27:datasetA:Aggregation:Precision:50nt_vs_Sensitivity:50nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -48,15 +48,15 @@
                 ],
                 "visualization": {
                     "type": "2D-plot",
-                    "x_axis": "Sensitivity_50nt",
-                    "y_axis": "Precision_50nt"
+                    "x_axis": "Sensitivity:50nt",
+                    "y_axis": "Precision:50nt"
                 }
             }
         },
         "type": "aggregation"
     },
         {
-        "_id": "APAeval:2022-04-27_datasetA_Aggregation_Proportion_in_3UTR",
+        "_id": "APAeval:2022-04-27:datasetA:Aggregation:Jaccard_index:50nt",
         "challenge_ids": [
             "datasetA"
         ],
@@ -73,7 +73,7 @@
                     }
                 ],
                 "visualization": {
-                    "metric": "Proportion_in_3UTR",
+                    "metric": "Jaccard_index:50nt",
                     "type": "bar-plot"
                 }
             }

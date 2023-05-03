@@ -27,10 +27,9 @@ Based on the input data the following metrics are computed:
 
 1. Sensitivity (TPR, True Positive Rate) = TP/(TP+FN)
 2. Precision = TP/(TP+FP)
-3. Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Sensitivity (Recall) values for a range of distance thresholds
-4. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
-5. Percentage of genes with correctly identified number of PAS
-6. Poly(A) sites assigned to different genomic features: terminal exons, exons (excluding terminal exons), introns, intergenic regions (less and more than 1kb downstream of 3'-terminal exon)
+3. Poly(A) sites matched to multiple ground truth sites as proportion of all identified sites
+4. Percentage of genes with correctly identified number of PAS
+5. Poly(A) sites assigned to different genomic features: terminal exons, exons (excluding terminal exons), introns, intergenic regions (less and more than 1kb downstream of 3'-terminal exon)
 
 TP - true positives - PAS identified by the tool and present in the orthogonal dataset  
 FP - false positives - PAS identified by the tool and not present in the orthogonal dataset  
@@ -102,13 +101,13 @@ Input datasets:
 - RNA-Seq data compared with 3'end sequencing data
 - Simulated RNA-Seq data compared with dataset used for simulation
 
-### 2. Bar plot visualizing AUC of Precision-Recall curve with single AUC value for each tool.
+### 2. Bar plot visualizing Jaccard index for each tool.
 
 **Plot type**: Bar plot
 
-**Metric**: AUC
+**Metric**: Jaccard index
 
-**Ranking**: The best performing tool is the one with the highest AUC value.
+**Ranking**: The best performing tool is the one with the highest Jaccard index.
 
 Input data:
 
@@ -140,7 +139,7 @@ This section includes plots that can be visualised outside of OpenEBench.
 **Metric Y**: Precision(d)  
 where _d - distance threshold_ in range 0-200 nt with 10 nt increments.
 
-**Ranking**: For each tool, the area under the curve is calculated. The best performing tool is the one with the highest AUC.
+**Ranking**: Best performance is top-right.
 
 Input datasets:
 
@@ -225,7 +224,6 @@ The following tables list the metric names, value types and units, and a descrip
 | `Sensitivity_10nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 10 nt distance threshold |
 | `Sensitivity_50nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 50 nt distance threshold |
 | `Sensitivity_100nt` | `float` | N/A | Sensitivity of PAS identification compared with orthogonal dataset; Sensitivity = (TP/(TP+FN)); calculated for 100 nt distance threshold |
-| `AUC` | `float` | N/A | Area under the curve (AUC) of Precision-Recall curve calculated from Precision and Recall (Sensitivity) values for a range of distance thresholds |
 | `Multi-matched_10nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 10 nt distance threshold |
 | `Multi-matched_50nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 50 nt distance threshold |
 | `Multi-matched_100nt` | `float` | % | Proportion of PAS identified from RNA-seq that were matched to multiple sites in grount truth; calculated for 100 nt distance threshold |

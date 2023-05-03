@@ -7,7 +7,6 @@ import json
 import pandas as pd
 import numpy as np
 from argparse import ArgumentParser
-from sklearn.metrics import auc
 import JSON_templates
 import apaeval as apa
 
@@ -70,7 +69,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
         metrics = {}
 
-        # Vectors for AUC of precision recall curve
+        # Vectors for precision and recall
         p_vec = []
         r_vec = []
 
@@ -88,7 +87,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
         genome = apa.load_genome(genome_file)
         
-        # For AUC of PR-curve we need more window sizes
+        # For PR-curve we need more window sizes
         windowlist = list(range(0,max(windows),max(windows)//10))
         # Just in case we're missing the specified windows now
         windowlist.extend([w for w in windows if w not in windowlist])
@@ -147,12 +146,6 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
                 metrics[f"Jaccard_index:{window}nt"] = [jaccard_index, 0]
                 metrics[f"multi_matched_PD:{window}nt"] = [dPD_proportion, 0]
                 metrics[f"multi_matched_GT:{window}nt"] = [dGT_proportion, 0]
-
-        # With precision and recall for all window sizes
-        pr_auc = auc(r_vec, p_vec)
-
-        # Save for assessment objects
-        metrics["AUC"] = [pr_auc, 0] 
 
         # METRICS:Percentage of genes with correctly identified number of PAS
         # count number of PAS per gene (i.e. row) in GT; stored as gene-ordered list.
