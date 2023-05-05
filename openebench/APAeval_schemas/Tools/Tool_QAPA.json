@@ -18,7 +18,12 @@
         }
     ],
     "tool_contact_ids": [
-        "Benjamin.J.Blencowe",
-        "Quaid.Morris"
-    ]
+        "Christina.J.Herrmann",
+            "Mihaela.Zavolan",
+            "Matthew.R.Gazzara",
+            "Yoseph.Barash"
+    ],
+    "_metadata": {
+        "APAeval:comment": "Contacts listed are APAeval community members. For tool developers please refer to the respective publication or repository."
+    }
 }
