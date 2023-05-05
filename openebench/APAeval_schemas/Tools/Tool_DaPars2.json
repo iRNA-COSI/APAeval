@@ -8,8 +8,7 @@
     "is_automated": true,
     "name": "DaPars2",
     "references": [
-        "doi:10.1093/nar/gkx892",
-        "doi:10.1038/s41588-021-00864-5"
+        "doi:10.1093/nar/gkx892"
     ],
     "status": "unknown",
     "tool_access": [
