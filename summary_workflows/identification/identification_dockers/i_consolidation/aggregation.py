@@ -10,8 +10,9 @@ from OEB_aggr_query import OEB_aggr_query
 
 # set to production link when ready
 DEFAULT_OEB_API = "https://openebench.bsc.es/api/scientific/graphql"
-# Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification
-DEFAULT_bench_event_id = "OEBE0070000001" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
+# Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification_2021
+DEFAULT_bench_event_id = "OEBE0070000003" # New benchmarking events: Identification: "OEBE0070000003", absQuant: "OEBE0070000004"
+EVENT = "Identification_2021"
 
 class Visualisations(Enum):
     """Visualisations supported for plotting.
@@ -142,7 +143,7 @@ def main():
         # 2.c) If there's none, open the aggregation template instead        
         except FileNotFoundError:
             logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
-            aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids)
+            aggregation = load_aggregation_template(aggregation_template, community_id, EVENT, event_date, challenge_id, metrics_ids)
                
         # if something else than the file missing went wrong
         except Exception:
@@ -276,7 +277,7 @@ def assert_object_type(json_obj, curr_type):
         raise TypeError(f"json object is of type {type_field}, should be {curr_type}")
 
 
-def load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids):
+def load_aggregation_template(aggregation_template, community_id, EVENT, event_date, challenge_id, metrics_ids):
     '''
     Load the aggregation template from the provided json file and set _id and challenge_id; create objects for all window sizes
     '''
@@ -289,7 +290,7 @@ def load_aggregation_template(aggregation_template, community_id, event_date, ch
     # Create aggregation objects for all plots specified in the template, and for all metrics (different window sizes!) detected in the assessment. Fill objects with ID and challenge ID; data will be appended later
 
     # Prefix for aggregation object ids
-    base_id = f"{community_id}:{event_date}:{challenge_id}:Aggregation:"
+    base_id = f"{community_id}:{EVENT}:{challenge_id}:Aggregation:"
 
     # For all different plots
     for item in template:

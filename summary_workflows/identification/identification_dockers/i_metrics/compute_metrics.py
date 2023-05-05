@@ -10,6 +10,9 @@ from argparse import ArgumentParser
 import JSON_templates
 import apaeval as apa
 
+# Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification
+EVENT = "Identification_2021"
+
 def main(args):
 
     # input parameters
@@ -40,10 +43,10 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path)
+    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, EVENT, out_path, windows, genome_path)
 
 
-def compute_metrics(infile, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path):
+def compute_metrics(infile, gold_standards_dir, challenges, participant, community, EVENT, out_path, windows, genome_path):
     
     # define array that will hold the full set of assessments
     all_assessments = []
@@ -64,7 +67,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
 
     for challenge in challenges:
         # ID prefix for assessment objects
-        base_id = f"{community}:{challenge}:{participant}:"
+        base_id = f"{community}:{EVENT}:{challenge}:{participant}:"
 
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
         metrics = {}
