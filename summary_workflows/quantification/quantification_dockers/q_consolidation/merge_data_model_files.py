@@ -28,22 +28,6 @@ def main(args):
     for v in validation_data:
         data_model_file = join_json_files(v, data_model_file, "*.json")
 
-    # Merge participant objects for the same participant, if validation was successful
-    # If validation failed, exit non-zero, as we can't deal with that here.
-    # First object:
-    if data_model_file[0]["datalink"]["status"] != "ok":
-        raise ValueError(f"Invalid participant object for {data_model_file[0]['participant_id']} on challenge {data_model_file[0]['challenge_id']}")
-
-    # Now merge remaining valid objects with the first one, if they are from the same tool
-    while len(data_model_file) > 1:
-        if data_model_file[1]["participant_id"] != data_model_file[0]["participant_id"]:
-            raise ValueError("Something went wrong, not all objects in the validation file belong to the same participant.")
-        if data_model_file[1]["datalink"]["status"] == "ok":
-            data_model_file[0]["challenge_id"].extend(data_model_file[1]["challenge_id"])
-        else:
-            raise ValueError(f"Invalid participant object for {data_model_file[0]['participant_id']} on challenge {data_model_file[0]['challenge_id']}")
-        data_model_file.pop(1)
-
     # 2. proceed with objects from Manifest...
     data_model_file = join_json_files(manifest_data, data_model_file, "*.json")
 
