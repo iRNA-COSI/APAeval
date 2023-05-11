@@ -44,12 +44,6 @@ def parse_arguments():
         required=True
     )
     parser.add_argument(
-        "-d",
-        "--event_date",
-        help="passes in the event_date defined in nextflow.config",
-        required=True
-    )
-    parser.add_argument(
         "--offline",
         help="offline mode; if set to 1, existing benchmarking datasets will be read from local dir instead of OEB DB",
         default=0,
@@ -65,7 +59,6 @@ def main():
     benchmark_dir = options.benchmark_dir
     assessment_data = options.assessment_data
     output_dir = options.output
-    event_date = options.event_date
     offline = options.offline
 
     # Nextflow passes list, python reads list of strings. We need to clean up list elements
@@ -143,7 +136,7 @@ def main():
         # 2.c) If there's none, open the aggregation template instead        
         except FileNotFoundError:
             logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
-            aggregation = load_aggregation_template(aggregation_template, community_id, EVENT, event_date, challenge_id, metrics_ids)
+            aggregation = load_aggregation_template(aggregation_template, community_id, EVENT, challenge_id, metrics_ids)
                
         # if something else than the file missing went wrong
         except Exception:
@@ -277,7 +270,7 @@ def assert_object_type(json_obj, curr_type):
         raise TypeError(f"json object is of type {type_field}, should be {curr_type}")
 
 
-def load_aggregation_template(aggregation_template, community_id, EVENT, event_date, challenge_id, metrics_ids):
+def load_aggregation_template(aggregation_template, community_id, EVENT, challenge_id, metrics_ids):
     '''
     Load the aggregation template from the provided json file and set _id and challenge_id; create objects for all window sizes
     '''
