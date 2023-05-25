@@ -9,6 +9,11 @@ import sys
 from argparse import ArgumentParser
 import JSON_templates
 
+# Make sure to adapt accordingly in other event workflows!
+# Here is APAeval:absQuant_2021
+DEFAULT_bench_event_id = "OEBE0070000004" 
+EVENT = "absQuant_2021"
+
 parser = ArgumentParser()
 parser.add_argument("-i", "--participant_data", help="Execution workflow output file to be validated", required=True)
 parser.add_argument("-com", "--community_name", help="name of benchmarking community", required=True)
@@ -67,7 +72,8 @@ def main(args):
     print(f"INFO: input {participant_input}")
     print(f"INFO: Possible challenges {challenge_ids}")
 
-    challenges = [c for c in challenge_ids if c.split('.')[0] == str(participant_input).split('.')[1]]
+    sample_name = str(participant_input).split('.')[1]
+    challenges = [c for c in challenge_ids if c.split('.')[0] == sample_name]
     
     print(f"INFO: Selected challenge(s) {challenges}")
 
@@ -98,11 +104,11 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names)
+    validate_input_data(participant_input, sample_name, community, challenges, participant_name, out_path, chr_names)
 
 
 
-def  validate_input_data(infile, community, challenges, participant_name, out_path, chr_names):
+def  validate_input_data(infile, sample_name, community, challenges, participant_name, out_path, chr_names):
 
     validated = False
 
@@ -143,7 +149,7 @@ def  validate_input_data(infile, community, challenges, participant_name, out_pa
     #----------------------------------------------------
 
 
-    data_id = community + ":" + participant_name
+    data_id = ":".join([community, EVENT, sample_name, participant_name])
     output_json = JSON_templates.write_participant_dataset(data_id, community, challenges, participant_name, validated)
 
     # print validated participant file
