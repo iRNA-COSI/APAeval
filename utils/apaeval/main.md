@@ -62,16 +62,21 @@ Functions
 :   Returns Jaccard index of prediction.
 
     
-`load_genome(genome_path)`
+`load_genome(genome_path, feature='gene')`
 :   Load genome annotation in gtf format.
     
-    Requires feature 'gene', which is available in gencode.
+    And subset to only return feature.
+    E.g. feature 'gene', which is available in gencode.
+    
+    Note:
+        The returned dataframe contains all attributes as read in by pyranges.
     
     Args:
         genome_path: file path for gtf.
+        feature (str): feature to subset. Default: gene.
     
     Returns:
-        pandas.df with genes.
+        pandas.df with [feature] rows from genome.
 
     
 `merge_pd_by_gt(matched_sites)`
