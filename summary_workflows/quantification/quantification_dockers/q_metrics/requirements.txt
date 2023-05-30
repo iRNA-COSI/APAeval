@@ -2,4 +2,4 @@ pandas
 jsonschema
 scipy
 git+https://github.com/iRNA-COSI/APAeval.git@main#egg=apaeval&subdirectory=utils/apaeval
-git+https://github.com/iRNA-COSI/APAeval.git@oeb_jsons#egg=JSON_templates&subdirectory=summary_workflows/JSON_templates
+git+https://github.com/iRNA-COSI/APAeval.git@main#egg=JSON_templates&subdirectory=summary_workflows/JSON_templates
