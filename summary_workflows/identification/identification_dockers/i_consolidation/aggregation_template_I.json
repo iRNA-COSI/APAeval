@@ -27,7 +27,7 @@
                 "challenge_participants": [],
                 "visualization": {
                     "type": "bar-plot",
-                    "metric": "AUC"
+                    "metric": "Jaccard_index"
                 }
             }
         },

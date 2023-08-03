@@ -47,7 +47,7 @@ def main():
                 raise exc
 
         # Make sure we only consider assessment objects
-        jmetrics = [j for j in jmetrics if j["type"] == "assessment"]
+        jmetrics = [j for j in jmetrics if "type" in j if j["type"] == "assessment"]
         
         # Convert json to df
         tmetrics = pd.json_normalize(jmetrics)

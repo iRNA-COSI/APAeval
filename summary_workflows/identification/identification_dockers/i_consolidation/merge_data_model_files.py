@@ -12,25 +12,30 @@ def main(args):
     metrics_data = args.metrics_data
     validation_data = args.validation_data
     aggregation_data = args.aggregation_data
+    manifest_data = os.path.join(aggregation_data, "Manifest.json")
     challenges = args.challenge_ids
     out_path = args.output
-    print(out_path)
 
     # Nextflow passes list, python reads string. We need python lists
     metrics_data = [m.strip('[').strip(']').strip(',') for m in metrics_data]
     validation_data = [v.strip('[').strip(']').strip(',') for v in validation_data]
-            
+
     # This is the final consolidated output
     data_model_file = []
 
     # get the output files from previous steps and concatenate
-    # from validation ("validated_participant_data")
+    # 1. from validation ("validated_participant_data")
     for v in validation_data:
         data_model_file = join_json_files(v, data_model_file, "*.json")
-    # from metrics ("assessment_out")
+
+    # 2. proceed with objects from Manifest...
+    data_model_file = join_json_files(manifest_data, data_model_file, "*.json")
+
+    # ...and 3. from metrics ("assessment_out")
     for m in metrics_data:
         data_model_file = join_json_files(m, data_model_file, "*.json")
-    # from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge/challenge.json"
+
+    # 4. from consolidation part 1 (manage_assessment_data.py), "sample_out/results/challenge/challenge.json"
     # we have to do that for all challenges in the list
     for challenge in challenges:
         challenge = challenge.replace('.', '_')

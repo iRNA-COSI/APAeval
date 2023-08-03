@@ -7,9 +7,11 @@ import json
 import pandas as pd
 import numpy as np
 from argparse import ArgumentParser
-from sklearn.metrics import auc
 import JSON_templates
 import apaeval as apa
+
+# Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification
+EVENT = "Identification_2021"
 
 def main(args):
 
@@ -41,10 +43,10 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path)
+    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, EVENT, out_path, windows, genome_path)
 
 
-def compute_metrics(infile, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path):
+def compute_metrics(infile, gold_standards_dir, challenges, participant, community, EVENT, out_path, windows, genome_path):
     
     # define array that will hold the full set of assessments
     all_assessments = []
@@ -65,12 +67,12 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
 
     for challenge in challenges:
         # ID prefix for assessment objects
-        base_id = f"{community}:{challenge}:{participant}:"
+        base_id = f"{community}:{EVENT}:{challenge}:{participant}:"
 
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
         metrics = {}
 
-        # Vectors for AUC of precision recall curve
+        # Vectors for precision and recall
         p_vec = []
         r_vec = []
 
@@ -88,7 +90,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         print(f"INFO: In challenge {challenge}. Using genome file: {genome_file}")
         genome = apa.load_genome(genome_file)
         
-        # For AUC of PR-curve we need more window sizes
+        # For PR-curve we need more window sizes
         windowlist = list(range(0,max(windows),max(windows)//10))
         # Just in case we're missing the specified windows now
         windowlist.extend([w for w in windows if w not in windowlist])
@@ -148,12 +150,6 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
                 metrics[f"multi_matched_PD:{window}nt"] = [dPD_proportion, 0]
                 metrics[f"multi_matched_GT:{window}nt"] = [dGT_proportion, 0]
 
-        # With precision and recall for all window sizes
-        pr_auc = auc(r_vec, p_vec)
-
-        # Save for assessment objects
-        metrics["AUC"] = [pr_auc, 0] 
-
         # METRICS:Percentage of genes with correctly identified number of PAS
         # count number of PAS per gene (i.e. row) in GT; stored as gene-ordered list.
         counts_GT = [len(np.where(apa.find_pas_genes(gene, GT))[0]) for i, gene in genome.iterrows()]
@@ -203,7 +199,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant, communi
         f.write(jdata)
 
     
-    with io.open(os.path.join(os.path.dirname(out_path), "rogue_metrics.json"), mode='w', encoding="utf-8") as f:
+    with io.open(os.path.join(os.path.dirname(out_path), "rogue_" + os.path.basename(out_path)), mode='w', encoding="utf-8") as f:
         jdata = json.dumps(rogue_assessments,                 
                     sort_keys=True,
                     indent=4,

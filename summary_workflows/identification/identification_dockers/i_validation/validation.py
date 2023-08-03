@@ -3,10 +3,16 @@
 from __future__ import division, print_function
 import pandas
 import numpy as np
-import os, json
+import os
+import json
 import sys
 from argparse import ArgumentParser
 import JSON_templates
+
+# Make sure to adapt accordingly in other event workflows!
+# Here is APAeval:Identification_2021
+DEFAULT_bench_event_id = "OEBE0070000003" 
+EVENT = "Identification_2021"
 
 parser = ArgumentParser()
 parser.add_argument("-i", "--participant_data", help="Execution workflow output file to be validated", required=True)
@@ -66,12 +72,13 @@ def main(args):
     print(f"INFO: input {participant_input}")
     print(f"INFO: Possible challenges {challenge_ids}")
 
-    challenges = [c for c in challenge_ids if c.split('.')[0] == str(participant_input).split('.')[1]]
+    sample_name = str(participant_input).split('.')[1]
+    challenges = [c for c in challenge_ids if c.split('.')[0] == sample_name]
     
     print(f"INFO: Selected challenge(s) {challenges}")
 
     for challenge in challenges:
-        # Get matching annotation file
+        # Check annotation files for all challenges
         gtf = select_genome_file(challenge, genome_path)
         print(f"INFO: Selected genome file {gtf}")
         chr_names = list()
@@ -87,20 +94,20 @@ def main(args):
         assert len(seqnames_wchr) == len(chr_names) or len(seqnames_wchr) == 0, \
             f"WARNING: {genome_path} has a mix of chromosome name formats!"
 
-    # Assuring the output path does exist
+    # Assuring the output path for validation.json does exist
     if not os.path.exists(os.path.dirname(out_path)):
         try:
             print(os.path.dirname(out_path))
             os.makedirs(os.path.dirname(out_path))
-            with open(out_path, mode="a") : pass
+            with open(out_path, mode="a") :
+                pass
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    validate_input_data(participant_input, community, challenges, participant_name, out_path, chr_names)
+    validate_input_data(participant_input,sample_name, community, challenges, participant_name, out_path, chr_names)
 
 
-
-def  validate_input_data(infile, community, challenges, participant_name, out_path, chr_names):
+def validate_input_data(infile, sample_name, community, challenges, participant_name, out_path, chr_names):
 
     validated = False
 
@@ -141,7 +148,7 @@ def  validate_input_data(infile, community, challenges, participant_name, out_pa
     #----------------------------------------------------
 
 
-    data_id = community + ":" + participant_name
+    data_id = ":".join([community, EVENT, sample_name, participant_name])
     output_json = JSON_templates.write_participant_dataset(data_id, community, challenges, participant_name, validated)
 
     # print validated participant file
@@ -149,7 +156,7 @@ def  validate_input_data(infile, community, challenges, participant_name, out_pa
         json.dump(output_json, f, sort_keys=True, indent=4, separators=(',', ': '))
 
     # Only pass if all input files are valid
-    if validated == True:
+    if validated:
         sys.exit(0)
     else:
         sys.exit("ERROR: One or more of the submitted files don't comply with APAeval specified format! Please check " + out_path)

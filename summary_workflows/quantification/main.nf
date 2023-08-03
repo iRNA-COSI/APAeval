@@ -58,6 +58,7 @@ if (params.help) {
 	        Window size for scanning for poly(A) sites: ${params.windows}
 	        Genome dir for computing relative PAS usage metrics: ${params.genome_dir}
 	        Offline mode: ${params.offline}
+	        TPM threshold: ${params.tpm_threshold}
 		""".stripIndent()
 
 }
@@ -70,7 +71,6 @@ gold_standards_dir = Channel.fromPath(params.goldstandard_dir, type: 'dir' )
 challenge_ids = params.challenges_ids
 benchmark_data = Channel.fromPath(params.aggregation_dir, type: 'dir' )
 community_id = params.community_id
-event_date = params.event_date
 windows = params.windows
 genome_dir = Channel.fromPath(params.genome_dir, type: 'dir' )
 tpm_threshold = params.tpm_threshold
@@ -167,7 +167,6 @@ process benchmark_consolidation {
 	val ass_json
 	val validation_file
 	val challenge_ids
-    val event_date
 	val offline
 	
 	output:
@@ -175,7 +174,7 @@ process benchmark_consolidation {
 	path "consolidated_result.json"
 
 	"""
-	python /app/aggregation.py -b $benchmark_data -a $ass_json -o results_dir -d $event_date --offline $offline
+	python /app/aggregation.py -b $benchmark_data -a $ass_json -o results_dir --offline $offline
 	python /app/merge_data_model_files.py -v $validation_file -m $ass_json -c $challenge_ids -a results_dir -o consolidated_result.json
 	"""
 
@@ -212,7 +211,6 @@ workflow {
 		assessments,
 		validations,
 		challenge_ids,
-		event_date,
 		offline
 		)
 }

@@ -9,6 +9,9 @@ from argparse import ArgumentParser
 import JSON_templates
 import apaeval as apa
 
+# Make sure to adapt accordingly in other event workflows; Here is APAeval:absQuant
+EVENT = "absQuant_2021"
+
 def main(args):
 
     # input parameters
@@ -39,11 +42,11 @@ def main(args):
         except OSError as exc:
             print("OS error: {0}".format(exc) + "\nCould not create output path: " + out_path)
 
-    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, out_path, windows, genome_path, tpm_threshold)
+    compute_metrics(participant_input, gold_standards_dir, challenges, participant, community, EVENT, out_path, windows, genome_path, tpm_threshold)
 
 
 def compute_metrics(infile, gold_standards_dir, challenges, participant,
-    community, out_path, windows, genome_path, TPM_THRESHOLD):
+    community, EVENT, out_path, windows, genome_path, TPM_THRESHOLD):
 
     # define array that will hold the full set of assessment datasets
     all_assessments = []
@@ -51,7 +54,7 @@ def compute_metrics(infile, gold_standards_dir, challenges, participant,
     all_return_df_types = ["all_GT", "union", "intersection"]
     for challenge in challenges:
         # ID prefix for assessment objects
-        base_id = f"{community}:{challenge}:{participant}:"
+        base_id = f"{community}:{EVENT}:{challenge}:{participant}:"
         # Dict to store metric names and corresponding variables + stderr (which is currently not computed and set to 0)
         metrics = {}
 
