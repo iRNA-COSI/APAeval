@@ -13,11 +13,17 @@
     "status": "unknown",
     "tool_access": [
         {
-            "link": "https://github.com/min4leaf/GETUTR",
+            "link": "http://big.hanyang.ac.kr/GETUTR",
             "tool_access_type": "other"
         }
     ],
     "tool_contact_ids": [
-        "Jin-Wu.Nam"
-    ]
+        "Christina.J.Herrmann",
+            "Mihaela.Zavolan",
+            "Matthew.R.Gazzara",
+            "Yoseph.Barash"
+    ],
+    "_metadata": {
+        "APAeval:comment": "Contacts listed are APAeval community members. For tool developers please refer to the respective publication or repository."
+    }
 }

@@ -1,23 +1,24 @@
 {
-    "_id": "APAeval:PAQR_KAPAC",
+    "_id": "APAeval:PAQR",
     "_schema": "https://www.elixir-europe.org/excelerate/WP2/json-schemas/1.0/Tool",
     "community_ids": [
         "OEBC007"
     ],
-    "description": "PAQR_KAPAC, KAPAC allows inference of regulatory sequence motifs implicated in 3’ end processing changes; PAQR does quantification of poly(A) site usage from RNA-seq.",
+    "description": "PAQR performs quantification of poly(A) site usage from RNA-seq data.",
     "is_automated": true,
-    "name": "PAQR_KAPAC",
+    "name": "PAQR",
     "references": [
         "doi:10.1186/s13059-018-1415-3"
     ],
     "status": "unknown",
     "tool_access": [
         {
-            "link": "https://github.com/zavolanlab/PAQR_KAPAC",
+            "link": "https://github.com/zavolanlab/PAQR2",
             "tool_access_type": "other"
         }
     ],
     "tool_contact_ids": [
-        "Mihaela.Zavolan"
+        "Mihaela.Zavolan",
+        "Christina.J.Herrmann"
     ]
 }
