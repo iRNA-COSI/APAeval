@@ -7,6 +7,7 @@ Contents:
   - [Convert GTF to BED12 (aka 'gene model') file](#convert-gtf-to-bed12-aka-gene-model-file)
   - [Convert .csv to .tsv (NO Docker)](#convert-csv-to-tsv-no-docker)
   - [Convert assessment json to .tsv (NO Docker)](#convert-assessment-json-to-tsv-no-docker)
+  - [Filter assessment json (NO Docker)](#filter-assessment-json-no-docker)
 - [Contributing instructions](#contributing-instructions)
 
 
@@ -55,6 +56,20 @@ Currently no Docker image available, but the script can be run inside the `apaev
 **Usage:**
 ```
 python metrics_json2tsv.py --file-list assessment1.json assessment2.json --output metrics.tsv
+```
+
+### Filter assessment json (NO Docker)
+
+**Description:** Filter a summary workflow output json file, i.e. remove objects that belong to specified metrics or challenges. Parts of metric- or challenge names can be specified and all objects (participant, assessment, aggregation, manifest-like) containing those metrics or challenges are removed.
+
+**Subdirectory name**: `filter_jsons`
+
+**Compatibility:**
+Currently no Docker image available, but the script can be run inside the `apaeval_execution_workflow` conda environment. 
+
+**Usage:**
+```
+python filter_jsons.py --file-list assessment1.json assessment2.json --out_prefix "filtered_" --b_metrics "union all_GT Spearman relative 25nt multi_matched FDR" --b_challenges "TE"
 ```
 ## Contributing instructions
 

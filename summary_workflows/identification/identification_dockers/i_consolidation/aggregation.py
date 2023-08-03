@@ -2,7 +2,6 @@
 import os
 import json
 import logging
-import datetime
 from copy import deepcopy
 from enum import Enum
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -11,8 +10,9 @@ from OEB_aggr_query import OEB_aggr_query
 
 # set to production link when ready
 DEFAULT_OEB_API = "https://openebench.bsc.es/api/scientific/graphql"
-# Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification
-DEFAULT_bench_event_id = "OEBE0070000001" # New benchmarking events (still empty): identification: "OEBE0070000001", quantification: "OEBE0070000002", differential usage: "OEBE0070000003"
+# Make sure to adapt accordingly in other event workflows; Here is APAeval:Identification_2021
+DEFAULT_bench_event_id = "OEBE0070000003" # New benchmarking events: Identification: "OEBE0070000003", absQuant: "OEBE0070000004"
+EVENT = "Identification_2021"
 
 class Visualisations(Enum):
     """Visualisations supported for plotting.
@@ -44,12 +44,6 @@ def parse_arguments():
         required=True
     )
     parser.add_argument(
-        "-d",
-        "--event_date",
-        help="passes in the event_date defined in nextflow.config",
-        required=True
-    )
-    parser.add_argument(
         "--offline",
         help="offline mode; if set to 1, existing benchmarking datasets will be read from local dir instead of OEB DB",
         default=0,
@@ -65,7 +59,6 @@ def main():
     benchmark_dir = options.benchmark_dir
     assessment_data = options.assessment_data
     output_dir = options.output
-    event_date = options.event_date
     offline = options.offline
 
     # Nextflow passes list, python reads list of strings. We need to clean up list elements
@@ -141,9 +134,9 @@ def main():
                 aggregation = json.load(f)
 
         # 2.c) If there's none, open the aggregation template instead        
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             logging.warning(f"Couldn't find an existing aggregation file for challenge {challenge_id}. Creating a new file from {aggregation_template}!")
-            aggregation = load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids)
+            aggregation = load_aggregation_template(aggregation_template, community_id, EVENT, challenge_id, metrics_ids)
                
         # if something else than the file missing went wrong
         except Exception:
@@ -186,9 +179,8 @@ def main():
         logging.debug(f"participants: {participants}")
 
         mani_obj = {
-            "id" : challenge_id_results,
+            "id" : challenge_id,
             "participants": participants,
-            'timestamp': datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
         }
 
         manifest.append(mani_obj)
@@ -259,7 +251,7 @@ def get_metrics_per_challenge(assessment_data):
 
         # make sure all objects belong to same participant
         if item["participant_id"] != participant_id:
-            raise ValueError(f"Something went wrong, not all metrics in the assessment file belong to the same participant.")
+            raise ValueError("Something went wrong, not all metrics in the assessment file belong to the same participant.")
     
     return community_id, participant_id, challenges
 
@@ -278,7 +270,7 @@ def assert_object_type(json_obj, curr_type):
         raise TypeError(f"json object is of type {type_field}, should be {curr_type}")
 
 
-def load_aggregation_template(aggregation_template, community_id, event_date, challenge_id, metrics_ids):
+def load_aggregation_template(aggregation_template, community_id, EVENT, challenge_id, metrics_ids):
     '''
     Load the aggregation template from the provided json file and set _id and challenge_id; create objects for all window sizes
     '''
@@ -291,7 +283,7 @@ def load_aggregation_template(aggregation_template, community_id, event_date, ch
     # Create aggregation objects for all plots specified in the template, and for all metrics (different window sizes!) detected in the assessment. Fill objects with ID and challenge ID; data will be appended later
 
     # Prefix for aggregation object ids
-    base_id = f"{community_id}:{event_date}:{challenge_id}:Aggregation:"
+    base_id = f"{community_id}:{EVENT}:{challenge_id}:Aggregation:"
 
     # For all different plots
     for item in template:
