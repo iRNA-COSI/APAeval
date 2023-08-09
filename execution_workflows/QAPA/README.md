@@ -31,6 +31,8 @@ Parameters relevant to the workflow itself are:
 - `run_qapa_build`: run qapa built (default: false)
 
 Notes on `--polyabed` and `--run_qapa_build`:
+> WARNING: APAeval's implementation of the QAPA `build` mode is still in beta and might create suboptimal annotations. We strongly recommend using pre-generated annotations!
+
 1. If building annotations from scratch with `qapa build`, please pass the `--run_qapa_build` flag and provide both GTF (`--gtf`) and poly(A) BED file (`--polyabed`)
 2. If providing pre-generated QAPA annotations, please pass both GTF (`--gtf`) and poly(A) BED file (`--polyabed`) only (DON"T pass the `--run_qapa_build` flag)
 
