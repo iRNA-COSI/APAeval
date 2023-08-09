@@ -327,7 +327,9 @@ You then need to activate the environment with:
 conda activate apaeval_execution_workflows
 ```
 
-> NOTE: If you're working on Windows or Mac, you might have to google about setting up a virtual machine for running Singularity. Alternatively, you could remove Singularity installation from the `apaeval_env.yaml` and work with conda environments only (deprecated, as we need containers for Cloud execution).
+> NOTE: If you're working on Windows or Mac, you might have to google about setting up a virtual machine for running Singularity. 
+
+> ANOTHER NOTE: If you run into problems regarding root access & Singularity with the described setup, try removing Singularity installation from the `apaeval_env.yaml` and [install it independently][singularity].
 
 
 You can now execute the workflows!
