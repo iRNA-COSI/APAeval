@@ -92,8 +92,9 @@ Challenge IDs have to be of the form
 ```
 [SAMPLE_NAME].([ADDITIONAL_INFO].)[GENOME]
 ```
-where `[SAMPLE_NAME]` is a unique id of the condition represented in the ground truth and assessed by the participant. `[ADDITIONAL_INFO]` is optional; this can be used if several ground truths are obtained from the same condition but differ otherwise, e.g. one is a subset of the other.`[GENOME]` is the genome version used for creating the ground truth. MUST contain either `mm` or `hg`, e.g. `mm10` or `hg38_v26`
-> EXAMPLES:    
+where `[SAMPLE_NAME]` is a unique id of the condition represented in the ground truth and assessed by the participant. `[ADDITIONAL_INFO]` is optional; this can be used if several ground truths are obtained from the same condition but differ otherwise, e.g. one is a subset of the other.`[GENOME]` is the genome version used for creating the ground truth. MUST contain either "mm" or "hg", e.g. `mm10` or `hg38_v26`
+
+#### Examples:    
 > MmusCortex_adult_R1.TE.mm10    
 > GTEXsim_R19.hg38_v26
 ### Ground truth files
@@ -113,6 +114,17 @@ where `[PARTICIPANT]` is the unique name of the participant to be tested. If a t
 02 - absolute quantification   
 03 - differential expression   
 04 - relative quantification   
+
+### Metrics
+Metric names MUST be **exactly** the same in the respective `compute_metrics.py` and `aggregation_template_X.json` files of a summary workflow. These metric names will then appear in the result `.json` files of the workflow, and will be appearing on OEB plots after uploading the results there.
+
+#### Examples:  
+```
+Jaccard_index:10nt
+percentage_genes_w_correct_nPAS
+```
+
+
 ## HOW TO: DEVELOP
 For an example of a summary workflow and further instructions, refer to the [quantification summary workflow][q-swf].   
 ### 1. Copy template
