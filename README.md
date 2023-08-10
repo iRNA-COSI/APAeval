@@ -95,132 +95,6 @@ smaller jobs that you could work on, including, e.g.:
 
 If you do not know where to start, simply ask us!
 
-## How do we work?
-
-To account for everyone's different agendas and time zones, we are
-organized such that contributors can work, as much as possible, in their own
-time.
-
-### Open Science, licenses & attribution
-
-Following best practices for writing software and sharing data and code is
-important to us, and therefore we want to apply, as much as possible, [FAIR
-Principles][fair] to data and software alike. This includes publishing all
-code open source, under permissive [licenses approved][osi-licenses] by the
-[Open Source Initiative][osi] and all data by a permissive [Creative
-Commons][cc] license.
-
-In particular, we publish all code under the [MIT license][license-mit] and all
-data under the [CC0 license][license-cc0]. An exception are all _summary
-workflows_, which are published under the [GPLv3 license][license-gplv3], as
-the provided template is derived from an [OpenEBench][oeb] [example
-workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
-the MIT license is also [shipped with this repository][license].
-
-We also believe that attribution, provenance and transparency are crucial for
-an open and fair work environment in the sciences, especially in a community
-effort like APAeval. Therefore, we would like to make clear from the beginning
-that in all publications deriving from APAeval (journal manuscript, data and
-code repositories), any non-trivial contributions will be acknowledged by
-authorship. All authors will be strictly listed alphabetically, by last name,
-with no exceptions, wherever possible under the name of **The APAeval Team**
-and accompanied by a more detailed description of how people contributed.
-
-We expect that all contributors accept the license and attribution policies
-outlined above.
-
-### Communication
-
-#### Chat
-
-We are making use of [**Slack**][slack] (see [above](#how-to-get-involved) to
-see how you can become a member) for asynchronous communication. Please use the
-most appropriate channels for discussions/questions etc.:
-
-- [`#general`][slack-general]: Introduce yourself and find pointers to get you
-  started. All APAeval-wide announcements will be put here!
-- [`#admin`][slack-admin]: Ask questions about the general organization of
-  APAeval.
-- [`#tech-support`][slack-tech-support]: Ask questions about the
-  technical infrastructure and relevant software, e.g., AWS, GitHub, Nextflow,
-  Snakemake.
-- [`#execution_workflows`][slack-execution-workflows]: Discussions channel for all execution workflows.
-- [`#oeb`][slack-oeb]: Discussions channel for all OEB related matters and summary workflows.
-- [`#random`][slack-random]: Post anything that doesn't fit into any of the
-  other channels.
-- [`#github-ticker`][slack-github-ticker]: Get notified about activities in the APAeval github repo.
-
-#### Video calls
-
-Despite the event taking place mostly asynchrounously, we do have a few video
-calls to increase the feeling of collaboration. In particular, we have a bi-weekly meeting on Wednesday 9am EDT/3pm CET.
-
-This calendar contains all video call events, including the necessary login
-info, and we would like to kindly ask you to subscribe to it:
-
-- Calendar ID: `59bboug9agv30v32r6bvaofdo4@group.calendar.google.com`
-- [Public address][calendar-url]
-
-> Please do not download the ICS file and then import it, as any updates to the
-> calendar will not be synced. Instead, copy the calendar ID or public address
-> and paste it in the appropriate field of your calendar application. Refer to
-> your calendar application's help pages if you do not know how to subscribe to
-> a calendar.
-
-Video calls usually take place in the following [**Zoom**][zoom] room:
-
-- [Direct link][vc-direct-link]
-- Meeting ID: `656 9429 1427`
-- Passcode: `APAeval`
-
-There is also a [meeting agenda][vc-agenda].
-
-> For more lively meetings, participants are encouraged to switch on their
-> cameras. But please mute your microphones if you are not currently speaking.
-
-### Social coding
-
-We are making extensive use of [**GitHub**][gh]'s project management resources
-to allow contributors to work independently on individual, largely
-self-contained, issues. There are several Kanban [project boards][gh-projects],
-listing relevant issues for different kinds of tasks, such as drafting
-benchmarking specifications and implementing/running execution
-workflows.
-
-The idea is that people assign themselves to open issues (i.e., those issues
-that are not yet assigned to someone else). Note that in order to be able to
-do so, you will need to be a member of this GitHub repository (see
-[above](#how-to-get-involved) to see how you can become a member). Once you
-have assigned yourself, you can move/drag the issue from the **To do** to the
-**In progress** column of the Kanban board.
-
-When working on an issue, please start by cloning (preferred) or forking the
-repository. Then create a feature branch and implement your code/changes. Once
-you have made some progress, please create a pull request against the `main`
-branch, making sure to fill in the provided template (in particular, please
-refer to the original issue you are addressing with this pull request) and to
-assign two reviewers. If you're not quite happy with your solution yet and would like to have some help, you can mark the pull request as a draft, and lead discussions with other members directly on your code.  
- Pull request **reviews** are also always a welcome contribution to APAeval. For some guidelines on PR reviews you can refer to [Sam's PR review guide][pr-review-guide].   
- This workflow ensures collaborative coding and is
-sometimes referred to as [GitHub flow][gh-flow]. If you are not familiar with
-Git, GitHub or the GitHub flow, there are many useful tutorials online, e.g.,
-those [listed below](#software).
-
-### Cloud infrastructure
-
-[AWS][aws] kindly sponsored credits for their compute and storage
-infrastructure that we can use to run any heavy duty computations in the cloud
-(e.g., RNA-Seq data pre-processing by or method execution workflows).
-
-This also includes credits to run [Seqera Lab][seqera-labs]'s
-[Nextflow Tower][nf-tower], a convenient web-based platform to run
-[Nextflow][nf] workflows, such as the [nf-core][nf-core]
-[RNA-Seq analysis workflow][nf-core-rna-seq] we are using for pre-processing
-RNA-Seq data. Seqera Labs has kindly held a workshop on Nextflow
-and Nextflow Tower during the hackathon, and still continues to provide technical support.
-
-Setting up the AWS organization and infrastructure is still ongoing, and we
-will update this section with more information as soon as that is done.
 
 ### OpenEBench
 
@@ -238,36 +112,7 @@ that are compatible with good practices in the wider community of
 bioinformatics challenges.
 
 
-### Software
 
-Here are some pointers and tutorials for the main software tools that we are using at APAeval:
-
-- [Conda][conda]: [tutorial][tutorial-conda]
-- [Docker][docker]: [tutorial][tutorial-docker]
-- [Git][git]: [tutorial][tutorial-git]
-- [GitHub][gh]: [general tutorial][tutorial-gh] / [GitHub flow
-  tutorial][tutorial-gh-flow]
-- [Nextflow][nf]: [tutorial][tutorial-nextflow]
-- [Singularity][singularity]: [tutorial][tutorial-singularity]
-- [Snakemake][snakemake]: [tutorial][tutorial-snakemake]
-
-Note that you don't need to know about all of these, e.g., one of Conda (deprecated; to run on AWS we need containerized workflows), Docker
-and/or Singularity will typically be enough. [See
-below](#nextflow-or-snakemake), for a discussion of the supported workflow
-languages/management systems. Again, working with one will be enough for most
-issues.
-
-In addition to these, basic programming/scripting skills may be required for
-most, but not for all issues. For those that do, you are generally free to
-choose your preferred language, although for those people who have experience
-with Python, we recommend you to go with that. It just makes it easier for
-others to review your code, and it typically integrates better with our
-templates and the general bioinformatics ecosystem/community.
-
-Note that even if you don't have experience with any of these tools/languages,
-and you don't feel like or have no time learning them, there is surely still
-something that you can help us with. Just ask us and we will try to put your
-individual skills to good use! :muscle:
 
 #### Nextflow or Snakemake?
 
@@ -291,12 +136,6 @@ As for _summary workflows_, we are bound to implement these in Nextflow, as
 they are executed on [OpenEBench][oeb], which currently only accepts Nextflow
 workflows.
 
-For this reason, as well as the fact that we will provide [Nextflow
-Tower][nf-tower] for convient execution of Nextflow workflows on [AWS][aws]
-cloud infrastructure ([see above](#cloud-infrastructure)) and use a [Nextflow
-analysis pipeline][nf-core-rna-seq] for pre-processing RNA-Seq data sets, we
-recommend novices without any other considerations (e.g., colleagues already
-working with Snakemake) to use Nextflow.
 
 #### Conda environment file
 
