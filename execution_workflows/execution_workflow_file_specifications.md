@@ -2,33 +2,39 @@
 
 ## Synopsis
 
-This specification describes required output of `execution_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
+This specification describes allowed input and required output of `execution_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
 
-Outputs depend on features available for the participant (i.e. not all participants perform *de novo* identification of PAS) and can be grouped into three categories:
+Outputs depend on features available for the participant (i.e. not all participants perform *de novo* identification of PAS) and can be grouped into four categories:
 
 - identification benchmarking event:
   - BED file with identified poly(A) sites with single nucleotide resolution
-- quantification benchmarking event:
+- absolute quantification benchmarking event:
   - BED file with identified unique poly(A) sites and TPM values for each site
+- relative quantification benchmarking event:
   - BED file with identified unique poly(A) sites and relative usage values for each site
-- differential usage benchmarking event:
+- differential usage benchmarking event (not yet implemented)
   - TSV file with gene ID and significance of differential PAS usage
 
 ## Inputs
 
 Inputs to execution workflows are provided by APAeval.
->Detailed specification currently missing. Please refer to the [execution workflow README][ex-readme-in]
+
+| # | Format | Link | Example data | Description |
+| :-- | :--- | :--- | :--- | :----------|
+| 1 | BAM | [Specification][spec-bam] | - | BAM file with mapped RNA seq reads<br/>Pre-processing done with [nfcore-rnaseq][nfcore-rnaseq]
+| 2 | GTF | [Specification][spec-gtf] | [Link][in2] | GTF file with genome annotation including 3' UTRs |
+
 ## Outputs
 
 
 | OUTCODE | Format | Link | Example data |
   | --- | --- | --- | --- |
-  | 01 | BED | [Specification][spec-bed] | [Link][out1] |
-  | 02 | BED | [Specification][spec-bed] | [Link][out2] |
-  | 03 | TSV | [Wikipedia][wiki-tsv] | [Link][out3] |
-  | 04 | BED | [Specification][spec-bed] | [Link][out4] |
+  | 01 | BED | [Specification][spec-bed] | [Link][out-i] |
+  | 02 | BED | [Specification][spec-bed] | [Link][out-aq] |
+  | 03 | TSV | [Wikipedia][wiki-tsv] | Not yet implemented |
+  | 04 | BED | [Specification][spec-bed] | [Link][out-rq] |
 
-### Additional info inputs
+### Additional info outputs
 
 #### Format 01
 
@@ -82,11 +88,14 @@ For naming conventions please refer to the [execution workflow README][ex-readme
 
 [//]: # (References)
 
-[out1]: ./example_output_files/output1.bed
-[out2]: ./example_output_files/output2.bed
-[out3]: ./example_output_files/output3.tsv
-[out4]: ./example_output_files/output4.bed
+[in2]: ./example_files/input2.gtf
+[nfcore-rnaseq]: <https://nf-co.re/rnaseq>
+[out-aq]: ./example_files/output_absQuant.bed
+[out-i]: ./example_files/output_identification.bed
+[out-rq]: ./example_files/output_relQuant.bed
 [spec-bed]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>
+[spec-bam]: <https://samtools.github.io/hts-specs/SAMv1.pdf>
+[spec-gtf]: <https://genome.ucsc.edu/FAQ/FAQformat.html#format4>
 [wiki-tsv]: <https://en.wikipedia.org/wiki/Tab-separated_values>
 [ex-readme]: ./README.md
 [ex-readme-in]: ./README.md#more-details
