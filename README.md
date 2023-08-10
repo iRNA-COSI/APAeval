@@ -21,18 +21,7 @@ APAeval consists of three **benchmarking events**, each consisting of a set of *
 
 For more info, please refer to our [landing page][apa-eval].
 
-## How to get involved?
 
-If you would like to contribute to APAeval, the first things you would need to
-do are:
-- Drop us an email at apaeval@irnacosi.org 
-- Please use [this form][form-service-accounts] to provide us with your user
-  names/handles of the various service accounts we are using (see
-  [below](#how-do-we-work)) so that we can add you to the corresponding
-  repositories/organizations
-- Wait for us to reach out to you with an invitation to our Slack space, then
-  use the invitation to sign up and post a short intro message in the
-  [`#general`][slack-general] channel
 
 ## Overview
 ![schema][apa-eval-overview]
@@ -334,13 +323,16 @@ conda activate apaeval_execution_workflows
 
 You can now execute the workflows!
 
+
+### Get in touch
+If you would like to contribute to APAeval or have any questions, we'd be happy to hear from you via our [Github Discussions board][discussions]. If you already have a specific issue in mind, feel free to add it to our [issues board][issues]. You can also reach out to [apaeval@irnacosi.org][contact].
+
 ### Code of Conduct
 
 Please be kind to one another and mind the [Contributor Covenant's Code of
 Conduct][coc-original] for all interactions with the community. A copy of the
 Code of Conduct is also [shipped with this repository][coc-local]. Please
-report any violations to the Code of Conduct to either or both of
-[CJ][coc-contact-christina] and [Alex][coc-contact-alex] via Slack.
+report any violations to the Code of Conduct to [apaeval@irnacosi.org][contact].
 
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
