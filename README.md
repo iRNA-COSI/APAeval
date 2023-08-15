@@ -177,6 +177,33 @@ Conduct][coc-original] for all interactions with the community. A copy of the
 Code of Conduct is also [shipped with this repository][coc-local]. Please
 report any violations to the Code of Conduct to [apaeval@irnacosi.org][contact].
 
+### Open Science, licenses & attribution
+
+Following best practices for writing software and sharing data and code is
+important to us, and therefore we want to apply, as much as possible, [FAIR
+Principles][fair] to data and software alike. This includes publishing all
+code open source, under permissive [licenses approved][osi-licenses] by the
+[Open Source Initiative][osi] and all data by a permissive [Creative
+Commons][cc] license.
+
+In particular, we publish all code under the [MIT license][license-mit] and all
+data under the [CC0 license][license-cc0]. An exception are all _summary
+workflows_, which are published under the [GPLv3 license][license-gplv3], as
+the provided template is derived from an [OpenEBench][oeb] [example
+workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
+the MIT license is also [shipped with this repository][license].
+
+We also believe that attribution, provenance and transparency are crucial for
+an open and fair work environment in the sciences, especially in a community
+effort like APAeval. Therefore, we would like to make clear from the beginning
+that in all publications deriving from APAeval (journal manuscript, data and
+code repositories), any non-trivial contributions will be acknowledged by
+authorship. 
+
+We expect that all contributors accept the license and attribution policies
+outlined above.
+
+
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
 [apa-eval-members]: <https://docs.google.com/document/d/1G7u-WQ6C-I_sXZ-15CIBw2iNgw6jkTNo7hnRTjci_b4/edit#heading=h.tarrapa8v8n6>
