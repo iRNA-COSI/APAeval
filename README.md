@@ -5,30 +5,56 @@
 
 Welcome to the [APAeval][apa-eval] GitHub repository.
 
-**APAeval** is a community effort to evaluate computational methods for the
-detection and quantification of poly(A) sites and the estimation of their
-differential usage across RNA-seq samples.
+**Quick links**
+- [Use a benchmarked method on your own RNA-seq data](#use-a-benchmarked-method-on-your-own-rna-seq-data)
+- [Benchmark a new method](#benchmark-a-new-method)
+- [Extend APAeval's benchmarks](#extend-apaevals-benchmarks)
+
+**APAeval** is a community effort that was born as the **APAeval hackathon at the RNA 2021 Conference**. We are aiming to evaluate computational methods for the detection and quantification of poly(A) sites from RNA-seq samples in an open, reproducible and extensible manner.
+
+
+
 
 [![logo][apa-eval-logo]][apa-eval]
 
-## What is APAeval?
+<!-- TOC -->
 
-APAeval consists of three **benchmarking events**, each consisting of a set of **challenges** for bioinformatics methods (=**participants**) that:
+- [Overview of APAeval benchmarking](#overview-of-apaeval-benchmarking)
+- [What can you do?](#what-can-you-do)
+    - [Use a benchmarked method on your own RNA-seq data](#use-a-benchmarked-method-on-your-own-rna-seq-data)
+    - [Benchmark a new method](#benchmark-a-new-method)
+    - [Extend APAeval's benchmarks](#extend-apaevals-benchmarks)
+- [Some technical stuff](#some-technical-stuff)
+    - [OpenEBench](#openebench)
+    - [APAeval conda environment](#apaeval-conda-environment)
+    - [Tutorials](#tutorials)
+- [Code of Conduct](#code-of-conduct)
+- [Open Science, licenses & attribution](#open-science-licenses--attribution)
+- [Get in touch](#get-in-touch)
+- [Contributors ✨](#contributors-)
+
+<!-- /TOC -->
+
+## Overview of APAeval benchmarking
+
+APAeval currently consists of three **benchmarking events**, each consisting of a set of **challenges** for bioinformatics methods (=**participants**) that:
 
 1. **Identify** polyadenylation sites
-2. **Quantify** polyadenylation sites
-3. Calculate **differential usage** of polyadenylation sites
+2. Report poly(A) site expression as **absolute quantification** in TPM
+3. Report **relative expression** of poly(A) sites within transcripts
+ 
+> We'd still like to set up a fourth event to evaluate tools that calculate **differential usage** of polyadenylation sites. If you'd like to contribute, continue reading [below](#extend-apaevals-benchmarks).
 
-For more info, please refer to our [landing page][apa-eval].
-
-
-
-## Overview
 ![schema][apa-eval-overview]
-1. APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: PAS identification, quantification, and assessment of their differential usage. A method can participate in one, two or all three events, depending on its functions.
+
+1. As described above, APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: PAS identification, absolute quantification, and relative quantification. A method can participate in one, two or all three events, depending on its functions.
 2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants.
 3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
 4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
+5. To ensure compatibility with the workflows of the benchmarking events, specifications for file formats (output of execution workflows = input for benchmarking workflows) are provided by APAeval. 
+6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. Results of a challenge (metrics) are computed for each participant within a "summary workflow" (=benchmarking workflow). 
+7. In order to compare the performance of participants, results for each participant are uploaded to the [OEB database](#openebench), where metrics for all participants are visualized per challenge.
+
 ## What can you do?
 
 ### Use a benchmarked method on your own RNA-seq data
