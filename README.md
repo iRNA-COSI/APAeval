@@ -127,14 +127,14 @@ Singularity: [tutorial][tutorial-singularity]
 Snakemake: [tutorial][tutorial-snakemake]
 
 
-### Code of Conduct
+## Code of Conduct
 
 Please be kind to one another and mind the [Contributor Covenant's Code of
 Conduct][coc-original] for all interactions with the community. A copy of the
 Code of Conduct is also [shipped with this repository][coc-local]. Please
 report any violations to the Code of Conduct to [apaeval@irnacosi.org][contact].
 
-### Open Science, licenses & attribution
+## Open Science, licenses & attribution
 
 Following best practices for writing software and sharing data and code is
 important to us, and therefore we want to apply, as much as possible, [FAIR
@@ -160,6 +160,8 @@ authorship.
 We expect that all contributors accept the license and attribution policies
 outlined above.
 
+## Get in touch
+If you would like to contribute to APAeval or have any questions, we'd be happy to hear from you via our [Github Discussions board][discussions]. If you already have a specific issue in mind, feel free to add it to our [issues board][issues]. You can also reach out to [apaeval@irnacosi.org][contact].
 
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
