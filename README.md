@@ -42,6 +42,8 @@ Have you developed a new computational method for investigating APA from RNA-seq
 
 In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [execution workflow][apaeval-ewf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-swfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
 
+### Extend APAeval's benchmarks
+One of the main goals of APAeval is to provide *extensible* benchmarking, such that new tools, new challenges or new metrics can be added at any time. Therefore we warmly welcome any contribution to the project. A good starting point would be to visit our [issue][issues] and [discussion][discussions] boards. The latter one is also the place where you can reach out to us and request we add you to the repo. You can then take on an existing task, suggest a new one, or start a discussion. 
 
 ## What is there to do?
 
