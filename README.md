@@ -37,6 +37,10 @@ Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench
 You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get there? You could check out the [nf-core][nf-core] [RNA-Seq analysis pipeline][nf-core-rna-seq] or other tools such as [ZARP][zarp].
 
 
+### Benchmark a new method
+Have you developed a new computational method for investigating APA from RNA-seq data? Or are you interested in one of the tools we haven't managed to include in APAeval yet? We'd be very happy if you decided to contribute to APAeval!
+
+In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [execution workflow][apaeval-ewf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-swfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
 
 
 ## What is there to do?
@@ -210,6 +214,9 @@ outlined above.
 [apaeval-oeb]: <https://openebench.bsc.es/benchmarking/OEBC007?event=OEBE0070000003>
 [apa-eval-overview]: images/overview.png
 [apaeval-ewf-readme]: ./execution_workflows/README.md
+[apaeval-specs]: ./execution_workflows/execution_workflow_file_specifications.md
+[apaeval-swfs]: ./summary_workflows/README.md
+[apaeval-zenodo]: <>
 [aws]: <http://aws.amazon.com/>
 [bsc]: <https://www.bsc.es/>
 [calendar-url]: <https://calendar.google.com/calendar/ical/59bboug9agv30v32r6bvaofdo4%40group.calendar.google.com/public/basic.ics>
