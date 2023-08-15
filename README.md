@@ -71,67 +71,9 @@ In order to ensure reproducibility of the benchmarks, as well as reusability and
 ### Extend APAeval's benchmarks
 One of the main goals of APAeval is to provide *extensible* benchmarking, such that new tools, new challenges or new metrics can be added at any time. Therefore we warmly welcome any contribution to the project. A good starting point would be to visit our [issue][issues] and [discussion][discussions] boards. The latter one is also the place where you can reach out to us and request we add you to the repo. You can then take on an existing task, suggest a new one, or start a discussion. 
 
-## What is there to do?
-
-The bulk of the work falls into roughly two tasks, writing participants' _execution
-workflows_ and benchmarking events' _summary workflows_.
 
 
-
-### Execution workflows
-
-[_Execution workflows_][apaeval-ewf-readme] contain all steps that need to be run _per method_:
-
-1. **Pre-processing:** Convert the input files the APAeval team has prepared
-  into the input files your participant consumes, if applicable.
-2. **Method execution:** Execute the method in any way necessary to compute the
-  output files for all benchmarking events the participant qualifies for.
-3. **Post-processing:** Convert the output files of the method into the formats
-  consumed by the _summary workflows_ as specified by the APAeval team, if
-  applicable.
-
-_Execution workflows_ should be implemented in either [Nexflow][nf] or
-[Snakemake][snakemake], and individual steps should be isolated through the
-use of either [Conda][conda] virtual environments (deprecated; to run on AWS we need containerized workflows) or
-[Docker][docker]/[Singularity][singularity] containers.
-
-### Summary workflows
-
-**_Summary workflows_** contain all steps that need to be run _per challenge_,
-using outputs of the invididual participant _execution workflows_ as inputs. They
-follow the [OpenEBench][oeb] workflow model, described
-[here][oeb-example-workflow], implemented in Nextflow. OpenEBench workflows
-consist of the following 3 steps:
-
-1. **Validation:** Output data of the various _execution workflows_ is
-  validated against the provided specifications to data consistency.
-2. **Metrics computation:** Actual benchmarking metrics are computed as
-  specified, e.g., by comparisons to ground truth/gold standard data sets.
-3. **Consolidation:** Data is consolidated for consistency with other
-  benchmarking efforts, based on the [OpenEBench/ELIXIR benchmarking data
-  model][oeb-data-model].
-
-Following the OpenEBench workflows model also ensures that result
-visualizations are automatically generated, as long as the desired graph types
-are supported by OpenEBench.
-
-### Miscellaneous
-
-Apart from writing _execution_ and _summary workflows_, there are various other
-smaller jobs that you could work on, including, e.g.:
-
-- [**Pull request reviews**][pr-review-guide]
-- Pre-processing RNA-Seq input data via the [nf-core][nf-core] [RNA-Seq
-  analysis pipeline][nf-core-rna-seq]
-- Writing additional benchmark specifications
-- Housekeeping jobs ( improve documentation, helping to keep the repository clean,
-  enforce good coding practices, etc.)
-- Work with our partner OpenEBench on their open issues, e.g., by extending
-  their portfolio of [supported visualization][oeb-open-issues]
-
-If you do not know where to start, simply ask us!
-
-
+## Some technical stuff
 ### OpenEBench
 
 We are partnering with [OpenEBench][oeb], a benchmarking and technical
@@ -148,32 +90,7 @@ that are compatible with good practices in the wider community of
 bioinformatics challenges.
 
 
-
-
-#### Nextflow or Snakemake?
-
-As mentioned [further above](#what-is-there-to-do), we would like _execution
-workflows_ to be written in one of two "workflow languages": [Nextflow][nf] or
-[Snakemake][snakemake]. Specifying workflows in such a language rather than,
-say, by stringing together Bash commands, is considered good practice, as it
-increases reusability and reproducibility, and so is in line with our goal of
-adhering to [FAIR][fair] software principles.
-
-But why only Nextflow and Snakemake, and not, e.g., the [Common Workflow
-Language][cwl], the [Workflow Definition Language][wdl] or [Galaxy][galaxy]?
-There are no particular reasons other than that APAeval organizers have
-experience with these workflows languages and are thus able to provide
-technical support. If you are an experienced workflow developer and prefer
-another workflow language, you are welcome to use that one instead, but note
-that we have no templates available and will not be able to help you much in
-case you encounter issues during development or execution.
-
-As for _summary workflows_, we are bound to implement these in Nextflow, as
-they are executed on [OpenEBench][oeb], which currently only accepts Nextflow
-workflows.
-
-
-#### Conda environment file
+### APAeval conda environment
 
 In order to execute scripts with either Nextflow or Snakemake in a reproducible
 manner, we need to ensure the versions of these software are specified. In order 
