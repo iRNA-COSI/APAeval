@@ -1,4 +1,4 @@
-# Execution workflows output specification
+# Execution workflow file specifications
 
 ## Synopsis
 

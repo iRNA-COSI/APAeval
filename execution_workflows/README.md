@@ -159,7 +159,7 @@ List of bioinformatic methods benchmarked in APAeval. Please update columns as t
 [nf-docker]: <https://www.nextflow.io/docs/latest/docker.html#multiple-containers.>
 [nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
 [nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
-[spec-doc]: execution_output_specification.md 
+[spec-doc]: execution_workflow_file_specifications.md 
 [challenge-code]: ../summary_workflows/challenge_codes.md
 [participant]: ../execution_workflows/
 [pr-review-guide]: ./execution_workflows/PR_review_guide.md
