@@ -207,6 +207,7 @@ outlined above.
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
 [apa-eval-members]: <https://docs.google.com/document/d/1G7u-WQ6C-I_sXZ-15CIBw2iNgw6jkTNo7hnRTjci_b4/edit#heading=h.tarrapa8v8n6>
+[apaeval-oeb]: <https://openebench.bsc.es/benchmarking/OEBC007?event=OEBE0070000003>
 [apa-eval-overview]: images/overview.png
 [apaeval-ewf-readme]: ./execution_workflows/README.md
 [aws]: <http://aws.amazon.com/>
@@ -220,6 +221,7 @@ outlined above.
 [conda]: <https://docs.conda.io/en/latest/>
 [contact]: <mailto:apaeval@irnacosi.org>
 [cwl]: <https://www.commonwl.org/>
+[discussions]: <https://github.com/iRNA-COSI/APAeval/discussions>
 [docker]: <https://www.docker.com/>
 [elixir]: <https://elixir-europe.org/>
 [fair]: <https://www.go-fair.org/fair-principles/>
@@ -230,10 +232,12 @@ outlined above.
 [gh-join]: <https://github.com/join>
 [gh-projects]: <https://github.com/iRNA-COSI/APAeval/projects/>
 [git]: <https://git-scm.com/>
+[issues]: <https://github.com/iRNA-COSI/APAeval/issues>
 [license]: LICENSE
 [license-mit]: <https://opensource.org/licenses/MIT>
 [license-cc0]: <https://creativecommons.org/publicdomain/zero/1.0/>
 [license-gplv3]: <https://www.gnu.org/licenses/gpl-3.0.en.html>
+[manuscript]: <https://www.biorxiv.org/content/10.1101/2023.06.23.546284v1>
 [nf]: <https://www.nextflow.io/>
 [nf-core]: <https://nf-co.re/>
 [nf-core-rna-seq]: <https://nf-co.re/rnaseq>
@@ -264,8 +268,6 @@ outlined above.
 [tutorial-nextflow]: <https://www.nextflow.io/blog/2020/learning-nextflow-in-2020.html>
 [tutorial-singularity]: <https://singularity-tutorial.github.io/>
 [tutorial-snakemake]: <https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html>
-[vc-agenda]: <https://docs.google.com/document/d/1Cl3xq7_uwApAYxUbzeVSBsRfGUmtRc0jSnZ3yrWM3ks/edit#>
-[vc-direct-link]: <https://unibas.zoom.us/j/65694291427?pwd=QUMyMjQ2SSt2eS9iZW50YVZCOC8wQT09>
 [wdl]: <https://github.com/openwdl/wdl>
 [zarp]: <https://github.com/zavolanlab/zarp>
 
