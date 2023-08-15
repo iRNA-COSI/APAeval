@@ -29,9 +29,13 @@ For more info, please refer to our [landing page][apa-eval].
 2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants.
 3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
 4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
-5. To ensure compatibility with the OEB benchmarking events, specifications for file formats (output of execution workflows = input for summary workflows) are provided by APAeval. 
-6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. A challenge is computed within a summary workflow, which is run on the OEB infrastructure, for each participant. The summary workflow will compute all metrics relevant for the challenge. 
-7. In order to compare the performance of participants, OEB will collect the respective output files from all eligible participant summary workflows and will visualize all results per challenge, such that performance of participants can be compared for each metric.
+## What can you do?
+
+### Use a benchmarked method on your own RNA-seq data
+Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench site][apaeval-oeb] to find the method that would perform best for your use case. If you have decided on a method to use, head over to the [Execution workflows section in this repo][apaeval-ewf-readme] and follow the instructions in the `README.md` of the method of your choice. All our execution workflows are built in either Snakemake or Nextflow, and use containers for individual steps to ensure reproducibility and reusability. For instructions on how to set up a conda environment for running APAeval workflows [see here](#conda-environment-file).
+
+You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get there? You could check out the [nf-core][nf-core] [RNA-Seq analysis pipeline][nf-core-rna-seq] or other tools such as [ZARP][zarp].
+
 
 
 
@@ -236,7 +240,7 @@ report any violations to the Code of Conduct to [apaeval@irnacosi.org][contact].
 [vc-agenda]: <https://docs.google.com/document/d/1Cl3xq7_uwApAYxUbzeVSBsRfGUmtRc0jSnZ3yrWM3ks/edit#>
 [vc-direct-link]: <https://unibas.zoom.us/j/65694291427?pwd=QUMyMjQ2SSt2eS9iZW50YVZCOC8wQT09>
 [wdl]: <https://github.com/openwdl/wdl>
-[zoom]: <https://zoom.us/>
+[zarp]: <https://github.com/zavolanlab/zarp>
 
 ## Contributors ✨
 
