@@ -58,7 +58,7 @@ APAeval currently consists of three **benchmarking events**, each consisting of 
 ## What can you do?
 
 ### Use a benchmarked method on your own RNA-seq data
-Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench site][apaeval-oeb] to find the method that would perform best for your use case. If you have decided on a method to use, head over to the [Execution workflows section in this repo][apaeval-ewf-readme] and follow the instructions in the `README.md` of the method of your choice. All our execution workflows are built in either Snakemake or Nextflow, and use containers for individual steps to ensure reproducibility and reusability. For instructions on how to set up a conda environment for running APAeval workflows [see here](#conda-environment-file).
+Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench site][apaeval-oeb] to find the method that would perform best for your use case. If you have decided on a method to use, head over to the [Execution workflows section in this repo][apaeval-ewf-readme] and follow the instructions in the `README.md` of the method of your choice. All our execution workflows are built in either [Snakemake][snakemake] or [Nextflow][nf], and use [containers][docker] for individual steps to ensure reproducibility and reusability. For instructions on how to set up a [conda environment][conda] for running APAeval workflows [see here](#conda-environment-file).
 
 You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get there? You could check out the [nf-core][nf-core] [RNA-Seq analysis pipeline][nf-core-rna-seq] or other tools such as [ZARP][zarp].
 
@@ -115,9 +115,17 @@ conda activate apaeval_execution_workflows
 
 You can now execute the workflows!
 
+### Tutorials
+Here are some pointers and tutorials for the main software tools that we are using at APAeval:
 
-### Get in touch
-If you would like to contribute to APAeval or have any questions, we'd be happy to hear from you via our [Github Discussions board][discussions]. If you already have a specific issue in mind, feel free to add it to our [issues board][issues]. You can also reach out to [apaeval@irnacosi.org][contact].
+Conda: [tutorial][tutorial-conda]   
+Docker: [tutorial][tutorial-docker]   
+Git: [tutorial][tutorial-git]   
+GitHub: [general tutorial][tutorial-gh] / [GitHub flow tutorial][tutorial-gh-flow]
+Nextflow: [tutorial][tutorial-nextflow]
+Singularity: [tutorial][tutorial-singularity]
+Snakemake: [tutorial][tutorial-snakemake]
+
 
 ### Code of Conduct
 
@@ -155,35 +163,21 @@ outlined above.
 
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
-[apa-eval-members]: <https://docs.google.com/document/d/1G7u-WQ6C-I_sXZ-15CIBw2iNgw6jkTNo7hnRTjci_b4/edit#heading=h.tarrapa8v8n6>
 [apaeval-oeb]: <https://openebench.bsc.es/benchmarking/OEBC007?event=OEBE0070000003>
 [apa-eval-overview]: images/overview.png
 [apaeval-ewf-readme]: ./execution_workflows/README.md
 [apaeval-specs]: ./execution_workflows/execution_workflow_file_specifications.md
 [apaeval-swfs]: ./summary_workflows/README.md
 [apaeval-zenodo]: <>
-[aws]: <http://aws.amazon.com/>
 [bsc]: <https://www.bsc.es/>
-[calendar-url]: <https://calendar.google.com/calendar/ical/59bboug9agv30v32r6bvaofdo4%40group.calendar.google.com/public/basic.ics>
-[cc]: <https://creativecommons.org/>
-[coc-contact-alex]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01PEJ5TW4V>
-[coc-contact-christina]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01PV9T8V9A>
 [coc-local]: CODE_OF_CONDUCT.md
 [coc-original]: <https://www.contributor-covenant.org/>
 [conda]: <https://docs.conda.io/en/latest/>
 [contact]: <mailto:apaeval@irnacosi.org>
-[cwl]: <https://www.commonwl.org/>
 [discussions]: <https://github.com/iRNA-COSI/APAeval/discussions>
 [docker]: <https://www.docker.com/>
 [elixir]: <https://elixir-europe.org/>
 [fair]: <https://www.go-fair.org/fair-principles/>
-[form-service-accounts]: <https://forms.gle/eKCHe5GWtvGrriek8>
-[galaxy]: <https://usegalaxy.org/>
-[gh]: <http://github.com/>
-[gh-flow]: <https://guides.github.com/introduction/flow/>
-[gh-join]: <https://github.com/join>
-[gh-projects]: <https://github.com/iRNA-COSI/APAeval/projects/>
-[git]: <https://git-scm.com/>
 [issues]: <https://github.com/iRNA-COSI/APAeval/issues>
 [license]: LICENSE
 [license-mit]: <https://opensource.org/licenses/MIT>
@@ -193,24 +187,11 @@ outlined above.
 [nf]: <https://www.nextflow.io/>
 [nf-core]: <https://nf-co.re/>
 [nf-core-rna-seq]: <https://nf-co.re/rnaseq>
-[nf-tower]: <https://tower.nf/>
 [oeb]: <https://openebench.bsc.es/>
-[oeb-data-model]: <https://github.com/inab/benchmarking-data-model>
 [oeb-example-workflow]: <https://github.com/inab/TCGA_benchmarking_dockers>
-[oeb-open-issues]: <https://github.com/inab/OpenEBench_scientific_visualizer/issues>
 [osi]: <https://opensource.org/>
 [osi-licenses]: <https://opensource.org/licenses>
-[pr-review-guide]: ./execution_workflows/PR_review_guide.md
-[seqera-labs]: <https://seqera.io/>
 [singularity]: <https://sylabs.io/singularity/>
-[slack]: <http://slack.com/>
-[slack-admin]: <https://apaeval.slack.com/archives/C01PEJQEUMT>
-[slack-execution-workflows]: <https://apaeval.slack.com/archives/C023SMTS0KS>
-[slack-general]: <https://apaeval.slack.com/archives/C01PHLQKNH0>
-[slack-github-ticker]: <https://apaeval.slack.com/archives/C0242RJEGQG>
-[slack-oeb]: <https://apaeval.slack.com/archives/C02537UF3D1>
-[slack-random]: <https://apaeval.slack.com/archives/C01Q7FMRJ3A>
-[slack-tech-support]: <https://apaeval.slack.com/archives/C022RNSAUV7>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
 [tutorial-conda]: <https://conda.io/projects/conda/en/latest/user-guide/getting-started.html>
 [tutorial-docker]: <https://docs.docker.com/get-started/>
@@ -220,7 +201,6 @@ outlined above.
 [tutorial-nextflow]: <https://www.nextflow.io/blog/2020/learning-nextflow-in-2020.html>
 [tutorial-singularity]: <https://singularity-tutorial.github.io/>
 [tutorial-snakemake]: <https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html>
-[wdl]: <https://github.com/openwdl/wdl>
 [zarp]: <https://github.com/zavolanlab/zarp>
 
 ## Contributors ✨
