@@ -135,7 +135,7 @@ Moreover, both workflow languages require additional information in `config` fil
 ## Output 
 In principle you are free to store output files how it best suits you (or the participant). 
 However, the "real" and final outputs for each run of the benchmarking will need to be *copied* to a directory in the format   
-`PATH/TO/APAEVAL/CHALLENGECODE/PARTICIPANT/`
+`PATH/TO/APAEVAL/EVENT/PARTICIPANT/`
 
 This directory *must* contain:
 - Output files (check [formats](#formats) and [filenames](#filenames))
@@ -147,14 +147,14 @@ File formats for the 3 benchmarking events are described in the [output specific
 ### Filenames
 > As mentioned [above](#parameters) it is best to parameterize filenames, such that for each run the names and codes can be set by changing only the sample sheet and config file!
 
-File names **must** adhere to the following schema: `CHALLENGECODE_PARTICIPANT_OUTCODE.ext`   
+File names **must** adhere to the following schema: `PARTICIPANT.CHALLENGE.OUTCODE.ext`   
 For the codes please refer to the following documents:   
-- CHALLENGECODE: in [`challenge_codes.md`][challenge-code]
 - PARTICIPANT: same as directory name in [`method_workflows`][participant]
-- OUTCODE: in [`method_output_specification.md`][spec-doc]
+- CHALLENGE: `sample_name` in [`challenge_data_summary.pdf`][challenges]
+- OUTCODE: in [`method_workflow_file_specification.md`][spec-doc]
 
 **Example:**   
- `AA/MISO/AA_MISO_01.bed` would be the output of MISO (your participant) for the identification benchmarking event (OUTCODE 01, we know that from [`method_output_specification.md`][spec-doc]), run on dataset "P19" using 4 cores (CHALLENGECODE AA, we know that from) [`summary_input_specification.md`][param-code])
+ `Identification_01/MISO/MISO.P19_siControl_R1.01.bed` would be the output of MISO (your participant) for the identification benchmarking event (OUTCODE 01, we know that from [`method_workflow_file_specification.md`][spec-doc]), run on dataset "P19_siControl_R1" (exact name as `sample_name` in [`challenge_data_summary.pdf`][challenges])
 
 
 [//]: # (References)
@@ -174,7 +174,7 @@ For the codes please refer to the following documents:
 [nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
 [nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
 [spec-doc]: method_workflow_file_specifications.md 
-[challenge-code]: ../summary_workflows/challenge_codes.md
+[challenges]: ../benchmarking_workflows/challenge_data_summary.pdf
 [participant]: ../method_workflows/
 [pr-review-guide]: ./method_workflows/PR_review_guide.md
 [singularity]: <https://sylabs.io/singularity/>
