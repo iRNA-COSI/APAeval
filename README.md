@@ -52,7 +52,7 @@ APAeval currently consists of three **benchmarking events**, each consisting of 
 3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
 4. In order to evaluate each participant in different challenges, a re-usable “method workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
 5. To ensure compatibility with the workflows of the benchmarking events, specifications for file formats (output of method workflows = input for benchmarking workflows) are provided by APAeval. 
-6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. Results of a challenge (metrics) are computed for each participant within a "summary workflow" (=benchmarking workflow). 
+6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. Results of a challenge (metrics) are computed for each participant within a "benchmarking workflow" (=benchmarking workflow). 
 7. In order to compare the performance of participants, results for each participant are uploaded to the [OEB database](#openebench), where metrics for all participants are visualized per challenge.
 
 ## What can you do?
@@ -140,7 +140,7 @@ code open source, under permissive [licenses approved][osi-licenses] by the
 Commons][cc] license.
 
 In particular, we publish all code under the [MIT license][license-mit] and all
-data under the [CC0 license][license-cc0]. An exception are all _summary
+data under the [CC0 license][license-cc0]. An exception are all _benchmarking
 workflows_, which are published under the [GPLv3 license][license-gplv3], as
 the provided template is derived from an [OpenEBench][oeb] [example
 workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
@@ -165,7 +165,7 @@ If you would like to contribute to APAeval or have any questions, we'd be happy 
 [apa-eval-overview]: images/overview.png
 [apaeval-mwf-readme]: ./method_workflows/README.md
 [apaeval-specs]: ./method_workflows/method_workflow_file_specifications.md
-[apaeval-swfs]: ./summary_workflows/README.md
+[apaeval-swfs]: ./benchmarking_workflows/README.md
 [apaeval-zenodo]: <>
 [bsc]: <https://www.bsc.es/>
 [coc-local]: CODE_OF_CONDUCT.md

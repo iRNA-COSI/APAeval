@@ -5,9 +5,9 @@
 Test benchmark to:
 
 1. Figure out how to specify individual benchmarks, and write corresponding
-   method and summary workflows.
+   method and benchmarking workflows.
 2. Write templates for benchmark specification documents, method workflows
-   (Nextflow and Snakemake) and summary workflows (only Nextflow).
+   (Nextflow and Snakemake) and benchmarking workflows (only Nextflow).
 
 For this test, the run/execution times and maximum memory usage of two tools
 are computed and compared.

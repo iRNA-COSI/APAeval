@@ -44,7 +44,7 @@ python csv2tsv.py --csv samples.csv --tsv samples.tsv
 
 ### Convert assessment json to .tsv (NO Docker)
 
-**Description:** Convert a summary workflow output json file to a `.tsv` file using `pandas`. json objects will be flattened, and each object is converted to a table row. Furthermore, the `metric_id` is split into 3 columns "metric", "window_size" and "site_set". If more than one json file is provided as input, resulting tables will be concatenated.
+**Description:** Convert a benchmarking workflow output json file to a `.tsv` file using `pandas`. json objects will be flattened, and each object is converted to a table row. Furthermore, the `metric_id` is split into 3 columns "metric", "window_size" and "site_set". If more than one json file is provided as input, resulting tables will be concatenated.
 
 > NOTE: In the current implementation, only OEBs "assessment" type objects will be kept and APAeval *absolute quantification* specific parameters `window_size`, `site_set` and `metrics.metric_id` are expected to be present.This util will most likely have to be adapted for other events.
 
@@ -60,7 +60,7 @@ python metrics_json2tsv.py --file-list assessment1.json assessment2.json --outpu
 
 ### Filter assessment json (NO Docker)
 
-**Description:** Filter a summary workflow output json file, i.e. remove objects that belong to specified metrics or challenges. Parts of metric- or challenge names can be specified and all objects (participant, assessment, aggregation, manifest-like) containing those metrics or challenges are removed.
+**Description:** Filter a benchmarking workflow output json file, i.e. remove objects that belong to specified metrics or challenges. Parts of metric- or challenge names can be specified and all objects (participant, assessment, aggregation, manifest-like) containing those metrics or challenges are removed.
 
 **Subdirectory name**: `filter_jsons`
 
