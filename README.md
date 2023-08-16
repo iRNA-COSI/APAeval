@@ -92,17 +92,13 @@ bioinformatics challenges.
 
 ### APAeval conda environment
 
-In order to execute scripts with either Nextflow or Snakemake in a reproducible
-manner, we need to ensure the versions of these software are specified. In order 
-to do that, we created a Conda environment file that contains specific versions of
-Nextflow, Snakemake and some core libraries. To use this environment, you first
-need to create it by using:
+For reproducible execution of our workflows (both method and benchmarking workflows) we're using a conda environment with fixed versions of Snakemake, Nextflow, some python packages, and Singularity. Make sure you have [conda][conda] installed and from the root directory of this repo create the APAeval environment with
 
 ```bash
 conda env create -f apaeval_env.yaml`
 ```
 
-You then need to activate the environment with:
+You can then activate it with:
 
 ```
 conda activate apaeval_execution_workflows
