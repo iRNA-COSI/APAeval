@@ -1,5 +1,6 @@
 # Execution workflows
 This is where the execution workflows for APAeval live. 
+> NOTE: The following sections give in depth instructions on how to create new APAeval execution workflows. If you're looking for instructions on how to run an existing workflow for one of our benchmarked methods, please refer to the `README.md` in the respective directory. In any case, make sure you have the [APAeval conda environment][apaeval-conda] set up and running.
 
 ## Overview
 _Execution workflows_ contain all steps that need to be run _per method_ (in OEB terms: per _participant_). Depending on the participant, an execution workflow will have to perform **pre-processing** steps to convert the APAeval sanctioned input files into a format that the participant can consume. This does not include e.g. adapter trimming or mapping of reads, as those steps are already performed in our general pre-processing pipeline. After pre-processing, the actual **execution of the method** has to be implemented, and subsequently **post-processing** steps might be required to convert the obtained output into the format defined by the APAeval specifications.
@@ -24,7 +25,7 @@ In general, all relevant participant parameters should be configurable in the wo
 
 _Execution workflows_ should be implemented in either [Nexflow][nf] or
 [Snakemake][snakemake], and individual steps should be isolated through the
-use of either [Conda][conda] virtual environments (deprecated; to run on AWS we need containerized workflows) or
+use of either [Conda][conda] virtual environments or
 [Docker][docker]/[Singularity][singularity] containers. For more information on how to create these containers, see section [containers](#containers).
 
 ## Templates
@@ -146,6 +147,7 @@ List of bioinformatic methods benchmarked in APAeval. Please update columns as t
 
 [//]: # (References)
 
+[apaeval-conda]: ../README.md#apaeval-conda-environment
 [apaeval-ewfs]: ../images/EWFs.png 
 [conda]: <https://docs.conda.io/en/latest/>  
 [docker]: <https://www.docker.com/>
