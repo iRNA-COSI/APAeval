@@ -35,7 +35,7 @@ Parameters relevant to the workflow itself are:
 - `aptardi_scale` - for running Aptardi using a pre-built model (default: ./aptardi_default_model_scale/scale.pk provided by Aptardi)
 Note: Aptardi also allows users to build their own model during the Aptardi run, but this pipeline does not support building one's own model (one would have to build his/her own model by running Aptardi outside of this pipeline). Please refer to [Aptardi's documentation](https://github.com/luskry/aptardi#options)
 
-### Running the Aptardi execution workflow
+### Running the Aptardi method workflow
 - Download the test data [here](https://drive.google.com/drive/folders/1tsDu7TzxoVvnD-0UbVRd-pu-ZL36F190?usp=sharing). The current dataset is in a genomic region where there are enough reads to test Aptardi's PAS identification functionality. If you wish to test the StringTie2 workflow (`use_stringtie2_gtf` set to true), download the test data linked in the [notes section](#notes).
 
 - Update the samplesheet.csv with the full path to the downloaded bam, gtf, and fasta files.

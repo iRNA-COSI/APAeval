@@ -50,15 +50,15 @@ APAeval currently consists of three **benchmarking events**, each consisting of 
 1. As described above, APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: PAS identification, absolute quantification, and relative quantification. A method can participate in one, two or all three events, depending on its functions.
 2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants.
 3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
-4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
-5. To ensure compatibility with the workflows of the benchmarking events, specifications for file formats (output of execution workflows = input for benchmarking workflows) are provided by APAeval. 
+4. In order to evaluate each participant in different challenges, a re-usable “method workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
+5. To ensure compatibility with the workflows of the benchmarking events, specifications for file formats (output of method workflows = input for benchmarking workflows) are provided by APAeval. 
 6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. Results of a challenge (metrics) are computed for each participant within a "summary workflow" (=benchmarking workflow). 
 7. In order to compare the performance of participants, results for each participant are uploaded to the [OEB database](#openebench), where metrics for all participants are visualized per challenge.
 
 ## What can you do?
 
 ### Use a benchmarked method on your own RNA-seq data
-Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench site][apaeval-oeb] to find the method that would perform best for your use case. If you have decided on a method to use, head over to the [Execution workflows section in this repo][apaeval-ewf-readme] and follow the instructions in the `README.md` of the method of your choice. All our execution workflows are built in either [Snakemake][snakemake] or [Nextflow][nf], and use [containers][docker] for individual steps to ensure reproducibility and reusability. For instructions on how to set up a [conda environment][conda] for running APAeval workflows [see here](#conda-environment-file).
+Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench site][apaeval-oeb] to find the method that would perform best for your use case. If you have decided on a method to use, head over to the [method workflows section in this repo][apaeval-mwf-readme] and follow the instructions in the `README.md` of the method of your choice. All our method workflows are built in either [Snakemake][snakemake] or [Nextflow][nf], and use [containers][docker] for individual steps to ensure reproducibility and reusability. For instructions on how to set up a [conda environment][conda] for running APAeval workflows [see here](#conda-environment-file).
 
 You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get there? You could check out the [nf-core][nf-core] [RNA-Seq analysis pipeline][nf-core-rna-seq] or other tools such as [ZARP][zarp].
 
@@ -66,7 +66,7 @@ You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get
 ### Benchmark a new method
 Have you developed a new computational method for investigating APA from RNA-seq data? Or are you interested in one of the tools we haven't managed to include in APAeval yet? We'd be very happy if you decided to contribute to APAeval!
 
-In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [execution workflow][apaeval-ewf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-swfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
+In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [method workflow][apaeval-mwf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-swfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
 
 ### Extend APAeval's benchmarks
 One of the main goals of APAeval is to provide *extensible* benchmarking, such that new tools, new challenges or new metrics can be added at any time. Therefore we warmly welcome any contribution to the project. A good starting point would be to visit our [issue][issues] and [discussion][discussions] boards. The latter one is also the place where you can reach out to us and request we add you to the repo. You can then take on an existing task, suggest a new one, or start a discussion. 
@@ -101,7 +101,7 @@ conda env create -f apaeval_env.yaml`
 You can then activate it with:
 
 ```
-conda activate apaeval_execution_workflows
+conda activate apaeval
 ```
 
 > NOTE: If you're working on Windows or Mac, you might have to google about setting up a virtual machine for running Singularity. 
@@ -163,8 +163,8 @@ If you would like to contribute to APAeval or have any questions, we'd be happy 
 [apa-eval-logo]: images/logo.png
 [apaeval-oeb]: <https://openebench.bsc.es/benchmarking/OEBC007?event=OEBE0070000003>
 [apa-eval-overview]: images/overview.png
-[apaeval-ewf-readme]: ./execution_workflows/README.md
-[apaeval-specs]: ./execution_workflows/execution_workflow_file_specifications.md
+[apaeval-mwf-readme]: ./method_workflows/README.md
+[apaeval-specs]: ./method_workflows/method_workflow_file_specifications.md
 [apaeval-swfs]: ./summary_workflows/README.md
 [apaeval-zenodo]: <>
 [bsc]: <https://www.bsc.es/>

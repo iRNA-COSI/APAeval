@@ -80,9 +80,9 @@ All parameters are specified (and explained) in `config/config.PAQR.yaml`. Most 
 
 ## Output & post-processing
 
-APAeval relevant output: `tandem_pas_expression_normalized.tsv`, `tandem_pas_relative_usage.tsv` and `singular_pas_expression.tsv`. The latter is normalized in an additional rule outside the `PAQR module`, and subsequently both 'pas_expression' files are concatenated. The resulting `.tsv` file contains tpm for each sample from the samples table. This file is converted into the APAeval compatible 'format 02' bed file in a postprocessing rule. `tandem_pas_relative_usage.tsv` is directly converted into the APAeval compatible 'format 04' bed file in a post-processing rule. In both cases, single nucleotide PAS are reported for each PAS 'cluster' by parsing the representative position from the 'PolyASite ID'. See `execution_output_specification.md` in the base `execution_workflows` directory for a full specification.
+APAeval relevant output: `tandem_pas_expression_normalized.tsv`, `tandem_pas_relative_usage.tsv` and `singular_pas_expression.tsv`. The latter is normalized in an additional rule outside the `PAQR module`, and subsequently both 'pas_expression' files are concatenated. The resulting `.tsv` file contains tpm for each sample from the samples table. This file is converted into the APAeval compatible 'format 02' bed file in a postprocessing rule. `tandem_pas_relative_usage.tsv` is directly converted into the APAeval compatible 'format 04' bed file in a post-processing rule. In both cases, single nucleotide PAS are reported for each PAS 'cluster' by parsing the representative position from the 'PolyASite ID'. See `method_workflow_file_specification.md` in the base `method_workflows` directory for a full specification.
 
-The final output files are named `[SAMPLE]_[CHALLENGE_CODE]_[PARTICIPANT]_[OUTCODE].bed`, as specified in the ["execution workflow README"][ewf-readme-filenames].
+The final output files are named `[SAMPLE]_[CHALLENGE_CODE]_[PARTICIPANT]_[OUTCODE].bed`, as specified in the ["method workflow README"][mwf-readme-filenames].
 
 ## Notes
 
@@ -99,4 +99,4 @@ PAQR was developed to be compatible with specific downstream applications compar
 [mouse-pas]: <(https://polyasite.unibas.ch/download/atlas/2.0/GRCm38.96/atlas.clusters.2.0.GRCm38.96.bed.gz)>
 [worm-pas]: <https://polyasite.unibas.ch/download/atlas/2.0/WBcel235/atlas.clusters.2.0.WBcel235.bed.gz>
 [sample-table]: config/samples.tsv
-[ewf-readme-filenames]: ../README.md#output
+[mwf-readme-filenames]: ../README.md#output

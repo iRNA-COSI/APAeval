@@ -15,7 +15,7 @@ This README describes the APAeval **identification** summary workflow. For a mor
 See description in [the main summary workflow `README.md`][readme-swf-naming].
 ## Description of steps
 ### 1. Validation
-- `input_file`: output file from execution workflow in bed6 format
+- `input_file`: output file from method workflow in bed6 format
 - Validation checks performed in [`identification_dockers/i_validation/validation.py`][validation-py]:
    - input file has to be tab separated file with 6 columns
    - start and end coordinates (col 2,3) have to be int64
@@ -27,7 +27,7 @@ See description in [the main summary workflow `README.md`][readme-swf-naming].
   
 ### 2. Metrics Computation
 - "input file" and "gold standard file" will be compared in order to calculate the metrics
-- `input_file`: output file from execution workflow in bed6 format
+- `input_file`: output file from method workflow in bed6 format
 - `gold standard`: bed6 file derived from 3'end sequencing on the same sample(s) as the RNA-seq data used in the challenge
 - `windows` parameter is used to compute metrics for a list of window sizes.
     - For running on OEB: the parameter is read from `nextflow.config`.

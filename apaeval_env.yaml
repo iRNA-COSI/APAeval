@@ -1,4 +1,4 @@
-name: apaeval_execution_workflows
+name: apaeval
 channels:
   - conda-forge
   - bioconda

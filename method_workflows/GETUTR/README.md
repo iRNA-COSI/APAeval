@@ -1,5 +1,5 @@
-# GETUTR Nextflow execution workflow
-This is the initial version of the [GETUTR](http://big.hanyang.ac.kr/GETUTR/manual.htm) execution workflow.
+# GETUTR Nextflow method workflow
+This is the initial version of the [GETUTR](http://big.hanyang.ac.kr/GETUTR/manual.htm) method workflow.
 
 ## Input
 The input is a samplesheet.csv file:

@@ -1,14 +1,14 @@
-# PR review guide for execution workflows
+# PR review guide for method workflows
 (If you don't really know what to look for when reviewing a PR)
 
 When browsing the pull requests, watch out for the `Ready for review` tag; here reviews are needed. If you come across `Reviews to address` there has already been at least one review, and some changes have to be done to the code. You could still review, or wait until this label disappears, or you address the suggestions yourself. In the latter case, do communicate this on slack and in the pull request comments, to avoid several people getting in each other's way.    
 At least 2 independent reviews are required before merging a PR.
 
 
-## Start with the README of *the execution workflow*
+## Start with the README of *the method workflow*
 
 - Try and follow the instructions as they are to run the pipeline (using the test data in `tests/test_data`)
-(Most workflows should have configs and sample-sheets set up to use this data anyway). Request improvement of the README if you can't run the execution workflow with the given instructions. The workflow should run through on the test data without any errors, else please report those errors. However, if it has been documented in the README already that/why the method doesn't work on the test data, and sufficient proof that it works on larger datasets is given (ideally with links to that data), you can still approve. Note that "method doesn't work with ensembl/provided file format/etc." is **NOT** a valid reason. Those issues have to be adressed.
+(Most workflows should have configs and sample-sheets set up to use this data anyway). Request improvement of the README if you can't run the method workflow with the given instructions. The workflow should run through on the test data without any errors, else please report those errors. However, if it has been documented in the README already that/why the method doesn't work on the test data, and sufficient proof that it works on larger datasets is given (ideally with links to that data), you can still approve. Note that "method doesn't work with ensembl/provided file format/etc." is **NOT** a valid reason. Those issues have to be adressed.
 
 - Note anything else that’s unclear or missing, for example concerning
     - Format of required input data
@@ -24,7 +24,7 @@ Refer to the [specifications][out-specs].
 ## Check that steps to run methods/pre-processing are wrapped in Dockerfiles
 
 - Should be uploaded to apaeval team Dockerhub, not on personal accounts 
-(see [execution workflow README on Containers][ewf-readme-container])
+(see [method workflow README on Containers][mwf-readme-container])
 
 
 ## Code organisation & general comments
@@ -45,5 +45,5 @@ Refer to the [specifications][out-specs].
 
 [//]: # (References)
 
-[out-specs]: ./execution_output_specification.md
-[ewf-readme-container]: ./README#containers
+[out-specs]: ./method_workflow_file_specification.md
+[mwf-readme-container]: ./README#containers

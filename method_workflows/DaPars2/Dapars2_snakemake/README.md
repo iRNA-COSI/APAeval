@@ -1,7 +1,7 @@
 
 # DaPars2
 
-Execution workflow to run DaPars2. The tool qualifies for the following APAeval benchmarking events:
+Method workflow to run DaPars2. The tool qualifies for the following APAeval benchmarking events:
 - poly(A) site identification
 - poly(A) site relative usage quantification
 
@@ -35,7 +35,7 @@ The config file `config/config.DaPars2.yaml` also needs to be updated with run-s
 
 ## Running instructions
 
-Activate the `apaeval_execution_workflows` conda environment ('environment' YAML file available at the base of the main repo at `apaeval_env.yaml`). If you haven't installed the environment, execute the following command (assuming you're in the same directory as this README):
+Activate the `apaeval` conda environment ('environment' YAML file available at the base of the main repo at `apaeval_env.yaml`). If you haven't installed the environment, execute the following command (assuming you're in the same directory as this README):
 
 ```
 conda env create -f ../../../apaeval_env.yaml`
@@ -44,7 +44,7 @@ conda env create -f ../../../apaeval_env.yaml`
 Once installed, activate the environment with the command below:
 
 ```
-conda activate apaeval_execution_workflows
+conda activate apaeval
 ```
 
 Before running, you can perform a 'dry run' to check which steps will be run and where output files will be generated given the provided parameters and input files:
@@ -81,6 +81,6 @@ bash run_local.sh
 > * This workflow uses `Dapars2_Multi_Sample.py` where one can assign chromosome name as a command line argument, whereas `DaPars2_Multi_Sample_Multi_Chr.py` is hardcoded for standard human chromosomes with the 'chr' prefix. Both scripts otherwise produce identical output with test data.
 > * In [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html), the input files are in wiggle format; however, the testing data that it provides is in bedgraph format. This workflow generates bedgraph files and runs successfully without error on test data
 > * The [DaPars2 documentation](http://bioinfo.szbl.ac.cn/DaPars2/DaPars2.html) states a dependency on R but no scripts appears to use R. The Docker image does not install R and Dapars2 runs successfully without error on test data.
-> * DaPars2 only provides polyA site quantification through it's relative **P**ercent **D**istal site **U**sage **I**ndex (PDUI) metric. Since DaPars2 uses a '2 site model' for each region, we can obtain the proximal site fractional relative usage by subtracting the PDUI from 1. As such, DaPars2 qualifies for the [relative usage quantification challenge ('Format 04') but not the 'TPM' quantification challenge ('Format 02')](https://github.com/iRNA-COSI/APAeval/blob/main/execution_workflows/execution_output_specification.md#format-02).
+> * DaPars2 only provides polyA site quantification through it's relative **P**ercent **D**istal site **U**sage **I**ndex (PDUI) metric. Since DaPars2 uses a '2 site model' for each region, we can obtain the proximal site fractional relative usage by subtracting the PDUI from 1. As such, DaPars2 qualifies for the [relative usage quantification challenge ('Format 04') but not the 'TPM' quantification challenge ('Format 02')](https://github.com/iRNA-COSI/APAeval/blob/main/method_workflows/method_workflow_file_specification.md#format-02).
 > * Unlike DaPars, DaPars2 does not perform differential polyA site usage testing and cannot be included for the differential usage challenge.
 > * Owing to bug report at 3UTR/DaPars2#8, the 'Loci' column start coordinates (which originate from a BED file and should follow BED coordinate conventions) are shifted forward by 1nt. If extracted without modification, distal poly(A) sites on the minus strand would be 1nt upstream of the source transcript. 1nt is subtracted from the 'Loci start' coordinate for transcripts on the minus strand to ensure they match the source transcript.

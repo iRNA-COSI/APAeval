@@ -5,13 +5,13 @@ Example pipeline with Nextflow used to assess results, comparing the metrics bei
 #### DON'T FREAK OUT IF YOU'RE UNFAMILIAR WITH `NEXTFLOW`! MOST CHANGES YOU'LL MAKE ARE IN `PYTHON`! 😉
 There are three steps in the summary workflow:
  - Validation
-    - `input_file`: tab-separated output file from execution workflow
+    - `input_file`: tab-separated output file from method workflow
     - Change the `benchmarking_dockers/apaeval_validation/validation.py` for the specific input_file
-    - Each input_file may have different fields from different execution workflows
+    - Each input_file may have different fields from different method workflows
     - `public_ref/[validation_ref].txt` stores the values required to be in the input_files for validating the input_file 
     - The `[output].json` file is not used in the subsequent steps
  - Metrics Computation
-    - `input_file`: tab-separated output file from execution workflow
+    - `input_file`: tab-separated output file from method workflow
     - Change the `benchmarking_dockers/apaeval_metrics/compute_metrics.py` for the specific input_file and the specific metric calculation
     - the gold standard from `metrics_ref_dataset/[challenge].txt` and input_file values are used for computing the metrics
     - The `output.json` file is used in the following step

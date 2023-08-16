@@ -9,7 +9,7 @@ Sources:
 - [Github repo](https://github.com/RJWANGbioinfo/APAlyzer)
 - [Github analysis example](https://github.com/RJWANGbioinfo/APAlyzer#complete-analysis-example-apa-analysis-in-mouse-testis-versus-heart)
 
-## APAlyzer execution workflow run instructions
+## APAlyzer method workflow run instructions
 
 ### Input file
 Required files are to be specified in the input `config/samples.csv`. 
@@ -37,7 +37,7 @@ genome version, and ensemble version details:
 `gtf, gtf_organism, gtf_genome_version, gtf_ensemble_version`.
 
 ### Setting up the environment
-To run the execution workflow, we first need to activate `apaeval_execution_workflows` conda environment
+To run the method workflow, we first need to activate `apaeval` conda environment
 following the instructions on [APAeval README](https://github.com/iRNA-COSI/APAeval#conda-environment-file).
 
 ### Running the workflow

@@ -29,7 +29,7 @@ APAeval consists of a number of ***benchmarking events*** to evaluate the perfor
 
 Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the ground truth dataset used for performance assessment**. A challenge is evaluated within a ***summary workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently a profile for Slurm is included). The summary workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
 
-In order to compare the performance of participants within a challenge/event, the respective summary workflow will be run on output files from all eligible participant execution workflows (For the participant execution workflows please refer to the [iRNA-COSI/APAeval/execution_workflows][apaeval-ewfs] repository!). The calculated metrics will be written to `.json` files that can be either submitted to OEB for database storage and online vizualisation, or transformed into a table format that can be used for creating custom plots with the help of scripts from the [APAeval utils directory][apaeval-utils].
+In order to compare the performance of participants within a challenge/event, the respective summary workflow will be run on output files from all eligible participant [method workflows][apaeval-mwfs]. The calculated metrics will be written to `.json` files that can be either submitted to OEB for database storage and online vizualisation, or transformed into a table format that can be used for creating custom plots with the help of scripts from the [APAeval utils directory][apaeval-utils].
 
 ## Summary workflow general description
 In a first step the provided input files are **validated**. Subsequently, all specified **metrics** are computed, using the matched ground truth files, if applicable. Finally, the **results are gathered** in OEB specific `.json` files per participant.
@@ -208,7 +208,7 @@ The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_work
 
 [//]: # (References)
 [apaeval-swfs]: ../images/SWFs.png
-[apaeval-ewfs]: https://github.com/iRNA-COSI/APAeval/tree/main/execution_workflows
+[apaeval-mwfs]: ../method_workflows
 [apaeval-utils]: https://github.com/iRNA-COSI/APAeval/tree/main/utils
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
 [elixir-data-model]: https://github.com/inab/benchmarking-data-model

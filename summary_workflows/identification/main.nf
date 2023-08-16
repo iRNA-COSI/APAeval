@@ -12,7 +12,7 @@ if (params.help) {
 	    Run the pipeline with default parameters read from nextflow.config:
 	    nextflow run main.nf -profile docker
 	    Run with user parameters:
-	    nextflow run main.nf -profile docker --input {execution.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --aggregation_dir {benchmark.data.dir} --output {output.dir}
+	    nextflow run main.nf -profile docker --input {method.wf.APA.prediction.file} --participant_id {tool.name} --goldstandard_dir {gold.standards.dir} --challenges_ids {analyzed.challenges} --aggregation_dir {benchmark.data.dir} --output {output.dir}
 	    Mandatory arguments:
 	        --input                 List of BED/TXT files with APA site information
 	        --community_id          Name or OEB permanent ID for the benchmarking community

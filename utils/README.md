@@ -30,12 +30,12 @@ Contents:
 
 ### Convert .csv to .tsv (NO Docker)
 
-**Description:** Convert a `.csv` to a `.tsv` file using `pandas`. Useful for conversion BEFORE running an execution workflow (see "Compatibility" below).
+**Description:** Convert a `.csv` to a `.tsv` file using `pandas`. Useful for conversion BEFORE running an method workflow (see "Compatibility" below).
 
 **Subdirectory name**: `csv2tsv`
 
 **Compatibility:**
-Currently no Docker image available, but the script can be run inside the `apaeval_execution_workflow` conda environment. 
+Currently no Docker image available, but the script can be run inside the `apaeval` conda environment. 
 
 **Usage:**
 ```
@@ -51,7 +51,7 @@ python csv2tsv.py --csv samples.csv --tsv samples.tsv
 **Subdirectory name**: `metrics_json2tsv`
 
 **Compatibility:**
-Currently no Docker image available, but the script can be run inside the `apaeval_execution_workflow` conda environment. 
+Currently no Docker image available, but the script can be run inside the `apaeval` conda environment. 
 
 **Usage:**
 ```
@@ -65,7 +65,7 @@ python metrics_json2tsv.py --file-list assessment1.json assessment2.json --outpu
 **Subdirectory name**: `filter_jsons`
 
 **Compatibility:**
-Currently no Docker image available, but the script can be run inside the `apaeval_execution_workflow` conda environment. 
+Currently no Docker image available, but the script can be run inside the `apaeval` conda environment. 
 
 **Usage:**
 ```

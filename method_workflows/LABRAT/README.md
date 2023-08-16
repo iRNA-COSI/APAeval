@@ -1,4 +1,4 @@
-# Execution workflow for LABRAT
+# Method workflow for LABRAT
 
 `LABRAT` is for quantifying the alternative usage of polyadenylation and cleavage sites in RNAseq data. You can find the [publication](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-07781-1).
 source code: https://github.com/TaliaferroLab/LABRAT
@@ -43,7 +43,7 @@ nextflow main.nf -profile docker --input <samplesheet.csv> --run_quantification 
 #### Run test data
 
 The workflow does not contain the setup to run the test data in `tests/test_data` as the genome sequence is necessary. 
-The following steps are meant to setup the test data in order to be comparable with other execution workflows.
+The following steps are meant to setup the test data in order to be comparable with other method workflows.
 
    * Create `siControl_R1_2genes.fastq.gz` and `siSrsf3_R1_2genes.fastq.gz` from corresponding BAM files with `samtools bam2fq` as described here: `tests/test_data/README.md`.
    * Use `gencode_2genes_Chr_prefix.vM18.annotation.gff3` as genome annotation (gff).

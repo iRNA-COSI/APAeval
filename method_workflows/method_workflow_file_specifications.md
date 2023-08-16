@@ -1,8 +1,8 @@
-# Execution workflow file specifications
+# Method workflow file specifications
 
 ## Synopsis
 
-This specification describes allowed input and required output of `execution_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
+This specification describes allowed input and required output of `method_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
 
 Outputs depend on features available for the participant (i.e. not all participants perform *de novo* identification of PAS) and can be grouped into four categories:
 
@@ -17,7 +17,7 @@ Outputs depend on features available for the participant (i.e. not all participa
 
 ## Inputs
 
-Inputs to execution workflows are provided by APAeval.
+Inputs to method workflows are provided by APAeval.
 
 | # | Format | Link | Example data | Description |
 | :-- | :--- | :--- | :--- | :----------|
@@ -84,7 +84,7 @@ Fields:
 
 
 ## Naming conventions
-For naming conventions please refer to the [execution workflow README][ex-readme]
+For naming conventions please refer to the [method workflow README][ex-readme]
 
 [//]: # (References)
 

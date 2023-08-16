@@ -31,7 +31,7 @@ Parameters relevant to the workflow itself are:
 - `identification_bed_suffix`
 - `relative_quantification_bed_suffix`
 
-### Running the TAPAS execution workflow
+### Running the TAPAS method workflow
 - Download the test data as follows. The current dataset is in a genomic region where there are enough reads to test TAPAS's PAS quantification functionality.
   - Download the '500 genes' test BAM files from the APAeval GDrive & extract the tarball
   - Subset the *_chr.bam BAMs to chr11 and re-index with samtools e.g. samtools view -bh siSrsf3_R1_500genes_chr.bam chr11 > chr11_siSrsf3_R1_500genes_chr.bam && samtools index chr11_siSrsf3_R1_500genes_chr.bam
