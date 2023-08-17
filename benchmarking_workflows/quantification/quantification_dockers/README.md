@@ -3,7 +3,7 @@
 *OpenEBench/iRNA COSI APAeval benchmarking **Docker declarations** for the **quantification** benchmarking event; to be used with the [OEB compatible Nextflow benchmarking workflow][main-nf]*.
 ___
 
-This README is a brief recap of the three OEB benchmarking workflow steps that are computed in their individual containers. For a general introduction to **APAeval summary workflows** see [the main summary workflow `README.md`][readme-swf]. For a more detailed description of the APAeval **quantification** summary workflow see [the quantification summary workflow `README.md`][readme-qswf].
+This README is a brief recap of the three OEB benchmarking workflow steps that are computed in their individual containers. For a general introduction to **APAeval benchmarking workflows** see [the main benchmarking workflow `README.md`][readme-swf]. For a more detailed description of the APAeval **quantification** benchmarking workflow see [the quantification benchmarking workflow `README.md`][readme-qbwf].
 
 
 >**NOTE for developers:**    
@@ -27,13 +27,13 @@ Validation results and assessment metrics of all completed challenges are gather
 
 
 ## Usage
-Please check out the sections on [building docker images][build-images] and [running the summary workflow][run-workflow] in the main [APAeval summary workflow README][readme-swf]
+Please check out the sections on [building docker images][build-images] and [running the benchmarking workflow][run-workflow] in the main [APAeval benchmarking workflow README][readme-bwf]
 
 
 [//]: # (References)
 [main-nf]: ../main.nf
-[readme-qswf]: ../README.md
-[readme-swf]: ../../README.md
+[readme-qbwf]: ../README.md
+[readme-bwf]: ../../README.md
 [apa-module]: ../../../utils/apaeval/src/apaeval/main.py
 [build-images]: ../../README.md#7-build-images
 [run-workflow]: ../../README.md#8-test-run

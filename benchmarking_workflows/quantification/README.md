@@ -3,7 +3,7 @@
 *OpenEBench compatible Nextflow workflow for assessment of a bioinformatics tool's performance in **quantifying poly(A) site usage** from RNA-seq data*
 ___
 
-This README describes the APAeval **(absolute) quantification** summary workflow. For a more general introduction to summary workflows see [the main summary workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
+This README describes the APAeval **(absolute) quantification** benchmarking workflow. For a more general introduction to benchmarking workflows see [the main benchmarking workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
 
 - [(File) naming requirements](#file-naming-requirements)
 - [Description of steps](#description-of-steps)
@@ -12,7 +12,7 @@ This README describes the APAeval **(absolute) quantification** summary workflow
   - [3. Results Consolidation](#3-results-consolidation)
 - [Usage](#usage)
 ## (File) naming requirements
-See description in [the main summary workflow `README.md`][readme-swf-naming].
+See description in [the main benchmarking workflow `README.md`][readme-swf-naming].
 ## Description of steps
 ### 1. Validation
 - `input_file`: output file from method workflow in bed6 format
@@ -48,12 +48,12 @@ See description in [the main summary workflow `README.md`][readme-swf-naming].
 - In order to specify which of the metrics present in the assessment objects should be plotted on OEB, the file `quantification_dockers/q_consolidation/aggregation_template.json` has to be modified.
 
 ## Usage
-Please check out the sections on [building docker images][build-images] and [running the summary workflow][run-workflow] in the main [APAeval summary workflow README][readme-swf]
+Please check out the sections on [building docker images][build-images] and [running the benchmarking workflow][run-workflow] in the main [APAeval benchmarking workflow README][readme-bwf]
 
 
 [//]: # (References)
-[readme-swf]: ../README.md
-[readme-swf-naming]: ../README.md#how-to-file-naming-requirements
+[readme-bwf]: ../README.md
+[readme-bwf-naming]: ../README.md#how-to-file-naming-requirements
 [build-images]: ../README.md#7-build-images
 [run-workflow]: ../README.md#8-test-run
 [q-spec]: ./specification/

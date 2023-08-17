@@ -3,7 +3,7 @@
 Example pipeline with Nextflow used to assess results, comparing the metrics being computed with this workflow with APAeval pilot benchmark results.
 
 #### DON'T FREAK OUT IF YOU'RE UNFAMILIAR WITH `NEXTFLOW`! MOST CHANGES YOU'LL MAKE ARE IN `PYTHON`! 😉
-There are three steps in the summary workflow:
+There are three steps in the benchmarking workflow:
  - Validation
     - `input_file`: tab-separated output file from execution workflow
     - Change the `benchmarking_dockers/apaeval_validation/validation.py` for the specific input_file

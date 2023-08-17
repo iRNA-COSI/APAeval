@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-This specification describes allowed input and required output of `method_workflows` to ensure that the `summary_workflows` have access to files of the same format from each participant.
+This specification describes allowed input and required output of `method_workflows` to ensure that the `benchmarking_workflows` have access to files of the same format from each participant.
 
 Outputs depend on features available for the participant (i.e. not all participants perform *de novo* identification of PAS) and can be grouped into four categories:
 

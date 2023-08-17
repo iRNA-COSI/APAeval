@@ -1,9 +1,9 @@
-# Summary workflows
-This is where the summary workflows for APAeval live. The dedicated code for each ***benchmarking event*** resides in its own subdirectory. 
+# Benchmarking workflows
+This is where the benchmarking workflows for APAeval live. The dedicated code for each ***benchmarking event*** resides in its own subdirectory. 
 
 - [Overview](#overview)
-- [Summary workflow general description](#summary-workflow-general-description)
-  - [Directory structure for summary workflow code](#directory-structure-for-summary-workflow-code)
+- [Benchmarking workflow general description](#benchmarking-workflow-general-description)
+  - [Directory structure for benchmarking workflow code](#directory-structure-for-benchmarking-workflow-code)
 - [HOW TO: (File) naming requirements](#how-to-file-naming-requirements)
   - [Challenges](#challenges)
   - [Ground truth files](#ground-truth-files)
@@ -27,19 +27,19 @@ This is where the summary workflows for APAeval live. The dedicated code for eac
 
 APAeval consists of a number of ***benchmarking events*** to evaluate the performance of different tasks that the methods of interest (=***participants***) might be able to perform: **poly(A) site identification, absolute quantification, relative quantification and assessment of their differential usage**. A method can participate in one or several events, depending on its functions.   
 
-Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the ground truth dataset used for performance assessment**. A challenge is evaluated within a ***summary workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently a profile for Slurm is included). The summary workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
+Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the ground truth dataset used for performance assessment**. A challenge is evaluated within a ***benchmarking workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently a profile for Slurm is included). The benchmarking workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
 
-In order to compare the performance of participants within a challenge/event, the respective summary workflow will be run on output files from all eligible participant [method workflows][apaeval-mwfs]. The calculated metrics will be written to `.json` files that can be either submitted to OEB for database storage and online vizualisation, or transformed into a table format that can be used for creating custom plots with the help of scripts from the [APAeval utils directory][apaeval-utils].
+In order to compare the performance of participants within a challenge/event, the respective benchmarking workflow will be run on output files from all eligible participant [method workflows][apaeval-mwfs]. The calculated metrics will be written to `.json` files that can be either submitted to OEB for database storage and online vizualisation, or transformed into a table format that can be used for creating custom plots with the help of scripts from the [APAeval utils directory][apaeval-utils].
 
-## Summary workflow general description
+## Benchmarking workflow general description
 In a first step the provided input files are **validated**. Subsequently, all specified **metrics** are computed, using the matched ground truth files, if applicable. Finally, the **results are gathered** in OEB specific `.json` files per participant.
 Based on the created .json files, results can be vizualized on OEB per challenge, such that performance of participants can be compared for each metric.   
 
-In order to eventually be compatible with the OEB infrastructure, summary workflows are written in Nextflow and are structured in a predefined manner that will be described in the following sections.
+In order to eventually be compatible with the OEB infrastructure, benchmarking workflows are written in Nextflow and are structured in a predefined manner that will be described in the following sections.
 
 > DON'T FREAK OUT IF YOU'RE UNFAMILIAR WITH `NEXTFLOW`! MOST CHANGES YOU'LL MAKE ARE IN `PYTHON`! 😉
 
-### Directory structure for summary workflow code
+### Directory structure for benchmarking workflow code
 ```bash
 summmary_workflows/
     |- JSON_templates/
@@ -77,14 +77,14 @@ Within such a directory we find the `main.nf` and `nextflow.config` files, which
 
 > ATTENTION: Keep `nextflow.config` unchanged (apart from the above mentioned `includeConfig`) within an event, in order to be able to directly compare the different participant runs.    
 
-Within the benchmarking event's directory resides a subdirectory `specification` with a detailed description of required input and output file formats, as well as of the metrics to be calculated for the respective benchmarking event. The *actual code* is hidden in the directory `[benchmarking_event]_dockers`; For each of the three summary workflow steps required by OEB, a separate docker container will be built:
+Within the benchmarking event's directory resides a subdirectory `specification` with a detailed description of required input and output file formats, as well as of the metrics to be calculated for the respective benchmarking event. The *actual code* is hidden in the directory `[benchmarking_event]_dockers`; For each of the three benchmarking workflow steps required by OEB, a separate docker container will be built:
 
 1. Validation
 2. Metrics calculation
 3. Consolidation
 
 
-The "dockers" directories contain Dockerfiles, requirements, and dedicated python scripts. In order to create datasets that are compatible with the [Elixir Benchmarking Data Model][elixir-data-model], the JSON templates in the main `summary_workflows` directory are imported in the respective docker containers. The provided *python scripts*, as well as the module `utils/apaeval` they import, are where the action happens: **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
+The "dockers" directories contain Dockerfiles, requirements, and dedicated python scripts. In order to create datasets that are compatible with the [Elixir Benchmarking Data Model][elixir-data-model], the JSON templates in the main `benchmarking_workflows` directory are imported in the respective docker containers. The provided *python scripts*, as well as the module `utils/apaeval` they import, are where the action happens: **These scripts are where you most likely will have to make adjustments for different benchmarking events**. 
 
 ## HOW TO: (File) naming requirements
 ### Challenges
@@ -116,7 +116,7 @@ where `[PARTICIPANT]` is the unique name of the participant to be tested. If a t
 04 - relative quantification   
 
 ### Metrics
-Metric names MUST be **exactly** the same in the respective `compute_metrics.py` and `aggregation_template_X.json` files of a summary workflow. These metric names will then appear in the result `.json` files of the workflow, and will be appearing on OEB plots after uploading the results there.
+Metric names MUST be **exactly** the same in the respective `compute_metrics.py` and `aggregation_template_X.json` files of a benchmarking workflow. These metric names will then appear in the result `.json` files of the workflow, and will be appearing on OEB plots after uploading the results there.
 
 #### Examples:  
 ```
@@ -126,7 +126,7 @@ percentage_genes_w_correct_nPAS
 
 
 ## HOW TO: DEVELOP
-For an example of a summary workflow and further instructions, refer to the [quantification summary workflow][q-swf].   
+For an example of a benchmarking workflow and further instructions, refer to the [quantification benchmarking workflow][q-swf].   
 ### 1. Copy template
 If not done so already, copy the whole contents of the `quantification` directory into the directory for your new benchmarking event. Specify the objectives of your event by adapting the contents of `specification/` .
 
@@ -146,7 +146,7 @@ The json outputs from the first two steps will be gathered here, and "aggregatio
 In the former you'll have to adjust the docker container names and general workflow parameters, whereas in the latter you'll only have to make changes if you have introduced new workflow parameters (or want to change the wiring of steps, which is not recommended for the sake of attempted OEB compatibility).
 
 ### 6. Don't forget to update `README.md`
-Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification summary workflow][q-swf]).
+Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification benchmarking workflow][q-swf]).
 
 ### 7. Build images
 > ATTENTION: the [apaeval module][apa-module] is installed inside the containers via a git url specified in the respective `requirements.txt` (for [q_validation](quantification/quantification_dockers/q_validation/requirements.txt) and [q_metrics](quantification/quantification_dockers/q_metrics/requirements.txt)). If you made changes to the module, don't forget to push your branch and adjust those urls accordingly.
@@ -174,7 +174,7 @@ Then, you can rebuild the docker image locally (see above).
 
 
 ### 8. Test run
-One can use the following command to run the quantification summary workflow with the provided test files from command line:
+One can use the following command to run the quantification benchmarking workflow with the provided test files from command line:
 ```
 nextflow run main.nf -profile docker -c tool_event.config
 
@@ -185,7 +185,7 @@ nextflow run main.nf -profile slurm -c tool_event.config
 > NOTE: Parameters from the [nextflow.config][nextflow-config] file are read **in addition** to the ones specified with the `-c` flag, but the latter will override any parameters of the same name in the nextflow.config. Don't forget to `includeConfig` the `tool_event.config` in the `nextflow.config`
 
 ## HOW TO: "PRODUCTION"
-When you have completed the steps described above you can finally run the summary workflow on real data. Below are some hints to help you get going.
+When you have completed the steps described above you can finally run the benchmarking workflow on real data. Below are some hints to help you get going.
 
 ### 1. Get input data (= participant output)
 Place the participant output into a directory like `DATA/PARTICIPANT_NAME/` and make sure the files are named like `PARTICIPANT_NAME.CHALLENGE_ID.EVENT.EXT`
@@ -204,7 +204,7 @@ docker push your_docker_repo/q_consolidation:1.0
 > ATTENTION: always make sure you're using up to date versions of the images. More specifically: DO make sure you have removed old local images and/or cleared singularity caches on your system and checked your `nextflow.config`
 
 ## Origin
-The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_workflow][tcga-wf] with the [corresponding docker declarations][tcga-docker]. The structure of output files is compatible with the [ELIXIR Benchmarking Data Model][elixir-data-model]. The current version of the workflow is not compatible with the OEB VRE setup, however, only minor changes should be needed to re-establish compatibility.
+The APAeval OEB benchmarking workflow is an adaptation of the [TCGA_benchmarking_workflow][tcga-wf] with the [corresponding docker declarations][tcga-docker]. The structure of output files is compatible with the [ELIXIR Benchmarking Data Model][elixir-data-model]. The current version of the workflow is not compatible with the OEB VRE setup, however, only minor changes should be needed to re-establish compatibility.
 
 [//]: # (References)
 [apaeval-swfs]: ../images/SWFs.png
