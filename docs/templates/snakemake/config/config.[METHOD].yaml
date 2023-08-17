@@ -6,7 +6,7 @@ samples: "config/[SAMPLES].csv"
 # For development purposes, you can freely choose out_dir.
 # Note that final outputs need to be copied to a global APAeval output directory in the form of "PATH/TO/s3-BUCKET/PARAMCODE/METHOD/"
 out_dir: "results"
-param_code : "PARAMCODE" # find at https://github.com/iRNA-COSI/APAeval/blob/main/summary_workflows/parameter_codes.md
+challenge : "CHALLENGE" # sample_name
 method: "METHOD" # same as the name of the directory
 
 
