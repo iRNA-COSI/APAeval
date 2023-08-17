@@ -16,7 +16,7 @@ Read this section, but do NOT include it your final README.
 >     * Test your code with [snakemake --lint](https://snakemake.readthedocs.io/en/stable/snakefiles/writing_snakefiles.html#best-practices).
 >     * One (shell) command per rule.
 >     * If samples differ in a meaningful way (e.g. single end and paired end samples), it might be better to write subworkflows within `workflow/rules`.
->     * Each rule has it's own [Docker container](https://www.docker.com/resources/what-container). All containers should be pushed to the [APAeval team Dockerhub](https://hub.docker.com/u/apaeval)
+>     * Each rule has it's own [Docker container](https://www.docker.com/resources/what-container). All containers should be pushed to [biocontainers](https://biocontainers-edu.readthedocs.io/en/latest/index.html)
 > * There are some shell scripts which can be used to start a snakemake run. Adjust the name of the `config file` in following scripts:
 >     * `dryrun.sh`
 >     * `rulegraph.sh` (Also adjust name of output `.png`)

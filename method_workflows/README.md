@@ -102,17 +102,16 @@ Here are some pointers on how to best approach the containerization:
 
 1. Check if your participant (or other tool) is already available as a Docker container, e.g. at
    - [dockerhub][dockerhub]
-   - [biocontainers][biocontainers]
+   - [biocontainers][biocontainers-registry]
    - google for `[TOOL_NAME] Docker`  or `[TOOL_NAME] Dockerfile`
 
 
 2. If no Docker image is availabe for your tool
-   - build one from a Dockerfile. There are thousands of Docker tutorials, for example [here][docker-tutorial]. An example of a Dockerfile in APAeval you can find [here][dockerfile].
-   - once you've successfully built your image locally, you should push the corresponding (*tested*) `Dockerfile` to your branch on the APAeval repo. In order to then get your image to our dockerhub account, please make yourself heard in our slack space and [Alex][docker-contact-alex] or [Yuk Kei][docker-contact-yukkei] will help you.
+   - create a container on [BioContainers][biocontainers] via either a [bioconda][bioconda] recipe or a Dockerfile
    - naming conventions: 
         - if your container only contains one tool:
         `apaeval/{tool_name}:{tool_version}`, e.g. `apaeval/my_tool:v1.0.0`
-        - if you combine all tools required for your workflow: `apaeval/exwf_{participant_name}:{commit_hash}`, where `commit_hash` is the short SHA of the Git commit in the APAeval repo that last modified the corresponding Dockerfile, e.g., 65132f2
+        - if you combine all tools required for your workflow: `apaeval/mwf_{participant_name}:{commit_hash}`, where `commit_hash` is the short SHA of the Git commit in the APAeval repo that last modified the corresponding Dockerfile, e.g., 65132f2
 
 3. Now you just have to specify the docker image(s) in your method workflow:
     - For [nextflow][nf-docker], the individual containers can be specified in the processes.
@@ -161,6 +160,9 @@ For the codes please refer to the following documents:
 
 [apaeval-conda]: ../README.md#apaeval-conda-environment
 [apaeval-mwfs]: ../images/method_WFs.png 
+[bioconda]: <https://bioconda.github.io/index.html>
+[biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
+[biocontainers-registry]: <https://biocontainers.pro/registry>
 [conda]: <https://docs.conda.io/en/latest/>  
 [docker]: <https://www.docker.com/>
 [docker-contact-alex]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01PEJ5TW4V>
@@ -168,7 +170,6 @@ For the codes please refer to the following documents:
 [dockerhub]: <https://hub.docker.com/>
 [dockerfile]: ../docs/templates/snakemake/workflow/envs/[METHOD].Dockerfile
 [docker-tutorial]: <https://stackify.com/docker-build-a-beginners-guide-to-building-docker-images/>
-[biocontainers]: <https://biocontainers.pro/registry>
 [nf]: <https://www.nextflow.io/>
 [nf-docker]: <https://www.nextflow.io/docs/latest/docker.html#multiple-containers.>
 [nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>

@@ -23,7 +23,7 @@ Refer to the [specifications][out-specs].
 
 ## Check that steps to run methods/pre-processing are wrapped in Dockerfiles
 
-- Should be uploaded to apaeval team Dockerhub, not on personal accounts 
+- Should be uploaded to [biocontainers][biocontainers], not on personal accounts 
 (see [method workflow README on Containers][mwf-readme-container])
 
 
@@ -45,5 +45,6 @@ Refer to the [specifications][out-specs].
 
 [//]: # (References)
 
-[out-specs]: ./method_workflow_file_specification.md
+[biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
+[out-specs]: ./method_workflow_file_specifications.md
 [mwf-readme-container]: ./README#containers

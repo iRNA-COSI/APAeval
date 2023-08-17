@@ -171,7 +171,7 @@ docker image ls #look for the IMAGE_ID of your docker image
 docker rmi [IMAGE_ID]
 ```
 Then, you can rebuild the docker image locally (see above).
-> NOTE: please don't push to APAeval docker hub unless sanctioned by APAeval admins (ask us on Slack)
+
 
 ### 8. Test run
 One can use the following command to run the quantification summary workflow with the provided test files from command line:
@@ -194,7 +194,7 @@ Place the participant output into a directory like `DATA/PARTICIPANT_NAME/` and 
 You're going to run the workflow for one participant at a time, but you can specify multiple challenges for that participant. To do so, create a participant specific `[participant]_[event].config` (copy `tool_event.config`). There you'll specify input files and challenge names. ***Don't forget to set your new config's name at the top of `nextflow.config` (directive `includeConfig`).***
 
 ### 3. Containers & images
-Make sure you have the images appropriate for your system ready. If you're running docker you can use the images you built locally in the [HOW TO: DEVELOP](#7-build-containers) section. If you want to use singularity you'll first have to push those images to a publicly accessible repo, e.g. dockerhub. Make sure to rename the images (see bash command below) and adjust the paths in the `nextflow.config` accordingly.
+Make sure you have the images appropriate for your system ready. If you're running docker you can use the images you built locally in the [HOW TO: DEVELOP](#7-build-containers) section. If you want to use singularity you'll first have to push those images to a publicly accessible repo, ideally [biocontainers][biocontainers]. Make sure to rename the images (see bash command below) and adjust the paths in the `nextflow.config` accordingly.
 
 ```bash
 docker tag apaeval/q_consolidation:1.0 your_docker_repo/q_consolidation:1.0
@@ -211,6 +211,7 @@ The APAeval OEB summary workflow is an adaptation of the [TCGA_benchmarking_work
 [apaeval-mwfs]: ../method_workflows
 [apaeval-utils]: https://github.com/iRNA-COSI/APAeval/tree/main/utils
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
+[biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
 [elixir-data-model]: https://github.com/inab/benchmarking-data-model
 [metrics-py]:quantification/quantification_dockers/q_metrics/compute_metrics.py
 [apa-module]: https://github.com/iRNA-COSI/APAeval/tree/main/utils/apaeval
