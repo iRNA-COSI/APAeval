@@ -3,7 +3,7 @@
 *OpenEBench/iRNA COSI APAeval benchmarking **Docker declarations** for the **quantification** benchmarking event; to be used with the [OEB compatible Nextflow benchmarking workflow][main-nf]*.
 ___
 
-This README is a brief recap of the three OEB benchmarking workflow steps that are computed in their individual containers. For a general introduction to **APAeval benchmarking workflows** see [the main benchmarking workflow `README.md`][readme-swf]. For a more detailed description of the APAeval **quantification** benchmarking workflow see [the quantification benchmarking workflow `README.md`][readme-qbwf].
+This README is a brief recap of the three OEB benchmarking workflow steps that are computed in their individual containers. For a general introduction to **APAeval benchmarking workflows** see [the main benchmarking workflow `README.md`][readme-bwf]. For a more detailed description of the APAeval **quantification** benchmarking workflow see [the quantification benchmarking workflow `README.md`][readme-qbwf].
 
 
 >**NOTE for developers:**    

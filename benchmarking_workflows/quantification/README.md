@@ -3,7 +3,7 @@
 *OpenEBench compatible Nextflow workflow for assessment of a bioinformatics tool's performance in **quantifying poly(A) site usage** from RNA-seq data*
 ___
 
-This README describes the APAeval **(absolute) quantification** benchmarking workflow. For a more general introduction to benchmarking workflows see [the main benchmarking workflow `README.md`][readme-swf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
+This README describes the APAeval **(absolute) quantification** benchmarking workflow. For a more general introduction to benchmarking workflows see [the main benchmarking workflow `README.md`][readme-bwf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].
 
 - [(File) naming requirements](#file-naming-requirements)
 - [Description of steps](#description-of-steps)
@@ -12,7 +12,7 @@ This README describes the APAeval **(absolute) quantification** benchmarking wor
   - [3. Results Consolidation](#3-results-consolidation)
 - [Usage](#usage)
 ## (File) naming requirements
-See description in [the main benchmarking workflow `README.md`][readme-swf-naming].
+See description in [the main benchmarking workflow `README.md`][readme-bwf-naming].
 ## Description of steps
 ### 1. Validation
 - `input_file`: output file from method workflow in bed6 format

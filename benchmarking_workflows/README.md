@@ -23,7 +23,7 @@ This is where the benchmarking workflows for APAeval live. The dedicated code fo
   - [3. Containers & images](#3-containers--images)
 - [Origin](#origin)
 ## Overview
-![apaeval-swfs][apaeval-swfs]
+![apaeval-bwfs][apaeval-bwfs]
 
 APAeval consists of a number of ***benchmarking events*** to evaluate the performance of different tasks that the methods of interest (=***participants***) might be able to perform: **poly(A) site identification, absolute quantification, relative quantification and assessment of their differential usage**. A method can participate in one or several events, depending on its functions.   
 
@@ -126,7 +126,7 @@ percentage_genes_w_correct_nPAS
 
 
 ## HOW TO: DEVELOP
-For an example of a benchmarking workflow and further instructions, refer to the [quantification benchmarking workflow][q-swf].   
+For an example of a benchmarking workflow and further instructions, refer to the [quantification benchmarking workflow][q-bwf].   
 ### 1. Copy template
 If not done so already, copy the whole contents of the `quantification` directory into the directory for your new benchmarking event. Specify the objectives of your event by adapting the contents of `specification/` .
 
@@ -146,7 +146,7 @@ The json outputs from the first two steps will be gathered here, and "aggregatio
 In the former you'll have to adjust the docker container names and general workflow parameters, whereas in the latter you'll only have to make changes if you have introduced new workflow parameters (or want to change the wiring of steps, which is not recommended for the sake of attempted OEB compatibility).
 
 ### 6. Don't forget to update `README.md`
-Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification benchmarking workflow][q-swf]).
+Describe the type of validation and metric calculation you perform in the `README.md` in your benchmarking event directory (see [example from quantification benchmarking workflow][q-bwf]).
 
 ### 7. Build images
 > ATTENTION: the [apaeval module][apa-module] is installed inside the containers via a git url specified in the respective `requirements.txt` (for [q_validation](quantification/quantification_dockers/q_validation/requirements.txt) and [q_metrics](quantification/quantification_dockers/q_metrics/requirements.txt)). If you made changes to the module, don't forget to push your branch and adjust those urls accordingly.
@@ -207,7 +207,7 @@ docker push your_docker_repo/q_consolidation:1.0
 The APAeval OEB benchmarking workflow is an adaptation of the [TCGA_benchmarking_workflow][tcga-wf] with the [corresponding docker declarations][tcga-docker]. The structure of output files is compatible with the [ELIXIR Benchmarking Data Model][elixir-data-model]. The current version of the workflow is not compatible with the OEB VRE setup, however, only minor changes should be needed to re-establish compatibility.
 
 [//]: # (References)
-[apaeval-swfs]: ../images/SWFs.png
+[apaeval-bwfs]: ../images/bwfs.png
 [apaeval-mwfs]: ../method_workflows
 [apaeval-utils]: https://github.com/iRNA-COSI/APAeval/tree/main/utils
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
@@ -217,7 +217,7 @@ The APAeval OEB benchmarking workflow is an adaptation of the [TCGA_benchmarking
 [apa-module]: https://github.com/iRNA-COSI/APAeval/tree/main/utils/apaeval
 [oeb]: <https://openebench.bsc.es/>
 [nextflow-config]: quantification/nextflow.config
-[q-swf]: quantification/README.md
+[q-bwf]: quantification/README.md
 [tcga-wf]: https://github.com/inab/TCGA_benchmarking_workflow
 [tcga-docker]: https://github.com/inab/TCGA_benchmarking_dockers
 [tool-event-config]:quantification/tool_event.config

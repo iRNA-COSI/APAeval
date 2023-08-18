@@ -66,7 +66,7 @@ You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get
 ### Benchmark a new method
 Have you developed a new computational method for investigating APA from RNA-seq data? Or are you interested in one of the tools we haven't managed to include in APAeval yet? We'd be very happy if you decided to contribute to APAeval!
 
-In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [method workflow][apaeval-mwf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-swfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
+In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [method workflow][apaeval-mwf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-bwfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
 
 ### Extend APAeval's benchmarks
 One of the main goals of APAeval is to provide *extensible* benchmarking, such that new tools, new challenges or new metrics can be added at any time. Therefore we warmly welcome any contribution to the project. A good starting point would be to visit our [issue][issues] and [discussion][discussions] boards. The latter one is also the place where you can reach out to us and request we add you to the repo. You can then take on an existing task, suggest a new one, or start a discussion. 
@@ -165,7 +165,7 @@ If you would like to contribute to APAeval or have any questions, we'd be happy 
 [apa-eval-overview]: images/overview.png
 [apaeval-mwf-readme]: ./method_workflows/README.md
 [apaeval-specs]: ./method_workflows/method_workflow_file_specifications.md
-[apaeval-swfs]: ./benchmarking_workflows/README.md
+[apaeval-bwfs]: ./benchmarking_workflows/README.md
 [apaeval-zenodo]: <>
 [bsc]: <https://www.bsc.es/>
 [coc-local]: CODE_OF_CONDUCT.md
