@@ -1,2 +1,0 @@
-name	realtime	peak_vmem
-AVERAGE	2251s	7.9 GB
