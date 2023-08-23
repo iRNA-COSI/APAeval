@@ -41,7 +41,7 @@ In order to eventually be compatible with the OEB infrastructure, benchmarking w
 
 ### Directory structure for benchmarking workflow code
 ```bash
-summmary_workflows/
+benchmarking_workflows/
     |- JSON_templates/
     |- [benchmarking_event]/
         |- main.nf
@@ -73,9 +73,9 @@ utils/
         |-  src/apaeval/main.py       
 ```
 
-Within such a directory we find the `main.nf` and `nextflow.config` files, which specify the workflow and all its event-specific parameters, respectively, as well as a `[participant]_[event].config `, which contains the input file- and challenge names for a particular participant. `main.nf` ideally does NOT have to be changed (at least not much) between benchmarking events, as it simply connects the three steps `validation`, `metrics_computation` and `consolidation` inherent to the OEB workflow structure. In contrast, file and tool names have to be adapted in `[participant]_[event].config ` for dedicated workflow runs. The name of `[participant]_[event].config` also has to be specified in `nextflow.config` at the top under `includeConfig`, and finally `nextflow.config` is the place to change additional parameters if necessary.
+Within such a directory we find the `main.nf` and `nextflow.config` files, which specify the workflow and all its event-specific parameters, respectively, as well as a `[participant]_[event].config `, which contains the input file- and challenge names for a particular participant. `main.nf` ideally does NOT have to be changed (at least not much) between benchmarking events, as it simply connects the three steps `validation`, `metrics_computation` and `consolidation` inherent to the OEB workflow structure. In contrast, file and tool names have to be adapted in `[participant]_[event].config ` for dedicated workflow runs.
 
-> ATTENTION: Keep `nextflow.config` unchanged (apart from the above mentioned `includeConfig`) within an event, in order to be able to directly compare the different participant runs.    
+> ATTENTION: Keep `nextflow.config` unchanged within an event, in order to be able to directly compare the different participant runs.    
 
 Within the benchmarking event's directory resides a subdirectory `specification` with a detailed description of required input and output file formats, as well as of the metrics to be calculated for the respective benchmarking event. The *actual code* is hidden in the directory `[benchmarking_event]_dockers`; For each of the three benchmarking workflow steps required by OEB, a separate docker container will be built:
 
@@ -174,15 +174,16 @@ Then, you can rebuild the docker image locally (see above).
 
 
 ### 8. Test run
-One can use the following command to run the quantification benchmarking workflow with the provided test files from command line:
+After having activated the [APAeval conda environment][apaeval-conda-env]
+you can use the following command to run the quantification benchmarking workflow with the provided test files from command line:
 ```
-nextflow run main.nf -profile docker -c tool_event.config
+nextflow run main.nf -profile docker -c tool_event.config --participant_id tool1
 
 # Or for running with singularity and slurm:
-nextflow run main.nf -profile slurm -c tool_event.config
+nextflow run main.nf -profile slurm -c tool_event.config --participant_id tool1
 
 ```
-> NOTE: Parameters from the [nextflow.config][nextflow-config] file are read **in addition** to the ones specified with the `-c` flag, but the latter will override any parameters of the same name in the nextflow.config. Don't forget to `includeConfig` the `tool_event.config` in the `nextflow.config`
+> NOTE: Parameters from the [nextflow.config][nextflow-config] file are read **in addition** to the ones specified with the `-c` flag, but the latter will override any parameters of the same name in the nextflow.config. Set the `participant_id` directly with `--participant_id TOOL`
 
 ## HOW TO: "PRODUCTION"
 When you have completed the steps described above you can finally run the benchmarking workflow on real data. Below are some hints to help you get going.
@@ -191,7 +192,7 @@ When you have completed the steps described above you can finally run the benchm
 Place the participant output into a directory like `DATA/PARTICIPANT_NAME/` and make sure the files are named like `PARTICIPANT_NAME.CHALLENGE_ID.EVENT.EXT`
 
 ### 2. Adapt configs
-You're going to run the workflow for one participant at a time, but you can specify multiple challenges for that participant. To do so, create a participant specific `[participant]_[event].config` (copy `tool_event.config`). There you'll specify input files and challenge names. ***Don't forget to set your new config's name at the top of `nextflow.config` (directive `includeConfig`).***
+You're going to run the workflow for one participant at a time, but you can specify multiple challenges for that participant. To do so, create a participant specific `[participant]_[event].config` (copy `tool_event.config`). There you'll specify input files and challenge names.
 
 ### 3. Containers & images
 Make sure you have the images appropriate for your system ready. If you're running docker you can use the images you built locally in the [HOW TO: DEVELOP](#7-build-containers) section. If you want to use singularity you'll first have to push those images to a publicly accessible repo, ideally [biocontainers][biocontainers]. Make sure to rename the images (see bash command below) and adjust the paths in the `nextflow.config` accordingly.
@@ -203,11 +204,22 @@ docker push your_docker_repo/q_consolidation:1.0
 
 > ATTENTION: always make sure you're using up to date versions of the images. More specifically: DO make sure you have removed old local images and/or cleared singularity caches on your system and checked your `nextflow.config`
 
+### 4. Run
+After having activated the [APAeval conda environment][apaeval-conda-env], from the root directory of your benchmarking event, you can use the following command to run a benchmarking workflow:
+```
+nextflow -bg run main.nf -profile docker -c [TOOL]_[EVENT].config --participant_id [TOOL] >> stdout_err_[TOOL]_[EVENT].log 2>&1
+
+# Or for running with singularity and slurm:
+nextflow -bg run main.nf -profile slurm -c [TOOL]_[EVENT].config --participant_id [TOOL] >> stdout_err_[TOOL]_[EVENT].log 2>&1
+
+```
+
 ## Origin
 The APAeval OEB benchmarking workflow is an adaptation of the [TCGA_benchmarking_workflow][tcga-wf] with the [corresponding docker declarations][tcga-docker]. The structure of output files is compatible with the [ELIXIR Benchmarking Data Model][elixir-data-model]. The current version of the workflow is not compatible with the OEB VRE setup, however, only minor changes should be needed to re-establish compatibility.
 
 [//]: # (References)
 [apaeval-bwfs]: ../images/bwfs.png
+[apaeval-conda-env]: ../README.md#apaeval-conda-environment
 [apaeval-mwfs]: ../method_workflows
 [apaeval-utils]: https://github.com/iRNA-COSI/APAeval/tree/main/utils
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
