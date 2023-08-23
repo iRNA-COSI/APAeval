@@ -22,7 +22,7 @@ Read this section, but do NOT include it your final README.
 >     * `rulegraph.sh` (Also adjust name of output `.png`)
 >     * `run_local.sh`
 >     * Both `dryrun.sh` and `rulegraph.sh` will execute successfully with the current template.
-> * Check out the pilot benchmark at `tests/pilot_benchmark/snakemake` for a running example. It illustrates how the execution workflow can look in practice.
+> * Check out our [DaPars2 pipeline][dapars2-mwf] for a running example. It illustrates how the execution workflow can look in practice.
 > * Adjust this `README.md`: Delete this description section and populate the sections below with your awesome experience ;)
 
 # [METHOD] {Method name as specified in Algorithm table.}
@@ -58,3 +58,5 @@ Note: A single sample table format should be sufficient for all workflows (diffe
 {Notes about the METHOD.
 e.g. Did you have to adjust the method's source code/recommended running instructions?
 }
+
+[dapars2-mwf]: ../../../method_workflows/DaPars2/Dapars2_snakemake/README.md

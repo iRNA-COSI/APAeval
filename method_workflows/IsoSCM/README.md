@@ -72,14 +72,14 @@ Parameters relevant to the workflow itself are:
 - Change `identification_out_suffix` parameter in conf/modules.config to the desired file name that ends with `.bed`
 - Change the `output_dir` to the desired directory name under IsoSCM/results/isoscm the identification challenge output will be in  
 - An example sample sheet is samplesheet_example_files.csv.
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- Run the nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ### Running the relative usage quantification workflow
 - Set `run_relative_usage_quantification` parameter in conf/modules.config to `true`
 - Change `relative_usage_quantifciation_out_suffix` parameter in conf/modules.config to the desired file name that ends with `.bed`
 - Change the `output_dir` to the desired directory name under IsoSCM/results/isoscm the relative usage quantification challenge output will be in  
 - An example sample sheet is samplesheet_example_files.csv.
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- Run the nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ## Output & post-processing
 By default, each IsoSCM run results in an identification challenge file located under IsoSCM/results/isoscm/challenges_outputs/[sample]_identification_output.bed

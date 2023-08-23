@@ -76,7 +76,7 @@ Parameters relevant to the workflow itself are:
 - Change 'differential_out' parameter in conf/modules.config to the desired file name that ends with '.tsv'
 - Ensure the sample sheet contains exactly two distinct conditions in the condition column and at least two replicates per condition. An example input file
   is samplesheet_example_files.csv
-- Run the pilot benchmark nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
+- Run the nextflow pipeline with nextflow main.nf --input samplesheet_example_files.csv
 
 ## Output & post-processing
 CSI-UTR identification run results in a file located under CSi-UTR/results/csi_utr/[output_dir]/[sample_name]_[identification_out_suffix]

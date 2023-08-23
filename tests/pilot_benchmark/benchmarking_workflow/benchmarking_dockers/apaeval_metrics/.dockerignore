@@ -1,5 +1,0 @@
-.p*
-.env*
-*.pyc
-sample*
-**/__pycache__

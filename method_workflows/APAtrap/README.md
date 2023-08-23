@@ -79,7 +79,7 @@ We have seen that APAtrap uses a lot of memory when running big datasets. As suc
 Because of the amount of memory and time needed for APAtrap to run, we have to split samples by chromosome so that the workflow could complete in a reasonable amount of time. Even then, each process required around 20G. When tuning workflow resources, this should be kept in mind in case the workflow stops from memory or run time related errors.
  
 ### Running the workflow
-Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
+Once parameters have been set in conf/modules.config file, run the nextflow pipeline with 
 `nextflow main.nf --input samplesheet_example_files.csv`. 
 
 Note that it's recommended to delete the existing `results` folder to remove results from the previous run, if any. 

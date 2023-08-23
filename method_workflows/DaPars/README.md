@@ -73,7 +73,7 @@ Parameters relevant to the workflow itself are:
 - Every sample (every row) in the sample sheet will run through the relative usage quantification workflow
 
 ### Running the workflow
-Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with
+Once parameters have been set in conf/modules.config file, run the nextflow pipeline with
 `nextflow main.nf --input samplesheet_example_files.csv`.
 
 ## Output & post-processing

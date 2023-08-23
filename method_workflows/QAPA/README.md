@@ -37,7 +37,7 @@ Notes on `--polyabed` and `--run_qapa_build`:
 2. If providing pre-generated QAPA annotations, please pass both GTF (`--gtf`) and poly(A) BED file (`--polyabed`) only (DON"T pass the `--run_qapa_build` flag)
 
 ### Running the workflow
-The QAPA workflow only does quantification. Once parameters have been set in conf/modules.config file, run the pilot benchmark nextflow pipeline with 
+The QAPA workflow only does quantification. Once parameters have been set in conf/modules.config file, run the nextflow pipeline with 
 ```
 nextflow main.nf --input samplesheet_example_files.csv` --gtf <path_to_gtf> --polyabed <path_to_poly(A)_bed> --fasta <path_to_fasta> --run_qapa_build -profile [docker/singularity]
 ```

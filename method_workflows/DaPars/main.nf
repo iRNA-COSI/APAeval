@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 /*
 ========================================================================================
-                         PILOT BENCHMARK PIPELINE RUNNING DAPARS
+                         APAEVAL NEXTFLOW PIPELINE RUNNING DAPARS
 ========================================================================================
 */
 
