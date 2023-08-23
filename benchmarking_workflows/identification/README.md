@@ -1,6 +1,6 @@
 # APAeval Identification
 
-*OpenEBench compatible Nextflow workflow for assessment of a bioinformatics tool's performance in **identifying poly(A) sites** from RNA-seq data*
+*OpenEBench based Nextflow workflow for assessment of a bioinformatics tool's performance in **identifying poly(A) sites** from RNA-seq data*
 ___
 
 This README describes the APAeval **identification** benchmarking workflow. For a more general introduction to benchmarking workflows see [the main benchmarking workflow `README.md`][readme-bwf]. For the specification of metrics, in- and output file formats, see [the identification benchmarks specification][i-spec].

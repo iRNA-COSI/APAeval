@@ -1,6 +1,6 @@
 # APAeval Quantification
 
-*OpenEBench compatible Nextflow workflow for assessment of a bioinformatics tool's performance in **quantifying poly(A) site usage** from RNA-seq data*
+*OpenEBench based Nextflow workflow for assessment of a bioinformatics tool's performance in **quantifying poly(A) site usage** from RNA-seq data*
 ___
 
 This README describes the APAeval **(absolute) quantification** benchmarking workflow. For a more general introduction to benchmarking workflows see [the main benchmarking workflow `README.md`][readme-bwf]. For the specification of metrics, in- and output file formats, see [the quantification benchmarks specification][q-spec].

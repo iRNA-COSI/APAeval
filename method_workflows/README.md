@@ -4,7 +4,7 @@ This is where the workflows for running APAeval participants (= "method workflow
 
 <!-- TOC -->
 
-- [Benchmarking Participants bioinformatic methods](#benchmarking-participants-bioinformatic-methods)
+- [Benchmarking Participants](#benchmarking-participants)
 - [Overview](#overview)
 - [More details](#more-details)
 - [Templates](#templates)
@@ -19,7 +19,7 @@ This is where the workflows for running APAeval participants (= "method workflow
 
 <!-- /TOC -->
 
-## Benchmarking Participants (bioinformatic methods)
+## Benchmarking Participants
 List of bioinformatic methods benchmarked in APAeval. Please update columns as the method workflows progress.
 
 | Method | Citation | Type | Status in APAeval | Benchmarked | OpenEBench link |
@@ -51,7 +51,7 @@ _Method workflows_ contain all steps that need to be run _per method_ (in OEB te
 ![method_workflows][apaeval-mwfs]
 
 ## More details
-1. **Sanctioned input files**: Each of the processed input data APAeval is using for their challenges is provided as .bam file (For ease of use, as some participants require .fastq input, we also provide a .fastq file reconstructed from the processed .bam files). If participants need other file formats, these HAVE TO be created as part of the pre-processing **within** method workflows (see 2.). Similarly, for each dataset we provide a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS. All other annotation formats that might be needed HAVE TO be created from those. Non-sanctioned annotation- or similar auxiliary files MUST NOT be downloaded as part of the method workflows, in order to ensure comparability of all participants’ performance.  
+1. **Sanctioned input files**: Each of the processed input data APAeval is using for their challenges is provided as .bam file (see [specifications for file formats][spec-doc]). If participants need other file formats, these HAVE TO be created as part of the pre-processing **within** method workflows (see 2.). Similarly, for each dataset we provide a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS. All other annotation formats that might be needed HAVE TO be created from those. Non-sanctioned annotation- or similar auxiliary files MUST NOT be downloaded as part of the method workflows, in order to ensure comparability of all participants’ performance.  
 
 > As several method workflows might have to do the same pre-processing tasks, we created a [utils][utils] directory, where scripts (which have their corresponding docker images uploaded to the APAeval dockerhub) are stored. Please check the [utils][utils] directory before writing your own conversion scripts, and/or add your pre-processing scripts to the utils directory if you think others might be able to re-use them.
 
@@ -94,7 +94,7 @@ method_workflows/
 ```
 
 ## Containers
-For the sake of reproducibility and interoperability, we require the use of docker containers in our method workflows. The participants to be benchmarked have to be available in a container, but also any other tools that are used for pre- or post-processing in a method workflow should be containerized. Whether you get individual containers for all the tools of your workflow, or combine them inside one container is up to you (The former being the more flexible option of course).
+For the sake of reproducibility and interoperability, we require the use of [Docker][docker] containers in our method workflows. The participants to be benchmarked have to be available in a container, but also any other tools that are used for pre- or post-processing in a method workflow should be containerized. Whether you get individual containers for all the tools of your workflow, or combine them inside one container is up to you (The former being the more flexible option of course).
 
 > IMPORTANT: Do check out the [utils directory][utils] before you work on containers for pre- or post-processing tools, maybe someone already did the same thing. If not, and you're gonna build useful containers, don't forget to add them there as well.
 
@@ -118,7 +118,7 @@ Here are some pointers on how to best approach the containerization:
     - For [Snakemake][smk-docker], the individual containers can be specified per rule.
 ## Input
 ### Test data
-For more information about input files, see ["sanctioned input files"](#more-details) above. For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam` and/or `.gtf` files as input to your workflow (For participants that require fastq input we also provide a `.fastq.gz`, but using the `.bam` file should be preferred). The `.bed` file serves as an example for a ground truth file. As long as the `test_data` directory doesn't contain a "poly(A) sites database file", which some methods will require, you should also use the `.bed` file for testing purposes.
+For more information about input files, see ["sanctioned input files"](#more-details) above. For development and debugging you can use the small [test input dataset][test-data] we provide with this repository. You should use the `.bam` and/or `.gtf` files as input to your workflow. The `.bed` file serves as an example for a ground truth file. As long as the `test_data` directory doesn't contain a "poly(A) sites database file", which some methods will require, you should also use the `.bed` file for testing purposes.
 
 ### Parameters 
 Both [snakemake template][snakemake-template] and [nextflow template][nextflow-template-dsl2] contain example `sample.csv` files. Here you'd fill in the paths to the samples you'd be running, and any other *sample specific* information required by the workflow you're implementing. Thus, you can/must adapt the fields of this `samples.csv` according to your workflow's requirements.   
@@ -142,7 +142,7 @@ This directory *must* contain:
 - `logs/` directory with all log files created by the workflow exeuction.
 
 ### Formats
-File formats for the 3 benchmarking events are described in the [output specification][spec-doc] which also contains the `OUTCODE` (01 - Identification, 02 - Quantification, 03 - Differential expression) needed for correct naming.
+File formats for the 3 benchmarking events are described in the [output specification][spec-doc] which also contains the `OUTCODE` (01 - Identification, 02 - absolute Quantification, 04 - relative Quantification) needed for correct naming.
 ### Filenames
 > As mentioned [above](#parameters) it is best to parameterize filenames, such that for each run the names and codes can be set by changing only the sample sheet and config file!
 
