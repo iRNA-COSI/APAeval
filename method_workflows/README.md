@@ -1,6 +1,6 @@
 # Method workflows
 This is where the workflows for running APAeval participants (= "method workflows") live. 
-> NOTE: The following sections give in depth instructions on how to create new APAeval method workflows. If you're looking for instructions on how to run an existing workflow for one of our benchmarked methods, please refer to the `README.md` in the respective directory. In any case, make sure you have the [APAeval conda environment][apaeval-conda] set up and running.
+> NOTE: The following sections give in depth instructions on how to create new APAeval method workflows. If you're looking for instructions on how to run an existing workflow for one of our benchmarked methods, please refer to the `README.md` in the respective directory. You can find quick links to those directories in the [participant overview table](#benchmarking-participants) below. In any case, make sure you have the [APAeval conda environment][apaeval-conda] set up and running.
 
 <!-- TOC -->
 
