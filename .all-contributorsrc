@@ -369,6 +369,17 @@
         "maintenance",
         "review"
       ]
+    },
+    {
+      "login": "jmfernandez",
+      "name": "José María Fernández",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2072150?v=4",
+      "profile": "https://github.com/jmfernandez",
+      "contributions": [
+        "ideas",
+        "infra",
+        "mentoring"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -376,5 +387,7 @@
   "projectOwner": "iRNA-COSI",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
