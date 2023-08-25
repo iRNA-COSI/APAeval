@@ -68,8 +68,7 @@ In general, all relevant participant parameters should be configurable in the wo
 
 _Method workflows_ should be implemented in either [Nexflow][nf] or
 [Snakemake][snakemake], and individual steps should be isolated through the
-use of either [Conda][conda] virtual environments or
-[Docker][docker]/[Singularity][singularity] containers. For more information on how to create these containers, see section [containers](#containers).
+use of containers. For more information on how to create these containers, see section [containers](#containers).
 
 ## Templates
 To implement a method workflow for a participant, copy either the [snakemake template][snakemake-template] 
@@ -127,7 +126,7 @@ Moreover, both workflow languages require additional information in `config` fil
 
 >**Important notes:**   
 >* Describe in your README extensively where parameters (sample info, participant specific parameters) have to be specified for a new run of the pipeline.
->* Describe in the README if your participant has different run modes, or parameter settings that might alter the participant's performance considerably. In such a case you should suggest that the different modes should be treated in APAeval as entirely *distinct participants*. Please raise such considerations in our slack space.
+>* Describe in the README if your participant has different run modes, or parameter settings that might alter the participant's performance considerably. In such a case you should suggest that the different modes should be treated in APAeval as entirely *distinct participants*. Feel free to start discussions about this in our [Github discussions board][apaeval-discussions]
 >* Parameterize your code as much as possible, so that the user will only have to change the sample sheet and config file, and *not the code*. E.g. output file paths should be built from information the user has filled into the sample sheet or config file.
 >* For information on how files need to be named see [below](#output)!
 
@@ -142,24 +141,26 @@ This directory *must* contain:
 - `logs/` directory with all log files created by the workflow exeuction.
 
 ### Formats
-File formats for the 3 benchmarking events are described in the [output specification][spec-doc] which also contains the `OUTCODE` (01 - Identification, 02 - absolute Quantification, 04 - relative Quantification) needed for correct naming.
+File formats for the 3 benchmarking events are described in the [output specification][spec-doc].
 ### Filenames
 > As mentioned [above](#parameters) it is best to parameterize filenames, such that for each run the names and codes can be set by changing only the sample sheet and config file!
 
 File names **must** adhere to the following schema: `PARTICIPANT.CHALLENGE.OUTCODE.ext`   
 For the codes please refer to the following documents:   
 - PARTICIPANT: same as directory name in [`method_workflows`][participant]
-- CHALLENGE: `sample_name` in [`challenge_data_summary.pdf`][challenges]
+- CHALLENGE: `sample_name` in [APAeval Zenodo snapshot][apaeval-zenodo]
 - OUTCODE: in [`method_workflow_file_specification.md`][spec-doc]
 
 **Example:**   
- `Identification_01/MISO/MISO.P19_siControl_R1.01.bed` would be the output of MISO (your participant) for the identification benchmarking event (OUTCODE 01, we know that from [`method_workflow_file_specification.md`][spec-doc]), run on dataset "P19_siControl_R1" (exact name as `sample_name` in [`challenge_data_summary.pdf`][challenges])
+ `Identification_01/MISO/MISO.P19_siControl_R1.01.bed` would be the output of MISO (your participant) for the identification benchmarking event (OUTCODE 01, we know that from [`method_workflow_file_specification.md`][spec-doc]), run on dataset "P19_siControl_R1" (exact name as `sample_name` in [APAeval Zenodo snapshot][apaeval-zenodo])
 
 
 [//]: # (References)
 
 [apaeval-conda]: ../README.md#apaeval-conda-environment
+[apaeval-discussions]: <https://github.com/iRNA-COSI/APAeval/discussions>
 [apaeval-mwfs]: ../images/method_WFs.png 
+[apaeval-zenodo]: <>  
 [bioconda]: <https://bioconda.github.io/index.html>
 [biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
 [biocontainers-registry]: <https://biocontainers.pro/registry>
@@ -172,14 +173,13 @@ For the codes please refer to the following documents:
 [docker-tutorial]: <https://stackify.com/docker-build-a-beginners-guide-to-building-docker-images/>
 [nf]: <https://www.nextflow.io/>
 [nf-docker]: <https://www.nextflow.io/docs/latest/docker.html#multiple-containers.>
-[nextflow-template-dsl1]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl1>
-[nextflow-template-dsl2]: <https://github.com/iRNA-COSI/APAeval/tree/main/docs/templates/nextflow_dsl2>
+[nextflow-template-dsl1]: ../docs/templates/nextflow_dsl1
+[nextflow-template-dsl2]: ../docs/templates/nextflow_dsl2
 [spec-doc]: method_workflow_file_specifications.md 
-[challenges]: ../benchmarking_workflows/challenge_data_summary.pdf
 [participant]: ../method_workflows/
-[pr-review-guide]: ./method_workflows/PR_review_guide.md
+[pr-review-guide]: ./PR_review_guide.md
 [singularity]: <https://sylabs.io/singularity/>
-[snakemake-template]: <https://github.com/iRNA-COSI/APAeval/docs/templates/snakemake>
+[snakemake-template]: ../docs/templates/snakemake
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
 [smk-docker]: <https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html#running-jobs-in-containers>
 [test-data]: ../tests/test_data

@@ -27,7 +27,7 @@ This is where the benchmarking workflows for APAeval live. The dedicated code fo
 
 APAeval consists of a number of ***benchmarking events*** to evaluate the performance of different tasks that the methods of interest (=[***participants***][participants]) might be able to perform: **poly(A) site identification, absolute quantification, relative quantification and assessment of their differential usage** (not implemented yet). A method can participate in one or several events, depending on its functions.   
 
-Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the ground truth dataset used for performance assessment** (see [overview of samples][challenges]). A challenge is evaluated within a ***benchmarking workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently a profile for Slurm is included). The benchmarking workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
+Within a benchmarking event, one or more ***challenges*** will be performed. A **challenge is primarily defined by the ground truth dataset used for performance assessment** (see [the APAeval Zenodo snapshot][apaeval-zenodo]). A challenge is evaluated within a ***benchmarking workflow***, which can be run with either docker or singularity, locally or on an HPC infrastructure (currently only a profile for Slurm is included in the APAeval code, but both [Snakemake][smk-profiles] and [Nextflow][nf-profiles] offer various default profiles for submission to common HPCs). The benchmarking workflow will **compute all metrics relevant for the benchmarking event**. A list of challenge IDs and input files (= output files of one participant for all specified challenges) is passed to the workflow.    
 
 In order to compare the performance of participants within a challenge/event, the respective benchmarking workflow will be run on output files from all eligible participant [method workflows][apaeval-mwfs]. The calculated metrics will be written to `.json` files that can be either submitted to OEB for database storage and online vizualisation, or transformed into a table format that can be used for creating custom plots with the help of scripts from the [APAeval utils directory][apaeval-utils].
 
@@ -92,7 +92,7 @@ Challenge IDs have to be of the form
 ```
 [SAMPLE_NAME].([ADDITIONAL_INFO].)[GENOME]
 ```
-where `[SAMPLE_NAME]` is a unique id of the condition represented in the ground truth and assessed by the participant as listed [here][challenges]. `[ADDITIONAL_INFO]` is optional; this can be used if several ground truths are obtained from the same condition but differ otherwise, e.g. one is a subset of the other.`[GENOME]` is the genome version used for creating the ground truth. MUST contain either "mm" or "hg", e.g. `mm10` or `hg38_v26`
+where `[SAMPLE_NAME]` is a unique id of the condition represented in the ground truth and assessed by the participant as listed [in the APAeval Zenodo snapshot][apaeval-zenodo]. `[ADDITIONAL_INFO]` is optional; this can be used if several ground truths are obtained from the same condition but differ otherwise, e.g. one is a subset of the other.`[GENOME]` is the genome version used for creating the ground truth. MUST contain either "mm" or "hg", e.g. `mm10` or `hg38_v26`
 
 #### Examples:    
 > MmusCortex_adult_R1.TE.mm10    
@@ -189,13 +189,13 @@ nextflow run main.nf -profile slurm -c tool_event.config --participant_id tool1
 When you have completed the steps described above you can finally run the benchmarking workflow on real data. Below are some hints to help you get going.
 
 ### 1. Get input data (= participant output)
-Place the participant output into a directory like `DATA/PARTICIPANT_NAME/` and make sure the files are named like `PARTICIPANT_NAME.CHALLENGE_ID.EVENT.EXT`
+Place the participant output into a directory like `DATA/PARTICIPANT_NAME/` and make sure the files are named as described in the section [Participant output (=input) files](#participant-output-input-files)
 
 ### 2. Adapt configs
 You're going to run the workflow for one participant at a time, but you can specify multiple challenges for that participant. To do so, create a participant specific `[participant]_[event].config` (copy `tool_event.config`). There you'll specify input files and challenge names.
 
 ### 3. Containers & images
-Make sure you have the images appropriate for your system ready. If you're running docker you can use the images you built locally in the [HOW TO: DEVELOP](#7-build-containers) section. If you want to use singularity you'll first have to push those images to a publicly accessible repo, ideally [biocontainers][biocontainers]. Make sure to rename the images (see bash command below) and adjust the paths in the `nextflow.config` accordingly.
+Make sure you have the images appropriate for your system ready. If you're running docker you can use the images you built locally in the [HOW TO: DEVELOP](#7-build-images) section. If you want to use singularity you'll first have to push those images to a publicly accessible repo, ideally [biocontainers][biocontainers]. Make sure to rename the images (see bash command below) and adjust the paths in the `nextflow.config` accordingly.
 
 ```bash
 docker tag apaeval/q_consolidation:1.0 your_docker_repo/q_consolidation:1.0
@@ -221,17 +221,19 @@ The APAeval OEB benchmarking workflow is an adaptation of the [TCGA_benchmarking
 [apaeval-bwfs]: ../images/bwfs.png
 [apaeval-conda-env]: ../README.md#apaeval-conda-environment
 [apaeval-mwfs]: ../method_workflows
-[apaeval-utils]: https://github.com/iRNA-COSI/APAeval/tree/main/utils
+[apaeval-utils]: ../utils
+[apaeval-zenodo]: <>
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
 [biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
-[challenges]: ./benchmarking_workflows/challenge_data_summary.pdf
 [elixir-data-model]: https://github.com/inab/benchmarking-data-model
 [metrics-py]:quantification/quantification_dockers/q_metrics/compute_metrics.py
 [apa-module]: https://github.com/iRNA-COSI/APAeval/tree/main/utils/apaeval
 [oeb]: <https://openebench.bsc.es/>
 [nextflow-config]: quantification/nextflow.config
+[nf-profiles]: <https://www.nextflow.io/docs/latest/executor.html>
 [participants]: ../method_workflows/README.md#benchmarking-participants
 [q-bwf]: quantification/README.md
+[smk-profiles]: <https://github.com/Snakemake-Profiles>
 [tcga-wf]: https://github.com/inab/TCGA_benchmarking_workflow
 [tcga-docker]: https://github.com/inab/TCGA_benchmarking_dockers
 [tool-event-config]:quantification/tool_event.config
