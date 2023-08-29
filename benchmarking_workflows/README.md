@@ -222,7 +222,7 @@ The APAeval OEB benchmarking workflow is an adaptation of the [TCGA_benchmarking
 [apaeval-conda-env]: ../README.md#apaeval-conda-environment
 [apaeval-mwfs]: ../method_workflows
 [apaeval-utils]: ../utils
-[apaeval-zenodo]: <https://zenodo.org/record/8290349>
+[apaeval-zenodo]: <https://zenodo.org/record/8290348>
 [assess-py]:quantification/quantification_dockers/q_consolidation/manage_assessment_data.py
 [biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
 [elixir-data-model]: https://github.com/inab/benchmarking-data-model

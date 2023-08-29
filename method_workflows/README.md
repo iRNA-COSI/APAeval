@@ -160,7 +160,7 @@ For the codes please refer to the following documents:
 [apaeval-conda]: ../README.md#apaeval-conda-environment
 [apaeval-discussions]: <https://github.com/iRNA-COSI/APAeval/discussions>
 [apaeval-mwfs]: ../images/method_WFs.png 
-[apaeval-zenodo]: <https://zenodo.org/record/8290349>  
+[apaeval-zenodo]: <https://zenodo.org/record/8290348>  
 [bioconda]: <https://bioconda.github.io/index.html>
 [biocontainers]: <https://biocontainers-edu.readthedocs.io/en/latest/index.html>
 [biocontainers-registry]: <https://biocontainers.pro/registry>

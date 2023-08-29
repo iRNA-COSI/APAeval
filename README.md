@@ -1,6 +1,9 @@
 # APAeval
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat-square)](#contributors-)
+[![GitHub license](https://img.shields.io/github/license/iRNA-COSI/APAeval?color=orange)](https://github.com/iRNA-COSI/APAeval/blob/main/LICENSE)
+[![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg)](#contributors-)
+[![DOI:zenodo](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.8290348-informational)](https://doi.org/10.5281/zenodo.8290348)
+[![DOI:biorxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2023.06.23.546284-informational)](https://doi.org/10.1101/2023.06.23.546284)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Welcome to the [APAeval][apa-eval] GitHub repository.
@@ -173,7 +176,7 @@ Sam Bryce-Smith, Dominik Burri, Matthew R. Gazzara, Christina J. Herrmann, Weron
 [apaeval-mwf-readme]: ./method_workflows/README.md
 [apaeval-specs]: ./method_workflows/method_workflow_file_specifications.md
 [apaeval-bwfs]: ./benchmarking_workflows/README.md
-[apaeval-zenodo]: <https://zenodo.org/record/8290349>
+[apaeval-zenodo]: <https://zenodo.org/record/8290348>
 [bsc]: <https://www.bsc.es/>
 [cc]: <https://creativecommons.org/>
 [coc-local]: CODE_OF_CONDUCT.md
