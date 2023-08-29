@@ -173,7 +173,7 @@ Sam Bryce-Smith, Dominik Burri, Matthew R. Gazzara, Christina J. Herrmann, Weron
 [apaeval-mwf-readme]: ./method_workflows/README.md
 [apaeval-specs]: ./method_workflows/method_workflow_file_specifications.md
 [apaeval-bwfs]: ./benchmarking_workflows/README.md
-[apaeval-zenodo]: <>
+[apaeval-zenodo]: <https://zenodo.org/record/8290349>
 [bsc]: <https://www.bsc.es/>
 [cc]: <https://creativecommons.org/>
 [coc-local]: CODE_OF_CONDUCT.md
