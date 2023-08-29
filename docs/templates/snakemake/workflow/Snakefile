@@ -49,9 +49,9 @@ rule finish:
     """
     input:
         expand(os.path.join(config["out_dir"],
-                     config["param_code"],
+                     config["challenge"],
                      config["method"],
-                     "_".join([config["param_code"],
+                     "_".join([config["challenge"],
                                config["method"],
                                "{sample}" + config["identification_output_suffix"]
                                ]
@@ -60,9 +60,9 @@ rule finish:
                sample=list(samples.index) if config["run_identification"] else []
                ),
         expand(os.path.join(config["out_dir"],
-                     config["param_code"],
+                     config["challenge"],
                      config["method"],
-                     "_".join([config["param_code"],
+                     "_".join([config["challenge"],
                                config["method"],
                                "{sample}" + config["quantification_output_suffix"]
                                ]
@@ -71,9 +71,9 @@ rule finish:
                sample=list(samples.index) if config["run_quantification"] else []
                ),
         os.path.join(config["out_dir"],
-                     config["param_code"],
+                     config["challenge"],
                      config["method"],
-                     "_".join([config["param_code"],
+                     "_".join([config["challenge"],
                                config["method"],
                                config["differential_output_file"]
                                ]
@@ -144,13 +144,13 @@ rule postprocess_identification:
     """
     input:
         os.path.join(config["out_dir"], "{sample}", "execute.out"),
-        # os.path.join(config["out_dir"], config["param_code"], config["method"],
-        # "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+        # os.path.join(config["out_dir"], config["challenge"], config["method"],
+        # "_".join(config["challenge"], config["method"], "OUTCODE.ext"))
     output:
         out = os.path.join(config["out_dir"],
-                           config["param_code"],
+                           config["challenge"],
                            config["method"],
-                           "_".join([config["param_code"],
+                           "_".join([config["challenge"],
                                      config["method"],
                                      "{sample}" + config["identification_output_suffix"]
                                      ]
@@ -181,11 +181,11 @@ rule postprocess_quantification:
     """
     input:
         os.path.join(config["out_dir"], "{sample}", "execute.out"),
-        # os.path.join(config["out_dir"], config["param_code"], config["method"],
-        # "_".join(config["param_code"], config["method"], "OUTCODE.ext"))
+        # os.path.join(config["out_dir"], config["challenge"], config["method"],
+        # "_".join(config["challenge"], config["method"], "OUTCODE.ext"))
     output:
-        out = os.path.join(config["out_dir"], config["param_code"], config["method"],
-        "_".join([config["param_code"],
+        out = os.path.join(config["out_dir"], config["challenge"], config["method"],
+        "_".join([config["challenge"],
                   config["method"],
                   "{sample}" + config["quantification_output_suffix"]
                   ]
@@ -217,9 +217,9 @@ rule postprocess_differential:
                sample=samples.index)
     output:
         out = os.path.join(config["out_dir"],
-                           config["param_code"],
+                           config["challenge"],
                            config["method"],
-                           "_".join([config["param_code"],
+                           "_".join([config["challenge"],
                                      config["method"],
                                      config["differential_output_file"]
                                      ]

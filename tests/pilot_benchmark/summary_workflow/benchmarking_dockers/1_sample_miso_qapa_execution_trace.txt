@@ -1,4 +1,0 @@
-task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
-1	d4/7b914f	3963	CHECK_SAMPLESHEET (samplesheet.csv)	COMPLETED	0	2021-05-04 20:25:31.071	95ms	33ms	78.3%	3.2 MB	12.6 MB	590.4 KB	1.8 KB
-3	1c/dced51	4073	QAPA (test)	COMPLETED	0	2021-05-04 20:25:31.222	1m 35s	1m 35s	315.0%	645.4 MB	1.7 GB	8.8 GB	445.8 MB
-2	87/497999	4082	MISO (test)	COMPLETED	0	2021-05-04 20:25:31.231	1h 13m 28s	1h 13m 27s	356.2%	12.7 GB	14.1 GB	153.6 GB	2.9 GB

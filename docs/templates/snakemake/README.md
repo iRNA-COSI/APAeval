@@ -16,13 +16,13 @@ Read this section, but do NOT include it your final README.
 >     * Test your code with [snakemake --lint](https://snakemake.readthedocs.io/en/stable/snakefiles/writing_snakefiles.html#best-practices).
 >     * One (shell) command per rule.
 >     * If samples differ in a meaningful way (e.g. single end and paired end samples), it might be better to write subworkflows within `workflow/rules`.
->     * Each rule has it's own [Docker container](https://www.docker.com/resources/what-container). All containers should be pushed to the [APAeval team Dockerhub](https://hub.docker.com/u/apaeval)
+>     * Each rule has it's own [Docker container](https://www.docker.com/resources/what-container). All containers should be pushed to [biocontainers](https://biocontainers-edu.readthedocs.io/en/latest/index.html)
 > * There are some shell scripts which can be used to start a snakemake run. Adjust the name of the `config file` in following scripts:
 >     * `dryrun.sh`
 >     * `rulegraph.sh` (Also adjust name of output `.png`)
 >     * `run_local.sh`
 >     * Both `dryrun.sh` and `rulegraph.sh` will execute successfully with the current template.
-> * Check out the pilot benchmark at `tests/pilot_benchmark/snakemake` for a running example. It illustrates how the execution workflow can look in practice.
+> * Check out our [DaPars2 pipeline][dapars2-mwf] for a running example. It illustrates how the execution workflow can look in practice.
 > * Adjust this `README.md`: Delete this description section and populate the sections below with your awesome experience ;)
 
 # [METHOD] {Method name as specified in Algorithm table.}
@@ -58,3 +58,5 @@ Note: A single sample table format should be sufficient for all workflows (diffe
 {Notes about the METHOD.
 e.g. Did you have to adjust the method's source code/recommended running instructions?
 }
+
+[dapars2-mwf]: ../../../method_workflows/DaPars2/Dapars2_snakemake/README.md

@@ -60,8 +60,8 @@ Below is an overview of the contents of the module. If available, the documentat
 ## Origin
 This module is based on original APAeval2021 hackathon work done by [Leo Schärfen](https://github.com/lschaerfen):
 
-- [`match_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/match_with_gt.py)
-- [`corr_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/summary_workflows/quantification/corr_with_gt.py)
+- [`match_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/benchmarking_workflows/quantification/match_with_gt.py)
+- [`corr_with_gt.py`](https://github.com/iRNA-COSI/APAeval/blob/9a17c11dd6239969feb092d687ac7e206043c8d6/benchmarking_workflows/quantification/corr_with_gt.py)
 
 [//]: # (References)
 [module-md]: ./main.md

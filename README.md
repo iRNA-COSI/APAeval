@@ -1,238 +1,84 @@
 # APAeval
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-26-orange.svg?style=flat-square)](#contributors-)
+
+[![GitHub license](https://img.shields.io/github/license/iRNA-COSI/APAeval?color=orange)](https://github.com/iRNA-COSI/APAeval/blob/main/LICENSE)
+[![All Contributors](https://img.shields.io/badge/all_contributors-26-orange.svg)](#contributors-)
+[![DOI:zenodo](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.8290348-informational)](https://doi.org/10.5281/zenodo.8290348)
+[![DOI:biorxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2023.06.23.546284-informational)](https://doi.org/10.1101/2023.06.23.546284)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Welcome to the [APAeval][apa-eval] GitHub repository.
 
-**APAeval** is a community effort to evaluate computational methods for the
-detection and quantification of poly(A) sites and the estimation of their
-differential usage across RNA-seq samples.
+**Quick links**
+- [Use a benchmarked method on your own RNA-seq data](#use-a-benchmarked-method-on-your-own-rna-seq-data)
+- [Benchmark a new method](#benchmark-a-new-method)
+- [Extend APAeval's benchmarks](#extend-apaevals-benchmarks)
+
+**APAeval** is a community effort that was born as the **APAeval hackathon at the RNA 2021 Conference**. We are aiming to evaluate computational methods for the detection and quantification of poly(A) sites from RNA-seq samples in an open, reproducible and extensible manner.
+
+
+
 
 [![logo][apa-eval-logo]][apa-eval]
 
-## What is APAeval?
+<!-- TOC -->
 
-APAeval consists of three **benchmarking events**, each consisting of a set of **challenges** for bioinformatics methods (=**participants**) that:
+- [Overview of APAeval benchmarking](#overview-of-apaeval-benchmarking)
+- [What can you do?](#what-can-you-do)
+    - [Use a benchmarked method on your own RNA-seq data](#use-a-benchmarked-method-on-your-own-rna-seq-data)
+    - [Benchmark a new method](#benchmark-a-new-method)
+    - [Extend APAeval's benchmarks](#extend-apaevals-benchmarks)
+- [Some technical stuff](#some-technical-stuff)
+    - [OpenEBench](#openebench)
+    - [APAeval conda environment](#apaeval-conda-environment)
+    - [Tutorials](#tutorials)
+- [Code of Conduct](#code-of-conduct)
+- [Open Science, licenses & attribution](#open-science-licenses--attribution)
+- [Get in touch](#get-in-touch)
+- [Contributors ✨](#contributors-)
+
+<!-- /TOC -->
+
+## Overview of APAeval benchmarking
+
+APAeval currently consists of three **benchmarking events**, each consisting of a set of **challenges** for bioinformatics methods (=**participants**) that use RNA-seq data to:
 
 1. **Identify** polyadenylation sites
-2. **Quantify** polyadenylation sites
-3. Calculate **differential usage** of polyadenylation sites
+2. Report poly(A) site expression as **absolute quantification** in TPM
+3. Report **relative expression** of poly(A) sites within transcripts
+ 
+> We'd still like to set up a fourth event to evaluate tools that calculate **differential usage** of polyadenylation sites. If you'd like to contribute, continue reading [below](#extend-apaevals-benchmarks).
 
-For more info, please refer to our [landing page][apa-eval].
-
-## How to get involved?
-
-If you would like to contribute to APAeval, the first things you would need to
-do are:
-- Drop us an email at apaeval@irnacosi.org 
-- Please use [this form][form-service-accounts] to provide us with your user
-  names/handles of the various service accounts we are using (see
-  [below](#how-do-we-work)) so that we can add you to the corresponding
-  repositories/organizations
-- Wait for us to reach out to you with an invitation to our Slack space, then
-  use the invitation to sign up and post a short intro message in the
-  [`#general`][slack-general] channel
-
-## Overview
 ![schema][apa-eval-overview]
-1. APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: PAS identification, quantification, and assessment of their differential usage. A method can participate in one, two or all three events, depending on its functions.
-2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants.
+
+1. As described above, APAeval consists of three benchmarking events to evaluate the performance of different tasks that the methods of interest (=participants) might be able to perform: PAS identification, absolute quantification, and relative quantification. A method can participate in one, two or all three events, depending on its functions.
+2. Raw data: For challenges within the benchmarking events, APAeval is using data from several different selected publications. Generally, one dataset (consisting of one or more samples) corresponds to one challenge (here, datasets for challenges x and y are depicted). All raw RNA-seq data is processed with nf-core/rna-seq for quality control and mapping. For each dataset we provide a matching ground truth file, created from 3’ end seq data from the same publications as the raw RNA-seq data, that will be used in the challenges to assess the performance of participants. You can find an overview of RNA-seq and matching ground truth samples in [the APAeval Zenodo snapshot][apaeval-zenodo].
 3. Sanctioned input files: The processed input data is made available in .bam format. Additionally, for each dataset a gencode annotation in .gtf format, as well as a reference PAS atlas in .bed format for participants that depend on pre-defined PAS (not shown), are provided. 
-4. In order to evaluate each participant in different challenges, a re-usable “execution workflow” has to be written in either snakemake or nextflow. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
-5. To ensure compatibility with the OEB benchmarking events, specifications for file formats (output of execution workflows = input for summary workflows) are provided by APAeval. 
-6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. A challenge is computed within a summary workflow, which is run on the OEB infrastructure, for each participant. The summary workflow will compute all metrics relevant for the challenge. 
-7. In order to compare the performance of participants, OEB will collect the respective output files from all eligible participant summary workflows and will visualize all results per challenge, such that performance of participants can be compared for each metric.
+4. In order to evaluate each participant in different challenges, a re-usable [“method workflow”][apaeval-mwf-readme] has to be written in either [Snakemake][snakemake] or [Nextflow][nf]. Within this workflow, all necessary pre- and post-processing steps that are needed to get from the input formats provided by APAeval (see 3.), to the output specified by APAeval in their metrics specifications (see 5.) have to be performed. 
+5. To ensure compatibility with the workflows of the benchmarking events, [specifications for file formats][apaeval-specs] (output of method workflows = input for benchmarking workflows) are provided by APAeval. 
+6. Within a benchmarking event, one or more challenges will be performed. A challenge is primarily defined by the input dataset used for performance assessment. Results of a challenge (metrics) are computed for each participant within a ["benchmarking workflow"][apaeval-bwfs]. 
+7. In order to compare the performance of participants, results for each participant are uploaded to the [OEB database](#openebench), where metrics for all participants are visualized per challenge.
+
+## What can you do?
+
+### Use a benchmarked method on your own RNA-seq data
+Firstly, you might want to check our [manuscript][manuscript] or our [OpenEBench site][apaeval-oeb] to find the method that would perform best for your use case. If you have decided on a method to use, head over to the [method workflows section in this repo][apaeval-mwf-readme] and follow the instructions in the `README.md` of the method of your choice. All our method workflows are built in either [Snakemake][snakemake] or [Nextflow][nf], and use [containers][docker] for individual steps to ensure reproducibility and reusability. For instructions on how to set up a [conda environment][conda] for running APAeval workflows [see here](#apaeval-conda-environment).
+
+> You'll need to have your RNA-seq data ready in `.bam` format. No idea how to get there? You could check out the [nf-core][nf-core] [RNA-Seq analysis pipeline][nf-core-rna-seq] or other tools such as [ZARP][zarp].
+
+
+### Benchmark a new method
+Have you developed a new computational method for investigating APA from RNA-seq data? Or are you interested in one of the tools we haven't managed to include in APAeval yet? We'd be very happy if you decided to contribute to APAeval!
+
+In order to ensure reproducibility of the benchmarks, as well as reusability and shareability of the benchmarked method, you'd start by writing an APAeval style [method workflow][apaeval-mwf-readme]. That workflow will take `.bam` files as an input, and create `.bed` files compatible with the [specification for the respective APAeval benchmarking event][apaeval-specs]. Create a PR (pull request; please ask in our [Github discussions board][discussions] to be added to APAeval as a collaborator, or create the PR from a fork) in this repo and wait for your request to be approved. You can then run the workflow on the [data for all APAeval challenges][apaeval-zenodo] and use the resulting `.bed` files in the corresponding [APAeval benchmarking workflow][apaeval-bwfs] in order to compare the performance of your tool to the [APAeval ground truths][apaeval-zenodo]. Finally you can submit your metrics `.json` files to us and we'll take care of including them in our [OEB site][apaeval-oeb]. 
+
+### Extend APAeval's benchmarks
+One of the main goals of APAeval is to provide *extensible* benchmarking, such that new tools, new challenges or new metrics can be added at any time. Therefore we warmly welcome any contribution to the project. A good starting point would be to visit our [issue][issues] and [discussion][discussions] boards. The latter one is also the place where you can reach out to us and request we add you to the repo as a collaborator (alternatively, create your PRs from a fork). You can then take on an existing task, suggest a new one, or start a discussion. 
 
 
 
-## What is there to do?
-
-The bulk of the work falls into roughly two tasks, writing participants' _execution
-workflows_ and benchmarking events' _summary workflows_.
-
-
-
-### Execution workflows
-
-[_Execution workflows_][apaeval-ewf-readme] contain all steps that need to be run _per method_:
-
-1. **Pre-processing:** Convert the input files the APAeval team has prepared
-  into the input files your participant consumes, if applicable.
-2. **Method execution:** Execute the method in any way necessary to compute the
-  output files for all benchmarking events the participant qualifies for.
-3. **Post-processing:** Convert the output files of the method into the formats
-  consumed by the _summary workflows_ as specified by the APAeval team, if
-  applicable.
-
-_Execution workflows_ should be implemented in either [Nexflow][nf] or
-[Snakemake][snakemake], and individual steps should be isolated through the
-use of either [Conda][conda] virtual environments (deprecated; to run on AWS we need containerized workflows) or
-[Docker][docker]/[Singularity][singularity] containers.
-
-### Summary workflows
-
-**_Summary workflows_** contain all steps that need to be run _per challenge_,
-using outputs of the invididual participant _execution workflows_ as inputs. They
-follow the [OpenEBench][oeb] workflow model, described
-[here][oeb-example-workflow], implemented in Nextflow. OpenEBench workflows
-consist of the following 3 steps:
-
-1. **Validation:** Output data of the various _execution workflows_ is
-  validated against the provided specifications to data consistency.
-2. **Metrics computation:** Actual benchmarking metrics are computed as
-  specified, e.g., by comparisons to ground truth/gold standard data sets.
-3. **Consolidation:** Data is consolidated for consistency with other
-  benchmarking efforts, based on the [OpenEBench/ELIXIR benchmarking data
-  model][oeb-data-model].
-
-Following the OpenEBench workflows model also ensures that result
-visualizations are automatically generated, as long as the desired graph types
-are supported by OpenEBench.
-
-### Miscellaneous
-
-Apart from writing _execution_ and _summary workflows_, there are various other
-smaller jobs that you could work on, including, e.g.:
-
-- [**Pull request reviews**][pr-review-guide]
-- Pre-processing RNA-Seq input data via the [nf-core][nf-core] [RNA-Seq
-  analysis pipeline][nf-core-rna-seq]
-- Writing additional benchmark specifications
-- Housekeeping jobs ( improve documentation, helping to keep the repository clean,
-  enforce good coding practices, etc.)
-- Work with our partner OpenEBench on their open issues, e.g., by extending
-  their portfolio of [supported visualization][oeb-open-issues]
-
-If you do not know where to start, simply ask us!
-
-## How do we work?
-
-To account for everyone's different agendas and time zones, we are
-organized such that contributors can work, as much as possible, in their own
-time.
-
-### Open Science, licenses & attribution
-
-Following best practices for writing software and sharing data and code is
-important to us, and therefore we want to apply, as much as possible, [FAIR
-Principles][fair] to data and software alike. This includes publishing all
-code open source, under permissive [licenses approved][osi-licenses] by the
-[Open Source Initiative][osi] and all data by a permissive [Creative
-Commons][cc] license.
-
-In particular, we publish all code under the [MIT license][license-mit] and all
-data under the [CC0 license][license-cc0]. An exception are all _summary
-workflows_, which are published under the [GPLv3 license][license-gplv3], as
-the provided template is derived from an [OpenEBench][oeb] [example
-workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
-the MIT license is also [shipped with this repository][license].
-
-We also believe that attribution, provenance and transparency are crucial for
-an open and fair work environment in the sciences, especially in a community
-effort like APAeval. Therefore, we would like to make clear from the beginning
-that in all publications deriving from APAeval (journal manuscript, data and
-code repositories), any non-trivial contributions will be acknowledged by
-authorship. All authors will be strictly listed alphabetically, by last name,
-with no exceptions, wherever possible under the name of **The APAeval Team**
-and accompanied by a more detailed description of how people contributed.
-
-We expect that all contributors accept the license and attribution policies
-outlined above.
-
-### Communication
-
-#### Chat
-
-We are making use of [**Slack**][slack] (see [above](#how-to-get-involved) to
-see how you can become a member) for asynchronous communication. Please use the
-most appropriate channels for discussions/questions etc.:
-
-- [`#general`][slack-general]: Introduce yourself and find pointers to get you
-  started. All APAeval-wide announcements will be put here!
-- [`#admin`][slack-admin]: Ask questions about the general organization of
-  APAeval.
-- [`#tech-support`][slack-tech-support]: Ask questions about the
-  technical infrastructure and relevant software, e.g., AWS, GitHub, Nextflow,
-  Snakemake.
-- [`#execution_workflows`][slack-execution-workflows]: Discussions channel for all execution workflows.
-- [`#oeb`][slack-oeb]: Discussions channel for all OEB related matters and summary workflows.
-- [`#random`][slack-random]: Post anything that doesn't fit into any of the
-  other channels.
-- [`#github-ticker`][slack-github-ticker]: Get notified about activities in the APAeval github repo.
-
-#### Video calls
-
-Despite the event taking place mostly asynchrounously, we do have a few video
-calls to increase the feeling of collaboration. In particular, we have a bi-weekly meeting on Wednesday 9am EDT/3pm CET.
-
-This calendar contains all video call events, including the necessary login
-info, and we would like to kindly ask you to subscribe to it:
-
-- Calendar ID: `59bboug9agv30v32r6bvaofdo4@group.calendar.google.com`
-- [Public address][calendar-url]
-
-> Please do not download the ICS file and then import it, as any updates to the
-> calendar will not be synced. Instead, copy the calendar ID or public address
-> and paste it in the appropriate field of your calendar application. Refer to
-> your calendar application's help pages if you do not know how to subscribe to
-> a calendar.
-
-Video calls usually take place in the following [**Zoom**][zoom] room:
-
-- [Direct link][vc-direct-link]
-- Meeting ID: `656 9429 1427`
-- Passcode: `APAeval`
-
-There is also a [meeting agenda][vc-agenda].
-
-> For more lively meetings, participants are encouraged to switch on their
-> cameras. But please mute your microphones if you are not currently speaking.
-
-### Social coding
-
-We are making extensive use of [**GitHub**][gh]'s project management resources
-to allow contributors to work independently on individual, largely
-self-contained, issues. There are several Kanban [project boards][gh-projects],
-listing relevant issues for different kinds of tasks, such as drafting
-benchmarking specifications and implementing/running execution
-workflows.
-
-The idea is that people assign themselves to open issues (i.e., those issues
-that are not yet assigned to someone else). Note that in order to be able to
-do so, you will need to be a member of this GitHub repository (see
-[above](#how-to-get-involved) to see how you can become a member). Once you
-have assigned yourself, you can move/drag the issue from the **To do** to the
-**In progress** column of the Kanban board.
-
-When working on an issue, please start by cloning (preferred) or forking the
-repository. Then create a feature branch and implement your code/changes. Once
-you have made some progress, please create a pull request against the `main`
-branch, making sure to fill in the provided template (in particular, please
-refer to the original issue you are addressing with this pull request) and to
-assign two reviewers. If you're not quite happy with your solution yet and would like to have some help, you can mark the pull request as a draft, and lead discussions with other members directly on your code.  
- Pull request **reviews** are also always a welcome contribution to APAeval. For some guidelines on PR reviews you can refer to [Sam's PR review guide][pr-review-guide].   
- This workflow ensures collaborative coding and is
-sometimes referred to as [GitHub flow][gh-flow]. If you are not familiar with
-Git, GitHub or the GitHub flow, there are many useful tutorials online, e.g.,
-those [listed below](#software).
-
-### Cloud infrastructure
-
-[AWS][aws] kindly sponsored credits for their compute and storage
-infrastructure that we can use to run any heavy duty computations in the cloud
-(e.g., RNA-Seq data pre-processing by or method execution workflows).
-
-This also includes credits to run [Seqera Lab][seqera-labs]'s
-[Nextflow Tower][nf-tower], a convenient web-based platform to run
-[Nextflow][nf] workflows, such as the [nf-core][nf-core]
-[RNA-Seq analysis workflow][nf-core-rna-seq] we are using for pre-processing
-RNA-Seq data. Seqera Labs has kindly held a workshop on Nextflow
-and Nextflow Tower during the hackathon, and still continues to provide technical support.
-
-Setting up the AWS organization and infrastructure is still ongoing, and we
-will update this section with more information as soon as that is done.
-
+## Some technical stuff
 ### OpenEBench
 
 We are partnering with [OpenEBench][oeb], a benchmarking and technical
@@ -249,148 +95,114 @@ that are compatible with good practices in the wider community of
 bioinformatics challenges.
 
 
-### Software
+### APAeval conda environment
 
-Here are some pointers and tutorials for the main software tools that we are using at APAeval:
-
-- [Conda][conda]: [tutorial][tutorial-conda]
-- [Docker][docker]: [tutorial][tutorial-docker]
-- [Git][git]: [tutorial][tutorial-git]
-- [GitHub][gh]: [general tutorial][tutorial-gh] / [GitHub flow
-  tutorial][tutorial-gh-flow]
-- [Nextflow][nf]: [tutorial][tutorial-nextflow]
-- [Singularity][singularity]: [tutorial][tutorial-singularity]
-- [Snakemake][snakemake]: [tutorial][tutorial-snakemake]
-
-Note that you don't need to know about all of these, e.g., one of Conda (deprecated; to run on AWS we need containerized workflows), Docker
-and/or Singularity will typically be enough. [See
-below](#nextflow-or-snakemake), for a discussion of the supported workflow
-languages/management systems. Again, working with one will be enough for most
-issues.
-
-In addition to these, basic programming/scripting skills may be required for
-most, but not for all issues. For those that do, you are generally free to
-choose your preferred language, although for those people who have experience
-with Python, we recommend you to go with that. It just makes it easier for
-others to review your code, and it typically integrates better with our
-templates and the general bioinformatics ecosystem/community.
-
-Note that even if you don't have experience with any of these tools/languages,
-and you don't feel like or have no time learning them, there is surely still
-something that you can help us with. Just ask us and we will try to put your
-individual skills to good use! :muscle:
-
-#### Nextflow or Snakemake?
-
-As mentioned [further above](#what-is-there-to-do), we would like _execution
-workflows_ to be written in one of two "workflow languages": [Nextflow][nf] or
-[Snakemake][snakemake]. Specifying workflows in such a language rather than,
-say, by stringing together Bash commands, is considered good practice, as it
-increases reusability and reproducibility, and so is in line with our goal of
-adhering to [FAIR][fair] software principles.
-
-But why only Nextflow and Snakemake, and not, e.g., the [Common Workflow
-Language][cwl], the [Workflow Definition Language][wdl] or [Galaxy][galaxy]?
-There are no particular reasons other than that APAeval organizers have
-experience with these workflows languages and are thus able to provide
-technical support. If you are an experienced workflow developer and prefer
-another workflow language, you are welcome to use that one instead, but note
-that we have no templates available and will not be able to help you much in
-case you encounter issues during development or execution.
-
-As for _summary workflows_, we are bound to implement these in Nextflow, as
-they are executed on [OpenEBench][oeb], which currently only accepts Nextflow
-workflows.
-
-For this reason, as well as the fact that we will provide [Nextflow
-Tower][nf-tower] for convient execution of Nextflow workflows on [AWS][aws]
-cloud infrastructure ([see above](#cloud-infrastructure)) and use a [Nextflow
-analysis pipeline][nf-core-rna-seq] for pre-processing RNA-Seq data sets, we
-recommend novices without any other considerations (e.g., colleagues already
-working with Snakemake) to use Nextflow.
-
-#### Conda environment file
-
-In order to execute scripts with either Nextflow or Snakemake in a reproducible
-manner, we need to ensure the versions of these software are specified. In order 
-to do that, we created a Conda environment file that contains specific versions of
-Nextflow, Snakemake and some core libraries. To use this environment, you first
-need to create it by using:
+For reproducible execution of our workflows (both method and benchmarking workflows) we're using a conda environment with fixed versions of Snakemake, Nextflow, some python packages, and Singularity. Make sure you have [conda][conda] installed and from the root directory of this repo create the APAeval environment with
 
 ```bash
-conda env create -f apaeval_env.yaml`
+conda env create -f apaeval_env.yaml
 ```
 
-You then need to activate the environment with:
+You can then activate it with:
 
 ```
-conda activate apaeval_execution_workflows
+conda activate apaeval
 ```
 
-> NOTE: If you're working on Windows or Mac, you might have to google about setting up a virtual machine for running Singularity. Alternatively, you could remove Singularity installation from the `apaeval_env.yaml` and work with conda environments only (deprecated, as we need containers for Cloud execution).
+> NOTE: If you're working on Windows or Mac, you might have to google about setting up a virtual machine for running Singularity. 
+
+> ANOTHER NOTE: If you run into problems regarding root access & Singularity with the described setup, try removing Singularity installation from the `apaeval_env.yaml` and [install it independently][singularity].
 
 
 You can now execute the workflows!
 
-### Code of Conduct
+### Tutorials
+Here are some pointers and tutorials for the main software tools that we are using at APAeval:
+
+Conda: [tutorial][tutorial-conda]   
+Docker: [tutorial][tutorial-docker]   
+Git: [tutorial][tutorial-git]   
+GitHub: [general tutorial][tutorial-gh] / [GitHub flow tutorial][tutorial-gh-flow]  
+Nextflow: [tutorial][tutorial-nextflow]  
+Singularity: [tutorial][tutorial-singularity]  
+Snakemake: [tutorial][tutorial-snakemake]  
+
+
+## Code of Conduct
 
 Please be kind to one another and mind the [Contributor Covenant's Code of
 Conduct][coc-original] for all interactions with the community. A copy of the
 Code of Conduct is also [shipped with this repository][coc-local]. Please
-report any violations to the Code of Conduct to either or both of
-[CJ][coc-contact-christina] and [Alex][coc-contact-alex] via Slack.
+report any violations to the Code of Conduct to [apaeval@irnacosi.org][contact].
+
+## Open Science, licenses & attribution
+
+Following best practices for writing software and sharing data and code is
+important to us, and therefore we want to apply, as much as possible, [FAIR
+Principles][fair] to data and software alike. This includes publishing all
+code open source, under permissive [licenses approved][osi-licenses] by the
+[Open Source Initiative][osi] and all data by a permissive [Creative
+Commons][cc] license.
+
+In particular, we publish all code under the [MIT license][license-mit] and all
+data under the [CC0 license][license-cc0]. An exception are all _benchmarking
+workflows_, which are published under the [GPLv3 license][license-gplv3], as
+the provided template is derived from an [OpenEBench][oeb] [example
+workflow][oeb-example-workflow] that is itself licensed under GPLv3. A copy of
+the MIT license is also [shipped with this repository][license].
+
+We also believe that attribution, provenance and transparency are crucial for
+an open and fair work environment in the sciences, especially in a community
+effort like APAeval. Therefore, we would like to make clear from the beginning
+that in all publications deriving from APAeval (journal manuscript, data and
+code repositories), any non-trivial contributions will be acknowledged by
+authorship. 
+
+We expect that all contributors accept the license and attribution policies
+outlined above.
+
+## Get in touch
+If you would like to contribute to APAeval or have any questions, we'd be happy to hear from you via our [Github Discussions board][discussions]. If you already have a specific issue in mind, feel free to add it to our [issues board][issues]. You can also reach out to [apaeval@irnacosi.org][contact].
+
+## How to cite APAeval
+If APAeval was useful for you in your work, please cite our [manuscript][manuscript]:
+
+**Extensible benchmarking of methods that identify and quantify polyadenylation sites from RNA-seq data**  
+Sam Bryce-Smith, Dominik Burri, Matthew R. Gazzara, Christina J. Herrmann, Weronika Danecka, Christina M. Fitzsimmons, Yuk Kei Wan, Farica Zhuang, Mervin M. Fansler, José M. Fernández, Meritxell Ferret, Asier Gonzalez-Uriarte, Samuel Haynes, Chelsea Herdman, Alexander Kanitz, Maria Katsantoni, Federico Marini, Euan McDonnel, Ben Nicolet, Chi-Lam Poon, Gregor Rot, Leonard Schärfen, Pin-Jou Wu, Yoseop Yoon, Yoseph Barash, Mihaela Zavolan  
+*bioRxiv 2023.06.23.546284*; doi: https://doi.org/10.1101/2023.06.23.546284 
 
 [apa-eval]: <https://irnacosi.org/2021/01/04/rna-society-2021-apaeval-challenge/>
 [apa-eval-logo]: images/logo.png
-[apa-eval-members]: <https://docs.google.com/document/d/1G7u-WQ6C-I_sXZ-15CIBw2iNgw6jkTNo7hnRTjci_b4/edit#heading=h.tarrapa8v8n6>
+[apaeval-oeb]: <https://openebench.bsc.es/benchmarking/OEBC007?event=OEBE0070000003>
 [apa-eval-overview]: images/overview.png
-[apaeval-ewf-readme]: ./execution_workflows/README.md
-[aws]: <http://aws.amazon.com/>
+[apaeval-mwf-readme]: ./method_workflows/README.md
+[apaeval-specs]: ./method_workflows/method_workflow_file_specifications.md
+[apaeval-bwfs]: ./benchmarking_workflows/README.md
+[apaeval-zenodo]: <https://zenodo.org/record/8290348>
 [bsc]: <https://www.bsc.es/>
-[calendar-url]: <https://calendar.google.com/calendar/ical/59bboug9agv30v32r6bvaofdo4%40group.calendar.google.com/public/basic.ics>
 [cc]: <https://creativecommons.org/>
-[coc-contact-alex]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01PEJ5TW4V>
-[coc-contact-christina]: <https://app.slack.com/client/T01PW9SAN7K/D01PP4WK7TL/user_profile/U01PV9T8V9A>
 [coc-local]: CODE_OF_CONDUCT.md
 [coc-original]: <https://www.contributor-covenant.org/>
 [conda]: <https://docs.conda.io/en/latest/>
 [contact]: <mailto:apaeval@irnacosi.org>
-[cwl]: <https://www.commonwl.org/>
+[discussions]: <https://github.com/iRNA-COSI/APAeval/discussions>
 [docker]: <https://www.docker.com/>
 [elixir]: <https://elixir-europe.org/>
 [fair]: <https://www.go-fair.org/fair-principles/>
-[form-service-accounts]: <https://forms.gle/eKCHe5GWtvGrriek8>
-[galaxy]: <https://usegalaxy.org/>
-[gh]: <http://github.com/>
-[gh-flow]: <https://guides.github.com/introduction/flow/>
-[gh-join]: <https://github.com/join>
-[gh-projects]: <https://github.com/iRNA-COSI/APAeval/projects/>
-[git]: <https://git-scm.com/>
+[issues]: <https://github.com/iRNA-COSI/APAeval/issues>
 [license]: LICENSE
 [license-mit]: <https://opensource.org/licenses/MIT>
 [license-cc0]: <https://creativecommons.org/publicdomain/zero/1.0/>
 [license-gplv3]: <https://www.gnu.org/licenses/gpl-3.0.en.html>
+[manuscript]: <https://www.biorxiv.org/content/10.1101/2023.06.23.546284v1>
 [nf]: <https://www.nextflow.io/>
 [nf-core]: <https://nf-co.re/>
 [nf-core-rna-seq]: <https://nf-co.re/rnaseq>
-[nf-tower]: <https://tower.nf/>
 [oeb]: <https://openebench.bsc.es/>
-[oeb-data-model]: <https://github.com/inab/benchmarking-data-model>
 [oeb-example-workflow]: <https://github.com/inab/TCGA_benchmarking_dockers>
-[oeb-open-issues]: <https://github.com/inab/OpenEBench_scientific_visualizer/issues>
 [osi]: <https://opensource.org/>
 [osi-licenses]: <https://opensource.org/licenses>
-[pr-review-guide]: ./execution_workflows/PR_review_guide.md
-[seqera-labs]: <https://seqera.io/>
 [singularity]: <https://sylabs.io/singularity/>
-[slack]: <http://slack.com/>
-[slack-admin]: <https://apaeval.slack.com/archives/C01PEJQEUMT>
-[slack-execution-workflows]: <https://apaeval.slack.com/archives/C023SMTS0KS>
-[slack-general]: <https://apaeval.slack.com/archives/C01PHLQKNH0>
-[slack-github-ticker]: <https://apaeval.slack.com/archives/C0242RJEGQG>
-[slack-oeb]: <https://apaeval.slack.com/archives/C02537UF3D1>
-[slack-random]: <https://apaeval.slack.com/archives/C01Q7FMRJ3A>
-[slack-tech-support]: <https://apaeval.slack.com/archives/C022RNSAUV7>
 [snakemake]: <https://snakemake.readthedocs.io/en/stable/>
 [tutorial-conda]: <https://conda.io/projects/conda/en/latest/user-guide/getting-started.html>
 [tutorial-docker]: <https://docs.docker.com/get-started/>
@@ -400,10 +212,7 @@ report any violations to the Code of Conduct to either or both of
 [tutorial-nextflow]: <https://www.nextflow.io/blog/2020/learning-nextflow-in-2020.html>
 [tutorial-singularity]: <https://singularity-tutorial.github.io/>
 [tutorial-snakemake]: <https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html>
-[vc-agenda]: <https://docs.google.com/document/d/1Cl3xq7_uwApAYxUbzeVSBsRfGUmtRc0jSnZ3yrWM3ks/edit#>
-[vc-direct-link]: <https://unibas.zoom.us/j/65694291427?pwd=QUMyMjQ2SSt2eS9iZW50YVZCOC8wQT09>
-[wdl]: <https://github.com/openwdl/wdl>
-[zoom]: <https://zoom.us/>
+[zarp]: <https://github.com/zavolanlab/zarp>
 
 ## Contributors ✨
 
