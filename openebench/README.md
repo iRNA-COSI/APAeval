@@ -1,26 +1,40 @@
 # OpenEBench requirements
 
-The following schema groups need to be provided in order to register benchamrks
+The following schema groups needed to be provided in order to register benchamrks
 with [OpenEBench][oeb]:
 
-* **Tools** and **References** (to tools): can be filled out right away from
-  our [list of participants][methods].
-* **Challenges**/**Metrics**: pretty much correspond to what we call
-  _benchmarks_. Each challenge _can_ have multiple metrics (say you want to
-  create more than one plot per benchmark). It should become clear from the
-  examples and most of the required info should already be available in our
-  benchmark specifications.
-* **Contacts**: lists the people who have developed the challenges/metrics,
-  i.e., our metrics team, as well as the contacts of method developers. The
-  latter should be available in our [participants list][methods].
+* **Tools** and **References** (to tools): for [participants][methods] benchmarked in APAeval.
 
-Please create and fill out the schemas _as best as you can_ and put them in
-the appropriate subdirectory in directory [`APAeval_schemas`](APAeval_schemas).
-Use the schemas in the [`examples`](examples) directory as a reference
-(unfortunately the links to the schema definitions as indicated in the examples
-are currently dead). To see how a complete case looks like, including the
+* **Contacts**: Contact persons representing the APAeval community.
+
+To see how a complete case looks like, including the
 directory structure, here is a [full set of examples][example-full].
 
+* **Challenges**/**Metrics**: Have been created for APAeval in close collaboration with OEB team members and are not published here.
+
+When sending/uploading APAeval result json files to OEB, filtering has to be done in order to comply with the APAeval schemas registered in OEB. Use the [filter jsons util][filter-jsons] from the APAeval utils directory to **remove metrics that are NOT listed below**.
+
+### OEB registered metrics for APAeval Identification
+- F1_score:[10/50/100]nt
+- Jaccard_index:[10/50/100]nt
+- Precision:[10/50/100]nt
+- Sensitivity:[10/50/100]nt
+- percentage_genes_w_correct_nPAS
+
+### OEB registered metrics for APAeval absolute Quantification
+- Sum_FP_TPM:[10/50/100]nt
+- Percent_FP_TPM:[10/50/100]nt
+- Sensitivity:[10/50/100]nt
+- Precision:[10/50/100]nt
+- F1_score:[10/50/100]nt
+- Jaccard_index:[10/50/100]nt
+- Pearson_r:intersection:[10/50/100]nt
+
+### Example: Filtering for 2023 OEB upload
+```
+python filter_jsons.py --file-list [PARTICIPANT]_consolidated.[EVENT].json --out_prefix "filtered_" --b_metrics "union all_GT Spearman relative 25nt multi_matched FDR" --b_challenges "TE"
+```
 [example-full]: <https://github.com/inab/benchmarking-data-model/tree/master/prototype-data/1.0.x/QfO>
+[filter-jsons]: ../utils/README.md
 [methods]: <https://docs.google.com/spreadsheets/d/1jvZOpF8iKzFRltrg99dgmkcHNXQVvaUla2JEjt5vyCU/edit>
 [oeb]: <https://openebench.bsc.es/>

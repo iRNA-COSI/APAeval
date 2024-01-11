@@ -69,7 +69,19 @@ Currently no Docker image available, but the script can be run inside the `apaev
 
 **Usage:**
 ```
-python filter_jsons.py --file-list assessment1.json assessment2.json --out_prefix "filtered_" --b_metrics "union all_GT Spearman relative 25nt multi_matched FDR" --b_challenges "TE"
+usage: filter_jsons.py [-h] -f FILE_LIST [FILE_LIST ...] -o OUT_PREFIX [-m [B_METRICS]] [-c [B_CHALLENGES]]
+
+options:
+  -h, --help            show this help message and exit
+  -f FILE_LIST [FILE_LIST ...], --file-list FILE_LIST [FILE_LIST ...]
+                        list of OEB .json (assessments, validation or consolidation) filepaths.
+  -o OUT_PREFIX, --out_prefix OUT_PREFIX
+                        prefix for output files
+  -m [B_METRICS], --b_metrics [B_METRICS]
+                        list of metrics to be removed
+  -c [B_CHALLENGES], --b_challenges [B_CHALLENGES]
+                        list of challenges to be removed
+
 ```
 ## Contributing instructions
 
